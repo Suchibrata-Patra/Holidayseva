@@ -1,33 +1,8 @@
 /*
  * ════════════════════════════════════════════════════
  *  UI FRAMEWORK — Airbnb-Style Component System
- *  Master import file
+ *  Master import file — v1.0.0
  * ════════════════════════════════════════════════════
- *
- *  Usage:
- *    <link rel="stylesheet" href="ui-framework.css">
- *
- *  File structure:
- *    tokens/colors.css        — Color variables
- *    tokens/spacing.css       — Spacing & radius tokens
- *    tokens/typography.css    — Type scale + all design tokens
- *    utilities/spacing.css    — Margin, padding, gap utilities
- *    utilities/layout.css     — Flex, grid, position utilities
- *    utilities/display.css    — Typography, color, shadow utilities
- *    layout/container.css     — Container, stack, cluster, split
- *    layout/grid.css          — Grid system
- *    components/button.css    — Button variants and sizes
- *    components/card.css      — Card component
- *    components/gallery.css   — Image gallery
- *    components/booking-card.css — Booking/price sidebar
- *    components/calendar.css  — Date picker calendar
- *    components/dropdown.css  — Dropdown + counter
- *    components/review-card.css  — Review cards
- *    components/modal.css     — Modal overlay
- *    components/badge.css     — Badges + verification cards
- *    components/avatar.css    — Avatar component
- *    components/navigation-buttons.css — Nav buttons
- *    components/price-card.css — Floating price card
  */
 
 /* ── Tokens ── */
