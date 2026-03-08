@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Airframe UI — Documentation</title>
-    <link rel="stylesheet" href="ui-framework.css" />
+    <!-- <link rel="stylesheet" href="ui-framework.css" /> -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap"
@@ -709,7 +709,8 @@
                             <div class="doc-step__desc">Place all CSS files, <code>ui-framework.css</code>, and
                                 <code>airframe.js</code> in the same directory (e.g., <code>/assets/airframe/</code>).
                                 Keep all files together — <code>ui-framework.css</code> uses relative
-                                <code>@import</code> paths.</div>
+                                <code>@import</code> paths.
+                            </div>
                         </div>
                     </div>
                     <div class="doc-step">
@@ -836,7 +837,8 @@
                 <div class="doc-section-label">Tokens</div>
                 <h2 class="doc-section-title"><em>Color</em> Tokens</h2>
                 <p class="doc-lead">All colors are defined as CSS custom properties on <code>:root</code> in
-                    <code>colors.css</code>. Use them anywhere in your own CSS.</p>
+                    <code>colors.css</code>. Use them anywhere in your own CSS.
+                </p>
 
                 <div class="doc-swatches">
                     <div class="doc-swatch"><span class="doc-swatch__dot" style="background:#FF385C"></span><code
@@ -1532,7 +1534,8 @@
                 <h2 class="doc-section-title"><em>Calendar</em></h2>
                 <p class="doc-lead">A dual-month date-range picker from <code>calendar.css</code>. <strong>Fully
                         JS-rendered</strong> — the <code>calendar-months</code> container is populated entirely by
-                    <code>airframe.js</code>.</p>
+                    <code>airframe.js</code>.
+                </p>
 
                 <div class="doc-callout doc-callout--warning">
                     <strong>JS-rendered:</strong> The calendar HTML is built and injected by <code>airframe.js</code>.
@@ -1830,7 +1833,8 @@
                             <td><code>changeCount(type, delta, opts?)</code></td>
                             <td>Increment/decrement a counter. <code>type</code> is
                                 <code>'adults'</code>/<code>'children'</code>/<code>'infants'</code>. <code>opts</code>
-                                accepts <code>{min, max}</code>.</td>
+                                accepts <code>{min, max}</code>.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>initCalendar</code></td>
@@ -1883,13 +1887,15 @@
                             <td><code>calendar:change</code></td>
                             <td>Event on <code>.calendar-wrapper</code></td>
                             <td>Fires when a date is selected. <code>event.detail</code> contains
-                                <code>{ start: Date, end: Date|null }</code>. Bubbles.</td>
+                                <code>{ start: Date, end: Date|null }</code>. Bubbles.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>data-booking</code></td>
                             <td>Ancestor of calendar</td>
                             <td>Marks the booking context. The calendar searches upward for this to find and update
-                                <code>data-booking-checkin</code> / <code>data-booking-checkout</code> text.</td>
+                                <code>data-booking-checkin</code> / <code>data-booking-checkout</code> text.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>data-booking-checkin</code></td>
