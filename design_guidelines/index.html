@@ -1351,12 +1351,25 @@
                     styling. Highlights in-range days, marks today, blocks past dates.</p>
                 <div class="doc-preview doc-preview--col">
                     <span class="doc-preview__tag">live</span>
-                    <div class="calendar-wrapper">
-                        <div style="text-align:center;font-size:var(--text-md);font-weight:var(--weight-semibold)">
-                            Select check-in date</div>
-                        <div class="calendar-months" id="calendarEl"></div>
+                    <div class="calendar-wrapper" id="mainCalendar">
+                        <div class="calendar-tabs" style="margin-bottom:var(--space-sm)">
+                            <button class="calendar-tab calendar-tab--active" type="button">Dates</button>
+                            <button class="calendar-tab" type="button">Flexible</button>
+                        </div>
+                        <div class="calendar-months"></div>
+                        <div class="calendar-flex-pills">
+                            <button class="calendar-flex-pill calendar-flex-pill--active" type="button">Exact
+                                dates</button>
+                            <button class="calendar-flex-pill" type="button">± 1 day</button>
+                            <button class="calendar-flex-pill" type="button">± 2 days</button>
+                            <button class="calendar-flex-pill" type="button">± 3 days</button>
+                            <button class="calendar-flex-pill" type="button">± 7 days</button>
+                            <button class="calendar-flex-pill" type="button">± 14 days</button>
+                        </div>
                         <div class="calendar-footer">
-                            <button class="btn btn-ghost btn-sm" onclick="clearCalendar()">Clear dates</button>
+                            <button class="btn btn-ghost btn-sm"
+                                onclick="document.getElementById('mainCalendar') && AirframeUI.clearCalendar(document.getElementById('mainCalendar'))">Clear
+                                dates</button>
                             <button class="btn btn-secondary btn-sm">Close</button>
                         </div>
                     </div>
@@ -1749,35 +1762,29 @@
         </main>
     </div>
 
+    <script src="airframe.js"></script>
     <script>
-        const CAL = { start: null, end: null };
-        const today = new Date(); today.setHours(0, 0, 0, 0);
-        let curMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        function renderCalendar() { const el = document.getElementById('calendarEl'); if (!el) return; el.innerHTML = ''; for (let m = 0; m < 2; m++)el.appendChild(buildMonth(new Date(curMonth.getFullYear(), curMonth.getMonth() + m, 1), m)); }
-        function buildMonth(md, idx) { const div = document.createElement('div'); div.className = 'calendar-month'; const y = md.getFullYear(), mo = md.getMonth(); const mName = md.toLocaleString('default', { month: 'long', year: 'numeric' }); div.innerHTML = `<div class="calendar-month__header"><button class="calendar-nav-btn${idx > 0 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(-1)">←</button><span class="calendar-month__title">${mName}</span><button class="calendar-nav-btn${idx < 1 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(1)">→</button></div><div class="calendar-weekdays">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => `<div class="calendar-weekday">${d}</div>`).join('')}</div><div class="calendar-days" id="days-${idx}"></div>`; const dEl = div.querySelector(`#days-${idx}`); const fd = new Date(y, mo, 1).getDay(); const dm = new Date(y, mo + 1, 0).getDate(); for (let i = 0; i < fd; i++) { const e = document.createElement('button'); e.className = 'calendar-day calendar-day--empty'; dEl.appendChild(e); } for (let d = 1; d <= dm; d++) { const date = new Date(y, mo, d); const btn = document.createElement('button'); btn.textContent = d; btn.className = 'calendar-day'; if (date < today) { btn.className += ' calendar-day--disabled'; btn.disabled = true; } if (date.toDateString() === today.toDateString()) btn.className += ' calendar-day--today'; if (CAL.start && date.toDateString() === CAL.start.toDateString()) btn.className += ' calendar-day--selected'; else if (CAL.end && date.toDateString() === CAL.end.toDateString()) btn.className += ' calendar-day--selected'; else if (CAL.start && CAL.end && date > CAL.start && date < CAL.end) btn.className += ' calendar-day--in-range'; btn.onclick = () => selectDay(date); dEl.appendChild(btn); } return div; }
-        function selectDay(date) { if (!CAL.start || (CAL.start && CAL.end)) { CAL.start = date; CAL.end = null; } else if (date < CAL.start) { CAL.end = CAL.start; CAL.start = date; } else { CAL.end = date; } renderCalendar(); }
-        function shiftMonth(d) { curMonth = new Date(curMonth.getFullYear(), curMonth.getMonth() + d, 1); renderCalendar(); }
-        function clearCalendar() { CAL.start = null; CAL.end = null; renderCalendar(); }
-        renderCalendar();
-
+        // Guest counter state (dropdown demo)
         const gc = { adults: 2, children: 0, infants: 1 };
-        function toggleDropdown(id) { const el = document.getElementById(id); const open = el.classList.contains('dropdown--open'); document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); }); if (!open) { el.classList.add('dropdown--open'); el.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'true'); } }
-        document.addEventListener('click', e => { if (!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); }); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); }); document.querySelectorAll('.modal-overlay--visible').forEach(m => { m.classList.remove('modal-overlay--visible'); document.body.style.overflow = ''; }); } });
-        function changeCount(type, delta) { gc[type] = Math.max(0, gc[type] + delta); if (type === 'adults' && gc.adults < 1) gc.adults = 1; document.getElementById(type + 'Count').textContent = gc[type]; document.getElementById(type + 'Down').disabled = gc[type] <= (type === 'adults' ? 1 : 0); const t = gc.adults + gc.children; const parts = [`${t} guest${t !== 1 ? 's' : ''}`]; if (gc.infants) parts.push(`${gc.infants} infant${gc.infants !== 1 ? 's' : ''}`); document.getElementById('guestLabel').textContent = parts.join(', '); }
-
-        function toggleReview(id, btn) { const el = document.getElementById(id); const tr = el.classList.contains('review-card__body--truncated'); el.classList.toggle('review-card__body--truncated', !tr); btn.textContent = tr ? 'Show less' : 'Show more'; }
-
-        function openModal(id) { document.getElementById(id).classList.add('modal-overlay--visible'); document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).classList.remove('modal-overlay--visible'); document.body.style.overflow = ''; }
-        document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }));
-
-        const secs = document.querySelectorAll('section[id]');
-        const links = document.querySelectorAll('.doc-sidebar__link');
-        secs.forEach(s => { new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { links.forEach(l => l.classList.remove('is-active')); const a = document.querySelector(`.doc-sidebar__link[href="#${e.target.id}"]`); if (a) a.classList.add('is-active'); } }); }, { threshold: 0.15, rootMargin: '-56px 0px -55% 0px' }).observe(s); });
-
-        function doCopy(btn) { const text = btn.closest('.doc-code').querySelector('pre').innerText; navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied!'; btn.classList.add('ok'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1800); }); }
+        function changeCount(type, delta) {
+            gc[type] = Math.max(0, gc[type] + delta);
+            if (type === 'adults' && gc.adults < 1) gc.adults = 1;
+            document.getElementById(type + 'Count').textContent = gc[type];
+            document.getElementById(type + 'Down').disabled = gc[type] <= (type === 'adults' ? 1 : 0);
+            const t = gc.adults + gc.children;
+            const parts = [`${t} guest${t !== 1 ? 's' : ''}`];
+            if (gc.infants) parts.push(`${gc.infants} infant${gc.infants !== 1 ? 's' : ''}`);
+            document.getElementById('guestLabel').textContent = parts.join(', ');
+        }
+        function toggleReview(id, btn) { AirframeUI.toggleReview(id, btn); }
+        function openModal(id) { AirframeUI.openModal(id); }
+        function closeModal(id) { AirframeUI.closeModal(id); }
+        function doCopy(btn) { AirframeUI.doCopy(btn); }
+        function toggleDropdown(id) { AirframeUI.toggleDropdown(id); }
+        // Init calendar
+        document.addEventListener('DOMContentLoaded', function () {
+            const calEl = document.getElementById('mainCalendar');
+            if (calEl) AirframeUI.initCalendar(calEl);
+        });
     </script>
 </body>
-
-</html>
