@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Guidelines — Airframe UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- ✦ ONE import. That's it. -->
+    <link rel="stylesheet" href="ui-framework.css">
+
+    <style>
+        /* Page-chrome only. Zero component CSS here. */
+        :root {
+            --doc-sidebar: 248px;
+            --doc-header: 56px;
+            --font-primary: 'DM Sans', -apple-system, sans-serif;
+            --font-mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: #fff;
+            color: var(--color-text-primary)
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        code {
+            font-family: var(--font-mono)
+        }
+
+        .doc-topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--doc-header);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-xl);
+            gap: var(--space-md);
+        }
+
+        .doc-topbar__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -0.02em
+        }
+
+        .doc-topbar__mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        .doc-topbar__pipe {
+            width: 1px;
+            height: 18px;
+            background: var(--color-border)
+        }
+
+        .doc-topbar__title {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            font-weight: 500
+        }
+
+        .doc-topbar__version {
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            background: var(--color-muted);
+            color: var(--color-text-muted);
+            padding: 3px 9px;
+            border-radius: 999px
+        }
+
+        .doc-shell {
+            display: flex;
+            padding-top: var(--doc-header);
+            min-height: 100vh
+        }
+
+        .doc-sidebar {
+            position: fixed;
+            top: var(--doc-header);
+            left: 0;
+            width: var(--doc-sidebar);
+            height: calc(100vh - var(--doc-header));
+            overflow-y: auto;
+            border-right: 1px solid var(--color-border);
+            background: #fafafa;
+            padding: var(--space-lg) 0 var(--space-3xl);
+            scrollbar-width: none;
+        }
+
+        .doc-sidebar::-webkit-scrollbar {
+            display: none
+        }
+
+        .doc-sidebar__group {
+            margin-bottom: var(--space-lg)
+        }
+
+        .doc-sidebar__heading {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            padding: 0 var(--space-lg);
+            margin-bottom: 2px;
+            display: block
+        }
+
+        .doc-sidebar__link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px var(--space-lg);
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            border-left: 2px solid transparent;
+            transition: all 120ms ease
+        }
+
+        .doc-sidebar__link:hover {
+            color: var(--color-text-primary);
+            background: var(--color-muted)
+        }
+
+        .doc-sidebar__link.is-active {
+            color: var(--color-primary);
+            border-left-color: var(--color-primary);
+            background: rgba(255, 56, 92, 0.06);
+            font-weight: 600
+        }
+
+        .doc-main {
+            margin-left: var(--doc-sidebar);
+            flex: 1;
+            min-width: 0
+        }
+
+        .doc-hero {
+            padding: 56px 56px 48px;
+            border-bottom: 1px solid var(--color-border);
+            background: linear-gradient(150deg, #fff 0%, #fff5f6 50%, #f0fffe 100%);
+        }
+
+        .doc-hero__eyebrow {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-primary-dark);
+            background: var(--color-primary-alpha);
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: var(--space-md)
+        }
+
+        .doc-hero h1 {
+            font-size: clamp(2rem, 3vw + 1rem, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: var(--space-md)
+        }
+
+        .doc-hero h1 span {
+            color: var(--color-primary)
+        }
+
+        .doc-hero__sub {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+            max-width: 520px;
+            margin-bottom: var(--space-xl)
+        }
+
+        .doc-hero__pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm)
+        }
+
+        .doc-hero__pill {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 5px 13px;
+            border-radius: 999px;
+            border: 1px solid var(--color-border);
+            background: #fff;
+            color: var(--color-text-secondary)
+        }
+
+        .doc-hero__pill b {
+            color: var(--color-text-primary)
+        }
+
+        .doc-section {
+            padding: 52px 56px 44px;
+            border-bottom: 1px solid var(--color-border);
+            max-width: 780px
+        }
+
+        .doc-section:last-of-type {
+            border-bottom: none
+        }
+
+        .doc-section__eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            display: block;
+            margin-bottom: var(--space-sm)
+        }
+
+        .doc-section h2 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: var(--space-sm)
+        }
+
+        .doc-section__lead {
+            font-size: 14.5px;
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+            max-width: 560px;
+            margin-bottom: var(--space-2xl)
+        }
+
+        .doc-section h3 {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-top: var(--space-2xl);
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--color-border)
+        }
+
+        .doc-preview {
+            background: #f7f7f7;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-sm);
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            align-items: flex-start;
+            position: relative
+        }
+
+        .doc-preview--center {
+            justify-content: center;
+            align-items: center
+        }
+
+        .doc-preview--col {
+            flex-direction: column;
+            align-items: flex-start
+        }
+
+        .doc-preview__tag {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--color-text-muted)
+        }
+
+        .doc-code {
+            background: #16161e;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: var(--space-xl)
+        }
+
+        .doc-code__bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07)
+        }
+
+        .doc-code__dots {
+            display: flex;
+            gap: 5px
+        }
+
+        .doc-code__dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%
+        }
+
+        .doc-code__dot--r {
+            background: #ff5f57
+        }
+
+        .doc-code__dot--y {
+            background: #febc2e
+        }
+
+        .doc-code__dot--g {
+            background: #28c840
+        }
+
+        .doc-code__lang {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.06em;
+            text-transform: uppercase
+        }
+
+        .doc-code__copy {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: rgba(255, 255, 255, 0.4);
+            padding: 3px 9px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: none;
+            cursor: pointer;
+            transition: all 120ms ease
+        }
+
+        .doc-code__copy:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.25)
+        }
+
+        .doc-code__copy.ok {
+            color: #28c840;
+            border-color: rgba(40, 200, 64, 0.35)
+        }
+
+        .doc-code__body {
+            padding: var(--space-lg);
+            overflow-x: auto
+        }
+
+        .doc-code__body pre {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            line-height: 1.75;
+            color: #c9d1d9;
+            white-space: pre;
+            tab-size: 2
+        }
+
+        .t-tag {
+            color: #79c0ff
+        }
+
+        .t-attr {
+            color: #ffab70
+        }
+
+        .t-val {
+            color: #a5d6ff
+        }
+
+        .t-prop {
+            color: #79c0ff
+        }
+
+        .t-num {
+            color: #f8938a
+        }
+
+        .t-str {
+            color: #a5d6ff
+        }
+
+        .t-cmt {
+            color: #6e7781;
+            font-style: italic
+        }
+
+        .t-sel {
+            color: #d2a8ff
+        }
+
+        .t-fn {
+            color: #79c0ff
+        }
+
+        .doc-callout {
+            border-radius: 8px;
+            padding: 12px var(--space-md);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            gap: var(--space-md);
+            align-items: flex-start;
+            font-size: 13.5px;
+            line-height: 1.6
+        }
+
+        .doc-callout--info {
+            background: rgba(0, 122, 184, 0.07);
+            border-left: 3px solid #007AB8;
+            color: #00507a
+        }
+
+        .doc-callout p {
+            margin: 0;
+            color: inherit
+        }
+
+        .doc-colors {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl)
+        }
+
+        .doc-swatch {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.07)
+        }
+
+        .doc-swatch__chip {
+            height: 64px
+        }
+
+        .doc-swatch__info {
+            padding: 7px 10px 9px;
+            background: #fff
+        }
+
+        .doc-swatch__name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            display: block
+        }
+
+        .doc-swatch__token {
+            font-size: 10px;
+            font-family: var(--font-mono);
+            color: var(--color-text-muted);
+            display: block;
+            margin-top: 2px;
+            word-break: break-all
+        }
+
+        .doc-type-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: var(--space-lg);
+            align-items: baseline;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--color-border)
+        }
+
+        .doc-type-row:last-child {
+            border-bottom: none
+        }
+
+        .doc-type-meta {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--color-text-muted)
+        }
+
+        .doc-space-row {
+            display: grid;
+            grid-template-columns: 90px 1fr 50px;
+            align-items: center;
+            gap: var(--space-md);
+            padding: 5px 0
+        }
+
+        .doc-space-label {
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: var(--color-text-secondary)
+        }
+
+        .doc-space-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 999px;
+            opacity: 0.75
+        }
+
+        .doc-space-px {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--color-text-muted);
+            text-align: right
+        }
+
+        .doc-shadows {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl)
+        }
+
+        .doc-shadow-chip {
+            background: #fff;
+            border-radius: 10px;
+            padding: var(--space-lg);
+            text-align: center
+        }
+
+        .doc-shadow-chip__name {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--color-text-muted);
+            margin-top: var(--space-sm)
+        }
+
+        .doc-radii {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            align-items: flex-end
+        }
+
+        .doc-radius-item {
+            text-align: center
+        }
+
+        .doc-radius-box {
+            width: 60px;
+            height: 60px;
+            background: var(--color-primary-alpha);
+            border: 2px solid var(--color-primary);
+            margin-bottom: 6px
+        }
+
+        .doc-radius-label {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--color-text-muted)
+        }
+
+        .doc-dodont {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl)
+        }
+
+        .doc-do,
+        .doc-dont {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid
+        }
+
+        .doc-do {
+            border-color: rgba(0, 138, 5, 0.25)
+        }
+
+        .doc-dont {
+            border-color: rgba(193, 53, 21, 0.25)
+        }
+
+        .doc-do__head,
+        .doc-dont__head {
+            padding: 7px var(--space-md);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .doc-do__head {
+            background: rgba(0, 138, 5, 0.07);
+            color: var(--color-success)
+        }
+
+        .doc-dont__head {
+            background: rgba(193, 53, 21, 0.07);
+            color: var(--color-error)
+        }
+
+        .doc-do__body,
+        .doc-dont__body {
+            padding: var(--space-md);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.6
+        }
+
+        @media (max-width: 900px) {
+            .doc-sidebar {
+                display: none
+            }
+
+            .doc-main {
+                margin-left: 0
+            }
+
+            .doc-hero,
+            .doc-section {
+                padding-left: var(--space-lg);
+                padding-right: var(--space-lg)
+            }
+
+            .doc-dodont {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="doc-topbar">
+        <div class="doc-topbar__logo">
+            <div class="doc-topbar__mark">A</div>
+            Airframe UI
+        </div>
+        <div class="doc-topbar__pipe"></div>
+        <span class="doc-topbar__title">Design Guidelines</span>
+        <span class="doc-topbar__version">v1.0.0</span>
+    </header>
+
+    <div class="doc-shell">
+
+        <aside class="doc-sidebar">
+            <div class="doc-sidebar__group">
+                <span class="doc-sidebar__heading">Introduction</span>
+                <a class="doc-sidebar__link is-active" href="#overview">Overview</a>
+            </div>
+            <div class="doc-sidebar__group">
+                <span class="doc-sidebar__heading">Foundations</span>
+                <a class="doc-sidebar__link" href="#colors">Color</a>
+                <a class="doc-sidebar__link" href="#typography">Typography</a>
+                <a class="doc-sidebar__link" href="#spacing">Spacing</a>
+                <a class="doc-sidebar__link" href="#shadows">Shadows</a>
+                <a class="doc-sidebar__link" href="#radius">Border Radius</a>
+            </div>
+            <div class="doc-sidebar__group">
+                <span class="doc-sidebar__heading">Components</span>
+                <a class="doc-sidebar__link" href="#buttons">Button</a>
+                <a class="doc-sidebar__link" href="#badges">Badge</a>
+                <a class="doc-sidebar__link" href="#avatars">Avatar</a>
+                <a class="doc-sidebar__link" href="#gallery">Gallery</a>
+                <a class="doc-sidebar__link" href="#booking">Booking Card</a>
+                <a class="doc-sidebar__link" href="#calendar">Calendar</a>
+                <a class="doc-sidebar__link" href="#dropdown">Dropdown</a>
+                <a class="doc-sidebar__link" href="#reviews">Review Card</a>
+                <a class="doc-sidebar__link" href="#modal">Modal</a>
+                <a class="doc-sidebar__link" href="#navbtns">Nav Buttons</a>
+                <a class="doc-sidebar__link" href="#pricecard">Price Card</a>
+            </div>
+        </aside>
+
+        <main class="doc-main">
+
+            <section id="overview">
+                <div class="doc-hero">
+                    <span class="doc-hero__eyebrow">✦ Design System</span>
+                    <h1>One import.<br><span>Everything works.</span></h1>
+                    <p class="doc-hero__sub">Drop in <code>ui-framework.css</code> and use class names directly. No
+                        build step, no config, no runtime. Tokens → Components → Done.</p>
+                    <div class="doc-hero__pills">
+                        <div class="doc-hero__pill"><b>15+</b> Components</div>
+                        <div class="doc-hero__pill"><b>40+</b> Design Tokens</div>
+                        <div class="doc-hero__pill"><b>0</b> Dependencies</div>
+                        <div class="doc-hero__pill"><b>1</b> CSS file to import</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="colors">
+                <span class="doc-section__eyebrow">Foundations · colors.css</span>
+                <h2>Color</h2>
+                <p class="doc-section__lead">All colors live as CSS variables on <code>:root</code> inside
+                    <code>colors.css</code>. Use the token — never a raw hex.
+                </p>
+
+                <h3>Brand</h3>
+                <div class="doc-colors">
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#FF385C"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Primary</span><span
+                                class="doc-swatch__token">--color-primary</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#FF5A76"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Primary Light</span><span
+                                class="doc-swatch__token">--color-primary-light</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#D93B55"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Primary Dark</span><span
+                                class="doc-swatch__token">--color-primary-dark</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#222"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Secondary</span><span
+                                class="doc-swatch__token">--color-secondary</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#00A699"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Accent</span><span
+                                class="doc-swatch__token">--color-accent</span></div>
+                    </div>
+                </div>
+                <h3>Semantic</h3>
+                <div class="doc-colors">
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#008A05"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Success</span><span
+                                class="doc-swatch__token">--color-success</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#C45508"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Warning</span><span
+                                class="doc-swatch__token">--color-warning</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#C13515"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Error</span><span
+                                class="doc-swatch__token">--color-error</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#717171"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Text Secondary</span><span
+                                class="doc-swatch__token">--color-text-secondary</span></div>
+                    </div>
+                    <div class="doc-swatch">
+                        <div class="doc-swatch__chip" style="background:#EBEBEB"></div>
+                        <div class="doc-swatch__info"><span class="doc-swatch__name">Muted</span><span
+                                class="doc-swatch__token">--color-muted</span></div>
+                    </div>
+                </div>
+                <div class="doc-callout doc-callout--info">
+                    <span>ℹ</span>
+                    <p>Always use <code>var(--color-primary)</code>, never <code>#FF385C</code>. This keeps theming
+                        possible across the entire system.</p>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">css · colors.css</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-sel>:root</t-sel> {
+  <t-prop>--color-primary</t-prop>:       <t-str>#FF385C</t-str>;
+  <t-prop>--color-primary-light</t-prop>: <t-str>#FF5A76</t-str>;
+  <t-prop>--color-primary-dark</t-prop>:  <t-str>#D93B55</t-str>;
+  <t-prop>--color-secondary</t-prop>:     <t-str>#222222</t-str>;
+  <t-prop>--color-accent</t-prop>:        <t-str>#00A699</t-str>;
+  <t-prop>--color-success</t-prop>:       <t-str>#008A05</t-str>;
+  <t-prop>--color-warning</t-prop>:       <t-str>#C45508</t-str>;
+  <t-prop>--color-error</t-prop>:         <t-str>#C13515</t-str>;
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="typography">
+                <span class="doc-section__eyebrow">Foundations · typography.css</span>
+                <h2>Typography</h2>
+                <p class="doc-section__lead">Fluid type scale using <code>clamp()</code>. Sizes scale smoothly with
+                    viewport — no breakpoint overrides needed.</p>
+                <h3>Type Scale</h3>
+                <div style="margin-bottom:var(--space-xl)">
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-xs</span>
+                        <div style="font-size:var(--text-xs)">The quick brown fox</div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-sm</span>
+                        <div style="font-size:var(--text-sm)">The quick brown fox</div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-base</span>
+                        <div style="font-size:var(--text-base)">The quick brown fox</div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-md</span>
+                        <div style="font-size:var(--text-md);font-weight:500">The quick brown fox</div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-lg</span>
+                        <div style="font-size:var(--text-lg);font-weight:600">Design with intention</div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-xl</span>
+                        <div style="font-size:var(--text-xl);font-weight:700">Design with intention</div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-2xl</span>
+                        <div style="font-size:var(--text-2xl);font-weight:700;letter-spacing:-0.02em">Design at scale
+                        </div>
+                    </div>
+                    <div class="doc-type-row"><span class="doc-type-meta">--text-3xl</span>
+                        <div style="font-size:var(--text-3xl);font-weight:700;letter-spacing:-0.02em">Go bold</div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">css · typography.css</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-sel>:root</t-sel> {
+  <t-prop>--text-xs</t-prop>:   <t-fn>clamp</t-fn>(<t-num>.625rem</t-num>,  <t-num>.5vw + .5rem</t-num>,  <t-num>.75rem</t-num>);
+  <t-prop>--text-sm</t-prop>:   <t-fn>clamp</t-fn>(<t-num>.75rem</t-num>,   <t-num>.6vw + .6rem</t-num>,  <t-num>.875rem</t-num>);
+  <t-prop>--text-base</t-prop>: <t-fn>clamp</t-fn>(<t-num>.875rem</t-num>,  <t-num>.8vw + .7rem</t-num>,  <t-num>1rem</t-num>);
+  <t-prop>--text-md</t-prop>:   <t-fn>clamp</t-fn>(<t-num>1rem</t-num>,     <t-num>1vw + .8rem</t-num>,   <t-num>1.125rem</t-num>);
+  <t-prop>--text-lg</t-prop>:   <t-fn>clamp</t-fn>(<t-num>1.125rem</t-num>, <t-num>1.2vw + .9rem</t-num>, <t-num>1.375rem</t-num>);
+  <t-prop>--text-xl</t-prop>:   <t-fn>clamp</t-fn>(<t-num>1.25rem</t-num>,  <t-num>1.5vw + 1rem</t-num>,  <t-num>1.75rem</t-num>);
+  <t-prop>--text-2xl</t-prop>:  <t-fn>clamp</t-fn>(<t-num>1.5rem</t-num>,   <t-num>2vw + 1rem</t-num>,    <t-num>2.25rem</t-num>);
+  <t-prop>--text-3xl</t-prop>:  <t-fn>clamp</t-fn>(<t-num>1.875rem</t-num>, <t-num>2.5vw + 1rem</t-num>,  <t-num>3rem</t-num>);
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="spacing">
+                <span class="doc-section__eyebrow">Foundations · typography.css</span>
+                <h2>Spacing</h2>
+                <p class="doc-section__lead">8-point scale. Use for all padding, margin, gap. Never write raw pixel
+                    values.</p>
+                <div style="margin-bottom:var(--space-xl)">
+                    <div class="doc-space-row"><span class="doc-space-label">--space-xs</span>
+                        <div class="doc-space-bar" style="width:4px"></div><span class="doc-space-px">4px</span>
+                    </div>
+                    <div class="doc-space-row"><span class="doc-space-label">--space-sm</span>
+                        <div class="doc-space-bar" style="width:8px"></div><span class="doc-space-px">8px</span>
+                    </div>
+                    <div class="doc-space-row"><span class="doc-space-label">--space-md</span>
+                        <div class="doc-space-bar" style="width:16px"></div><span class="doc-space-px">16px</span>
+                    </div>
+                    <div class="doc-space-row"><span class="doc-space-label">--space-lg</span>
+                        <div class="doc-space-bar" style="width:24px"></div><span class="doc-space-px">24px</span>
+                    </div>
+                    <div class="doc-space-row"><span class="doc-space-label">--space-xl</span>
+                        <div class="doc-space-bar" style="width:32px"></div><span class="doc-space-px">32px</span>
+                    </div>
+                    <div class="doc-space-row"><span class="doc-space-label">--space-2xl</span>
+                        <div class="doc-space-bar" style="width:48px"></div><span class="doc-space-px">48px</span>
+                    </div>
+                    <div class="doc-space-row"><span class="doc-space-label">--space-3xl</span>
+                        <div class="doc-space-bar" style="width:64px"></div><span class="doc-space-px">64px</span>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">css</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-sel>.your-card</t-sel> {
+  <t-prop>padding</t-prop>:    <t-fn>var</t-fn>(<t-str>--space-lg</t-str>);  <t-cmt>/* 24px */</t-cmt>
+  <t-prop>gap</t-prop>:        <t-fn>var</t-fn>(<t-str>--space-md</t-str>);  <t-cmt>/* 16px */</t-cmt>
+  <t-prop>margin-top</t-prop>: <t-fn>var</t-fn>(<t-str>--space-xl</t-str>); <t-cmt>/* 32px */</t-cmt>
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="shadows">
+                <span class="doc-section__eyebrow">Foundations · typography.css</span>
+                <h2>Shadows</h2>
+                <p class="doc-section__lead">Layered multi-stop shadows. Match elevation to context.</p>
+                <div class="doc-shadows">
+                    <div class="doc-shadow-chip" style="box-shadow:var(--shadow-xs)">
+                        <div class="doc-shadow-chip__name">shadow-xs</div>
+                    </div>
+                    <div class="doc-shadow-chip" style="box-shadow:var(--shadow-sm)">
+                        <div class="doc-shadow-chip__name">shadow-sm</div>
+                    </div>
+                    <div class="doc-shadow-chip" style="box-shadow:var(--shadow-md)">
+                        <div class="doc-shadow-chip__name">shadow-md</div>
+                    </div>
+                    <div class="doc-shadow-chip" style="box-shadow:var(--shadow-lg)">
+                        <div class="doc-shadow-chip__name">shadow-lg</div>
+                    </div>
+                    <div class="doc-shadow-chip" style="box-shadow:var(--shadow-xl)">
+                        <div class="doc-shadow-chip__name">shadow-xl</div>
+                    </div>
+                    <div class="doc-shadow-chip" style="box-shadow:var(--shadow-modal)">
+                        <div class="doc-shadow-chip__name">shadow-modal</div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">css</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-sel>.card</t-sel>       { <t-prop>box-shadow</t-prop>: <t-fn>var</t-fn>(<t-str>--shadow-card</t-str>) }
+<t-sel>.card:hover</t-sel>  { <t-prop>box-shadow</t-prop>: <t-fn>var</t-fn>(<t-str>--shadow-hover</t-str>) }
+<t-sel>.dropdown</t-sel>    { <t-prop>box-shadow</t-prop>: <t-fn>var</t-fn>(<t-str>--shadow-lg</t-str>) }
+<t-sel>.modal</t-sel>       { <t-prop>box-shadow</t-prop>: <t-fn>var</t-fn>(<t-str>--shadow-modal</t-str>) }</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="radius">
+                <span class="doc-section__eyebrow">Foundations · typography.css</span>
+                <h2>Border Radius</h2>
+                <p class="doc-section__lead">Consistent corner radii. Larger surfaces use larger radii.</p>
+                <div class="doc-radii">
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:var(--radius-sm)"></div>
+                        <div class="doc-radius-label">sm · 4px</div>
+                    </div>
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:var(--radius-md)"></div>
+                        <div class="doc-radius-label">md · 8px</div>
+                    </div>
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:var(--radius-lg)"></div>
+                        <div class="doc-radius-label">lg · 12px</div>
+                    </div>
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:var(--radius-xl)"></div>
+                        <div class="doc-radius-label">xl · 16px</div>
+                    </div>
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:var(--radius-2xl)"></div>
+                        <div class="doc-radius-label">2xl · 24px</div>
+                    </div>
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:var(--radius-pill)"></div>
+                        <div class="doc-radius-label">pill</div>
+                    </div>
+                    <div class="doc-radius-item">
+                        <div class="doc-radius-box" style="border-radius:50%"></div>
+                        <div class="doc-radius-label">circle</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="buttons">
+                <span class="doc-section__eyebrow">Component · button.css</span>
+                <h2>Button</h2>
+                <p class="doc-section__lead">Use <strong>Primary</strong> for the main CTA. <strong>Ghost</strong> for
+                    cancel or low-emphasis actions. Never two Primary buttons side-by-side.</p>
+                <h3>Variants</h3>
+                <div class="doc-preview">
+                    <span class="doc-preview__tag">live</span>
+                    <button class="btn btn-primary">Reserve</button>
+                    <button class="btn btn-secondary">Save</button>
+                    <button class="btn btn-outline">Share</button>
+                    <button class="btn btn-ghost">Cancel</button>
+                    <button class="btn btn-primary" disabled>Disabled</button>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary"</t-val><t-tag>&gt;</t-tag>Reserve<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-secondary"</t-val><t-tag>&gt;</t-tag>Save<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-outline"</t-val><t-tag>&gt;</t-tag>Share<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-ghost"</t-val><t-tag>&gt;</t-tag>Cancel<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary"</t-val> <t-attr>disabled</t-attr><t-tag>&gt;</t-tag>Disabled<t-tag>&lt;/button&gt;</t-tag></pre>
+                    </div>
+                </div>
+                <h3>Sizes</h3>
+                <div class="doc-preview" style="align-items:center">
+                    <span class="doc-preview__tag">live</span>
+                    <button class="btn btn-primary btn-sm">Small</button>
+                    <button class="btn btn-primary">Default</button>
+                    <button class="btn btn-primary btn-lg">Large</button>
+                    <button class="btn btn-primary btn-icon">★</button>
+                </div>
+                <div class="doc-code" style="margin-top:var(--space-sm)">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary btn-sm"</t-val><t-tag>&gt;</t-tag>Small<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary"</t-val><t-tag>&gt;</t-tag>Default<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary btn-lg"</t-val><t-tag>&gt;</t-tag>Large<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary btn-icon"</t-val><t-tag>&gt;</t-tag>★<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary btn-full"</t-val><t-tag>&gt;</t-tag>Full Width<t-tag>&lt;/button&gt;</t-tag></pre>
+                    </div>
+                </div>
+                <div class="doc-dodont">
+                    <div class="doc-do">
+                        <div class="doc-do__head">✓ Do</div>
+                        <div class="doc-do__body">One Primary per view. Pair with Ghost or Outline for secondary
+                            options.</div>
+                    </div>
+                    <div class="doc-dont">
+                        <div class="doc-dont__head">✕ Don't</div>
+                        <div class="doc-dont__body">Multiple Primary buttons side-by-side create noise and ambiguity.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="badges">
+                <span class="doc-section__eyebrow">Component · badge.css</span>
+                <h2>Badge</h2>
+                <p class="doc-section__lead">Short status labels. Use the semantic variant that matches the message
+                    intent.</p>
+                <h3>Inline Badges</h3>
+                <div class="doc-preview" style="align-items:center">
+                    <span class="doc-preview__tag">live</span>
+                    <span class="badge badge-primary">Superhost</span>
+                    <span class="badge badge-success">Verified</span>
+                    <span class="badge badge-warning">Limited</span>
+                    <span class="badge badge-error">Rare find</span>
+                    <span class="badge badge-muted">New</span>
+                    <span class="badge badge-dark">Staff pick</span>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"badge badge-primary"</t-val><t-tag>&gt;</t-tag>Superhost<t-tag>&lt;/span&gt;</t-tag>
+<t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"badge badge-success"</t-val><t-tag>&gt;</t-tag>Verified<t-tag>&lt;/span&gt;</t-tag>
+<t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"badge badge-warning"</t-val><t-tag>&gt;</t-tag>Limited<t-tag>&lt;/span&gt;</t-tag>
+<t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"badge badge-error"</t-val><t-tag>&gt;</t-tag>Rare find<t-tag>&lt;/span&gt;</t-tag>
+<t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"badge badge-muted"</t-val><t-tag>&gt;</t-tag>New<t-tag>&lt;/span&gt;</t-tag>
+<t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"badge badge-dark"</t-val><t-tag>&gt;</t-tag>Staff pick<t-tag>&lt;/span&gt;</t-tag></pre>
+                    </div>
+                </div>
+                <h3>Badge Cards</h3>
+                <div class="doc-preview">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="badge-card" style="max-width:170px">
+                        <div class="badge-card__icon">🏆</div>
+                        <div class="badge-card__title">Superhost</div>
+                        <p class="badge-card__desc">Consistently top-rated hosts.</p>
+                    </div>
+                    <div class="badge-card" style="max-width:170px">
+                        <div class="badge-card__icon">✓</div>
+                        <div class="badge-card__title">Verified</div>
+                        <p class="badge-card__desc">Identity confirmed by Airframe.</p>
+                    </div>
+                    <div class="badge-card" style="max-width:170px">
+                        <div class="badge-card__icon">⚡</div>
+                        <div class="badge-card__title">Instant Book</div>
+                        <p class="badge-card__desc">No approval wait needed.</p>
+                    </div>
+                </div>
+                <div class="doc-code" style="margin-top:var(--space-sm)">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"badge-card"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"badge-card__icon"</t-val><t-tag>&gt;</t-tag>🏆<t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"badge-card__title"</t-val><t-tag>&gt;</t-tag>Superhost<t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;p</t-tag>   <t-attr>class</t-attr>=<t-val>"badge-card__desc"</t-val><t-tag>&gt;</t-tag>Description.<t-tag>&lt;/p&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="avatars">
+                <span class="doc-section__eyebrow">Component · avatar.css</span>
+                <h2>Avatar</h2>
+                <p class="doc-section__lead">Circular user representations. Image when available, initials as fallback.
+                    Stack with <code>avatar-group</code>.</p>
+                <h3>Sizes + Fallback</h3>
+                <div class="doc-preview" style="align-items:center">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="avatar avatar-xs"><img src="https://i.pravatar.cc/48?img=1" alt=""></div>
+                    <div class="avatar avatar-sm"><img src="https://i.pravatar.cc/48?img=2" alt=""></div>
+                    <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=3" alt=""></div>
+                    <div class="avatar avatar-lg"><img src="https://i.pravatar.cc/128?img=4" alt=""></div>
+                    <div class="avatar avatar-xl"><img src="https://i.pravatar.cc/160?img=5" alt=""></div>
+                    <div class="avatar avatar-md"
+                        style="background:var(--color-primary);color:white;font-size:var(--text-sm);font-weight:700">P
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-cmt>&lt;!-- sizes: avatar-xs / sm / md / lg / xl / 2xl --&gt;</t-cmt>
+<t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"avatar avatar-md"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"photo.jpg"</t-val> <t-attr>alt</t-attr>=<t-val>"Priya"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+<t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"avatar avatar-md"</t-val><t-tag>&gt;</t-tag>P<t-tag>&lt;/div&gt;</t-tag>  <t-cmt>&lt;!-- initials fallback --&gt;</t-cmt>
+
+<t-cmt>&lt;!-- stacked group --&gt;</t-cmt>
+<t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"avatar-group"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"avatar avatar-md"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"..."</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"avatar avatar-md"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"..."</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+                <h3>Avatar Group</h3>
+                <div class="doc-preview" style="align-items:center">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="avatar-group">
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=9" alt=""></div>
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=8" alt=""></div>
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=7" alt=""></div>
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=6" alt=""></div>
+                    </div>
+                    <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">+128 guests</span>
+                </div>
+            </section>
+
+            <section class="doc-section" id="gallery">
+                <span class="doc-section__eyebrow">Component · gallery.css</span>
+                <h2>Gallery</h2>
+                <p class="doc-section__lead">5-photo hero grid. Hero spans full height left, 4 thumbnails right.
+                    Collapses to single image on mobile.</p>
+                <div class="doc-preview doc-preview--col" style="padding:var(--space-lg)">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="gallery" style="width:100%">
+                        <div class="gallery-actions">
+                            <button class="gallery-action-btn">↗</button>
+                            <button class="gallery-action-btn">♡</button>
+                        </div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item gallery-item--hero"><img
+                                    src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop"
+                                    alt=""></div>
+                            <div class="gallery-item"><img
+                                    src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format&fit=crop"
+                                    alt=""></div>
+                            <div class="gallery-item"><img
+                                    src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&auto=format&fit=crop"
+                                    alt=""></div>
+                            <div class="gallery-item"><img
+                                    src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&auto=format&fit=crop"
+                                    alt=""></div>
+                            <div class="gallery-item"><img
+                                    src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&auto=format&fit=crop"
+                                    alt=""></div>
+                        </div>
+                        <button class="gallery-show-all">⊞ Show all photos</button>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-actions"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-action-btn"</t-val><t-tag>&gt;</t-tag>↗<t-tag>&lt;/button&gt;</t-tag>
+    <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-action-btn"</t-val><t-tag>&gt;</t-tag>♡<t-tag>&lt;/button&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-grid"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-item gallery-item--hero"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"main.jpg"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-item"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"2.jpg"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-item"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"3.jpg"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-item"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"4.jpg"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-item"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"5.jpg"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"gallery-show-all"</t-val><t-tag>&gt;</t-tag>⊞ Show all photos<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="booking">
+                <span class="doc-section__eyebrow">Component · booking-card.css</span>
+                <h2>Booking Card</h2>
+                <p class="doc-section__lead">Sticky pricing sidebar. Goes static below 960px. Date inputs, guest
+                    selector, price breakdown, reserve CTA.</p>
+                <div class="doc-preview doc-preview--center">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="booking-card" style="max-width:360px;width:100%">
+                        <div class="booking-card__price">
+                            <span class="booking-card__price-amount">₹8,500</span>
+                            <span class="booking-card__price-original">₹12,000</span>
+                            <span class="booking-card__price-period">/ night</span>
+                            <span class="booking-card__price-discount">29% off</span>
+                            <div class="booking-card__rating"><span class="star-icon">★</span><span>4.92</span><span
+                                    class="booking-card__rating-count">(128)</span></div>
+                        </div>
+                        <div class="booking-card__inputs">
+                            <div class="booking-card__date-row">
+                                <div class="booking-card__field"><label
+                                        class="booking-card__field-label">Check-in</label>
+                                    <div class="booking-card__field-value">Mar 15</div>
+                                </div>
+                                <div class="booking-card__field"><label
+                                        class="booking-card__field-label">Check-out</label>
+                                    <div class="booking-card__field-value">Mar 20</div>
+                                </div>
+                            </div>
+                            <div class="booking-card__field"><label class="booking-card__field-label">Guests</label>
+                                <div class="booking-card__field-value">2 guests</div>
+                            </div>
+                        </div>
+                        <button class="booking-card__reserve">Reserve</button>
+                        <p class="booking-card__notice">You won't be charged yet</p>
+                        <div class="booking-card__breakdown">
+                            <div class="booking-card__breakdown-row"><span
+                                    class="booking-card__breakdown-row--label">₹8,500 × 5
+                                    nights</span><span>₹42,500</span></div>
+                            <div class="booking-card__breakdown-row"><span
+                                    class="booking-card__breakdown-row--label">Cleaning fee</span><span>₹1,500</span>
+                            </div>
+                            <div class="booking-card__breakdown-row booking-card__breakdown-row--total"><span>Total
+                                    before taxes</span><span>₹44,000</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card"</t-val><t-tag>&gt;</t-tag>
+
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__price"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__price-amount"</t-val><t-tag>&gt;</t-tag>₹8,500<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__price-original"</t-val><t-tag>&gt;</t-tag>₹12,000<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__price-period"</t-val><t-tag>&gt;</t-tag>/ night<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__price-discount"</t-val><t-tag>&gt;</t-tag>29% off<t-tag>&lt;/span&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__inputs"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__date-row"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__field"</t-val><t-tag>&gt;</t-tag>
+        <t-tag>&lt;label</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__field-label"</t-val><t-tag>&gt;</t-tag>Check-in<t-tag>&lt;/label&gt;</t-tag>
+        <t-tag>&lt;div</t-tag>   <t-attr>class</t-attr>=<t-val>"booking-card__field-value"</t-val><t-tag>&gt;</t-tag>Mar 15<t-tag>&lt;/div&gt;</t-tag>
+      <t-tag>&lt;/div&gt;</t-tag>
+    <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__reserve"</t-val><t-tag>&gt;</t-tag>Reserve<t-tag>&lt;/button&gt;</t-tag>
+  <t-tag>&lt;p</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__notice"</t-val><t-tag>&gt;</t-tag>You won't be charged yet<t-tag>&lt;/p&gt;</t-tag>
+
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__breakdown"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__breakdown-row"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__breakdown-row--label"</t-val><t-tag>&gt;</t-tag>₹8,500 × 5 nights<t-tag>&lt;/span&gt;</t-tag>
+      <t-tag>&lt;span&gt;</t-tag>₹42,500<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"booking-card__breakdown-row booking-card__breakdown-row--total"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;span&gt;</t-tag>Total<t-tag>&lt;/span&gt;</t-tag><t-tag>&lt;span&gt;</t-tag>₹44,000<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="calendar">
+                <span class="doc-section__eyebrow">Component · calendar.css</span>
+                <h2>Calendar</h2>
+                <p class="doc-section__lead">Dual-month date-range picker. JS renders the day grid — CSS handles all
+                    styling. Highlights in-range days, marks today, blocks past dates.</p>
+                <div class="doc-preview doc-preview--col">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="calendar-wrapper">
+                        <div style="text-align:center;font-size:var(--text-md);font-weight:var(--weight-semibold)">
+                            Select check-in date</div>
+                        <div class="calendar-months" id="calendarEl"></div>
+                        <div class="calendar-footer">
+                            <button class="btn btn-ghost btn-sm" onclick="clearCalendar()">Clear dates</button>
+                            <button class="btn btn-secondary btn-sm">Close</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"calendar-wrapper"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"calendar-months"</t-val> <t-attr>id</t-attr>=<t-val>"calendarEl"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"calendar-footer"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-ghost btn-sm"</t-val><t-tag>&gt;</t-tag>Clear dates<t-tag>&lt;/button&gt;</t-tag>
+    <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-secondary btn-sm"</t-val><t-tag>&gt;</t-tag>Close<t-tag>&lt;/button&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="dropdown">
+                <span class="doc-section__eyebrow">Component · dropdown.css</span>
+                <h2>Dropdown</h2>
+                <p class="doc-section__lead">Spring-animated panel with counter controls. Escape closes, outside-click
+                    closes, <code>aria-expanded</code> managed automatically.</p>
+                <div class="doc-preview doc-preview--col">
+                    <span class="doc-preview__tag">live</span>
+                    <div style="max-width:360px;width:100%">
+                        <div class="dropdown" id="guestDrop">
+                            <button class="dropdown__trigger" aria-expanded="false"
+                                onclick="toggleDropdown('guestDrop')">
+                                <span id="guestLabel">2 guests, 1 infant</span>
+                                <svg class="dropdown__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                            </button>
+                            <div class="dropdown__panel">
+                                <div class="dropdown__item">
+                                    <div class="dropdown__item-info"><span
+                                            class="dropdown__item-label">Adults</span><span
+                                            class="dropdown__item-desc">Ages 13 or above</span></div>
+                                    <div class="dropdown__counter"><button class="dropdown__counter-btn"
+                                            onclick="changeCount('adults',-1)" id="adultsDown">−</button><span
+                                            class="dropdown__counter-value" id="adultsCount">2</span><button
+                                            class="dropdown__counter-btn" onclick="changeCount('adults',1)">+</button>
+                                    </div>
+                                </div>
+                                <div class="dropdown__item">
+                                    <div class="dropdown__item-info"><span
+                                            class="dropdown__item-label">Children</span><span
+                                            class="dropdown__item-desc">Ages 2–12</span></div>
+                                    <div class="dropdown__counter"><button class="dropdown__counter-btn"
+                                            onclick="changeCount('children',-1)" id="childrenDown"
+                                            disabled>−</button><span class="dropdown__counter-value"
+                                            id="childrenCount">0</span><button class="dropdown__counter-btn"
+                                            onclick="changeCount('children',1)">+</button></div>
+                                </div>
+                                <div class="dropdown__item">
+                                    <div class="dropdown__item-info"><span
+                                            class="dropdown__item-label">Infants</span><span
+                                            class="dropdown__item-desc">Under 2</span></div>
+                                    <div class="dropdown__counter"><button class="dropdown__counter-btn"
+                                            onclick="changeCount('infants',-1)" id="infantsDown">−</button><span
+                                            class="dropdown__counter-value" id="infantsCount">1</span><button
+                                            class="dropdown__counter-btn" onclick="changeCount('infants',1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown"</t-val> <t-attr>id</t-attr>=<t-val>"myDrop"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__trigger"</t-val> <t-attr>aria-expanded</t-attr>=<t-val>"false"</t-val>
+          <t-attr>onclick</t-attr>=<t-val>"toggleDropdown('myDrop')"</t-val><t-tag>&gt;</t-tag>
+    Label
+    <t-tag>&lt;svg</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__arrow"</t-val> <t-attr>viewBox</t-attr>=<t-val>"0 0 24 24"</t-val> ...<t-tag>&gt;&lt;/svg&gt;</t-tag>
+  <t-tag>&lt;/button&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__panel"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__item"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__item-info"</t-val><t-tag>&gt;</t-tag>
+        <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__item-label"</t-val><t-tag>&gt;</t-tag>Adults<t-tag>&lt;/span&gt;</t-tag>
+      <t-tag>&lt;/div&gt;</t-tag>
+      <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__counter"</t-val><t-tag>&gt;</t-tag>
+        <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__counter-btn"</t-val><t-tag>&gt;</t-tag>−<t-tag>&lt;/button&gt;</t-tag>
+        <t-tag>&lt;span</t-tag>  <t-attr>class</t-attr>=<t-val>"dropdown__counter-value"</t-val><t-tag>&gt;</t-tag>2<t-tag>&lt;/span&gt;</t-tag>
+        <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"dropdown__counter-btn"</t-val><t-tag>&gt;</t-tag>+<t-tag>&lt;/button&gt;</t-tag>
+      <t-tag>&lt;/div&gt;</t-tag>
+    <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="reviews">
+                <span class="doc-section__eyebrow">Component · review-card.css</span>
+                <h2>Review Card</h2>
+                <p class="doc-section__lead">Rating summary, per-category bars, and an auto-fit grid of review cards
+                    with expandable text.</p>
+                <div class="doc-preview doc-preview--col">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="review-summary" style="margin-bottom:var(--space-lg)">
+                        <div class="review-summary__score">4.92</div>
+                        <div>
+                            <div class="review-summary__stars"><span class="review-summary__star">★</span><span
+                                    class="review-summary__star">★</span><span
+                                    class="review-summary__star">★</span><span
+                                    class="review-summary__star">★</span><span class="review-summary__star">★</span>
+                            </div>
+                            <div class="review-summary__count">128 reviews</div>
+                        </div>
+                    </div>
+                    <div class="review-categories" style="width:100%;margin-bottom:var(--space-lg)">
+                        <div class="review-category"><span class="review-category__name">Cleanliness</span>
+                            <div class="review-category__bar">
+                                <div class="review-category__fill" style="width:98%"></div>
+                            </div><span class="review-category__score">4.9</span>
+                        </div>
+                        <div class="review-category"><span class="review-category__name">Accuracy</span>
+                            <div class="review-category__bar">
+                                <div class="review-category__fill" style="width:96%"></div>
+                            </div><span class="review-category__score">4.8</span>
+                        </div>
+                        <div class="review-category"><span class="review-category__name">Location</span>
+                            <div class="review-category__bar">
+                                <div class="review-category__fill" style="width:94%"></div>
+                            </div><span class="review-category__score">4.7</span>
+                        </div>
+                    </div>
+                    <div class="review-grid" style="width:100%">
+                        <div class="review-card">
+                            <div class="review-card__header">
+                                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=1" alt=""></div>
+                                <div>
+                                    <div class="review-card__name">Priya Sharma</div>
+                                    <div class="review-card__location">Mumbai, India</div>
+                                </div>
+                            </div>
+                            <div class="review-card__rating-row">
+                                <div class="review-card__stars"><span class="review-card__star">★</span><span
+                                        class="review-card__star">★</span><span class="review-card__star">★</span><span
+                                        class="review-card__star">★</span><span class="review-card__star">★</span></div>
+                                <span class="review-card__date">March 2025</span>
+                            </div>
+                            <p class="review-card__body review-card__body--truncated" id="rev1">Absolutely stunning
+                                property! The views were breathtaking and the host was incredibly responsive. Every
+                                detail was perfect, from the luxurious bedding to the fully equipped kitchen. We
+                                especially loved the private pool.</p>
+                            <button class="review-card__show-more" onclick="toggleReview('rev1',this)">Show
+                                more</button>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-card__header">
+                                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=5" alt=""></div>
+                                <div>
+                                    <div class="review-card__name">Arjun Patel</div>
+                                    <div class="review-card__location">Bengaluru, India</div>
+                                </div>
+                            </div>
+                            <div class="review-card__rating-row">
+                                <div class="review-card__stars"><span class="review-card__star">★</span><span
+                                        class="review-card__star">★</span><span class="review-card__star">★</span><span
+                                        class="review-card__star">★</span><span class="review-card__star">★</span></div>
+                                <span class="review-card__date">February 2025</span>
+                            </div>
+                            <p class="review-card__body">Great location, clean space, warm host. We'll definitely be
+                                back!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"review-card"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__header"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"avatar avatar-md"</t-val><t-tag>&gt;&lt;img</t-tag> <t-attr>src</t-attr>=<t-val>"photo.jpg"</t-val><t-tag>&gt;&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__name"</t-val><t-tag>&gt;</t-tag>Priya Sharma<t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__rating-row"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__stars"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__star"</t-val><t-tag>&gt;</t-tag>★<t-tag>&lt;/span&gt;</t-tag> <t-cmt>&lt;!-- ×5 --&gt;</t-cmt>
+    <t-tag>&lt;/div&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__date"</t-val><t-tag>&gt;</t-tag>March 2025<t-tag>&lt;/span&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;p</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__body review-card__body--truncated"</t-val> <t-attr>id</t-attr>=<t-val>"rev1"</t-val><t-tag>&gt;</t-tag>
+    Review text...
+  <t-tag>&lt;/p&gt;</t-tag>
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"review-card__show-more"</t-val> <t-attr>onclick</t-attr>=<t-val>"toggleReview('rev1', this)"</t-val><t-tag>&gt;</t-tag>
+    Show more
+  <t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="modal">
+                <span class="doc-section__eyebrow">Component · modal.css</span>
+                <h2>Modal</h2>
+                <p class="doc-section__lead">Spring-animated overlay. Backdrop click or Escape to close. Bottom-sheet on
+                    mobile.</p>
+                <div class="doc-preview" style="align-items:center">
+                    <span class="doc-preview__tag">live</span>
+                    <button class="btn btn-primary" onclick="openModal('demoModal')">Open Modal</button>
+                    <button class="btn btn-outline" onclick="openModal('demoModalSm')">Small Modal</button>
+                </div>
+                <div id="demoModal" class="modal-overlay">
+                    <div class="modal">
+                        <div class="modal__header"><button class="modal__close"
+                                onclick="closeModal('demoModal')">✕</button><span class="modal__title">Confirm
+                                booking</span>
+                            <div style="width:32px"></div>
+                        </div>
+                        <div class="modal__body">
+                            <p style="color:var(--color-text-secondary);line-height:1.65">Review your dates and total
+                                before confirming. You won't be charged until you tap <strong>Confirm</strong>.</p>
+                            <div
+                                style="margin-top:var(--space-lg);padding:var(--space-md);background:var(--color-bg-muted);border-radius:var(--radius-lg);font-size:var(--text-sm)">
+                                <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-sm)">
+                                    <span>Mar 15 – Mar 20</span><span>5 nights</span>
+                                </div>
+                                <div style="display:flex;justify-content:space-between"><span>2 guests</span><span
+                                        style="font-weight:700">₹44,000 total</span></div>
+                            </div>
+                        </div>
+                        <div class="modal__footer"><button class="btn btn-ghost btn-sm"
+                                onclick="closeModal('demoModal')">Cancel</button><button
+                                class="btn btn-primary btn-sm">Confirm Reservation</button></div>
+                    </div>
+                </div>
+                <div id="demoModalSm" class="modal-overlay">
+                    <div class="modal" style="max-width:420px">
+                        <div class="modal__header"><button class="modal__close"
+                                onclick="closeModal('demoModalSm')">✕</button><span class="modal__title">Report a
+                                concern</span>
+                            <div style="width:32px"></div>
+                        </div>
+                        <div class="modal__body">
+                            <p style="color:var(--color-text-secondary)">Choose a reason to help us understand the
+                                issue.</p>
+                        </div>
+                        <div class="modal__footer"><button class="btn btn-ghost btn-sm"
+                                onclick="closeModal('demoModalSm')">Cancel</button><button
+                                class="btn btn-secondary btn-sm">Submit</button></div>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"modal-overlay"</t-val> <t-attr>id</t-attr>=<t-val>"myModal"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"modal"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"modal__header"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"modal__close"</t-val> <t-attr>onclick</t-attr>=<t-val>"closeModal('myModal')"</t-val><t-tag>&gt;</t-tag>✕<t-tag>&lt;/button&gt;</t-tag>
+      <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"modal__title"</t-val><t-tag>&gt;</t-tag>Title<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"modal__body"</t-val><t-tag>&gt;</t-tag>Your content here<t-tag>&lt;/div&gt;</t-tag>
+    <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"modal__footer"</t-val><t-tag>&gt;</t-tag>
+      <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"btn btn-primary"</t-val><t-tag>&gt;</t-tag>Confirm<t-tag>&lt;/button&gt;</t-tag>
+    <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag>
+
+<t-fn>function</t-fn> openModal(id)  { document.getElementById(id).classList.add(<t-str>'modal-overlay--visible'</t-str>) }
+<t-fn>function</t-fn> closeModal(id) { document.getElementById(id).classList.remove(<t-str>'modal-overlay--visible'</t-str>) }</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="navbtns">
+                <span class="doc-section__eyebrow">Component · navigation-buttons.css</span>
+                <h2>Navigation Buttons</h2>
+                <p class="doc-section__lead">Circular prev/next controls. Three sizes, four style variants.</p>
+                <div class="doc-preview" style="align-items:center;gap:var(--space-lg)">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="nav-btn-pair"><button class="nav-btn nav-btn--sm">←</button><button
+                            class="nav-btn nav-btn--sm">→</button></div>
+                    <div class="nav-btn-pair"><button class="nav-btn">←</button><button class="nav-btn">→</button></div>
+                    <div class="nav-btn-pair"><button class="nav-btn nav-btn--lg">←</button><button
+                            class="nav-btn nav-btn--lg">→</button></div>
+                    <div class="nav-btn-pair"><button class="nav-btn nav-btn--filled">←</button><button
+                            class="nav-btn nav-btn--filled">→</button></div>
+                    <div class="nav-btn-pair"><button class="nav-btn nav-btn--dark">←</button><button
+                            class="nav-btn nav-btn--dark">→</button></div>
+                    <button class="nav-btn" disabled>←</button>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn-pair"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn"</t-val><t-tag>&gt;</t-tag>←<t-tag>&lt;/button&gt;</t-tag>
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn"</t-val><t-tag>&gt;</t-tag>→<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag>
+
+<t-cmt>&lt;!-- sizes --&gt;</t-cmt>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn nav-btn--sm"</t-val><t-tag>&gt;</t-tag>←<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn nav-btn--lg"</t-val><t-tag>&gt;</t-tag>←<t-tag>&lt;/button&gt;</t-tag>
+
+<t-cmt>&lt;!-- variants --&gt;</t-cmt>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn nav-btn--filled"</t-val><t-tag>&gt;</t-tag>←<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn nav-btn--dark"</t-val><t-tag>&gt;</t-tag>←<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"nav-btn"</t-val> <t-attr>disabled</t-attr><t-tag>&gt;</t-tag>←<t-tag>&lt;/button&gt;</t-tag></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section" id="pricecard">
+                <span class="doc-section__eyebrow">Component · price-card.css</span>
+                <h2>Price Card</h2>
+                <p class="doc-section__lead">Compact inline card for listing grids or sticky bottom bars. Starting price
+                    + CTA in one row.</p>
+                <div class="doc-preview doc-preview--center">
+                    <span class="doc-preview__tag">live</span>
+                    <div class="price-card" style="max-width:340px;width:100%">
+                        <div class="price-card__info"><span class="price-card__from">from</span><span
+                                class="price-card__amount">₹8,500 <span class="price-card__per">/ night</span></span>
+                        </div>
+                        <button class="price-card__cta">Check availability</button>
+                    </div>
+                </div>
+                <div class="doc-code">
+                    <div class="doc-code__bar">
+                        <div class="doc-code__dots">
+                            <div class="doc-code__dot doc-code__dot--r"></div>
+                            <div class="doc-code__dot doc-code__dot--y"></div>
+                            <div class="doc-code__dot doc-code__dot--g"></div>
+                        </div><span class="doc-code__lang">html</span><button class="doc-code__copy"
+                            onclick="doCopy(this)">Copy</button>
+                    </div>
+                    <div class="doc-code__body">
+                        <pre><t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"price-card"</t-val><t-tag>&gt;</t-tag>
+  <t-tag>&lt;div</t-tag> <t-attr>class</t-attr>=<t-val>"price-card__info"</t-val><t-tag>&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"price-card__from"</t-val><t-tag>&gt;</t-tag>from<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"price-card__amount"</t-val><t-tag>&gt;</t-tag>
+      ₹8,500
+      <t-tag>&lt;span</t-tag> <t-attr>class</t-attr>=<t-val>"price-card__per"</t-val><t-tag>&gt;</t-tag>/ night<t-tag>&lt;/span&gt;</t-tag>
+    <t-tag>&lt;/span&gt;</t-tag>
+  <t-tag>&lt;/div&gt;</t-tag>
+  <t-tag>&lt;button</t-tag> <t-attr>class</t-attr>=<t-val>"price-card__cta"</t-val><t-tag>&gt;</t-tag>Check availability<t-tag>&lt;/button&gt;</t-tag>
+<t-tag>&lt;/div&gt;</t-tag></pre>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top:var(--space-3xl);padding-top:var(--space-xl);border-top:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-md)">
+                    <div>
+                        <div style="font-weight:700;font-size:var(--text-base)">Airframe UI</div>
+                        <div style="font-size:var(--text-sm);color:var(--color-text-muted)">Pure CSS · Vanilla JS · Zero
+                            deps</div>
+                    </div>
+                    <span class="badge badge-muted">v1.0.0</span>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const CAL = { start: null, end: null };
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        let curMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        function renderCalendar() { const el = document.getElementById('calendarEl'); if (!el) return; el.innerHTML = ''; for (let m = 0; m < 2; m++)el.appendChild(buildMonth(new Date(curMonth.getFullYear(), curMonth.getMonth() + m, 1), m)); }
+        function buildMonth(md, idx) { const div = document.createElement('div'); div.className = 'calendar-month'; const y = md.getFullYear(), mo = md.getMonth(); const mName = md.toLocaleString('default', { month: 'long', year: 'numeric' }); div.innerHTML = `<div class="calendar-month__header"><button class="calendar-nav-btn${idx > 0 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(-1)">←</button><span class="calendar-month__title">${mName}</span><button class="calendar-nav-btn${idx < 1 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(1)">→</button></div><div class="calendar-weekdays">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => `<div class="calendar-weekday">${d}</div>`).join('')}</div><div class="calendar-days" id="days-${idx}"></div>`; const dEl = div.querySelector(`#days-${idx}`); const fd = new Date(y, mo, 1).getDay(); const dm = new Date(y, mo + 1, 0).getDate(); for (let i = 0; i < fd; i++) { const e = document.createElement('button'); e.className = 'calendar-day calendar-day--empty'; dEl.appendChild(e); } for (let d = 1; d <= dm; d++) { const date = new Date(y, mo, d); const btn = document.createElement('button'); btn.textContent = d; btn.className = 'calendar-day'; if (date < today) { btn.className += ' calendar-day--disabled'; btn.disabled = true; } if (date.toDateString() === today.toDateString()) btn.className += ' calendar-day--today'; if (CAL.start && date.toDateString() === CAL.start.toDateString()) btn.className += ' calendar-day--selected'; else if (CAL.end && date.toDateString() === CAL.end.toDateString()) btn.className += ' calendar-day--selected'; else if (CAL.start && CAL.end && date > CAL.start && date < CAL.end) btn.className += ' calendar-day--in-range'; btn.onclick = () => selectDay(date); dEl.appendChild(btn); } return div; }
+        function selectDay(date) { if (!CAL.start || (CAL.start && CAL.end)) { CAL.start = date; CAL.end = null; } else if (date < CAL.start) { CAL.end = CAL.start; CAL.start = date; } else { CAL.end = date; } renderCalendar(); }
+        function shiftMonth(d) { curMonth = new Date(curMonth.getFullYear(), curMonth.getMonth() + d, 1); renderCalendar(); }
+        function clearCalendar() { CAL.start = null; CAL.end = null; renderCalendar(); }
+        renderCalendar();
+
+        const gc = { adults: 2, children: 0, infants: 1 };
+        function toggleDropdown(id) { const el = document.getElementById(id); const open = el.classList.contains('dropdown--open'); document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); }); if (!open) { el.classList.add('dropdown--open'); el.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'true'); } }
+        document.addEventListener('click', e => { if (!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); }); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); }); document.querySelectorAll('.modal-overlay--visible').forEach(m => { m.classList.remove('modal-overlay--visible'); document.body.style.overflow = ''; }); } });
+        function changeCount(type, delta) { gc[type] = Math.max(0, gc[type] + delta); if (type === 'adults' && gc.adults < 1) gc.adults = 1; document.getElementById(type + 'Count').textContent = gc[type]; document.getElementById(type + 'Down').disabled = gc[type] <= (type === 'adults' ? 1 : 0); const t = gc.adults + gc.children; const parts = [`${t} guest${t !== 1 ? 's' : ''}`]; if (gc.infants) parts.push(`${gc.infants} infant${gc.infants !== 1 ? 's' : ''}`); document.getElementById('guestLabel').textContent = parts.join(', '); }
+
+        function toggleReview(id, btn) { const el = document.getElementById(id); const tr = el.classList.contains('review-card__body--truncated'); el.classList.toggle('review-card__body--truncated', !tr); btn.textContent = tr ? 'Show less' : 'Show more'; }
+
+        function openModal(id) { document.getElementById(id).classList.add('modal-overlay--visible'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('modal-overlay--visible'); document.body.style.overflow = ''; }
+        document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }));
+
+        const secs = document.querySelectorAll('section[id]');
+        const links = document.querySelectorAll('.doc-sidebar__link');
+        secs.forEach(s => { new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { links.forEach(l => l.classList.remove('is-active')); const a = document.querySelector(`.doc-sidebar__link[href="#${e.target.id}"]`); if (a) a.classList.add('is-active'); } }); }, { threshold: 0.15, rootMargin: '-56px 0px -55% 0px' }).observe(s); });
+
+        function doCopy(btn) { const text = btn.closest('.doc-code').querySelector('pre').innerText; navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied!'; btn.classList.add('ok'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1800); }); }
+    </script>
+</body>
+
+</html>
