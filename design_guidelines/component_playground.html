@@ -1,0 +1,3355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Framework — Component Playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Merriweather:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ================================================
+   IMPORT ALL FRAMEWORK FILES (inlined for portability)
+   ================================================ */
+
+        /* ── TOKENS ── */
+        :root {
+            --color-primary: #FF385C;
+            --color-primary-light: #FF5A76;
+            --color-primary-dark: #D93B55;
+            --color-primary-alpha: rgba(255, 56, 92, 0.12);
+            --color-secondary: #222222;
+            --color-secondary-muted: #484848;
+            --color-accent: #00A699;
+            --color-accent-light: #00BDB2;
+            --color-accent-dark: #008C81;
+            --color-surface: #FFFFFF;
+            --color-surface-raised: #F7F7F7;
+            --color-bg: #FFFFFF;
+            --color-bg-muted: #F7F7F7;
+            --color-bg-dark: #1A1A1A;
+            --color-text-primary: #222222;
+            --color-text-secondary: #717171;
+            --color-text-muted: #B0B0B0;
+            --color-text-inverse: #FFFFFF;
+            --color-muted: #EBEBEB;
+            --color-muted-dark: #DDDDDD;
+            --color-border: #DDDDDD;
+            --color-border-dark: #B0B0B0;
+            --color-border-focus: #222222;
+            --color-success: #008A05;
+            --color-warning: #C45508;
+            --color-error: #C13515;
+            --color-star: #FF385C;
+            --color-star-empty: #DDDDDD;
+            --color-overlay: rgba(0, 0, 0, 0.5);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --container-padding: clamp(16px, 4vw, 80px);
+            --section-gap: clamp(32px, 5vw, 64px);
+            --card-padding: clamp(16px, 2.5vw, 24px);
+            --font-primary: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --text-xs: clamp(.625rem, .5vw + .5rem, .75rem);
+            --text-sm: clamp(.75rem, .6vw + .6rem, .875rem);
+            --text-base: clamp(.875rem, .8vw + .7rem, 1rem);
+            --text-md: clamp(1rem, 1vw + .8rem, 1.125rem);
+            --text-lg: clamp(1.125rem, 1.2vw + .9rem, 1.375rem);
+            --text-xl: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
+            --text-2xl: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+            --text-3xl: clamp(1.875rem, 2.5vw + 1rem, 3rem);
+            --text-4xl: clamp(2.25rem, 3.5vw + 1rem, 3.75rem);
+            --leading-tight: 1.2;
+            --leading-snug: 1.35;
+            --leading-normal: 1.5;
+            --leading-relaxed: 1.65;
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+            --tracking-tight: -0.02em;
+            --tracking-normal: 0;
+            --tracking-wide: 0.02em;
+            --tracking-wider: 0.05em;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-pill: 9999px;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, .08);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, .08), 0 1px 2px rgba(0, 0, 0, .06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, .10), 0 2px 6px rgba(0, 0, 0, .06);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, .12), 0 4px 12px rgba(0, 0, 0, .06);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, .14), 0 6px 20px rgba(0, 0, 0, .08);
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, .08), 0 1px 3px rgba(0, 0, 0, .05);
+            --shadow-hover: 0 6px 24px rgba(0, 0, 0, .14), 0 2px 8px rgba(0, 0, 0, .08);
+            --shadow-modal: 0 20px 60px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12);
+            --transition-fast: 150ms ease;
+            --transition-base: 200ms ease;
+            --transition-slow: 300ms ease;
+            --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+            --z-dropdown: 100;
+            --z-overlay: 300;
+            --z-modal: 400;
+        }
+
+        /* ── RESET ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased
+        }
+
+        body {
+            font-family: var(--font-primary);
+            font-size: var(--text-base);
+            color: var(--color-text-primary);
+            background: var(--color-bg);
+            line-height: var(--leading-normal)
+        }
+
+        img,
+        svg {
+            display: block;
+            max-width: 100%
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        input,
+        select,
+        textarea {
+            font-family: inherit
+        }
+
+        /* ── LAYOUT ── */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin-inline: auto;
+            padding-inline: var(--container-padding)
+        }
+
+        .section {
+            padding-block: var(--section-gap)
+        }
+
+        .section+.section {
+            border-top: 1px solid var(--color-border)
+        }
+
+        .section-title {
+            font-size: var(--text-2xl);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight);
+            margin-bottom: var(--space-lg);
+            font-family: 'Merriweather', serif
+        }
+
+        .section-sub {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xl);
+            max-width: 600px
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-md)
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr)
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .auto-grid-md {
+            display: grid;
+            gap: var(--space-lg);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr))
+        }
+
+        .auto-grid-lg {
+            display: grid;
+            gap: var(--space-lg);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr))
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .justify-between {
+            justify-content: space-between
+        }
+
+        .gap-2 {
+            gap: var(--space-sm)
+        }
+
+        .gap-3 {
+            gap: var(--space-md)
+        }
+
+        .gap-4 {
+            gap: var(--space-lg)
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md)
+        }
+
+        .cluster {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            align-items: center
+        }
+
+        .split {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2xl)
+        }
+
+        .split>:first-child {
+            flex: 1 1 60%;
+            min-width: min(420px, 100%)
+        }
+
+        .split>:last-child {
+            flex: 0 0 360px;
+            min-width: min(320px, 100%)
+        }
+
+        .sidebar-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2xl);
+            align-items: flex-start
+        }
+
+        .sidebar-main {
+            flex: 1 1 60%;
+            min-width: min(400px, 100%)
+        }
+
+        .sidebar-aside {
+            flex: 0 0 360px;
+            min-width: min(320px, 100%)
+        }
+
+        @media(max-width:1024px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:640px) {
+
+            .grid-4,
+            .grid-3,
+            .grid-2 {
+                grid-template-columns: 1fr
+            }
+
+            .split {
+                flex-direction: column
+            }
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            padding: 14px var(--space-lg);
+            font-size: var(--text-base);
+            font-weight: var(--weight-bold);
+            font-family: inherit;
+            line-height: 1;
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+            user-select: none;
+            text-decoration: none
+        }
+
+        .btn:focus-visible {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            pointer-events: none
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--color-primary), var(--color-primary-light));
+            color: white
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--color-primary-dark), var(--color-primary));
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md)
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: white
+        }
+
+        .btn-secondary:hover {
+            background: #333;
+            transform: translateY(-1px)
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: var(--color-text-primary);
+            color: var(--color-text-primary)
+        }
+
+        .btn-outline:hover {
+            background: var(--color-text-primary);
+            color: white
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--color-text-primary)
+        }
+
+        .btn-ghost:hover {
+            background: var(--color-muted)
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: var(--text-sm);
+            border-radius: var(--radius-sm)
+        }
+
+        .btn-lg {
+            padding: 18px var(--space-xl);
+            font-size: var(--text-lg);
+            border-radius: var(--radius-lg)
+        }
+
+        .btn-full {
+            width: 100%
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        /* ── GALLERY ── */
+        .gallery {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: repeat(2, 240px);
+            gap: 4px;
+            border-radius: var(--radius-xl);
+            overflow: hidden
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            background: var(--color-muted);
+            cursor: pointer
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow)
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04)
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: background var(--transition-base)
+        }
+
+        .gallery-item:hover::after {
+            background: rgba(0, 0, 0, .08)
+        }
+
+        .gallery-item--hero {
+            grid-row: 1/3;
+            grid-column: 1;
+            border-radius: var(--radius-xl) 0 0 var(--radius-xl)
+        }
+
+        .gallery-grid .gallery-item:nth-child(3) {
+            border-radius: 0 var(--radius-xl) 0 0
+        }
+
+        .gallery-grid .gallery-item:nth-child(5) {
+            border-radius: 0 0 var(--radius-xl) 0
+        }
+
+        .gallery-show-all {
+            position: absolute;
+            bottom: var(--space-md);
+            right: var(--space-md);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border: 1.5px solid var(--color-text-primary);
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: var(--weight-bold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            transition: all var(--transition-fast);
+            z-index: 5
+        }
+
+        .gallery-show-all:hover {
+            background: var(--color-text-primary);
+            color: white
+        }
+
+        .gallery-actions {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            display: flex;
+            gap: var(--space-sm);
+            z-index: 5
+        }
+
+        .gallery-action-btn {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            font-size: 16px
+        }
+
+        .gallery-action-btn:hover {
+            transform: scale(1.08);
+            box-shadow: var(--shadow-md)
+        }
+
+        @media(max-width:600px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 260px
+            }
+
+            .gallery-item {
+                display: none
+            }
+
+            .gallery-item--hero {
+                display: block;
+                grid-row: 1;
+                grid-column: 1;
+                border-radius: var(--radius-xl)
+            }
+        }
+
+        /* ── BOOKING CARD ── */
+        .booking-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 80px
+        }
+
+        .booking-card__price {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md)
+        }
+
+        .booking-card__price-amount {
+            font-size: var(--text-2xl);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight)
+        }
+
+        .booking-card__price-original {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            text-decoration: line-through
+        }
+
+        .booking-card__price-period {
+            font-size: var(--text-base);
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary)
+        }
+
+        .booking-card__price-discount {
+            font-size: var(--text-sm);
+            font-weight: var(--weight-bold);
+            color: var(--color-error);
+            background: rgba(193, 53, 21, .1);
+            padding: 2px 8px;
+            border-radius: var(--radius-pill)
+        }
+
+        .booking-card__rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--text-sm);
+            margin-left: auto
+        }
+
+        .booking-card__inputs {
+            border: 1.5px solid var(--color-border-dark);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-md)
+        }
+
+        .booking-card__date-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr
+        }
+
+        .booking-card__field {
+            padding: 12px var(--space-md);
+            cursor: pointer;
+            transition: background var(--transition-fast)
+        }
+
+        .booking-card__field:hover {
+            background: var(--color-bg-muted)
+        }
+
+        .booking-card__field+.booking-card__field {
+            border-left: 1.5px solid var(--color-border-dark)
+        }
+
+        .booking-card__date-row+.booking-card__field {
+            border-top: 1.5px solid var(--color-border-dark)
+        }
+
+        .booking-card__field-label {
+            display: block;
+            font-size: 10px;
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-wider);
+            text-transform: uppercase;
+            color: var(--color-text-primary);
+            margin-bottom: 2px
+        }
+
+        .booking-card__field-value {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary)
+        }
+
+        .booking-card__reserve {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-primary), #E31C5F);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            font-size: var(--text-md);
+            font-weight: var(--weight-bold);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            margin-bottom: var(--space-md);
+            font-family: inherit
+        }
+
+        .booking-card__reserve:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(255, 56, 92, .4)
+        }
+
+        .booking-card__notice {
+            text-align: center;
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md)
+        }
+
+        .booking-card__breakdown {
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm)
+        }
+
+        .booking-card__breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--text-sm)
+        }
+
+        .booking-card__breakdown-row--label {
+            color: var(--color-text-secondary);
+            text-decoration: underline;
+            cursor: pointer
+        }
+
+        .booking-card__breakdown-row--total {
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-sm);
+            margin-top: var(--space-xs);
+            font-weight: var(--weight-bold);
+            font-size: var(--text-base)
+        }
+
+        /* ── CALENDAR ── */
+        .calendar-wrapper {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-lg);
+            display: inline-flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            max-width: 700px;
+            width: 100%
+        }
+
+        .calendar-months {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl)
+        }
+
+        .calendar-month__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md)
+        }
+
+        .calendar-month__title {
+            font-size: var(--text-md);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight)
+        }
+
+        .calendar-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid var(--color-border);
+            background: var(--color-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--color-text-primary);
+            font-size: 14px
+        }
+
+        .calendar-nav-btn:hover {
+            background: var(--color-muted);
+            border-color: var(--color-border-dark)
+        }
+
+        .calendar-nav-btn:disabled {
+            opacity: .3;
+            cursor: not-allowed
+        }
+
+        .calendar-nav-btn--hidden {
+            visibility: hidden
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            margin-bottom: var(--space-xs)
+        }
+
+        .calendar-weekday {
+            font-size: var(--text-xs);
+            font-weight: var(--weight-bold);
+            color: var(--color-text-secondary);
+            padding: var(--space-xs) 0;
+            letter-spacing: var(--tracking-wide)
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            position: relative;
+            background: none;
+            border: none;
+            font-family: inherit;
+            color: var(--color-text-primary);
+            min-width: 0
+        }
+
+        .calendar-day:hover:not(:disabled):not(.calendar-day--selected) {
+            background: var(--color-muted)
+        }
+
+        .calendar-day--empty {
+            cursor: default;
+            pointer-events: none
+        }
+
+        .calendar-day--disabled {
+            color: var(--color-muted-dark);
+            cursor: not-allowed;
+            text-decoration: line-through
+        }
+
+        .calendar-day--today {
+            font-weight: var(--weight-bold)
+        }
+
+        .calendar-day--today::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--color-primary);
+            border-radius: 50%
+        }
+
+        .calendar-day--selected {
+            background: var(--color-secondary) !important;
+            color: white !important;
+            border-radius: 50% !important;
+            font-weight: var(--weight-bold)
+        }
+
+        .calendar-day--in-range {
+            background: var(--color-primary-alpha);
+            border-radius: 0;
+            color: var(--color-text-primary)
+        }
+
+        .calendar-day--range-start {
+            background: var(--color-secondary);
+            color: white;
+            border-radius: 50% 0 0 50%
+        }
+
+        .calendar-day--range-end {
+            background: var(--color-secondary);
+            color: white;
+            border-radius: 0 50% 50% 0
+        }
+
+        .calendar-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border);
+            gap: var(--space-md)
+        }
+
+        @media(max-width:580px) {
+            .calendar-months {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* ── DROPDOWN ── */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            width: 100%
+        }
+
+        .dropdown__trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            padding: 12px var(--space-md);
+            border: 1.5px solid var(--color-border-dark);
+            border-radius: var(--radius-lg);
+            background: var(--color-surface);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            font-family: inherit;
+            color: var(--color-text-primary);
+            width: 100%;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+            user-select: none
+        }
+
+        .dropdown__trigger:hover {
+            border-color: var(--color-text-primary)
+        }
+
+        .dropdown__trigger[aria-expanded="true"] {
+            border-color: var(--color-text-primary);
+            box-shadow: 0 0 0 2px rgba(34, 34, 34, .15)
+        }
+
+        .dropdown__arrow {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            transition: transform var(--transition-base);
+            color: var(--color-text-secondary)
+        }
+
+        .dropdown__trigger[aria-expanded="true"] .dropdown__arrow {
+            transform: rotate(180deg)
+        }
+
+        .dropdown__panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            min-width: max-content;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-dropdown);
+            opacity: 0;
+            transform: translateY(-8px) scale(.98);
+            transform-origin: top center;
+            pointer-events: none;
+            transition: opacity var(--transition-base), transform var(--transition-spring);
+            overflow: hidden
+        }
+
+        .dropdown--open .dropdown__panel {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto
+        }
+
+        .dropdown__item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            gap: var(--space-md);
+            border-bottom: 1px solid var(--color-border)
+        }
+
+        .dropdown__item:last-child {
+            border-bottom: none
+        }
+
+        .dropdown__item-info {
+            flex: 1
+        }
+
+        .dropdown__item-label {
+            font-size: var(--text-base);
+            font-weight: var(--weight-medium);
+            color: var(--color-text-primary);
+            display: block
+        }
+
+        .dropdown__item-desc {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary);
+            display: block;
+            margin-top: 2px
+        }
+
+        .dropdown__counter {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm)
+        }
+
+        .dropdown__counter-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid var(--color-border-dark);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            color: var(--color-text-secondary);
+            transition: all var(--transition-fast);
+            flex-shrink: 0
+        }
+
+        .dropdown__counter-btn:hover:not(:disabled) {
+            border-color: var(--color-text-primary);
+            color: var(--color-text-primary)
+        }
+
+        .dropdown__counter-btn:disabled {
+            opacity: .3;
+            cursor: not-allowed
+        }
+
+        .dropdown__counter-value {
+            min-width: 24px;
+            text-align: center;
+            font-size: var(--text-base);
+            font-weight: var(--weight-medium)
+        }
+
+        /* ── REVIEW CARDS ── */
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: var(--space-lg)
+        }
+
+        .review-summary {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap
+        }
+
+        .review-summary__score {
+            font-size: var(--text-4xl);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight)
+        }
+
+        .review-summary__stars {
+            display: flex;
+            gap: 2px
+        }
+
+        .review-summary__star {
+            color: var(--color-star);
+            font-size: var(--text-md)
+        }
+
+        .review-summary__count {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-top: 2px
+        }
+
+        .review-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md)
+        }
+
+        .review-card__header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md)
+        }
+
+        .review-card__avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--color-muted)
+        }
+
+        .review-card__name {
+            font-size: var(--text-base);
+            font-weight: var(--weight-bold);
+            color: var(--color-text-primary)
+        }
+
+        .review-card__location {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary)
+        }
+
+        .review-card__rating-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm)
+        }
+
+        .review-card__stars {
+            display: flex;
+            gap: 1px
+        }
+
+        .review-card__star {
+            color: var(--color-star);
+            font-size: 12px
+        }
+
+        .review-card__date {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary)
+        }
+
+        .review-card__body {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--leading-relaxed)
+        }
+
+        .review-card__body--truncated {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        .review-card__show-more {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: var(--text-sm);
+            font-weight: var(--weight-bold);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-family: inherit
+        }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-overlay);
+            z-index: var(--z-overlay);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            pointer-events: none
+        }
+
+        .modal-overlay--visible {
+            opacity: 1;
+            pointer-events: auto
+        }
+
+        .modal {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-modal);
+            width: 100%;
+            max-width: 620px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(.95) translateY(16px);
+            transition: transform var(--transition-spring), opacity var(--transition-base);
+            opacity: 0;
+            overflow: hidden
+        }
+
+        .modal-overlay--visible .modal {
+            transform: scale(1) translateY(0);
+            opacity: 1
+        }
+
+        .modal__header {
+            display: flex;
+            align-items: center;
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+            flex-shrink: 0;
+            gap: var(--space-md);
+            position: relative
+        }
+
+        .modal__title {
+            font-size: var(--text-md);
+            font-weight: var(--weight-bold);
+            flex: 1;
+            text-align: center
+        }
+
+        .modal__close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--color-text-primary);
+            font-size: 18px;
+            transition: background var(--transition-fast);
+            flex-shrink: 0
+        }
+
+        .modal__close:hover {
+            background: var(--color-muted)
+        }
+
+        .modal__body {
+            overflow-y: auto;
+            padding: var(--space-lg);
+            flex: 1;
+            overscroll-behavior: contain
+        }
+
+        .modal__footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--color-border);
+            flex-shrink: 0
+        }
+
+        /* ── BADGE / AVATAR ── */
+        .badge-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            gap: var(--space-md);
+            transition: box-shadow var(--transition-base)
+        }
+
+        .badge-card:hover {
+            box-shadow: var(--shadow-md)
+        }
+
+        .badge-card__icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-xl);
+            background: var(--color-bg-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: transform var(--transition-spring)
+        }
+
+        .badge-card:hover .badge-card__icon {
+            transform: scale(1.08) rotate(-4deg)
+        }
+
+        .badge-card__title {
+            font-size: var(--text-lg);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight)
+        }
+
+        .badge-card__desc {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--leading-relaxed);
+            max-width: 260px
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            font-size: var(--text-xs);
+            font-weight: var(--weight-bold);
+            line-height: 1;
+            letter-spacing: var(--tracking-wide)
+        }
+
+        .badge-primary {
+            background: var(--color-primary-alpha);
+            color: var(--color-primary-dark)
+        }
+
+        .badge-success {
+            background: rgba(0, 138, 5, .12);
+            color: var(--color-success)
+        }
+
+        .badge-warning {
+            background: rgba(196, 85, 8, .12);
+            color: var(--color-warning)
+        }
+
+        .badge-error {
+            background: rgba(193, 53, 21, .12);
+            color: var(--color-error)
+        }
+
+        .badge-muted {
+            background: var(--color-muted);
+            color: var(--color-text-secondary)
+        }
+
+        .badge-dark {
+            background: var(--color-secondary);
+            color: white
+        }
+
+        .avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--color-muted);
+            flex-shrink: 0;
+            position: relative;
+            font-weight: var(--weight-bold);
+            color: var(--color-text-secondary)
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block
+        }
+
+        .avatar-xs {
+            width: 24px;
+            height: 24px;
+            font-size: 10px
+        }
+
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            font-size: var(--text-xs)
+        }
+
+        .avatar-md {
+            width: 48px;
+            height: 48px;
+            font-size: var(--text-sm)
+        }
+
+        .avatar-lg {
+            width: 64px;
+            height: 64px;
+            font-size: var(--text-md)
+        }
+
+        .avatar-xl {
+            width: 80px;
+            height: 80px;
+            font-size: var(--text-xl)
+        }
+
+        .avatar-2xl {
+            width: 112px;
+            height: 112px;
+            font-size: var(--text-2xl)
+        }
+
+        .avatar-group {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center
+        }
+
+        .avatar-group .avatar {
+            border: 2px solid var(--color-surface);
+            margin-left: -8px;
+            transition: transform var(--transition-fast)
+        }
+
+        .avatar-group .avatar:last-child {
+            margin-left: 0
+        }
+
+        .avatar-group .avatar:hover {
+            transform: translateY(-4px);
+            z-index: 10
+        }
+
+        /* ── NAV BUTTONS ── */
+        .nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1.5px solid var(--color-border-dark);
+            background: var(--color-surface);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--color-text-primary);
+            flex-shrink: 0;
+            user-select: none;
+            font-size: 14px
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--color-text-primary);
+            box-shadow: var(--shadow-sm)
+        }
+
+        .nav-btn:active:not(:disabled) {
+            transform: scale(.94)
+        }
+
+        .nav-btn:disabled {
+            opacity: .3;
+            cursor: not-allowed
+        }
+
+        .nav-btn--sm {
+            width: 28px;
+            height: 28px
+        }
+
+        .nav-btn--lg {
+            width: 44px;
+            height: 44px;
+            font-size: 16px
+        }
+
+        .nav-btn--xl {
+            width: 56px;
+            height: 56px;
+            font-size: 20px
+        }
+
+        .nav-btn--filled {
+            background: var(--color-surface);
+            border-color: transparent;
+            box-shadow: var(--shadow-md)
+        }
+
+        .nav-btn--filled:hover:not(:disabled) {
+            box-shadow: var(--shadow-hover);
+            transform: scale(1.05);
+            border-color: transparent
+        }
+
+        .nav-btn--dark {
+            background: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: white
+        }
+
+        .nav-btn--dark:hover:not(:disabled) {
+            background: #333;
+            border-color: #333
+        }
+
+        .nav-btn-pair {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm)
+        }
+
+        .circle-arrow-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-spring);
+            color: var(--color-text-primary);
+            flex-shrink: 0;
+            font-size: 18px
+        }
+
+        .circle-arrow-btn:hover {
+            transform: scale(1.08);
+            box-shadow: var(--shadow-hover)
+        }
+
+        .circle-arrow-btn:active {
+            transform: scale(.96)
+        }
+
+        /* ── PRICE CARD ── */
+        .price-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            transition: box-shadow var(--transition-base)
+        }
+
+        .price-card:hover {
+            box-shadow: var(--shadow-hover)
+        }
+
+        .price-card__info {
+            flex: 1;
+            min-width: 0
+        }
+
+        .price-card__from {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-wider);
+            font-weight: var(--weight-medium);
+            display: block
+        }
+
+        .price-card__amount {
+            font-size: var(--text-xl);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight);
+            color: var(--color-text-primary);
+            display: block
+        }
+
+        .price-card__per {
+            font-size: var(--text-sm);
+            font-weight: var(--weight-normal);
+            color: var(--color-text-secondary)
+        }
+
+        .price-card__cta {
+            flex-shrink: 0;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: 10px var(--space-md);
+            font-size: var(--text-sm);
+            font-weight: var(--weight-bold);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-base);
+            font-family: inherit
+        }
+
+        .price-card__cta:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px)
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: box-shadow var(--transition-base), transform var(--transition-base)
+        }
+
+        .card--bordered {
+            border: 1px solid var(--color-border)
+        }
+
+        .card--shadow {
+            box-shadow: var(--shadow-card)
+        }
+
+        .card--lift:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover)
+        }
+
+        .card__media {
+            position: relative;
+            overflow: hidden;
+            background: var(--color-muted)
+        }
+
+        .card__media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+            display: block
+        }
+
+        .card--lift:hover .card__media img {
+            transform: scale(1.04)
+        }
+
+        .card__body {
+            padding: var(--card-padding)
+        }
+
+        .card__title {
+            font-size: var(--text-md);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-tight);
+            margin-bottom: var(--space-xs)
+        }
+
+        .card__subtitle {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm)
+        }
+
+        .card__footer {
+            padding: var(--space-sm) var(--card-padding) var(--card-padding);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-sm)
+        }
+
+        /* ── REVIEW CATEGORY BARS ── */
+        .review-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl)
+        }
+
+        .review-category {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm)
+        }
+
+        .review-category__name {
+            font-size: var(--text-sm);
+            font-weight: var(--weight-medium);
+            min-width: 80px
+        }
+
+        .review-category__bar {
+            flex: 1;
+            height: 4px;
+            background: var(--color-muted);
+            border-radius: var(--radius-pill);
+            overflow: hidden
+        }
+
+        .review-category__fill {
+            height: 100%;
+            background: var(--color-text-primary);
+            border-radius: var(--radius-pill)
+        }
+
+        .review-category__score {
+            font-size: var(--text-sm);
+            font-weight: var(--weight-medium);
+            min-width: 28px;
+            text-align: right
+        }
+
+        /* ── PLAYGROUND NAV ── */
+        .pg-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 50;
+            padding: var(--space-sm) 0
+        }
+
+        .pg-nav__inner {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+            overflow-x: auto;
+            padding-inline: var(--container-padding);
+            scrollbar-width: none
+        }
+
+        .pg-nav__inner::-webkit-scrollbar {
+            display: none
+        }
+
+        .pg-nav__link {
+            font-size: var(--text-sm);
+            font-weight: var(--weight-medium);
+            white-space: nowrap;
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            color: var(--color-text-secondary);
+            transition: all var(--transition-fast)
+        }
+
+        .pg-nav__link:hover {
+            color: var(--color-text-primary);
+            background: var(--color-muted)
+        }
+
+        .pg-nav__link.active {
+            color: var(--color-text-primary);
+            background: var(--color-muted);
+            font-weight: var(--weight-bold)
+        }
+
+        /* ── HERO ── */
+        .pg-hero {
+            background: linear-gradient(135deg, #fff5f6 0%, #fff 50%, #f0fffe 100%);
+            padding: var(--space-3xl) 0 var(--space-2xl);
+            border-bottom: 1px solid var(--color-border)
+        }
+
+        .pg-hero__tag {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: var(--color-primary-alpha);
+            color: var(--color-primary-dark);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: var(--text-sm);
+            font-weight: var(--weight-bold);
+            margin-bottom: var(--space-md)
+        }
+
+        .pg-hero h1 {
+            font-family: 'Merriweather', serif;
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            letter-spacing: var(--tracking-tight);
+            margin-bottom: var(--space-md);
+            max-width: 700px;
+            line-height: var(--leading-tight)
+        }
+
+        .pg-hero h1 span {
+            color: var(--color-primary)
+        }
+
+        .pg-hero__desc {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+            max-width: 560px;
+            line-height: var(--leading-relaxed);
+            margin-bottom: var(--space-xl)
+        }
+
+        .pg-hero__stats {
+            display: flex;
+            gap: var(--space-xl);
+            flex-wrap: wrap
+        }
+
+        .pg-hero__stat-num {
+            font-size: var(--text-2xl);
+            font-weight: var(--weight-bold);
+            color: var(--color-text-primary);
+            display: block
+        }
+
+        .pg-hero__stat-label {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary)
+        }
+
+        /* Separator */
+        .divider {
+            height: 1px;
+            background: var(--color-border);
+            margin-block: var(--space-lg)
+        }
+
+        /* Color swatch */
+        .swatch-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm)
+        }
+
+        .swatch {
+            width: 60px;
+            text-align: center
+        }
+
+        .swatch__color {
+            height: 48px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(0, 0, 0, .1);
+            margin-bottom: 4px
+        }
+
+        .swatch__label {
+            font-size: 9px;
+            color: var(--color-text-secondary);
+            word-break: break-all
+        }
+
+        /* Token table */
+        .token-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--text-sm)
+        }
+
+        .token-table th,
+        .token-table td {
+            text-align: left;
+            padding: 8px var(--space-md);
+            border-bottom: 1px solid var(--color-border)
+        }
+
+        .token-table th {
+            font-weight: var(--weight-bold);
+            color: var(--color-text-secondary);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-wider)
+        }
+
+        .token-table code {
+            font-size: var(--text-xs);
+            background: var(--color-muted);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-family: monospace
+        }
+
+        /* Spacing demo */
+        .spacing-demo {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm)
+        }
+
+        .spacing-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md)
+        }
+
+        .spacing-bar {
+            height: var(--bar-h);
+            background: var(--color-primary);
+            border-radius: var(--radius-sm);
+            opacity: .7
+        }
+
+        .spacing-label {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary);
+            min-width: 80px;
+            font-family: monospace
+        }
+
+        /* Helper */
+        .demo-box {
+            background: var(--color-bg-muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg)
+        }
+
+        .demo-label {
+            font-size: var(--text-xs);
+            font-weight: var(--weight-bold);
+            letter-spacing: var(--tracking-wider);
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md)
+        }
+
+        .mt-6 {
+            margin-top: var(--space-2xl)
+        }
+
+        .mb-4 {
+            margin-bottom: var(--space-lg)
+        }
+
+        /* Superhost badge */
+        .superhost-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 10px var(--space-md);
+            background: var(--color-bg-muted);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border)
+        }
+
+        .superhost-badge__icon {
+            font-size: 20px;
+            flex-shrink: 0
+        }
+
+        .superhost-badge__title {
+            font-size: var(--text-sm);
+            font-weight: var(--weight-bold);
+            color: var(--color-text-primary)
+        }
+
+        .superhost-badge__desc {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── PLAYGROUND NAV ── -->
+    <nav class="pg-nav" aria-label="Component navigation">
+        <div class="pg-nav__inner">
+            <a class="pg-nav__link" href="#tokens">Tokens</a>
+            <a class="pg-nav__link" href="#gallery">Gallery</a>
+            <a class="pg-nav__link" href="#booking">Booking</a>
+            <a class="pg-nav__link" href="#calendar">Calendar</a>
+            <a class="pg-nav__link" href="#dropdown">Dropdown</a>
+            <a class="pg-nav__link" href="#reviews">Reviews</a>
+            <a class="pg-nav__link" href="#modal">Modal</a>
+            <a class="pg-nav__link" href="#badges">Badges</a>
+            <a class="pg-nav__link" href="#avatars">Avatars</a>
+            <a class="pg-nav__link" href="#navigation">Nav Buttons</a>
+            <a class="pg-nav__link" href="#pricing">Price Card</a>
+            <a class="pg-nav__link" href="#buttons">Buttons</a>
+            <a class="pg-nav__link" href="#full-page">Full Page</a>
+        </div>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <div class="pg-hero">
+        <div class="container">
+            <div class="pg-hero__tag">🏠 UI Framework</div>
+            <h1>Airbnb-Style<br><span>Component Library</span></h1>
+            <p class="pg-hero__desc">A complete, modular design system with fluid typography, responsive layouts, and
+                production-ready components. Built with CSS variables, Grid, Flexbox, and container queries.</p>
+            <div class="pg-hero__stats">
+                <div><span class="pg-hero__stat-num">15+</span><span class="pg-hero__stat-label">Components</span></div>
+                <div><span class="pg-hero__stat-num">40+</span><span class="pg-hero__stat-label">Utilities</span></div>
+                <div><span class="pg-hero__stat-num">100%</span><span class="pg-hero__stat-label">Responsive</span>
+                </div>
+                <div><span class="pg-hero__stat-num">0</span><span class="pg-hero__stat-label">Dependencies</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: DESIGN TOKENS                       -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="tokens">
+        <div class="container">
+            <h2 class="section-title">Design Tokens</h2>
+            <p class="section-sub">All tokens are CSS custom properties on <code>:root</code>. Override them globally or
+                per-component.</p>
+
+            <!-- Colors -->
+            <h3 style="font-size:var(--text-lg);font-weight:var(--weight-bold);margin-bottom:var(--space-md)">Colors
+            </h3>
+            <div class="swatch-grid mb-4">
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-primary)"></div>
+                    <div class="swatch__label">primary</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-primary-light)"></div>
+                    <div class="swatch__label">primary-light</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-primary-dark)"></div>
+                    <div class="swatch__label">primary-dark</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-secondary)"></div>
+                    <div class="swatch__label">secondary</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-accent)"></div>
+                    <div class="swatch__label">accent</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-surface);border:1px solid #ddd"></div>
+                    <div class="swatch__label">surface</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-bg-muted)"></div>
+                    <div class="swatch__label">bg-muted</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-muted)"></div>
+                    <div class="swatch__label">muted</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-border)"></div>
+                    <div class="swatch__label">border</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-success)"></div>
+                    <div class="swatch__label">success</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-warning)"></div>
+                    <div class="swatch__label">warning</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-error)"></div>
+                    <div class="swatch__label">error</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-info)"></div>
+                    <div class="swatch__label">info</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-star)"></div>
+                    <div class="swatch__label">star</div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background:var(--color-bg-dark)"></div>
+                    <div class="swatch__label">bg-dark</div>
+                </div>
+            </div>
+
+            <!-- Typography scale -->
+            <h3
+                style="font-size:var(--text-lg);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Typography Scale (fluid)</h3>
+            <div class="demo-box mb-4">
+                <div
+                    style="font-size:var(--text-4xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);line-height:var(--leading-tight)">
+                    text-4xl — Page Hero</div>
+                <div
+                    style="font-size:var(--text-3xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);line-height:var(--leading-snug);margin-top:8px">
+                    text-3xl — Section Title</div>
+                <div style="font-size:var(--text-2xl);font-weight:var(--weight-semibold);margin-top:8px">text-2xl — Card
+                    Title</div>
+                <div style="font-size:var(--text-xl);font-weight:var(--weight-semibold);margin-top:8px">text-xl —
+                    Subheading</div>
+                <div style="font-size:var(--text-lg);margin-top:8px">text-lg — Lead paragraph</div>
+                <div style="font-size:var(--text-base);margin-top:8px">text-base — Body copy. The quick brown fox jumps
+                    over the lazy dog.</div>
+                <div style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:8px">text-sm —
+                    Supporting text and captions</div>
+                <div
+                    style="font-size:var(--text-xs);color:var(--color-text-muted);letter-spacing:var(--tracking-wide);text-transform:uppercase;margin-top:8px">
+                    text-xs — LABELS & METADATA</div>
+            </div>
+
+            <!-- Spacing scale -->
+            <h3
+                style="font-size:var(--text-lg);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Spacing Scale</h3>
+            <div class="demo-box">
+                <div class="spacing-demo">
+                    <div class="spacing-row">
+                        <div class="spacing-label">xs — 4px</div>
+                        <div class="spacing-bar" style="--bar-h:4px;width:4px"></div>
+                    </div>
+                    <div class="spacing-row">
+                        <div class="spacing-label">sm — 8px</div>
+                        <div class="spacing-bar" style="--bar-h:8px;width:8px"></div>
+                    </div>
+                    <div class="spacing-row">
+                        <div class="spacing-label">md — 16px</div>
+                        <div class="spacing-bar" style="--bar-h:16px;width:16px"></div>
+                    </div>
+                    <div class="spacing-row">
+                        <div class="spacing-label">lg — 24px</div>
+                        <div class="spacing-bar" style="--bar-h:24px;width:24px"></div>
+                    </div>
+                    <div class="spacing-row">
+                        <div class="spacing-label">xl — 32px</div>
+                        <div class="spacing-bar" style="--bar-h:32px;width:32px"></div>
+                    </div>
+                    <div class="spacing-row">
+                        <div class="spacing-label">2xl — 48px</div>
+                        <div class="spacing-bar" style="--bar-h:48px;width:48px"></div>
+                    </div>
+                    <div class="spacing-row">
+                        <div class="spacing-label">3xl — 64px</div>
+                        <div class="spacing-bar" style="--bar-h:64px;width:64px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shadows -->
+            <h3
+                style="font-size:var(--text-lg);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Shadows</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-bottom:var(--space-lg)">
+                <div
+                    style="background:white;border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);box-shadow:var(--shadow-xs);text-align:center">
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">shadow-xs</div>
+                </div>
+                <div
+                    style="background:white;border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);box-shadow:var(--shadow-sm);text-align:center">
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">shadow-sm</div>
+                </div>
+                <div
+                    style="background:white;border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);box-shadow:var(--shadow-md);text-align:center">
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">shadow-md</div>
+                </div>
+                <div
+                    style="background:white;border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);box-shadow:var(--shadow-lg);text-align:center">
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">shadow-lg</div>
+                </div>
+                <div
+                    style="background:white;border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);box-shadow:var(--shadow-xl);text-align:center">
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">shadow-xl</div>
+                </div>
+                <div
+                    style="background:white;border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);box-shadow:var(--shadow-modal);text-align:center">
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">shadow-modal</div>
+                </div>
+            </div>
+
+            <!-- Border radius -->
+            <h3
+                style="font-size:var(--text-lg);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Border Radius</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--space-lg);align-items:flex-end">
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:var(--radius-sm);margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">sm 4px</div>
+                </div>
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:var(--radius-md);margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">md 8px</div>
+                </div>
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:var(--radius-lg);margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">lg 12px</div>
+                </div>
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:var(--radius-xl);margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">xl 16px</div>
+                </div>
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:var(--radius-2xl);margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">2xl 24px</div>
+                </div>
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:var(--radius-pill);margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">pill</div>
+                </div>
+                <div style="text-align:center">
+                    <div
+                        style="width:60px;height:60px;background:var(--color-primary-alpha);border:2px solid var(--color-primary);border-radius:50%;margin-bottom:4px">
+                    </div>
+                    <div style="font-size:var(--text-xs);color:var(--color-text-muted)">50%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: GALLERY                             -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Image Gallery</h2>
+            <p class="section-sub">Responsive 5-photo hero grid with overlay controls and hover effects. Collapses to
+                single image on mobile.</p>
+
+            <div class="gallery">
+                <div class="gallery-actions">
+                    <button class="gallery-action-btn" aria-label="Share">↗</button>
+                    <button class="gallery-action-btn" aria-label="Save to wishlist">♡</button>
+                </div>
+                <div class="gallery-grid">
+                    <div class="gallery-item gallery-item--hero">
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&auto=format&fit=crop"
+                            alt="Living room">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&auto=format&fit=crop"
+                            alt="Bedroom">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&auto=format&fit=crop"
+                            alt="Kitchen">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&auto=format&fit=crop"
+                            alt="Bathroom">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&auto=format&fit=crop"
+                            alt="Balcony">
+                    </div>
+                </div>
+                <button class="gallery-show-all">
+                    <span>⊞</span> Show all photos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: BOOKING CARD + CALENDAR             -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="booking">
+        <div class="container">
+            <h2 class="section-title">Booking Card</h2>
+            <p class="section-sub">Sticky sidebar pricing card with date inputs, guest selector, and price breakdown.
+                Becomes static on tablet/mobile.</p>
+            <div style="max-width:380px">
+                <div class="booking-card">
+                    <div class="booking-card__price">
+                        <span class="booking-card__price-amount">₹8,500</span>
+                        <span class="booking-card__price-original">₹12,000</span>
+                        <span class="booking-card__price-period">/ night</span>
+                        <span class="booking-card__price-discount">29% off</span>
+                        <div class="booking-card__rating">
+                            <span class="star-icon">★</span>
+                            <span>4.92</span>
+                            <span class="booking-card__rating-count">(128)</span>
+                        </div>
+                    </div>
+                    <div class="booking-card__inputs">
+                        <div class="booking-card__date-row">
+                            <div class="booking-card__field">
+                                <label class="booking-card__field-label">Check-in</label>
+                                <div class="booking-card__field-value">Mar 15</div>
+                            </div>
+                            <div class="booking-card__field">
+                                <label class="booking-card__field-label">Check-out</label>
+                                <div class="booking-card__field-value">Mar 20</div>
+                            </div>
+                        </div>
+                        <div class="booking-card__field">
+                            <label class="booking-card__field-label">Guests</label>
+                            <div class="booking-card__field-value">2 guests</div>
+                        </div>
+                    </div>
+                    <button class="booking-card__reserve">Reserve</button>
+                    <p class="booking-card__notice">You won't be charged yet</p>
+                    <div class="booking-card__breakdown">
+                        <div class="booking-card__breakdown-row">
+                            <span class="booking-card__breakdown-row--label">₹8,500 × 5 nights</span>
+                            <span>₹42,500</span>
+                        </div>
+                        <div class="booking-card__breakdown-row">
+                            <span class="booking-card__breakdown-row--label">Long stay discount</span>
+                            <span style="color:var(--color-success)">−₹4,250</span>
+                        </div>
+                        <div class="booking-card__breakdown-row">
+                            <span class="booking-card__breakdown-row--label">Cleaning fee</span>
+                            <span>₹1,500</span>
+                        </div>
+                        <div class="booking-card__breakdown-row">
+                            <span class="booking-card__breakdown-row--label">Service fee</span>
+                            <span>₹5,620</span>
+                        </div>
+                        <div class="booking-card__breakdown-row booking-card__breakdown-row--total">
+                            <span>Total before taxes</span>
+                            <span>₹45,370</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: CALENDAR                            -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="calendar">
+        <div class="container">
+            <h2 class="section-title">Date Picker Calendar</h2>
+            <p class="section-sub">Dual-month calendar with range selection, today indicator, disabled past dates, and
+                hover preview. Collapses to single month on mobile.</p>
+
+            <div class="calendar-wrapper">
+                <div
+                    style="text-align:center;font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-sm)">
+                    Select check-in date</div>
+                <div class="calendar-months" id="calendarEl">
+                    <!-- Rendered by JS -->
+                </div>
+                <div class="calendar-footer">
+                    <button class="btn btn-ghost btn-sm" onclick="clearCalendar()">Clear dates</button>
+                    <button class="btn btn-secondary btn-sm">Close</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: DROPDOWN                            -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="dropdown">
+        <div class="container">
+            <h2 class="section-title">Dropdown Component</h2>
+            <p class="section-sub">Animated dropdown with keyboard accessibility, outside-click closing, and counter
+                controls for guest selection.</p>
+
+            <div style="max-width:420px">
+                <!-- Guest counter dropdown -->
+                <div class="demo-label">Guest Selector</div>
+                <div class="dropdown" id="guestDrop">
+                    <button class="dropdown__trigger" aria-expanded="false" onclick="toggleDropdown('guestDrop')">
+                        <span id="guestLabel">2 guests, 1 infant</span>
+                        <svg class="dropdown__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="dropdown__panel">
+                        <div class="dropdown__item">
+                            <div class="dropdown__item-info">
+                                <span class="dropdown__item-label">Adults</span>
+                                <span class="dropdown__item-desc">Ages 13 or above</span>
+                            </div>
+                            <div class="dropdown__counter">
+                                <button class="dropdown__counter-btn" onclick="changeCount('adults',-1)"
+                                    id="adultsDown">−</button>
+                                <span class="dropdown__counter-value" id="adultsCount">2</span>
+                                <button class="dropdown__counter-btn" onclick="changeCount('adults',1)">+</button>
+                            </div>
+                        </div>
+                        <div class="dropdown__item">
+                            <div class="dropdown__item-info">
+                                <span class="dropdown__item-label">Children</span>
+                                <span class="dropdown__item-desc">Ages 2–12</span>
+                            </div>
+                            <div class="dropdown__counter">
+                                <button class="dropdown__counter-btn" onclick="changeCount('children',-1)"
+                                    id="childrenDown" disabled>−</button>
+                                <span class="dropdown__counter-value" id="childrenCount">0</span>
+                                <button class="dropdown__counter-btn" onclick="changeCount('children',1)">+</button>
+                            </div>
+                        </div>
+                        <div class="dropdown__item">
+                            <div class="dropdown__item-info">
+                                <span class="dropdown__item-label">Infants</span>
+                                <span class="dropdown__item-desc">Under 2</span>
+                            </div>
+                            <div class="dropdown__counter">
+                                <button class="dropdown__counter-btn" onclick="changeCount('infants',-1)"
+                                    id="infantsDown">−</button>
+                                <span class="dropdown__counter-value" id="infantsCount">1</span>
+                                <button class="dropdown__counter-btn" onclick="changeCount('infants',1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simple list dropdown -->
+                <div class="demo-label" style="margin-top:var(--space-xl)">List Dropdown</div>
+                <div class="dropdown" id="sortDrop">
+                    <button class="dropdown__trigger" aria-expanded="false" onclick="toggleDropdown('sortDrop')">
+                        <span>Sort by: Recommended</span>
+                        <svg class="dropdown__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="dropdown__panel">
+                        <div style="padding:var(--space-sm) 0">
+                            <div class="dropdown__item-info"
+                                style="padding:10px var(--space-lg);cursor:pointer;font-size:var(--text-sm);background:var(--color-muted)">
+                                ✓ &nbsp;Recommended</div>
+                            <div class="dropdown__item-info"
+                                style="padding:10px var(--space-lg);cursor:pointer;font-size:var(--text-sm);">Price: Low
+                                to high</div>
+                            <div class="dropdown__item-info"
+                                style="padding:10px var(--space-lg);cursor:pointer;font-size:var(--text-sm);">Price:
+                                High to low</div>
+                            <div class="dropdown__item-info"
+                                style="padding:10px var(--space-lg);cursor:pointer;font-size:var(--text-sm);">Top rated
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: REVIEWS                             -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="reviews">
+        <div class="container">
+            <h2 class="section-title">Review Cards</h2>
+            <p class="section-sub">Rating summary, category bars, and responsive review grid with expandable text.</p>
+
+            <!-- Summary -->
+            <div class="review-summary">
+                <div class="review-summary__score">4.92</div>
+                <div>
+                    <div class="review-summary__stars">
+                        <span class="review-summary__star">★</span><span class="review-summary__star">★</span>
+                        <span class="review-summary__star">★</span><span class="review-summary__star">★</span>
+                        <span class="review-summary__star">★</span>
+                    </div>
+                    <div class="review-summary__count">128 reviews</div>
+                </div>
+            </div>
+
+            <!-- Category bars -->
+            <div class="review-categories">
+                <div class="review-category"><span class="review-category__name">Cleanliness</span>
+                    <div class="review-category__bar">
+                        <div class="review-category__fill" style="width:98%"></div>
+                    </div><span class="review-category__score">4.9</span>
+                </div>
+                <div class="review-category"><span class="review-category__name">Accuracy</span>
+                    <div class="review-category__bar">
+                        <div class="review-category__fill" style="width:96%"></div>
+                    </div><span class="review-category__score">4.8</span>
+                </div>
+                <div class="review-category"><span class="review-category__name">Check-in</span>
+                    <div class="review-category__bar">
+                        <div class="review-category__fill" style="width:100%"></div>
+                    </div><span class="review-category__score">5.0</span>
+                </div>
+                <div class="review-category"><span class="review-category__name">Communication</span>
+                    <div class="review-category__bar">
+                        <div class="review-category__fill" style="width:100%"></div>
+                    </div><span class="review-category__score">5.0</span>
+                </div>
+                <div class="review-category"><span class="review-category__name">Location</span>
+                    <div class="review-category__bar">
+                        <div class="review-category__fill" style="width:94%"></div>
+                    </div><span class="review-category__score">4.7</span>
+                </div>
+                <div class="review-category"><span class="review-category__name">Value</span>
+                    <div class="review-category__bar">
+                        <div class="review-category__fill" style="width:92%"></div>
+                    </div><span class="review-category__score">4.6</span>
+                </div>
+            </div>
+
+            <!-- Review grid -->
+            <div class="review-grid">
+                <div class="review-card">
+                    <div class="review-card__header">
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=1" alt="Priya"></div>
+                        <div class="review-card__meta">
+                            <div class="review-card__name">Priya Sharma</div>
+                            <div class="review-card__location">Mumbai, India</div>
+                        </div>
+                    </div>
+                    <div class="review-card__rating-row">
+                        <div class="review-card__stars">
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span>
+                        </div>
+                        <span class="review-card__date">March 2025</span>
+                    </div>
+                    <p class="review-card__body review-card__body--truncated" id="rev1">Absolutely stunning property!
+                        The views were breathtaking and the host was incredibly responsive. Every detail was perfect,
+                        from the luxurious bedding to the fully equipped kitchen. We especially loved the private pool —
+                        we spent hours there every evening.</p>
+                    <button class="review-card__show-more" onclick="toggleReview('rev1',this)">Show more</button>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-card__header">
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=5" alt="Arjun"></div>
+                        <div class="review-card__meta">
+                            <div class="review-card__name">Arjun Patel</div>
+                            <div class="review-card__location">Bengaluru, India</div>
+                        </div>
+                    </div>
+                    <div class="review-card__rating-row">
+                        <div class="review-card__stars">
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span>
+                        </div>
+                        <span class="review-card__date">February 2025</span>
+                    </div>
+                    <p class="review-card__body review-card__body--truncated" id="rev2">Our family of four had the most
+                        wonderful stay. The space was spotless, the neighborhood was quiet and safe, and the host left a
+                        welcome basket with local treats. The kids loved the game room. We're already planning our
+                        return trip!</p>
+                    <button class="review-card__show-more" onclick="toggleReview('rev2',this)">Show more</button>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-card__header">
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=9" alt="Sofia"></div>
+                        <div class="review-card__meta">
+                            <div class="review-card__name">Sofia Mendes</div>
+                            <div class="review-card__location">São Paulo, Brazil</div>
+                        </div>
+                    </div>
+                    <div class="review-card__rating-row">
+                        <div class="review-card__stars">
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star" style="color:var(--color-star-empty)">★</span>
+                        </div>
+                        <span class="review-card__date">January 2025</span>
+                    </div>
+                    <p class="review-card__body">Great location, easy check-in, beautiful design. The rooftop terrace is
+                        a dream. Only minor note: the WiFi was a bit slow for video calls. Overall, highly recommend!
+                    </p>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-card__header">
+                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=12" alt="James"></div>
+                        <div class="review-card__meta">
+                            <div class="review-card__name">James Taylor</div>
+                            <div class="review-card__location">London, UK</div>
+                        </div>
+                    </div>
+                    <div class="review-card__rating-row">
+                        <div class="review-card__stars">
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span><span class="review-card__star">★</span>
+                            <span class="review-card__star">★</span>
+                        </div>
+                        <span class="review-card__date">December 2024</span>
+                    </div>
+                    <p class="review-card__body review-card__body--truncated" id="rev4">Second time staying here and it
+                        only gets better. The host upgraded us to a higher floor. Waking up to that view every morning
+                        felt surreal. The concierge service arranged a private chef dinner which was the highlight of
+                        our trip.</p>
+                    <button class="review-card__show-more" onclick="toggleReview('rev4',this)">Show more</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: MODAL                               -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="modal">
+        <div class="container">
+            <h2 class="section-title">Modal Component</h2>
+            <p class="section-sub">Centered overlay with animated entrance, scrollable body, escape key support, and
+                bottom-sheet on mobile.</p>
+            <div class="cluster">
+                <button class="btn btn-secondary" onclick="openModal('modal1')">Open About Space Modal</button>
+                <button class="btn btn-outline" onclick="openModal('modal2')">Open Amenities Modal</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal 1 -->
+    <div class="modal-overlay" id="modal1" role="dialog" aria-modal="true" aria-labelledby="modal1-title">
+        <div class="modal">
+            <div class="modal__header">
+                <button class="modal__close" onclick="closeModal('modal1')" aria-label="Close">✕</button>
+                <h2 class="modal__title" id="modal1-title">About this space</h2>
+                <div style="width:32px"></div>
+            </div>
+            <div class="modal__body">
+                <div class="stack">
+                    <p style="font-size:var(--text-base);line-height:var(--leading-relaxed)">Welcome to our luxurious
+                        sea-facing villa, a perfect retreat for couples and families seeking a premium coastal
+                        experience. The property features four bedrooms, each with its own en-suite bathroom and
+                        breathtaking ocean views.</p>
+                    <p
+                        style="font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--color-text-secondary)">
+                        The open-plan living and dining area flows seamlessly onto a large private terrace with an
+                        infinity pool. We've curated every detail — from artisan furniture to locally-sourced welcome
+                        hampers — to make your stay unforgettable.</p>
+                    <div style="border-top:1px solid var(--color-border);padding-top:var(--space-lg)">
+                        <div
+                            style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md)">
+                            The space</div>
+                        <div class="grid grid-2" style="gap:var(--space-sm)">
+                            <div style="font-size:var(--text-sm)">🛏 4 bedrooms</div>
+                            <div style="font-size:var(--text-sm)">🚿 4 bathrooms</div>
+                            <div style="font-size:var(--text-sm)">🏊 Private pool</div>
+                            <div style="font-size:var(--text-sm)">🌊 Ocean view</div>
+                            <div style="font-size:var(--text-sm)">🍳 Full kitchen</div>
+                            <div style="font-size:var(--text-sm)">🚗 Free parking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn-ghost btn-sm" onclick="closeModal('modal1')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal-overlay" id="modal2" role="dialog" aria-modal="true" aria-labelledby="modal2-title">
+        <div class="modal modal--sm">
+            <div class="modal__header">
+                <button class="modal__close" onclick="closeModal('modal2')" aria-label="Close">✕</button>
+                <h2 class="modal__title" id="modal2-title">All amenities</h2>
+                <div style="width:32px"></div>
+            </div>
+            <div class="modal__body">
+                <div class="stack" style="gap:var(--space-lg)">
+                    <div>
+                        <div style="font-weight:var(--weight-bold);margin-bottom:var(--space-sm)">Bathroom</div>
+                        <div class="stack" style="gap:var(--space-xs)">
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">🧼 Soap, shampoo,
+                                conditioner</div>
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">🛁 Bathtub</div>
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">🪥 Hair dryer</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-weight:var(--weight-bold);margin-bottom:var(--space-sm)">Bedroom & laundry
+                        </div>
+                        <div class="stack" style="gap:var(--space-xs)">
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">🛏 Premium linens
+                            </div>
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">🧺 Washer & Dryer
+                            </div>
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">👕 Iron & board
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-weight:var(--weight-bold);margin-bottom:var(--space-sm)">Entertainment</div>
+                        <div class="stack" style="gap:var(--space-xs)">
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">📺 65" 4K Smart TV
+                            </div>
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">🎮 Gaming console
+                            </div>
+                            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">📚 Reading library
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('modal2')">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: BADGES                              -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="badges">
+        <div class="container">
+            <h2 class="section-title">Badges & Verification Cards</h2>
+            <p class="section-sub">Inline badges, verification/certification cards, and the Superhost badge.</p>
+
+            <!-- Inline badges -->
+            <h3 style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md)">Inline
+                Badges</h3>
+            <div class="cluster mb-4">
+                <span class="badge badge-primary">★ New</span>
+                <span class="badge badge-success">✓ Verified</span>
+                <span class="badge badge-warning">⚡ Fast responder</span>
+                <span class="badge badge-error">🔴 Almost full</span>
+                <span class="badge badge-muted">Limited availability</span>
+                <span class="badge badge-dark">Superhost</span>
+            </div>
+
+            <!-- Verification cards -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Certification Cards</h3>
+            <div class="auto-grid-md">
+                <div class="badge-card">
+                    <div class="badge-card__icon">🏅</div>
+                    <div class="badge-card__title">Superhost</div>
+                    <div class="badge-card__desc">Superhosts are experienced, highly rated hosts who are committed to
+                        providing great stays for their guests.</div>
+                </div>
+                <div class="badge-card">
+                    <div class="badge-card__icon">✅</div>
+                    <div class="badge-card__title">Identity Verified</div>
+                    <div class="badge-card__desc">Verified their identity via government ID and official documents on
+                        file.</div>
+                </div>
+                <div class="badge-card">
+                    <div class="badge-card__icon">⭐</div>
+                    <div class="badge-card__title">Top Rated</div>
+                    <div class="badge-card__desc">This listing is among the top 1% of homes based on ratings, reviews,
+                        and reliability.</div>
+                </div>
+            </div>
+
+            <!-- Superhost inline badge -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Superhost Badge (inline)</h3>
+            <div style="max-width:360px">
+                <div class="superhost-badge">
+                    <span class="superhost-badge__icon">🏅</span>
+                    <div>
+                        <div class="superhost-badge__title">Deepa is a Superhost</div>
+                        <div class="superhost-badge__desc">Superhosts are experienced, highly rated hosts.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: AVATARS                             -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="avatars">
+        <div class="container">
+            <h2 class="section-title">Avatar Component</h2>
+            <p class="section-sub">Circular avatar in multiple sizes, with status dots, ring variants, initials
+                fallback, and group display.</p>
+
+            <!-- Size scale -->
+            <h3 style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md)">Sizes</h3>
+            <div class="cluster mb-4">
+                <div class="avatar avatar-xs"><img src="https://i.pravatar.cc/48?img=3" alt="xs"></div>
+                <div class="avatar avatar-sm"><img src="https://i.pravatar.cc/64?img=3" alt="sm"></div>
+                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=3" alt="md"></div>
+                <div class="avatar avatar-lg"><img src="https://i.pravatar.cc/128?img=3" alt="lg"></div>
+                <div class="avatar avatar-xl"><img src="https://i.pravatar.cc/160?img=3" alt="xl"></div>
+                <div class="avatar avatar-2xl"><img src="https://i.pravatar.cc/224?img=3" alt="2xl"></div>
+            </div>
+
+            <!-- Initials fallback -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Initials Fallback</h3>
+            <div class="cluster mb-4">
+                <div class="avatar avatar-lg"
+                    style="background:var(--color-primary-alpha);color:var(--color-primary-dark);font-weight:var(--weight-bold)">
+                    PS</div>
+                <div class="avatar avatar-lg"
+                    style="background:rgba(0,166,153,.15);color:var(--color-accent-dark);font-weight:var(--weight-bold)">
+                    JT</div>
+                <div class="avatar avatar-lg"
+                    style="background:rgba(0,0,0,.06);color:var(--color-text-primary);font-weight:var(--weight-bold)">AR
+                </div>
+            </div>
+
+            <!-- Avatar group -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Avatar Group</h3>
+            <div class="avatar-group">
+                <div class="avatar avatar-md"
+                    style="font-size:var(--text-sm);font-weight:var(--weight-bold);background:var(--color-muted);color:var(--color-text-secondary)">
+                    +4</div>
+                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=15" alt=""></div>
+                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=12" alt=""></div>
+                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=9" alt=""></div>
+                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=5" alt=""></div>
+            </div>
+
+            <!-- Profile header -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Profile Header</h3>
+            <div style="display:flex;align-items:center;gap:var(--space-md)">
+                <div class="avatar avatar-xl"><img src="https://i.pravatar.cc/160?img=7" alt="Host"></div>
+                <div>
+                    <div
+                        style="font-size:var(--text-xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight)">
+                        Deepa Nair</div>
+                    <div style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:2px">Host since
+                        2019 · 128 reviews · Superhost</div>
+                    <div class="cluster" style="margin-top:var(--space-sm);gap:var(--space-sm)">
+                        <span class="badge badge-dark">🏅 Superhost</span>
+                        <span class="badge badge-success">✓ Verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: NAVIGATION BUTTONS                  -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="navigation">
+        <div class="container">
+            <h2 class="section-title">Navigation Buttons</h2>
+            <p class="section-sub">Circular arrow buttons for gallery, carousel, and slider navigation in multiple sizes
+                and styles.</p>
+
+            <!-- Nav button sizes -->
+            <h3 style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md)">Sizes
+                (standard outline)</h3>
+            <div class="cluster mb-4">
+                <button class="nav-btn nav-btn--sm" aria-label="Previous">←</button>
+                <button class="nav-btn" aria-label="Previous">←</button>
+                <button class="nav-btn nav-btn--lg" aria-label="Previous">←</button>
+                <button class="nav-btn nav-btn--xl" aria-label="Previous">←</button>
+            </div>
+
+            <!-- Filled (shadow) style -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Filled / Shadow Style</h3>
+            <div class="cluster mb-4">
+                <button class="nav-btn nav-btn--filled" aria-label="Previous">←</button>
+                <button class="nav-btn nav-btn--filled" aria-label="Next">→</button>
+                <button class="nav-btn nav-btn--filled nav-btn--lg" aria-label="Previous">←</button>
+                <button class="nav-btn nav-btn--filled nav-btn--lg" aria-label="Next">→</button>
+            </div>
+
+            <!-- Dark style -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Dark Style</h3>
+            <div class="cluster mb-4">
+                <button class="nav-btn nav-btn--dark" aria-label="Previous">←</button>
+                <button class="nav-btn nav-btn--dark" aria-label="Next">→</button>
+            </div>
+
+            <!-- Paired -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Button Pairs</h3>
+            <div class="cluster">
+                <div class="nav-btn-pair">
+                    <button class="nav-btn" disabled aria-label="Previous">←</button>
+                    <button class="nav-btn" aria-label="Next">→</button>
+                </div>
+                <div class="nav-btn-pair">
+                    <button class="circle-arrow-btn" aria-label="Previous">←</button>
+                    <button class="circle-arrow-btn" aria-label="Next">→</button>
+                </div>
+            </div>
+
+            <!-- Disabled state -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Disabled State</h3>
+            <div class="cluster">
+                <button class="nav-btn" disabled>←</button>
+                <button class="nav-btn" disabled>→</button>
+                <button class="nav-btn nav-btn--filled" disabled>←</button>
+                <button class="nav-btn nav-btn--dark" disabled>→</button>
+            </div>
+
+            <!-- Gallery navigation demo -->
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Gallery Navigation Demo</h3>
+            <div
+                style="position:relative;border-radius:var(--radius-xl);overflow:hidden;height:240px;background:var(--color-muted)">
+                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&auto=format&fit=crop"
+                    style="width:100%;height:100%;object-fit:cover" alt="Gallery">
+                <div style="position:absolute;left:var(--space-md);top:50%;transform:translateY(-50%)">
+                    <button class="circle-arrow-btn" aria-label="Previous photo">←</button>
+                </div>
+                <div style="position:absolute;right:var(--space-md);top:50%;transform:translateY(-50%)">
+                    <button class="circle-arrow-btn" aria-label="Next photo">→</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: PRICE CARD                          -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Price Cards</h2>
+            <p class="section-sub">Compact floating price card in horizontal and stacked variants.</p>
+
+            <div class="stack" style="max-width:480px">
+                <div class="demo-label">Default horizontal</div>
+                <div class="price-card">
+                    <div class="price-card__info">
+                        <span class="price-card__from">From</span>
+                        <span class="price-card__amount">₹3,000 <span class="price-card__per">/ guest</span></span>
+                    </div>
+                    <button class="price-card__cta">Show dates</button>
+                </div>
+
+                <div class="demo-label">With original price</div>
+                <div class="price-card">
+                    <div class="price-card__info">
+                        <span class="price-card__from">From</span>
+                        <span class="price-card__amount">
+                            ₹8,500 <span class="price-card__per"
+                                style="text-decoration:line-through;color:var(--color-text-muted)">₹12,000</span> <span
+                                class="price-card__per">/ night</span>
+                        </span>
+                        <span class="badge badge-error" style="margin-top:4px;display:inline-flex">29% off</span>
+                    </div>
+                    <button class="price-card__cta">Book now</button>
+                </div>
+
+                <div class="demo-label">Compact</div>
+                <div class="price-card" style="padding:var(--space-sm) var(--space-md)">
+                    <div class="price-card__info">
+                        <span class="price-card__amount" style="font-size:var(--text-lg)">₹5,200 <span
+                                class="price-card__per">/ night</span></span>
+                    </div>
+                    <button class="price-card__cta" style="padding:8px var(--space-md)">Reserve</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: BUTTONS                             -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="buttons">
+        <div class="container">
+            <h2 class="section-title">Button Component</h2>
+            <p class="section-sub">All button variants, sizes, and states.</p>
+
+            <h3 style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md)">Variants
+            </h3>
+            <div class="cluster mb-4">
+                <button class="btn btn-primary">Primary</button>
+                <button class="btn btn-secondary">Secondary</button>
+                <button class="btn btn-outline">Outline</button>
+                <button class="btn btn-ghost">Ghost</button>
+            </div>
+
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Sizes</h3>
+            <div class="cluster mb-4">
+                <button class="btn btn-primary btn-sm">Small</button>
+                <button class="btn btn-primary">Default</button>
+                <button class="btn btn-primary btn-lg">Large</button>
+            </div>
+
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                States</h3>
+            <div class="cluster mb-4">
+                <button class="btn btn-primary">Normal</button>
+                <button class="btn btn-primary" disabled>Disabled</button>
+                <button class="btn btn-secondary" disabled>Disabled</button>
+                <button class="btn btn-outline" disabled>Disabled</button>
+            </div>
+
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Full Width</h3>
+            <div style="max-width:360px">
+                <button class="btn btn-primary btn-full">Reserve — full width</button>
+            </div>
+
+            <h3
+                style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:var(--space-md);margin-top:var(--space-xl)">
+                Icon Buttons</h3>
+            <div class="cluster">
+                <button class="btn btn-primary btn-icon btn-icon-sm">♡</button>
+                <button class="btn btn-primary btn-icon">↗</button>
+                <button class="btn btn-outline btn-icon btn-icon-lg">⊞</button>
+                <button class="btn btn-ghost btn-icon">✕</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECTION: FULL LISTING PAGE                   -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="section" id="full-page">
+        <div class="container">
+            <h2 class="section-title">Full Listing Page</h2>
+            <p class="section-sub">All components assembled into a complete Airbnb-style listing layout using only
+                framework classes.</p>
+        </div>
+
+        <!-- Listing title -->
+        <div class="container">
+            <h1
+                style="font-size:var(--text-2xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);margin-bottom:var(--space-sm)">
+                Luxury Sea-Facing Villa with Private Pool</h1>
+            <div class="cluster" style="gap:var(--space-sm);margin-bottom:var(--space-lg)">
+                <span style="font-size:var(--text-sm)">★ 4.92</span>
+                <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">·</span>
+                <span style="font-size:var(--text-sm);text-decoration:underline;cursor:pointer">128 reviews</span>
+                <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">·</span>
+                <span class="badge badge-dark">🏅 Superhost</span>
+                <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">·</span>
+                <span style="font-size:var(--text-sm);text-decoration:underline;cursor:pointer">Goa, India</span>
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="container">
+            <div class="gallery">
+                <div class="gallery-actions">
+                    <button class="gallery-action-btn">↗</button>
+                    <button class="gallery-action-btn">♡</button>
+                </div>
+                <div class="gallery-grid">
+                    <div class="gallery-item gallery-item--hero"><img
+                            src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&auto=format&fit=crop"
+                            alt="Villa"></div>
+                    <div class="gallery-item"><img
+                            src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&auto=format&fit=crop"
+                            alt="Bedroom"></div>
+                    <div class="gallery-item"><img
+                            src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&auto=format&fit=crop"
+                            alt="Kitchen"></div>
+                    <div class="gallery-item"><img
+                            src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&auto=format&fit=crop"
+                            alt="Pool"></div>
+                    <div class="gallery-item"><img
+                            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&auto=format&fit=crop"
+                            alt="View"></div>
+                </div>
+                <button class="gallery-show-all">⊞ Show all photos</button>
+            </div>
+        </div>
+
+        <!-- Sidebar layout -->
+        <div class="container" style="margin-top:var(--space-2xl)">
+            <div class="sidebar-layout">
+
+                <!-- Main content -->
+                <div class="sidebar-main">
+                    <!-- Host info -->
+                    <div
+                        style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:var(--space-lg);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-lg);flex-wrap:wrap;gap:var(--space-md)">
+                        <div>
+                            <div style="font-size:var(--text-xl);font-weight:var(--weight-bold)">Entire villa hosted by
+                                Deepa</div>
+                            <div style="font-size:var(--text-base);color:var(--color-text-secondary);margin-top:4px">8
+                                guests · 4 bedrooms · 6 beds · 4 baths</div>
+                        </div>
+                        <div class="avatar avatar-lg"><img src="https://i.pravatar.cc/128?img=7" alt="Host Deepa"></div>
+                    </div>
+
+                    <!-- Feature badges -->
+                    <div class="stack"
+                        style="gap:var(--space-lg);padding-bottom:var(--space-lg);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-lg)">
+                        <div style="display:flex;gap:var(--space-md);align-items:flex-start">
+                            <span style="font-size:24px">🏅</span>
+                            <div>
+                                <div style="font-weight:var(--weight-bold)">Deepa is a Superhost</div>
+                                <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">Superhosts are
+                                    experienced, highly rated hosts.</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:var(--space-md);align-items:flex-start">
+                            <span style="font-size:24px">🔑</span>
+                            <div>
+                                <div style="font-weight:var(--weight-bold)">Self check-in</div>
+                                <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">Check yourself
+                                    in with the lockbox.</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:var(--space-md);align-items:flex-start">
+                            <span style="font-size:24px">✓</span>
+                            <div>
+                                <div style="font-weight:var(--weight-bold)">Free cancellation before Dec 15</div>
+                                <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">Cancel before
+                                    check-in for a full refund.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div
+                        style="padding-bottom:var(--space-lg);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-lg)">
+                        <p
+                            style="font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--color-text-secondary)">
+                            Welcome to our stunning sea-facing villa, perched on the Goan coastline. Every room offers
+                            panoramic ocean views, and the private infinity pool is the centrepiece of this magical
+                            retreat. Whether you're celebrating a milestone, retreating with family, or simply seeking
+                            luxury and calm — this is your perfect home away from home.</p>
+                        <button
+                            style="margin-top:var(--space-md);background:none;border:none;font-size:var(--text-sm);font-weight:var(--weight-bold);text-decoration:underline;cursor:pointer;padding:0;font-family:inherit">Show
+                            more ›</button>
+                    </div>
+
+                    <!-- Amenities -->
+                    <div
+                        style="padding-bottom:var(--space-lg);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-lg)">
+                        <div
+                            style="font-size:var(--text-xl);font-weight:var(--weight-bold);margin-bottom:var(--space-lg)">
+                            What this place offers</div>
+                        <div class="grid grid-2" style="gap:var(--space-md)">
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);font-size:var(--text-base)">
+                                <span>🌊</span> Ocean view
+                            </div>
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);font-size:var(--text-base)">
+                                <span>🏊</span> Private pool
+                            </div>
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);font-size:var(--text-base)">
+                                <span>📶</span> Fast WiFi
+                            </div>
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);font-size:var(--text-base)">
+                                <span>🅿️</span> Free parking
+                            </div>
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);font-size:var(--text-base)">
+                                <span>🍳</span> Full kitchen
+                            </div>
+                            <div style="display:flex;align-items:center;gap:var(--space-sm);font-size:var(--text-base)">
+                                <span>❄️</span> Air conditioning
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-sm" style="margin-top:var(--space-lg)"
+                            onclick="openModal('modal2')">Show all 24 amenities</button>
+                    </div>
+
+                    <!-- Reviews inline -->
+                    <div>
+                        <div style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-lg)">
+                            <span style="font-size:var(--text-xl)">★</span>
+                            <span style="font-size:var(--text-xl);font-weight:var(--weight-bold)">4.92</span>
+                            <span style="font-size:var(--text-xl);color:var(--color-text-secondary)">·</span>
+                            <span style="font-size:var(--text-xl);font-weight:var(--weight-bold)">128 reviews</span>
+                        </div>
+                        <div class="review-grid">
+                            <div class="review-card">
+                                <div class="review-card__header">
+                                    <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=1" alt="">
+                                    </div>
+                                    <div>
+                                        <div class="review-card__name">Priya S.</div>
+                                        <div class="review-card__location">Mumbai</div>
+                                    </div>
+                                </div>
+                                <div class="review-card__rating-row">
+                                    <div class="review-card__stars"><span class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span class="review-card__star">★</span>
+                                    </div>
+                                    <span class="review-card__date">March 2025</span>
+                                </div>
+                                <p class="review-card__body">Absolutely stunning property! The views were breathtaking
+                                    and the host was incredibly responsive. Every detail was perfect.</p>
+                            </div>
+                            <div class="review-card">
+                                <div class="review-card__header">
+                                    <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=5" alt="">
+                                    </div>
+                                    <div>
+                                        <div class="review-card__name">Arjun P.</div>
+                                        <div class="review-card__location">Bengaluru</div>
+                                    </div>
+                                </div>
+                                <div class="review-card__rating-row">
+                                    <div class="review-card__stars"><span class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span class="review-card__star">★</span>
+                                    </div>
+                                    <span class="review-card__date">February 2025</span>
+                                </div>
+                                <p class="review-card__body">Our family of four had the most wonderful stay. Already
+                                    planning our return trip!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking sidebar -->
+                <div class="sidebar-aside">
+                    <div class="booking-card">
+                        <div class="booking-card__price">
+                            <span class="booking-card__price-amount">₹8,500</span>
+                            <span class="booking-card__price-original">₹12,000</span>
+                            <span class="booking-card__price-period">/ night</span>
+                            <div class="booking-card__rating">
+                                <span class="star-icon">★</span><span>4.92</span>
+                                <span class="booking-card__rating-count">(128)</span>
+                            </div>
+                        </div>
+                        <div class="booking-card__inputs">
+                            <div class="booking-card__date-row">
+                                <div class="booking-card__field">
+                                    <label class="booking-card__field-label">Check-in</label>
+                                    <div class="booking-card__field-value">Add date</div>
+                                </div>
+                                <div class="booking-card__field">
+                                    <label class="booking-card__field-label">Check-out</label>
+                                    <div class="booking-card__field-value">Add date</div>
+                                </div>
+                            </div>
+                            <div class="booking-card__field">
+                                <label class="booking-card__field-label">Guests</label>
+                                <div class="booking-card__field-value">Add guests</div>
+                            </div>
+                        </div>
+                        <button class="booking-card__reserve">Reserve</button>
+                        <p class="booking-card__notice">You won't be charged yet</p>
+                        <div class="booking-card__breakdown">
+                            <div class="booking-card__breakdown-row">
+                                <span class="booking-card__breakdown-row--label">₹8,500 × 5 nights</span>
+                                <span>₹42,500</span>
+                            </div>
+                            <div class="booking-card__breakdown-row">
+                                <span class="booking-card__breakdown-row--label">Service fee</span>
+                                <span>₹5,620</span>
+                            </div>
+                            <div class="booking-card__breakdown-row booking-card__breakdown-row--total">
+                                <span>Total before taxes</span>
+                                <span>₹48,120</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+        style="background:var(--color-bg-muted);border-top:1px solid var(--color-border);padding-block:var(--space-2xl)">
+        <div class="container" style="text-align:center">
+            <div style="font-size:var(--text-sm);color:var(--color-text-secondary)">UI Framework — Airbnb-Style
+                Component System · Built with pure CSS + vanilla JS</div>
+            <div
+                style="display:flex;justify-content:center;gap:var(--space-xl);margin-top:var(--space-md);flex-wrap:wrap">
+                <a href="#tokens" style="font-size:var(--text-xs);color:var(--color-text-muted)">Tokens</a>
+                <a href="#gallery" style="font-size:var(--text-xs);color:var(--color-text-muted)">Gallery</a>
+                <a href="#booking" style="font-size:var(--text-xs);color:var(--color-text-muted)">Booking</a>
+                <a href="#calendar" style="font-size:var(--text-xs);color:var(--color-text-muted)">Calendar</a>
+                <a href="#reviews" style="font-size:var(--text-xs);color:var(--color-text-muted)">Reviews</a>
+                <a href="#modal" style="font-size:var(--text-xs);color:var(--color-text-muted)">Modal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ── Calendar ── */
+        const CAL = { start: null, end: null, hover: null };
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+        function renderCalendar() {
+            const el = document.getElementById('calendarEl');
+            if (!el) return;
+            el.innerHTML = '';
+            for (let m = 0; m < 2; m++) {
+                const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + m, 1);
+                el.appendChild(buildMonth(d, m));
+            }
+        }
+
+        function buildMonth(monthDate, idx) {
+            const div = document.createElement('div');
+            div.className = 'calendar-month';
+            const year = monthDate.getFullYear(), month = monthDate.getMonth();
+            const mName = monthDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            const prevBtn = `<button class="calendar-nav-btn${idx > 0 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(-1)">←</button>`;
+            const nextBtn = `<button class="calendar-nav-btn${idx < 1 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(1)">→</button>`;
+            div.innerHTML = `
+    <div class="calendar-month__header">
+      ${prevBtn}
+      <span class="calendar-month__title">${mName}</span>
+      ${nextBtn}
+    </div>
+    <div class="calendar-weekdays">
+      ${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => `<div class="calendar-weekday">${d}</div>`).join('')}
+    </div>
+    <div class="calendar-days" id="days-${idx}"></div>`;
+
+            const daysEl = div.querySelector(`#days-${idx}`);
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('button');
+                empty.className = 'calendar-day calendar-day--empty';
+                daysEl.appendChild(empty);
+            }
+            for (let d = 1; d <= daysInMonth; d++) {
+                const date = new Date(year, month, d);
+                const btn = document.createElement('button');
+                btn.textContent = d;
+                btn.className = 'calendar-day';
+                if (date < today) btn.className += ' calendar-day--disabled', btn.disabled = true;
+                if (date.toDateString() === today.toDateString()) btn.className += ' calendar-day--today';
+                if (CAL.start && date.toDateString() === CAL.start.toDateString()) btn.className += ' calendar-day--selected';
+                else if (CAL.end && date.toDateString() === CAL.end.toDateString()) btn.className += ' calendar-day--selected';
+                else if (CAL.start && CAL.end && date > CAL.start && date < CAL.end) btn.className += ' calendar-day--in-range';
+                btn.onclick = () => selectDay(date);
+                btn.onmouseenter = () => { CAL.hover = date; renderCalendar(); };
+                daysEl.appendChild(btn);
+            }
+            return div;
+        }
+
+        function selectDay(date) {
+            if (!CAL.start || (CAL.start && CAL.end)) { CAL.start = date; CAL.end = null; }
+            else if (date < CAL.start) { CAL.end = CAL.start; CAL.start = date; }
+            else { CAL.end = date; }
+            renderCalendar();
+        }
+        function shiftMonth(dir) { currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + dir, 1); renderCalendar(); }
+        function clearCalendar() { CAL.start = null; CAL.end = null; renderCalendar(); }
+        renderCalendar();
+
+        /* ── Dropdown ── */
+        const guestCounts = { adults: 2, children: 0, infants: 1 };
+
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            const isOpen = el.classList.contains('dropdown--open');
+            document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); });
+            if (!isOpen) { el.classList.add('dropdown--open'); el.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'true'); }
+        }
+
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); });
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); });
+            }
+        });
+
+        function changeCount(type, delta) {
+            guestCounts[type] = Math.max(0, guestCounts[type] + delta);
+            if (type === 'adults' && guestCounts.adults < 1) guestCounts.adults = 1;
+            document.getElementById(type + 'Count').textContent = guestCounts[type];
+            document.getElementById(type + 'Down').disabled = guestCounts[type] <= (type === 'adults' ? 1 : 0);
+            const total = guestCounts.adults + guestCounts.children;
+            const parts = [`${total} guest${total !== 1 ? 's' : ''}`];
+            if (guestCounts.infants) parts.push(`${guestCounts.infants} infant${guestCounts.infants !== 1 ? 's' : ''}`);
+            document.getElementById('guestLabel').textContent = parts.join(', ');
+        }
+
+        /* ── Review expand ── */
+        function toggleReview(id, btn) {
+            const el = document.getElementById(id);
+            const isTruncated = el.classList.contains('review-card__body--truncated');
+            el.classList.toggle('review-card__body--truncated', !isTruncated);
+            btn.textContent = isTruncated ? 'Show less' : 'Show more';
+        }
+
+        /* ── Modal ── */
+        function openModal(id) {
+            const overlay = document.getElementById(id);
+            overlay.classList.add('modal-overlay--visible');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('modal-overlay--visible');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay--visible').forEach(m => { m.classList.remove('modal-overlay--visible'); document.body.style.overflow = ''; }); } });
+        document.querySelectorAll('.modal-overlay').forEach(o => { o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }); });
+
+        /* ── Nav active state ── */
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.pg-nav__link');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    const active = document.querySelector(`.pg-nav__link[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { threshold: 0.3 });
+        sections.forEach(s => observer.observe(s));
+    </script>
+</body>
+
+</html>
