@@ -748,7 +748,7 @@
                                 <div class="doc-step__num"></div>
                                 <div class="doc-step__body">
                                     <div class="doc-step__title">Add the script</div>
-                                    <div class="doc-step__desc">Drop <code>airframe.js</code> just before the closing
+                                    <div class="doc-step__desc">Drop <code>HolidaySeva.js</code> just before the closing
                                         <code>&lt;/body&gt;</code> tag. It auto-inits all interactive components.
                                     </div>
                                 </div>
@@ -772,7 +772,7 @@
 <span class="hl-tag">&lt;link</span> <span class="hl-attr">rel</span>=<span class="hl-str">"stylesheet"</span> <span class="hl-attr">href</span>=<span class="hl-str">"ui-framework.css"</span> <span class="hl-tag">/&gt;</span>
 
 <span class="hl-tag">&lt;!-- Before &lt;/body&gt; --&gt;</span>
-<span class="hl-tag">&lt;script</span> <span class="hl-attr">src</span>=<span class="hl-str">"airframe.js"</span><span class="hl-tag">&gt;&lt;/script&gt;</span></pre>
+<span class="hl-tag">&lt;script</span> <span class="hl-attr">src</span>=<span class="hl-str">"HolidaySeva.js"</span><span class="hl-tag">&gt;&lt;/script&gt;</span></pre>
                     </div>
                 </div>
 
@@ -1335,14 +1335,14 @@
             <section class="doc-section" id="calendar">
                 <div class="doc-eyebrow">Components · calendar.css</div>
                 <h2 class="doc-section-title"><em>Calendar</em></h2>
-                <p class="doc-lead">Dual-month date range picker. Auto-inited by <code>airframe.js</code> on any
+                <p class="doc-lead">Dual-month date range picker. Auto-inited by <code>HolidaySeva.js</code> on any
                     <code>.calendar-wrapper</code>. Supports Dates / Flexible tabs and ± day flex pills.
                 </p>
                 <span class="doc-file-tag">📄 calendar.css</span>
 
                 <div class="doc-callout doc-callout--info">
                     <strong>Auto-init:</strong> Add <code>id="calendarEl"</code> to <code>.calendar-wrapper</code> and
-                    <code>airframe.js</code> will render the calendar and handle all interactions automatically.
+                    <code>HolidaySeva.js</code> will render the calendar and handle all interactions automatically.
                 </div>
 
                 <div class="doc-block" style="margin-top:20px">
@@ -1924,7 +1924,7 @@
 
                 <div class="doc-callout doc-callout--tip">
                     <strong>JS methods:</strong> <code>openModal('id')</code> and <code>closeModal('id')</code> —
-                    provided by <code>airframe.js</code>.
+                    provided by <code>HolidaySeva.js</code>.
                 </div>
 
                 <div class="doc-block" style="margin-top:20px">
@@ -1963,7 +1963,7 @@
                 <div class="doc-eyebrow">Components · dropdown.css</div>
                 <h2 class="doc-section-title"><em>Dropdown</em> &amp; Counter</h2>
                 <p class="doc-lead">Animated dropdown panels with menu lists and guest counter rows. Toggled by
-                    <code>toggleDropdown()</code> in <code>airframe.js</code>.
+                    <code>toggleDropdown()</code> in <code>HolidaySeva.js</code>.
                 </p>
                 <span class="doc-file-tag">📄 dropdown.css</span>
 
@@ -2116,10 +2116,12 @@
   JS API
 ─────────────────────────────────────────────────────────── -->
             <section class="doc-section" id="js-api">
-                <div class="doc-eyebrow">JavaScript · airframe.js</div>
+                <div class="doc-eyebrow">JavaScript · HolidaySeva.js</div>
                 <h2 class="doc-section-title">JavaScript <em>API</em></h2>
-                <p class="doc-lead">All interactive behaviour is handled by <code>airframe.js</code>. It auto-inits on
-                    <code>DOMContentLoaded</code> and exposes a global <code>AirframeUI</code> object plus convenience
+                <p class="doc-lead">All interactive behaviour is handled by <code>HolidaySeva.js</code>. It auto-inits
+                    on
+                    <code>DOMContentLoaded</code> and exposes a global <code>HolidaySevaUI</code> object plus
+                    convenience
                     functions.
                 </p>
 
@@ -2199,7 +2201,8 @@
             <section class="doc-section" id="js-events">
                 <div class="doc-eyebrow">JavaScript · Events & Attributes</div>
                 <h2 class="doc-section-title">Events <em>&amp; Data Attributes</em></h2>
-                <p class="doc-lead">Airframe emits custom events and recognises special data attributes for integration
+                <p class="doc-lead">HolidaySeva emits custom events and recognises special data attributes for
+                    integration
                     with your own code.</p>
 
                 <div class="doc-block">
@@ -2256,11 +2259,11 @@ cal.addEventListener(<span class="hl-str">'calendar:change'</span>, (e) => {
 });
 
 <span class="hl-cmt">// Programmatic modal control</span>
-AirframeUI.openModal(<span class="hl-str">'myModal'</span>);
-setTimeout(() => AirframeUI.closeModal(<span class="hl-str">'myModal'</span>), <span class="hl-val">3000</span>);
+HolidaySevaUI.openModal(<span class="hl-str">'myModal'</span>);
+setTimeout(() => HolidaySevaUI.closeModal(<span class="hl-str">'myModal'</span>), <span class="hl-val">3000</span>);
 
 <span class="hl-cmt">// Increment adult count</span>
-AirframeUI.changeCount(<span class="hl-str">'adults'</span>, <span class="hl-val">1</span>, { min: <span class="hl-val">1</span>, max: <span class="hl-val">8</span> });</pre>
+HolidaySevaUI.changeCount(<span class="hl-str">'adults'</span>, <span class="hl-val">1</span>, { min: <span class="hl-val">1</span>, max: <span class="hl-val">8</span> });</pre>
                     </div>
                 </div>
             </section>
@@ -2304,7 +2307,7 @@ AirframeUI.changeCount(<span class="hl-str">'adults'</span>, <span class="hl-val
     </div>
 
 
-    <script src="airframe.js"></script>
+    <script src="HolidaySeva.js"></script>
     <script>
         /* ── Doc-specific JS ─────────────────────────────────── */
 
@@ -2364,7 +2367,7 @@ AirframeUI.changeCount(<span class="hl-str">'adults'</span>, <span class="hl-val
             });
         });
 
-        // Simple counter for doc example (fallback if airframe.js not present)
+        // Simple counter for doc example (fallback if HolidaySeva.js not present)
         function changeCount(type, delta, opts = {}) {
             const el = document.getElementById(type + '-count');
             if (!el) return;
