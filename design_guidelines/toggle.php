@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toggle — Design Guidelines</title>
+  <title>Toggle | Design Guidelines</title>
 
   <!-- Design system: layout, typography, components -->
   <link rel="stylesheet" href="/design-system.css">
