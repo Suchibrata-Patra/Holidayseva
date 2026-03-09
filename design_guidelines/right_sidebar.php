@@ -40,17 +40,17 @@
         <path d="M9 15v4M15 15v4M7 19h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
 
-      <!-- Vision Pro -->
+      <!-- Vision Pro
       <svg width="26" height="16" viewBox="0 0 26 16" fill="none" title="visionOS">
         <path d="M1 8C1 8 5 1.5 13 1.5S25 8 25 8s-4 6.5-12 6.5S1 8 1 8z" stroke="currentColor" stroke-width="1.3"/>
         <ellipse cx="13" cy="8" rx="3.5" ry="4" stroke="currentColor" stroke-width="1.3"/>
-      </svg>
+      </svg> -->
 
-      <!-- Watch -->
+      <!-- Watch
       <svg width="14" height="22" viewBox="0 0 14 22" fill="none" title="Apple Watch">
         <rect x="1" y="5" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.3"/>
         <path d="M4 5V3.5a1 1 0 011-1h4a1 1 0 011 1V5M4 17v1.5a1 1 0 001 1h4a1 1 0 001-1V17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-      </svg>
+      </svg> -->
 
     </div>
   </div>
