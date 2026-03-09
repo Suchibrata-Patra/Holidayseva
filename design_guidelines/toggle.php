@@ -124,7 +124,7 @@
       overflow-y: auto;
       border-right: 1px solid var(--border-faint);
       padding: 40px 0 40px;
-      /* In the PHP version this is replaced by <?php include 'sidebar.php'; ?> */
+
     }
 
     /* Sidebar nav styles (also used by sidebar.php) */
@@ -609,10 +609,9 @@
 
   <div class="page-shell">
 
-    <!-- Sidebar — in PHP: <?php include 'sidebar.php'; ?> -->
-    <aside class="sidebar-slot">
-    <?php include 'sidebar.php'; ?>
-</aside>
+    <aside class="sidebar-slot" id="sidebar">
+      <?php include 'sidebar.php'; ?>
+    </aside>
 
     <!-- Main Documentation Content -->
     <main class="main-content">
