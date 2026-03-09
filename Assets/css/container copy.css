@@ -1,0 +1,133 @@
+/* ============================================================
+   LAYOUT PRIMITIVES — Container, Stack, Cluster, Split
+   ============================================================ */
+
+/* ── Container ── */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+}
+
+.container--sm {
+    max-width: 680px
+}
+
+.container--md {
+    max-width: 860px
+}
+
+.container--lg {
+    max-width: 1100px
+}
+
+.container--xl {
+    max-width: 1400px
+}
+
+.container--fluid {
+    max-width: 100%
+}
+
+/* ── Stack (vertical flow with gap) ── */
+.stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.stack--xs {
+    gap: var(--space-xs)
+}
+
+.stack--sm {
+    gap: var(--space-sm)
+}
+
+.stack--md {
+    gap: var(--space-md)
+}
+
+.stack--lg {
+    gap: var(--space-lg)
+}
+
+.stack--xl {
+    gap: var(--space-xl)
+}
+
+.stack--2xl {
+    gap: var(--space-2xl)
+}
+
+/* ── Cluster (horizontal wrap with gap) ── */
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.cluster--sm {
+    gap: var(--space-sm)
+}
+
+.cluster--md {
+    gap: var(--space-md)
+}
+
+.cluster--lg {
+    gap: var(--space-lg)
+}
+
+/* ── Split (two-column space-between) ── */
+.split {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    justify-content: space-between;
+}
+
+.split>* {
+    flex-shrink: 0
+}
+
+.split>*:nth-child(1) {
+    flex-shrink: 1
+}
+
+/* ── Divider ── */
+.divider {
+    height: 1px;
+    background: var(--color-border);
+    border: none;
+    margin: 0;
+}
+
+.divider--thick {
+    height: 2px
+}
+
+.divider--vertical {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+}
+
+/* ── Section ── */
+.section {
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-3xl);
+}
+
+.section--sm {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+}
+
+.section--lg {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}

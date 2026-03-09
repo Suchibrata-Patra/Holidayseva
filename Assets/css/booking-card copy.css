@@ -1,0 +1,231 @@
+/* ============================================================
+   BOOKING PRICE SIDEBAR COMPONENT
+   ============================================================ */
+
+.booking-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-lg);
+    position: sticky;
+    top: 80px;
+    container-type: inline-size;
+}
+
+/* ── Price header ── */
+.booking-card__price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+
+.booking-card__price-amount {
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+}
+
+.booking-card__price-original {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    text-decoration: line-through;
+}
+
+.booking-card__price-period {
+    font-size: var(--text-base);
+    font-weight: var(--weight-normal);
+    color: var(--color-text-secondary);
+}
+
+.booking-card__price-discount {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-error);
+    background: rgba(193, 53, 21, 0.1);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+}
+
+.booking-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-sm);
+    margin-left: auto;
+}
+
+.booking-card__rating .star-icon {
+    color: var(--color-star);
+    font-size: 12px;
+}
+
+.booking-card__rating-count {
+    color: var(--color-text-secondary);
+}
+
+/* ── Date / Guest input grid ── */
+.booking-card__inputs {
+    border: 1.5px solid var(--color-border-dark);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-md);
+}
+
+.booking-card__date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.booking-card__field {
+    padding: 12px var(--space-md);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    position: relative;
+}
+
+.booking-card__field:hover {
+    background: var(--color-bg-muted);
+}
+
+.booking-card__field:focus-within {
+    background: var(--color-surface);
+    outline: 2px solid var(--color-text-primary);
+    outline-offset: -2px;
+    border-radius: var(--radius-sm);
+}
+
+.booking-card__field+.booking-card__field {
+    border-left: 1.5px solid var(--color-border-dark);
+}
+
+.booking-card__date-row+.booking-card__field {
+    border-top: 1.5px solid var(--color-border-dark);
+}
+
+.booking-card__field-label {
+    display: block;
+    font-size: 10px;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+}
+
+.booking-card__field-value {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.booking-card__field input {
+    border: none;
+    outline: none;
+    background: none;
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    width: 100%;
+    cursor: pointer;
+}
+
+/* ── Reserve button ── */
+.booking-card__reserve {
+    width: 100%;
+    background: linear-gradient(135deg, var(--color-primary), #E31C5F);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    margin-bottom: var(--space-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.booking-card__reserve::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.booking-card__reserve:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 56, 92, 0.4);
+}
+
+.booking-card__reserve:hover::before {
+    opacity: 1;
+}
+
+.booking-card__reserve:active {
+    transform: translateY(0);
+}
+
+/* ── Notice ── */
+.booking-card__notice {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+}
+
+/* ── Price breakdown ── */
+.booking-card__breakdown {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.booking-card__breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-sm);
+}
+
+.booking-card__breakdown-row--label {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.booking-card__breakdown-row--label:hover {
+    color: var(--color-text-primary);
+}
+
+.booking-card__breakdown-row--total {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-sm);
+    margin-top: var(--space-xs);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-base);
+}
+
+/* ── Responsive ── */
+@container (max-width: 360px) {
+    .booking-card__date-row {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-card__field+.booking-card__field {
+        border-left: none;
+        border-top: 1.5px solid var(--color-border-dark);
+    }
+}
+
+@media (max-width: 960px) {
+    .booking-card {
+        position: static;
+    }
+}
