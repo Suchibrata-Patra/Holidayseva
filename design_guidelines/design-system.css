@@ -34,27 +34,24 @@
 
     /* ── Apple system grays ───────────────────────────────── */
     --apple-gray-1: rgb(142, 142, 147);
-    /* label secondary */
+    /* label secondary  */
     --apple-gray-2: rgb(174, 174, 178);
-    /* label tertiary  */
+    /* label tertiary   */
     --apple-gray-3: rgb(199, 199, 204);
     /* label quaternary */
     --apple-gray-4: rgb(209, 209, 214);
-    /* separator       */
+    /* separator        */
     --apple-gray-5: rgb(229, 229, 234);
-    /* systemFill      */
+    /* systemFill       */
     --apple-gray-6: rgb(242, 242, 247);
     /* systemBackground */
 
     /* ── developer.apple.com web UI tokens ───────────────── */
-    /* These are the exact tokens used on developer.apple.com  */
-
-    /* Backgrounds */
     --bg-primary: #ffffff;
     --bg-secondary: #f5f5f7;
-    /* apple.com page bg */
+    /* apple.com page bg  */
     --bg-tertiary: #fbfbfd;
-    /* apple.com card bg */
+    /* apple.com card bg  */
     --bg-dark-nav: rgb(22, 22, 23);
     /* exact dark topbar */
     --bg-code: #1c1c1e;
@@ -71,7 +68,6 @@
     --text-quaternary: #aeaeb2;
     /* Apple placeholder */
     --text-on-dark: #f5f5f7;
-    /* text on dark nav  */
     --text-on-dark-dim: rgba(245, 245, 247, 0.72);
 
     /* Borders */
@@ -79,15 +75,10 @@
     /* Apple separator   */
     --border-light: #e8e8ed;
     --border-dark: rgba(255, 255, 255, 0.12);
-    /* on dark surfaces */
 
     /* ── Primary accent — Apple Blue ─────────────────────── */
-    /* developer.apple.com uses #0071e3 for web links,        */
-    /* but Apple system blue is rgb(0,122,255) = #007aff       */
     --accent: #0071e3;
-    /* web link blue     */
     --accent-sys: #007aff;
-    /* iOS system blue   */
     --accent-hover: #0077ed;
     --accent-pressed: #005bb5;
     --accent-soft: rgba(0, 113, 227, 0.08);
@@ -95,7 +86,6 @@
 
     /* ── Holidayseva brand ────────────────────────────────── */
     --brand: #ff385c;
-    /* Holidayseva red   */
     --brand-hover: #e8304f;
     --brand-soft: rgba(255, 56, 92, 0.08);
     --brand-soft-border: rgba(255, 56, 92, 0.20);
@@ -126,10 +116,10 @@
     --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', ui-monospace, 'Cascadia Code', monospace;
 
     /* ── Layout dimensions ───────────────────────────────── */
-    --topbar-h: 44px;
-    /* Apple global nav — exact match */
-    --subbar-h: 52px;
-    /* Section nav                    */
+    --topbar-h: 52px;
+    /* premium light global nav          */
+    --subbar-h: 44px;
+    /* section nav                       */
     --sidebar-w: 240px;
     --toc-w: 200px;
 
@@ -168,9 +158,8 @@ body {
 
 
 /* ============================================================
-   GLOBAL NAV — dark frosted top bar
-   Exact match: developer.apple.com global nav
-   Background: rgb(22,22,23) with blur
+   GLOBAL NAV — ultra-premium light frosted top bar
+   White glass, hairline border, subtle shadow depth
    ============================================================ */
 .global-nav {
     position: fixed;
@@ -179,35 +168,52 @@ body {
     right: 0;
     z-index: 9000;
     height: var(--topbar-h);
-    background: rgba(22, 22, 23, 0.95);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid var(--border-dark);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: saturate(200%) blur(24px);
+    -webkit-backdrop-filter: saturate(200%) blur(24px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04), 0 2px 16px rgba(0, 0, 0, .04);
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 28px;
 }
 
 /* Brand mark */
 .global-nav-brand {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
     text-decoration: none;
-    color: var(--text-on-dark);
-    font-size: 16px;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.022em;
     flex-shrink: 0;
-    margin-right: 4px;
 }
 
 .global-nav-brand:hover {
-    color: #ffffff;
+    color: var(--text-primary);
+    opacity: .8;
 }
 
 .global-nav-brand svg {
     flex-shrink: 0;
+}
+
+/* Brand logo mark — H letterform container */
+.global-nav-brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--text-primary);
+    border-radius: 7px;
+}
+
+.global-nav-brand-mark svg rect {
+    fill: #ffffff;
 }
 
 /* Nav links — centred */
@@ -228,60 +234,66 @@ body {
 .global-nav-links a {
     display: flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 400;
-    color: var(--text-on-dark-dim);
+    color: var(--text-tertiary);
     text-decoration: none;
-    padding: 0 13px;
+    padding: 0 14px;
     height: 100%;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.003em;
     transition: color var(--t-fast);
     white-space: nowrap;
 }
 
 .global-nav-links a:hover {
-    color: var(--text-on-dark);
+    color: var(--text-primary);
 }
 
 .global-nav-links a.active {
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: 500;
 }
 
-/* Right icons */
+/* Right: search + account icons */
 .global-nav-actions {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     flex-shrink: 0;
-    margin-left: 4px;
 }
 
 .global-nav-icon {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    color: var(--text-on-dark-dim);
+    border-radius: var(--r-sm);
+    color: var(--text-tertiary);
     cursor: pointer;
     transition: background var(--t-fast), color var(--t-fast);
-    text-decoration: none;
     border: none;
     background: transparent;
 }
 
 .global-nav-icon:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--text-on-dark);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Nav separator pip between brand and links */
+.global-nav-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border-light);
+    margin: 0 4px;
+    flex-shrink: 0;
 }
 
 
 /* ============================================================
    SECTION NAV — white frosted sub-bar
-   Exact match: developer.apple.com section header
-   "Design" title left, tabs right with blue active underline
+   Left: section title  |  Right: tab links with blue underline
    ============================================================ */
 .section-nav {
     position: fixed;
@@ -290,24 +302,32 @@ body {
     right: 0;
     z-index: 8000;
     height: var(--subbar-h);
-    background: rgba(255, 255, 255, 0.90);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid var(--border-light);
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 28px;
+    gap: 20px;
 }
 
 .section-nav-title {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.022em;
     line-height: 1;
     flex-shrink: 0;
-    margin-right: auto;
+}
+
+/* Vertical pip divider between title and tabs */
+.section-nav-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+    flex-shrink: 0;
 }
 
 .section-nav-tabs {
@@ -315,6 +335,7 @@ body {
     align-items: stretch;
     list-style: none;
     height: var(--subbar-h);
+    margin-right: auto;
 }
 
 .section-nav-tabs li {
@@ -329,11 +350,11 @@ body {
     font-weight: 400;
     color: var(--text-tertiary);
     text-decoration: none;
-    padding: 0 14px;
+    padding: 0 13px;
     height: 100%;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
-    letter-spacing: 0.005em;
+    letter-spacing: -0.003em;
     transition: color var(--t-fast), border-color var(--t-fast);
     white-space: nowrap;
 }
@@ -343,9 +364,30 @@ body {
 }
 
 .section-nav-tabs a.active {
-    color: var(--accent);
+    color: var(--text-primary);
     font-weight: 500;
-    border-bottom-color: var(--accent);
+    border-bottom-color: var(--text-primary);
+}
+
+/* Right-side nav actions (version badge etc.) */
+.section-nav-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.section-nav-badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 3px 10px;
 }
 
 
@@ -398,6 +440,68 @@ body {
     min-width: 0;
     max-width: 800px;
     padding: 56px 60px 120px 64px;
+}
+
+
+/* ============================================================
+   PAGE TYPOGRAPHY — Apple HIG scale
+   ============================================================ */
+.page-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+    margin-bottom: 10px;
+}
+
+.page-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.06;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.page-lead {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 520px;
+    letter-spacing: -0.003em;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin: 28px 0 8px;
+}
+
+.body-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    letter-spacing: -0.003em;
+    margin-bottom: 14px;
+}
+
+.body-text:last-child {
+    margin-bottom: 0;
 }
 
 
@@ -507,6 +611,7 @@ body {
 
 /* comment */
 
+
 /* ── API / data table ─────────────────────────────────────── */
 .api-table {
     width: 100%;
@@ -549,6 +654,7 @@ body {
     white-space: nowrap;
 }
 
+
 /* ── Callout / note ───────────────────────────────────────── */
 .note {
     font-size: 13.5px;
@@ -573,32 +679,57 @@ body {
     color: #8b1a30;
 }
 
-/* ── Spec row ─────────────────────────────────────────────── */
+
+/* ── Spec table ───────────────────────────────────────────── */
+.spec-table {
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 20px 0;
+}
+
 .spec-row {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding: 11px 0;
+    align-items: center;
+    padding: 11px 18px;
     border-bottom: 1px solid var(--border-light);
-    gap: 24px;
+    font-size: 13px;
+    gap: 16px;
 }
 
 .spec-row:last-child {
     border-bottom: none;
 }
 
+.spec-row:nth-child(even) {
+    background: rgba(0, 0, 0, .014);
+}
+
 .spec-key {
-    font-size: 13px;
-    color: var(--text-tertiary);
+    width: 180px;
     flex-shrink: 0;
+    font-weight: 500;
+    color: var(--text-primary);
 }
 
 .spec-val {
     font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--text-primary);
-    text-align: right;
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
+
+.spec-swatch {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    flex-shrink: 0;
+}
+
 
 /* ── Section rule ─────────────────────────────────────────── */
 .rule {
@@ -607,9 +738,11 @@ body {
     margin: 52px 0;
 }
 
+
 /* ── Demo stage ───────────────────────────────────────────── */
 .demo-stage {
     background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
     border-radius: var(--r-xl);
     padding: 60px 40px;
     display: flex;
@@ -619,18 +752,106 @@ body {
     margin: 32px 0;
 }
 
-.demo-state {
-    font-size: 12px;
+.demo-label {
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-quaternary);
-    transition: color var(--t-base);
+}
+
+.demo-state {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-quaternary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 4px 14px;
+    transition: color var(--t-base), border-color var(--t-base), background var(--t-base);
 }
 
 .demo-state.on {
-    color: var(--brand);
+    color: #b5281c;
+    background: rgba(255, 56, 92, 0.05);
+    border-color: rgba(255, 56, 92, 0.25);
 }
+
+
+/* ── Anatomy diagram ──────────────────────────────────────── */
+.anatomy-stage {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-xl);
+    padding: 64px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+    overflow: visible;
+    position: relative;
+}
+
+.anat-toggle {
+    position: relative;
+    width: 196px;
+    height: 110px;
+    background: #dddddd;
+    border-radius: 55px;
+}
+
+.anat-circle {
+    position: absolute;
+    width: 94px;
+    height: 94px;
+    background: #ffffff;
+    border-radius: 50%;
+    top: 8px;
+    left: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.anat-ann {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+}
+
+.anat-ann-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-quaternary);
+    flex-shrink: 0;
+}
+
+.anat-ann-line {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+}
+
+.anat-ann span {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-quaternary);
+    white-space: nowrap;
+}
+
+.ann-track {
+    top: 50%;
+    right: -148px;
+    transform: translateY(12px);
+}
+
+.ann-thumb {
+    top: 36%;
+    left: -152px;
+    flex-direction: row-reverse;
+}
+
 
 /* ── Footer ───────────────────────────────────────────────── */
 .footer {
