@@ -85,10 +85,23 @@
       top: 52px;
       height: calc(100vh - 52px);
       overflow-y: auto;
-      padding: 36px 0 40px;
+      padding: 24px 0 40px;
       border-right: 1px solid var(--rule-light);
     }
     .sidebar::-webkit-scrollbar { width: 0; }
+
+    /* ─── Right TOC sidebar ─────────────────────── */
+    .toc-sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+      overflow-y: auto;
+      padding: 40px 0;
+      border-left: 1px solid var(--rule-light);
+    }
+    .toc-sidebar::-webkit-scrollbar { width: 0; }
 
     .sb-section { margin-bottom: 28px; padding: 0 20px; }
 
@@ -446,6 +459,9 @@
     .footer-text { font-size: 12px; color: var(--ink-4); }
 
     /* ─── Responsive ─────────────────────────────── */
+    @media (max-width: 1100px) {
+      .toc-sidebar { display: none; }
+    }
     @media (max-width: 860px) {
       .main { padding: 48px 32px 80px; }
       .page-title { font-size: 42px; }
@@ -470,9 +486,9 @@
 
 <div class="layout">
 
-  <!-- Sidebar -->
+  <!-- Left sidebar -->
   <aside class="sidebar" id="sidebar">
-    <?php include __DIR__ . '/sidebar.php'; ?>
+    <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
 
   <!-- Main -->
@@ -700,6 +716,12 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
     </section>
 
   </main>
+
+  <!-- Right TOC sidebar -->
+  <aside class="toc-sidebar" id="toc">
+    <?php include __DIR__ . '/right_sidebar.php'; ?>
+  </aside>
+
 </div>
 
 <footer class="footer">
@@ -716,20 +738,7 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
     stateEl.className = 'demo-state' + (e.detail.isActive ? ' on' : '');
   });
 
-  // Scroll spy
-  const targets  = document.querySelectorAll('section[id], div[id]');
-  const links    = document.querySelectorAll('.sb-link');
-  const spy = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        links.forEach(a => {
-          delete a.dataset.active;
-          if (a.getAttribute('href') === '#' + entry.target.id) a.dataset.active = '';
-        });
-      }
-    });
-  }, { rootMargin: '-15% 0px -75% 0px' });
-  targets.forEach(t => spy.observe(t));
+
 
   // Copy
   function copyCode(btn) {

@@ -1,7 +1,8 @@
 <?php
 /**
- * sidebar.php
- * Apple HIG-style collapsible sidebar
+ * left_sidebar.php
+ * Left navigation — Apple HIG style collapsible menu
+ * Include: <?php include __DIR__ . '/left_sidebar.php'; ?>
  */
 ?>
 
@@ -99,7 +100,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 16px 20px;
+    margin: 0 16px 16px;
     padding: 7px 12px;
     background: #f5f5f7;
     border: 1px solid #e0e0e5;
@@ -118,21 +119,20 @@
   .sb-filter input::placeholder { color: #aeaeb2; }
 
   .sb-nav { padding: 0 8px; }
-
-  .sb-group { margin-bottom: 2px; }
+  .sb-group { margin-bottom: 1px; }
 
   .sb-group-btn {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 10px;
+    padding: 5px 10px;
     background: none;
     border: none;
     cursor: pointer;
     font-family: var(--sans);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     color: #1d1d1f;
     text-align: left;
     border-radius: 7px;
@@ -144,7 +144,7 @@
   .sb-chevron {
     flex-shrink: 0;
     color: #aeaeb2;
-    transition: transform 0.2s ease;
+    transition: transform 0.18s ease;
   }
   .sb-group.open > .sb-group-btn .sb-chevron {
     transform: rotate(90deg);
@@ -152,7 +152,7 @@
 
   .sb-items {
     list-style: none;
-    padding: 2px 0 4px 20px;
+    padding: 1px 0 3px 18px;
   }
   .sb-items[hidden] { display: none; }
 
@@ -164,22 +164,17 @@
     font-weight: 400;
     color: #424245;
     text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 7px;
+    padding: 4px 10px;
+    border-radius: 6px;
     transition: background 0.1s, color 0.1s;
     -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
   }
   .sb-link svg { flex-shrink: 0; color: #8e8e93; }
   .sb-link:hover { background: #f0f0f5; color: #1d1d1f; }
   .sb-link:hover svg { color: #1d1d1f; }
-  .sb-link.active {
-    font-weight: 600;
-    color: #1d1d1f;
-    background: #e8e8ed;
-  }
+  .sb-link.active { font-weight: 600; color: #1d1d1f; background: #e8e8ed; }
   .sb-link.active svg { color: #1d1d1f; }
-
-  /* filter hide */
   .sb-link.hidden { display: none; }
 </style>
 
