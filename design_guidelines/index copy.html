@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation | HolidaySeva</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="icon" href="https://holidayseva.com/Assets/icons/favicon.ico" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Circular+Std:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+
+    <!-- Framework CSS -->
+    <link rel="stylesheet" href="/Assets/css/ui-framework.css">
+
+    <style>
+        /* ══════════════════════════════════════════════════════════
+       DOC-ONLY STYLES — no overlap with framework
+    ══════════════════════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --doc-sidebar-w: 260px;
+            --doc-header-h: 60px;
+            --doc-font: 'Circular Std', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --doc-mono: 'DM Mono', ui-monospace, monospace;
+            --doc-bg: #ffffff;
+            --doc-bg-page: #fafafa;
+            --doc-border: #ebebeb;
+            --doc-text: #222222;
+            --doc-muted: #717171;
+            --doc-accent: #eb1e2c;
+            --doc-accent-soft: rgba(255, 56, 92, 0.08);
+            --doc-code-bg: #f5f5f5;
+            --doc-code-border: #e8e8e8;
+            --doc-nav-active: rgb(181, 181, 181, 0.7);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--doc-bg-page);
+            color: var(--doc-text);
+            font-family: var(--doc-font);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ── TOP HEADER ── */
+        .doc-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--doc-header-h);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: saturate(180%) blur(16px);
+            border-bottom: 1px solid var(--doc-border);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            gap: 20px;
+            z-index: 600;
+        }
+
+        .doc-header__logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--doc-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .doc-header__logo-mark {
+            width: 30px;
+            height: 30px;
+            background: black;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .doc-header__badge {
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--doc-accent-soft);
+            color: var(--doc-accent);
+            border: 1px solid rgba(255, 56, 92, 0.2);
+            border-radius: 20px;
+            padding: 2px 9px;
+        }
+
+        .doc-header__nav {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .doc-header__nav a {
+            font-size: 13px;
+            color: var(--doc-muted);
+            text-decoration: none;
+            transition: color 150ms;
+            font-weight: 500;
+        }
+
+        .doc-header__nav a:hover {
+            color: var(--doc-text);
+        }
+
+        /* ── SIDEBAR ── */
+        .doc-layout {
+            display: flex;
+            padding-top: var(--doc-header-h);
+            min-height: 100vh;
+        }
+
+        .doc-sidebar {
+            position: fixed;
+            top: var(--doc-header-h);
+            left: 0;
+            bottom: 0;
+            width: var(--doc-sidebar-w);
+            overflow-y: auto;
+            border-right: 1px solid var(--doc-border);
+            background: white;
+            padding: 24px 12px;
+            scrollbar-width: thin;
+            scrollbar-color: #ddd transparent;
+        }
+
+        .doc-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .doc-sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 2px;
+        }
+
+        .doc-nav-section {
+            margin-bottom: 28px;
+        }
+
+        .doc-nav-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--doc-muted);
+            padding: 0 12px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .doc-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #484848;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 120ms;
+            border-left: 2px solid transparent;
+            margin-bottom: 1px;
+        }
+
+        /* ds This is teh model of the thins to be develoepd by the model of tht hings ot be dvelopd by the modle fof the tinsgt o be dvelope dby yte modle of the
+        thinsg to be done by the model of thehings to be dveoep dby the del of th thgs to Thi is the mode of thethigs to be evedeve */
+        .doc-nav-link:hover {
+            color: var(--doc-text);
+            background: #f5f5f5;
+        }
+
+        .doc-nav-link.is-active {
+            color: black;
+            background: var(--doc-nav-active);
+            border-left-color: var(--doc-accent);
+            font-weight: 600;
+        }
+
+        .doc-nav-link__icon {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+        }
+
+        /* ── MAIN ── */
+        .doc-main {
+            margin-left: var(--doc-sidebar-w);
+            flex: 1;
+            max-width: 960px;
+            padding: 48px 52px 100px;
+        }
+
+        /* ── SECTION ── */
+        .doc-section {
+            scroll-margin-top: 80px;
+            margin-bottom: 80px;
+        }
+
+        .doc-section+.doc-section {
+            border-top: 1px solid var(--doc-border);
+            padding-top: 80px;
+        }
+
+        .doc-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--doc-accent);
+            margin-bottom: 8px;
+        }
+
+        .doc-section-title {
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--doc-text);
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+
+        .doc-section-title em {
+            font-style: italic;
+            color: var(--doc-accent);
+        }
+
+        .doc-lead {
+            font-size: 15px;
+            color: var(--doc-muted);
+            line-height: 1.7;
+            max-width: 580px;
+            margin-bottom: 36px;
+        }
+
+        /* ── COMPONENT BLOCK ── */
+        .doc-block {
+            margin-bottom: 40px;
+        }
+
+        .doc-block__label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--doc-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+
+        /* ── PREVIEW BOX ── */
+        .doc-preview {
+            background: white;
+            border: 1px solid var(--doc-border);
+            border-radius: 16px 16px 0 0;
+            padding: 36px 28px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .doc-preview--center {
+            justify-content: center;
+        }
+
+        .doc-preview--dark {
+            background: #1a1a1a;
+        }
+
+        .doc-preview--grey {
+            background: #ececec;
+        }
+
+        .doc-preview--padded {
+            padding: 52px 28px;
+        }
+
+        .doc-preview--flush {
+            padding: 0;
+        }
+
+        .doc-preview--col {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        /* ── CODE BLOCK ── */
+        .doc-code {
+            background: var(--doc-code-bg);
+            border: 1px solid var(--doc-code-border);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            position: relative;
+        }
+
+        .doc-code__bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--doc-code-border);
+            background: #f0f0f0;
+            border-radius: 0;
+        }
+
+        .doc-code__lang {
+            font-family: var(--doc-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--doc-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-code__copy {
+            font-family: var(--doc-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--doc-muted);
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--doc-code-border);
+            padding: 2px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 150ms;
+        }
+
+        .doc-code__copy:hover {
+            color: var(--doc-text);
+            background: rgba(0, 0, 0, 0.09);
+        }
+
+        .doc-code__copy.copied {
+            color: #008A05;
+            border-color: rgba(0, 138, 5, 0.3);
+        }
+
+        .doc-code pre {
+            padding: 20px;
+            overflow-x: auto;
+            font-family: var(--doc-mono);
+            font-size: 12.5px;
+            line-height: 1.75;
+            color: #333;
+            tab-size: 2;
+        }
+
+        /* Syntax highlights */
+        .hl-tag {
+            color: #0b7a6e;
+        }
+
+        .hl-attr {
+            color: #836c28;
+        }
+
+        .hl-str {
+            color: #c41a16;
+        }
+
+        .hl-cmt {
+            color: #999;
+            font-style: italic;
+        }
+
+        .hl-key {
+            color: #ad3da4;
+        }
+
+        .hl-val {
+            color: #1c00cf;
+        }
+
+        .hl-cls {
+            color: #0b5563;
+            font-weight: 600;
+        }
+
+        /* ── CALLOUT ── */
+        .doc-callout {
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-left: 3px solid;
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+
+        .doc-callout--info {
+            background: rgba(0, 122, 184, .07);
+            border-color: #007AB8;
+            color: #1a4a80;
+        }
+
+        .doc-callout--warn {
+            background: rgba(196, 85, 8, .07);
+            border-color: #C45508;
+            color: #7a3e00;
+        }
+
+        .doc-callout--tip {
+            background: rgba(0, 138, 5, .07);
+            border-color: #008A05;
+            color: #1a5c1a;
+        }
+
+        .doc-callout strong {
+            color: var(--doc-text);
+        }
+
+        /* ── PROP TABLE ── */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin: 16px 0;
+        }
+
+        .doc-table th {
+            text-align: left;
+            padding: 8px 14px;
+            border-bottom: 2px solid var(--doc-border);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--doc-muted);
+        }
+
+        .doc-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #f0f0f0;
+            color: var(--doc-text);
+            vertical-align: top;
+        }
+
+        .doc-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .doc-table tr:hover td {
+            background: #fafafa;
+        }
+
+        .doc-table code {
+            font-family: var(--doc-mono);
+            font-size: 11.5px;
+            color: #ad3da4;
+            background: rgba(173, 61, 164, .08);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        /* ── DIVIDER ── */
+        .doc-divider {
+            height: 1px;
+            background: var(--doc-border);
+            border: none;
+            margin: 32px 0;
+        }
+
+        /* ── HERO ── */
+        .doc-hero {
+            padding: 56px 0 64px;
+            border-bottom: 1px solid var(--doc-border);
+            margin-bottom: 72px;
+        }
+
+        .doc-hero__eyebrow {
+            font-family: var(--doc-mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--doc-accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .doc-hero__eyebrow::before {
+            content: '';
+            width: 28px;
+            height: 1.5px;
+            background: var(--doc-accent);
+        }
+
+        .doc-hero__title {
+            font-size: clamp(2.8rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            color: var(--doc-text);
+            margin-bottom: 20px;
+        }
+
+        .doc-hero__title em {
+            font-style: italic;
+            color: var(--doc-accent);
+        }
+
+        .doc-hero__desc {
+            font-size: 17px;
+            color: var(--doc-muted);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .doc-hero__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .doc-hero__tag {
+            font-family: var(--doc-mono);
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--doc-border);
+            color: var(--doc-muted);
+            background: white;
+            font-weight: 500;
+        }
+
+        /* ── COLOR SWATCHES ── */
+        .doc-swatch-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .doc-swatch {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .doc-swatch__dot {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+        }
+
+        .doc-swatch__name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--doc-text);
+        }
+
+        .doc-swatch__token {
+            font-family: var(--doc-mono);
+            font-size: 10px;
+            color: var(--doc-muted);
+        }
+
+        /* ── INSTALL STEPS ── */
+        .doc-steps {
+            counter-reset: steps;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .doc-step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .doc-step__num {
+            counter-increment: steps;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--doc-accent-soft);
+            border: 1px solid rgba(255, 56, 92, 0.25);
+            color: var(--doc-accent);
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .doc-step__num::before {
+            content: counter(steps);
+        }
+
+        .doc-step__title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--doc-text);
+            margin-bottom: 3px;
+        }
+
+        .doc-step__desc {
+            font-size: 13px;
+            color: var(--doc-muted);
+            line-height: 1.65;
+        }
+
+        .doc-step__body {
+            flex: 1;
+        }
+
+        /* ── COMPONENT FILE TAG ── */
+        .doc-file-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: var(--doc-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--doc-accent);
+            background: var(--doc-accent-soft);
+            border: 1px solid rgba(255, 56, 92, 0.2);
+            border-radius: 6px;
+            padding: 3px 9px;
+            margin-bottom: 16px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .doc-sidebar {
+                display: none;
+            }
+
+            .doc-main {
+                margin-left: 0;
+                padding: 32px 20px 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ HEADER ══════════════════════════════════════════════ -->
+    <header class="doc-header">
+        <a class="doc-header__logo" href="#overview">
+            <span class="doc-header__logo-mark">H</span>
+            HolidaySeva
+        </a>
+        <span class="doc-header__badge">v 1.1.3</span>
+        <nav class="doc-header__nav">
+            <a href="#getting-started">Get Started</a>
+            <a href="#foundations">Foundations</a>
+            <a href="#components">Components</a>
+            <a href="#javascript">JavaScript</a>
+        </nav>
+    </header>
+
+    <div class="doc-layout">
+
+        <!-- ══ SIDEBAR ═════════════════════════════════════════════ -->
+        <aside class="doc-sidebar">
+            <div class="doc-nav-section">
+                <span class="doc-nav-label">Introduction</span>
+                <a class="doc-nav-link is-active" href="#overview"><span class="doc-nav-link__icon">✦</span>Overview</a>
+                <a class="doc-nav-link" href="#getting-started">Getting
+                    Started</a>
+            </div>
+            <div class="doc-nav-section">
+                <span class="doc-nav-label">Foundations</span>
+                <a class="doc-nav-link" href="#color"><span class="doc-nav-link__icon">🎨</span>Color</a>
+                <a class="doc-nav-link" href="#typography"><span class="doc-nav-link__icon">Tt</span>Typography</a>
+                <a class="doc-nav-link" href="#spacing"><span class="doc-nav-link__icon">↔</span>Spacing</a>
+                <a class="doc-nav-link" href="#shadows"><span class="doc-nav-link__icon">◻</span>Shadows</a>
+            </div>
+            <div class="doc-nav-section">
+                <span class="doc-nav-label">Components</span>
+                <a class="doc-nav-link" href="#button"><span class="doc-nav-link__icon">◉</span>Button</a>
+                <a class="doc-nav-link" href="#badge"><span class="doc-nav-link__icon">⬡</span>Badge</a>
+                <a class="doc-nav-link" href="#avatar"><span class="doc-nav-link__icon">👤</span>Avatar</a>
+                <a class="doc-nav-link" href="#nav-buttons"><span class="doc-nav-link__icon">←→</span>Nav Buttons</a>
+                <a class="doc-nav-link" href="#calendar"><span class="doc-nav-link__icon">📅</span>Calendar</a>
+                <a class="doc-nav-link" href="#listing-card"><span class="doc-nav-link__icon">🏠</span>Listing Card</a>
+                <a class="doc-nav-link" href="#card-stack"><span class="doc-nav-link__icon">⧉</span>Card Stack</a>
+                <a class="doc-nav-link" href="#gallery"><span class="doc-nav-link__icon">🖼</span>Gallery</a>
+                <a class="doc-nav-link" href="#booking-card"><span class="doc-nav-link__icon">💳</span>Booking Card</a>
+                <a class="doc-nav-link" href="#review-card"><span class="doc-nav-link__icon">★</span>Review Card</a>
+                <a class="doc-nav-link" href="#modal"><span class="doc-nav-link__icon">⬜</span>Modal</a>
+                <a class="doc-nav-link" href="#dropdown"><span class="doc-nav-link__icon">▾</span>Dropdown</a>
+                <a class="doc-nav-link" href="#verified-stamp"><span class="doc-nav-link__icon">✓</span>Verified
+                    Stamp</a>
+            </div>
+            <div class="doc-nav-section">
+                <span class="doc-nav-label">JavaScript</span>
+                <a class="doc-nav-link" href="#js-api"><span class="doc-nav-link__icon">{ }</span>API</a>
+                <a class="doc-nav-link" href="#js-events">Events</a>
+            </div>
+        </aside>
+
+        <!-- ══ MAIN ════════════════════════════════════════════════ -->
+        <main class="doc-main">
+
+            <!-- ───────────────────────────────────────────────────────
+  GETTING STARTED
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="getting-started">
+                <h2 class="doc-section-title">Getting <em>Started</em></h2>
+                <p class="doc-lead">Two lines and you're live. Import the master stylesheet, then add the script just
+                    before <code>&lt;/body&gt;</code>.</p>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey">
+                        <div class="doc-steps">
+                            <div class="doc-step">
+                                <div class="doc-step__num"></div>
+                                <div class="doc-step__body">
+                                    <div class="doc-step__title">Import the StyleSheet</div>
+                                    <div class="doc-step__desc">Copy all CSS files into your project. Then add the
+                                        single master import to your <code>&lt;head&gt;</code>.</div>
+                                </div>
+                            </div>
+                            <div class="doc-step">
+                                <div class="doc-step__num"></div>
+                                <div class="doc-step__body">
+                                    <div class="doc-step__title">Add the script</div>
+                                    <div class="doc-step__desc">Drop <code>HolidaySeva.js</code> just before the closing
+                                        <code>&lt;/body&gt;</code> tag. It auto-inits all interactive components.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="doc-step">
+                                <div class="doc-step__num"></div>
+                                <div class="doc-step__body">
+                                    <div class="doc-step__title">Use class names</div>
+                                    <div class="doc-step__desc">Every component uses BEM-style classes. No JavaScript
+                                        configuration needed for static components.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar">
+                            <span class="doc-code__lang">HTML</span>
+                            <button class="doc-code__copy" onclick="doCopy(this)">Copy</button>
+                        </div>
+                        <pre><span class="hl-tag">&lt;!-- In &lt;head&gt; --&gt;</span>
+<span class="hl-tag">&lt;link</span> <span class="hl-attr">rel</span>=<span class="hl-str">"stylesheet"</span> <span class="hl-attr">href</span>=<span class="hl-str">"ui-framework.css"</span> <span class="hl-tag">/&gt;</span>
+
+<span class="hl-tag">&lt;!-- Before &lt;/body&gt; --&gt;</span>
+<span class="hl-tag">&lt;script</span> <span class="hl-attr">src</span>=<span class="hl-str">"HolidaySeva.js"</span><span class="hl-tag">&gt;&lt;/script&gt;</span></pre>
+                    </div>
+                </div>
+
+                <div class="doc-callout doc-callout--info">
+                    <strong>Always use tokens — never raw hex.</strong> Write <code>var(--color-primary)</code> instead
+                    of <code>#FF385C</code>. This keeps theming possible across the entire system.
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  COLOR
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="color">
+                <div class="doc-eyebrow">Foundations · colors.css</div>
+                <h2 class="doc-section-title"><em>Color</em></h2>
+                <p class="doc-lead">All colors live as CSS variables on <code>:root</code> inside
+                    <code>colors.css</code>. Use the token — never a raw hex.
+                </p>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Brand</div>
+                    <div class="doc-preview doc-preview--grey">
+                        <div class="doc-swatch-grid">
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#FF385C"></div>
+                                <div class="doc-swatch__name">Primary</div>
+                                <div class="doc-swatch__token">--color-primary</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#FF5A76"></div>
+                                <div class="doc-swatch__name">Primary Light</div>
+                                <div class="doc-swatch__token">--color-primary-light</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#D93B55"></div>
+                                <div class="doc-swatch__name">Primary Dark</div>
+                                <div class="doc-swatch__token">--color-primary-dark</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#222222"></div>
+                                <div class="doc-swatch__name">Secondary</div>
+                                <div class="doc-swatch__token">--color-secondary</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#00A699"></div>
+                                <div class="doc-swatch__name">Accent</div>
+                                <div class="doc-swatch__token">--color-accent</div>
+                            </div>
+                        </div>
+                        <div class="doc-swatch-grid" style="margin-top:8px">
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#008A05"></div>
+                                <div class="doc-swatch__name">Success</div>
+                                <div class="doc-swatch__token">--color-success</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#C45508"></div>
+                                <div class="doc-swatch__name">Warning</div>
+                                <div class="doc-swatch__token">--color-warning</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#C13515"></div>
+                                <div class="doc-swatch__name">Error</div>
+                                <div class="doc-swatch__token">--color-error</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#717171"></div>
+                                <div class="doc-swatch__name">Text Secondary</div>
+                                <div class="doc-swatch__token">--color-text-secondary</div>
+                            </div>
+                            <div class="doc-swatch">
+                                <div class="doc-swatch__dot" style="background:#EBEBEB"></div>
+                                <div class="doc-swatch__name">Muted</div>
+                                <div class="doc-swatch__token">--color-muted</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">CSS</span><button class="doc-code__copy"
+                                onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cmt">/* Always reference by token */</span>
+<span class="hl-cls">.my-element</span> {
+  color: <span class="hl-val">var(--color-primary)</span>;
+  background: <span class="hl-val">var(--color-surface)</span>;
+  border: 1px solid <span class="hl-val">var(--color-border)</span>;
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  TYPOGRAPHY
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="typography">
+                <div class="doc-eyebrow">Foundations · typography.css</div>
+                <h2 class="doc-section-title"><em>Typography</em></h2>
+                <p class="doc-lead">Circular Std with a fluid clamp-based type scale. Seven steps from
+                    <code>--text-xs</code> to <code>--text-4xl</code>.
+                </p>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--col" style="gap:0">
+                        <div
+                            style="padding:20px 28px;border-bottom:1px solid #f0f0f0;display:flex;align-items:baseline;justify-content:space-between">
+                            <span
+                                style="font-size:clamp(2.25rem,3.5vw + 1rem,3.75rem);font-weight:700;letter-spacing:-0.03em;color:#222">Display
+                                4xl</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-4xl · 700</span>
+                        </div>
+                        <div
+                            style="padding:16px 28px;border-bottom:1px solid #f0f0f0;display:flex;align-items:baseline;justify-content:space-between">
+                            <span
+                                style="font-size:clamp(1.875rem,2.5vw + 1rem,3rem);font-weight:700;letter-spacing:-0.03em;color:#222">Heading
+                                3xl</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-3xl · 700</span>
+                        </div>
+                        <div
+                            style="padding:14px 28px;border-bottom:1px solid #f0f0f0;display:flex;align-items:baseline;justify-content:space-between">
+                            <span style="font-size:clamp(1.5rem,2vw + 1rem,2.25rem);font-weight:600;color:#222">Heading
+                                2xl</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-2xl · 600</span>
+                        </div>
+                        <div
+                            style="padding:12px 28px;border-bottom:1px solid #f0f0f0;display:flex;align-items:baseline;justify-content:space-between">
+                            <span style="font-size:clamp(1.25rem,1.5vw + 1rem,1.75rem);font-weight:600;color:#222">Title
+                                xl</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-xl · 600</span>
+                        </div>
+                        <div
+                            style="padding:12px 28px;border-bottom:1px solid #f0f0f0;display:flex;align-items:baseline;justify-content:space-between">
+                            <span
+                                style="font-size:clamp(1.125rem,1.2vw + 0.9rem,1.375rem);font-weight:600;color:#222">Title
+                                lg</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-lg · 600</span>
+                        </div>
+                        <div
+                            style="padding:12px 28px;border-bottom:1px solid #f0f0f0;display:flex;align-items:baseline;justify-content:space-between">
+                            <span
+                                style="font-size:clamp(0.875rem,0.8vw + 0.7rem,1rem);font-weight:400;color:#484848">Body
+                                base — The quick brown fox jumps over the lazy dog.</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-base · 400</span>
+                        </div>
+                        <div style="padding:12px 28px;display:flex;align-items:baseline;justify-content:space-between">
+                            <span
+                                style="font-size:clamp(0.75rem,0.6vw + 0.6rem,0.875rem);font-weight:400;color:#717171">Small
+                                sm — Caption text and secondary labels.</span>
+                            <span style="font-family:var(--doc-mono);font-size:11px;color:#999">--text-sm · 400</span>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">CSS</span><button class="doc-code__copy"
+                                onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cls">.heading</span> {
+  font-size: <span class="hl-val">var(--text-2xl)</span>;
+  font-weight: <span class="hl-val">var(--weight-bold)</span>;
+  letter-spacing: <span class="hl-val">var(--tracking-tight)</span>;
+  line-height: <span class="hl-val">var(--leading-tight)</span>;
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  SPACING
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="spacing">
+                <div class="doc-eyebrow">Foundations · spacing.css</div>
+                <h2 class="doc-section-title"><em>Spacing</em></h2>
+                <p class="doc-lead">Eight spacing steps on a 4px base grid. Always compose layouts using spacing tokens.
+                </p>
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey"
+                        style="flex-direction:column;gap:12px;align-items:flex-start">
+                        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:4px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-xs ·
+                                    4px</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:8px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-sm ·
+                                    8px</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:16px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-md ·
+                                    16px</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:24px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-lg ·
+                                    24px</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:32px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-xl ·
+                                    32px</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:48px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-2xl ·
+                                    48px</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:64px;height:20px;background:#FF385C;border-radius:2px"></div><span
+                                    style="font-family:var(--doc-mono);font-size:12px;color:#717171">--space-3xl ·
+                                    64px</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">CSS</span><button class="doc-code__copy"
+                                onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cls">.card__body</span> { padding: <span class="hl-val">var(--space-lg)</span>; }
+<span class="hl-cls">.stack</span>      { gap: <span class="hl-val">var(--space-md)</span>; }
+<span class="hl-cls">.section</span>   { margin-bottom: <span class="hl-val">var(--space-3xl)</span>; }</pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  SHADOWS
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="shadows">
+                <div class="doc-eyebrow">Foundations · typography.css</div>
+                <h2 class="doc-section-title"><em>Shadows</em></h2>
+                <p class="doc-lead">Six elevation levels from a hairline <code>xs</code> to a dramatic
+                    <code>modal</code>.
+                </p>
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey" style="gap:20px;flex-wrap:wrap">
+                        <div
+                            style="background:white;border-radius:12px;padding:18px 22px;box-shadow:0 1px 2px rgba(0,0,0,.08);font-size:13px;font-weight:600">
+                            xs</div>
+                        <div
+                            style="background:white;border-radius:12px;padding:18px 22px;box-shadow:0 2px 4px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);font-size:13px;font-weight:600">
+                            sm</div>
+                        <div
+                            style="background:white;border-radius:12px;padding:18px 22px;box-shadow:0 4px 16px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.06);font-size:13px;font-weight:600">
+                            md</div>
+                        <div
+                            style="background:white;border-radius:12px;padding:18px 22px;box-shadow:0 8px 32px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.06);font-size:13px;font-weight:600">
+                            lg</div>
+                        <div
+                            style="background:white;border-radius:12px;padding:18px 22px;box-shadow:0 16px 48px rgba(0,0,0,.14),0 6px 20px rgba(0,0,0,.08);font-size:13px;font-weight:600">
+                            xl</div>
+                        <div
+                            style="background:white;border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.12);font-size:13px;font-weight:600">
+                            modal</div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">CSS</span><button class="doc-code__copy"
+                                onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cls">.card</span>    { box-shadow: <span class="hl-val">var(--shadow-card)</span>; }
+<span class="hl-cls">.card:hover</span>{ box-shadow: <span class="hl-val">var(--shadow-hover)</span>; }
+<span class="hl-cls">.modal</span>   { box-shadow: <span class="hl-val">var(--shadow-modal)</span>; }</pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  BUTTON
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="button">
+                <div class="doc-eyebrow">Components · button.css</div>
+                <h2 class="doc-section-title"><em>Button</em></h2>
+                <p class="doc-lead">Seven variants × four sizes × icon-only and loading states. All built on a single
+                    <code>.btn</code> base class.
+                </p>
+                <span class="doc-file-tag">📄 button.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Variants</div>
+                    <div class="doc-preview" style="gap:12px;flex-wrap:wrap;align-items:center">
+                        <button class="btn btn-primary">Primary</button>
+                        <button class="btn btn-secondary">Secondary</button>
+                        <button class="btn btn-outline">Outline</button>
+                        <button class="btn btn-ghost">Ghost</button>
+                        <button class="btn btn-accent">Accent</button>
+                        <button class="btn btn-danger">Danger</button>
+                        <button class="btn btn-gradient">Gradient</button>
+                        <button class="btn btn-link">Link</button>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary"</span><span class="hl-tag">&gt;</span>Primary<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-secondary"</span><span class="hl-tag">&gt;</span>Secondary<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-outline"</span><span class="hl-tag">&gt;</span>Outline<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-ghost"</span><span class="hl-tag">&gt;</span>Ghost<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-gradient"</span><span class="hl-tag">&gt;</span>Gradient<span class="hl-tag">&lt;/button&gt;</span></pre>
+                    </div>
+                </div>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Sizes</div>
+                    <div class="doc-preview" style="gap:12px;align-items:center;flex-wrap:wrap">
+                        <button class="btn btn-primary btn-xs">X-Small</button>
+                        <button class="btn btn-primary btn-sm">Small</button>
+                        <button class="btn btn-primary">Default</button>
+                        <button class="btn btn-primary btn-lg">Large</button>
+                        <button class="btn btn-primary btn-xl">X-Large</button>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn-xs"</span><span class="hl-tag">&gt;</span>X-Small<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn-sm"</span><span class="hl-tag">&gt;</span>Small<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary"</span><span class="hl-tag">&gt;</span>Default<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn-lg"</span><span class="hl-tag">&gt;</span>Large<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn-xl"</span><span class="hl-tag">&gt;</span>X-Large<span class="hl-tag">&lt;/button&gt;</span></pre>
+                    </div>
+                </div>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">States</div>
+                    <div class="doc-preview" style="gap:12px;align-items:center">
+                        <button class="btn btn-primary" disabled>Disabled</button>
+                        <button class="btn btn-primary btn--loading">Loading</button>
+                        <button class="btn btn-primary btn-full" style="max-width:280px">Full Width</button>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary"</span> <span class="hl-attr">disabled</span><span class="hl-tag">&gt;</span>Disabled<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn--loading"</span><span class="hl-tag">&gt;</span>Loading<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn-full"</span><span class="hl-tag">&gt;</span>Full Width<span class="hl-tag">&lt;/button&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  BADGE
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="badge">
+                <div class="doc-eyebrow">Components · badge.css</div>
+                <h2 class="doc-section-title"><em>Badge</em></h2>
+                <p class="doc-lead">Pill-shaped status indicators with eight color variants and a dot prefix modifier.
+                </p>
+                <span class="doc-file-tag">📄 badge.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview" style="gap:10px;flex-wrap:wrap;align-items:center">
+                        <span class="badge badge-primary">Primary</span>
+                        <span class="badge badge-secondary">Secondary</span>
+                        <span class="badge badge-accent">Accent</span>
+                        <span class="badge badge-success">Success</span>
+                        <span class="badge badge-warning">Warning</span>
+                        <span class="badge badge-error">Error</span>
+                        <span class="badge badge-muted">Muted</span>
+                        <span class="badge badge-dark">Dark</span>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"badge badge-primary"</span><span class="hl-tag">&gt;</span>Primary<span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"badge badge-success"</span><span class="hl-tag">&gt;</span>Success<span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"badge badge-error"</span><span class="hl-tag">&gt;</span>Error<span class="hl-tag">&lt;/span&gt;</span></pre>
+                    </div>
+                </div>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Sizes · Dot modifier</div>
+                    <div class="doc-preview" style="gap:10px;align-items:center;flex-wrap:wrap">
+                        <span class="badge badge-primary badge-sm">Small</span>
+                        <span class="badge badge-primary">Default</span>
+                        <span class="badge badge-primary badge-lg">Large</span>
+                        <span class="badge badge-success badge--dot">Online</span>
+                        <span class="badge badge-warning badge--dot">Away</span>
+                        <span class="badge badge-error badge--dot">Busy</span>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"badge badge-primary badge-sm"</span><span class="hl-tag">&gt;</span>Small<span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"badge badge-primary badge-lg"</span><span class="hl-tag">&gt;</span>Large<span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"badge badge-success badge--dot"</span><span class="hl-tag">&gt;</span>Online<span class="hl-tag">&lt;/span&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  AVATAR
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="avatar">
+                <div class="doc-eyebrow">Components · avatar.css</div>
+                <h2 class="doc-section-title"><em>Avatar</em></h2>
+                <p class="doc-lead">Circular user icons in six sizes with color fills, status indicators, and stacked
+                    group layout.</p>
+                <span class="doc-file-tag">📄 avatar.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Sizes</div>
+                    <div class="doc-preview" style="gap:16px;align-items:center">
+                        <div class="avatar avatar--xs">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2Lf6D4zsIMgNY8l9QhopxgmQv59cX1YaKhQ&s"
+                                alt="">
+                        </div>
+                        <div class="avatar avatar--sm">
+                            <img src="https://i.guim.co.uk/img/media/ffedd7aaae4058fbe90713f0e4ac37c5a7c7603e/0_55_4000_2400/master/4000.jpg?width=465&dpr=1&s=none&crop=none"
+                                alt="">
+                        </div>
+                        <div class="avatar avatar--md">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0xh0_5WKTrcQd7C1m29-BkwgAP2OazpXjUQ&s"
+                                alt="">
+                        </div>
+                        <div class="avatar avatar--lg">
+                            <img src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
+                                alt="">
+                        </div>
+                        <div class="avatar avatar--xl">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq0CZTdSGQu94pOmHSUcR_eJUHFxMfAX7ZyQ&s"
+                                alt="">
+                        </div>
+                        <div class="avatar avatar--2xl"><img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2Lf6D4zsIMgNY8l9QhopxgmQv59cX1YaKhQ&s"
+                                alt=""></div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar avatar--xs"</span><span class="hl-tag">&gt;</span>XS<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar avatar--lg"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo.png"</span> <span class="hl-attr">alt</span>=<span class="hl-str">"Akash"</span> <span class="hl-tag">/&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Color fills · Status · Group</div>
+                    <div class="doc-preview" style="gap:24px;align-items:center;flex-wrap:wrap">
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <div class="avatar avatar--primary">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                    alt="">
+                            </div>
+                            <div class="avatar avatar--secondary">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                    alt="">
+                            </div>
+                            <div class="avatar avatar--accent">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                    alt="">
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:10px;align-items:center">
+                            <div class="avatar-wrap">
+                                <div class="avatar avatar--lg">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                        alt="">
+                                </div><span class="avatar-status"></span>
+                            </div>
+                            <div class="avatar-wrap">
+                                <div class="avatar avatar--lg"><img
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                        alt=""></div><span class="avatar-status avatar-status--away"></span>
+                            </div>
+                            <div class="avatar-wrap">
+                                <div class="avatar avatar--lg"><img
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                        alt=""></div><span class="avatar-status avatar-status--offline"></span>
+                            </div>
+                        </div>
+                        <div class="avatar-group">
+                            <div class="avatar avatar--primary"><img
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                    alt=""></div>
+                            <div class="avatar avatar--secondary"><img
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                    alt=""></div>
+                            <div class="avatar avatar--accent"><img
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0L5yOBtjJgRr2ZBpodF4IgK1t-Sa1OX_2WQ&s"
+                                    alt=""></div>
+                            <div class="avatar-group__count">+4</div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cmt">&lt;!-- Color fills --&gt;</span>
+<span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar avatar--primary"</span><span class="hl-tag">&gt;</span>A<span class="hl-tag">&lt;/div&gt;</span>
+
+<span class="hl-cmt">&lt;!-- Status dot --&gt;</span>
+<span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar-wrap"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar"</span><span class="hl-tag">&gt;</span>N<span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar-status"</span><span class="hl-tag">&gt;&lt;/span&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+
+<span class="hl-cmt">&lt;!-- Stacked group --&gt;</span>
+<span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar-group"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar"</span><span class="hl-tag">&gt;</span>A<span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar"</span><span class="hl-tag">&gt;</span>B<span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar-group__count"</span><span class="hl-tag">&gt;</span>+4<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  NAV BUTTONS
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="nav-buttons">
+                <div class="doc-eyebrow">Components · navigation-buttons.css</div>
+                <h2 class="doc-section-title">Navigation <em>Buttons</em></h2>
+                <p class="doc-lead">Circular arrow buttons used in carousels and date pickers. Five variants, three
+                    sizes, disabled state.</p>
+                <span class="doc-file-tag">📄 navigation-buttons.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-block__label">Variants</div>
+                    <div class="doc-preview" style="gap:20px;align-items:center;flex-wrap:wrap">
+                        <div class="nav-btn-pair">
+                            <button class="nav-btn" disabled>←</button>
+                            <button class="nav-btn">→</button>
+                        </div>
+                        <div class="nav-btn-pair">
+                            <button class="nav-btn nav-btn--filled">←</button>
+                            <button class="nav-btn nav-btn--filled">→</button>
+                        </div>
+                        <div class="nav-btn-pair">
+                            <button class="nav-btn nav-btn--ghost">←</button>
+                            <button class="nav-btn nav-btn--ghost">→</button>
+                        </div>
+                        <div style="background:#222;padding:16px;border-radius:12px;display:flex;gap:8px">
+                            <button class="nav-btn nav-btn--dark">←</button>
+                            <button class="nav-btn nav-btn--dark">→</button>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"nav-btn-pair"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"nav-btn"</span> <span class="hl-attr">disabled</span><span class="hl-tag">&gt;</span>←<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"nav-btn"</span><span class="hl-tag">&gt;</span>→<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+
+<span class="hl-cmt">&lt;!-- Sizes --&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"nav-btn nav-btn--sm"</span><span class="hl-tag">&gt;</span>→<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"nav-btn nav-btn--lg"</span><span class="hl-tag">&gt;</span>→<span class="hl-tag">&lt;/button&gt;</span>
+
+<span class="hl-cmt">&lt;!-- Dark variant (for image overlays) --&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"nav-btn nav-btn--dark"</span><span class="hl-tag">&gt;</span>→<span class="hl-tag">&lt;/button&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  CALENDAR
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="calendar">
+                <div class="doc-eyebrow">Components · calendar.css</div>
+                <h2 class="doc-section-title"><em>Calendar</em></h2>
+                <p class="doc-lead">Dual-month date range picker. Auto-inited by <code>HolidaySeva.js</code> on any
+                    <code>.calendar-wrapper</code>. Supports Dates / Flexible tabs and ± day flex pills.
+                </p>
+                <span class="doc-file-tag">📄 calendar.css</span>
+
+                <div class="doc-callout doc-callout--info">
+                    <strong>Auto-init:</strong> Add <code>id="calendarEl"</code> to <code>.calendar-wrapper</code> and
+                    <code>HolidaySeva.js</code> will render the calendar and handle all interactions automatically.
+                </div>
+
+                <div class="doc-block" style="margin-top:20px">
+                    <div class="doc-preview doc-preview--grey doc-preview--center" style="padding:32px 16px">
+                        <div class="calendar-wrapper" id="calendarEl" style="box-shadow:var(--shadow-lg)">
+                            <div class="calendar-tabs">
+                                <button class="calendar-tab is-active">Dates</button>
+                                <button class="calendar-tab">Flexible</button>
+                            </div>
+                            <div class="calendar-months"></div>
+                            <div class="calendar-flex-pills">
+                                <button class="calendar-flex-pill is-active">Exact dates</button>
+                                <button class="calendar-flex-pill">± 1 day</button>
+                                <button class="calendar-flex-pill">± 2 days</button>
+                                <button class="calendar-flex-pill">± 3 days</button>
+                                <button class="calendar-flex-pill">± 7 days</button>
+                                <button class="calendar-flex-pill">± 14 days</button>
+                            </div>
+                            <div class="calendar-footer">
+                                <button class="btn btn-link">Clear dates</button>
+                                <button class="btn btn-primary btn-sm">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-wrapper"</span> <span class="hl-attr">id</span>=<span class="hl-str">"calendarEl"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-tabs"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-tab is-active"</span><span class="hl-tag">&gt;</span>Dates<span class="hl-tag">&lt;/button&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-tab"</span><span class="hl-tag">&gt;</span>Flexible<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-months"</span><span class="hl-tag">&gt;&lt;/div&gt;</span> <span class="hl-cmt">&lt;!-- JS renders here --&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-flex-pills"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-flex-pill is-active"</span><span class="hl-tag">&gt;</span>Exact dates<span class="hl-tag">&lt;/button&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-flex-pill"</span><span class="hl-tag">&gt;</span>± 1 day<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"calendar-footer"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-link"</span><span class="hl-tag">&gt;</span>Clear dates<span class="hl-tag">&lt;/button&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary btn-sm"</span><span class="hl-tag">&gt;</span>Close<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  LISTING CARD
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="listing-card">
+                <div class="doc-eyebrow">Components · listing-card.css</div>
+                <h2 class="doc-section-title">Listing <em>Card</em></h2>
+                <p class="doc-lead">Square-ratio property card with wishlist toggle, guest-favourite badge, dot
+                    pagination, hover zoom, and full price/rating body.</p>
+                <span class="doc-file-tag">📄 listing-card.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey" style="gap:20px">
+                        <div class="listing-card" style="width:220px">
+                            <div class="listing-card__image-wrap">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/d63b5c24-b11c-4d23-972d-df725b1ef78a.jpeg?im_w=720"
+                                    alt="" />
+                                <button class="listing-card__wishlist" data-wishlist>♡</button>
+                                <div class="listing-card__dots">
+                                    <span class="listing-card__dot is-active"></span>
+                                    <span class="listing-card__dot"></span>
+                                    <span class="listing-card__dot"></span>
+                                </div>
+                            </div>
+                            <div class="listing-card__body">
+                                <div class="listing-card__row">
+                                    <span class="listing-card__name">Varanasi, India</span>
+                                    <span class="listing-card__rating"><span class="star">★</span> 4.95</span>
+                                </div>
+                                <div class="listing-card__location">Entire rental unit</div>
+                                <div class="listing-card__dates">10–12 Apr</div>
+                                <div class="listing-card__price">₹10,098 <span>/ night</span></div>
+                            </div>
+                        </div>
+                        <div class="listing-card" style="width:220px">
+                            <div class="listing-card__image-wrap">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/eaf0aeef-65ac-4971-a1ee-423b97fa9d53.jpeg?im_w=720"
+                                    alt="" />
+                                <button class="listing-card__wishlist is-wishlisted" data-wishlist>♥</button>
+                                <span class="listing-card__badge">Guest favourite</span>
+                            </div>
+                            <div class="listing-card__body">
+                                <div class="listing-card__row">
+                                    <span class="listing-card__name">Near Kal Bhairav</span>
+                                    <span class="listing-card__rating"><span class="star">★</span> 5.0</span>
+                                </div>
+                                <div class="listing-card__location">Private room</div>
+                                <div class="listing-card__dates">15–20 Apr</div>
+                                <div class="listing-card__price">₹5,500 <span>/ night</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__image-wrap"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo.jpg"</span> <span class="hl-attr">alt</span>=<span class="hl-str">""</span> <span class="hl-tag">/&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__wishlist"</span> <span class="hl-attr">data-wishlist</span><span class="hl-tag">&gt;</span>♡<span class="hl-tag">&lt;/button&gt;</span>
+    <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__badge"</span><span class="hl-tag">&gt;</span>Guest favourite<span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__body"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__row"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__name"</span><span class="hl-tag">&gt;</span>Varanasi, India<span class="hl-tag">&lt;/span&gt;</span>
+      <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__rating"</span><span class="hl-tag">&gt;</span>★ 4.95<span class="hl-tag">&lt;/span&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__location"</span><span class="hl-tag">&gt;</span>Entire rental unit<span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"listing-card__price"</span><span class="hl-tag">&gt;</span>₹10,098 <span class="hl-tag">&lt;span&gt;</span>/ night<span class="hl-tag">&lt;/span&gt;&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  CARD STACK
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="card-stack">
+                <div class="doc-eyebrow">Components · card-stack.css</div>
+                <h2 class="doc-section-title">Card <em>Stack</em> Carousel</h2>
+                <p class="doc-lead">Horizontally scrollable card row with "Original" badge overlay, wishlist, and a "See
+                    all" stacked-photo card. Used for Airbnb Originals Experiences.</p>
+                <span class="doc-file-tag">📄 card-stack.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview" style="flex-direction:column;align-items:stretch">
+                        <div class="originals-header" style="padding:0 4px 0">
+                            <div>
+                                <div class="originals-title-wrap">
+                                    <span class="originals-title">Airbnb Originals</span>
+                                    <span style="font-size:1.1rem">→</span>
+                                </div>
+                                <div class="originals-subtitle">Hosted by the world's most interesting people</div>
+                            </div>
+                            <div class="originals-nav">
+                                <button class="nav-btn" disabled>←</button>
+                                <button class="nav-btn">→</button>
+                            </div>
+                        </div>
+                        <div class="originals-grid">
+                            <div class="original-card">
+                                <div class="original-card__img">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UqK3ULpw-6t5zfaP8SdELlGmevoEnaEv5g&s"
+                                        alt="" />
+                                    <div class="original-card__badge"><span
+                                            class="original-card__badge-icon">✏️</span><span
+                                            class="original-card__badge-text">Original</span></div>
+                                    <button class="original-card__wishlist" data-wishlist>♡</button>
+                                </div>
+                                <div class="original-card__body">
+                                    <div class="original-card__name">Sip Vibe & Design A Vintage T-shirt Workshop</div>
+                                    <div class="original-card__meta">Atlanta, United States</div>
+                                    <div class="original-card__price">From ₹5,979 / guest · <span
+                                            class="original-card__rating">★ 4.96</span></div>
+                                </div>
+                            </div>
+                            <div class="original-card">
+                                <div class="original-card__img">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-ijGgmWciiEtkfA9KbzmqCEpirpAqgbVUhg&s"
+                                        alt="" />
+                                    <div class="original-card__badge"><span
+                                            class="original-card__badge-icon">✏️</span><span
+                                            class="original-card__badge-text">Original</span></div>
+                                    <button class="original-card__wishlist" data-wishlist>♡</button>
+                                </div>
+                                <div class="original-card__body">
+                                    <div class="original-card__name">Bake traditional French pastries with Grandma</div>
+                                    <div class="original-card__meta">Paris, France</div>
+                                    <div class="original-card__price">From ₹8,015 / guest · <span
+                                            class="original-card__rating">★ 4.95</span></div>
+                                </div>
+                            </div>
+                            <div class="original-card">
+                                <div class="original-card__img">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTHlyaiNXkWRFunWiyuTCgoRvEgIAzGc3PTQ&s"
+                                        alt="" />
+                                    <div class="original-card__badge"><span
+                                            class="original-card__badge-icon">✏️</span><span
+                                            class="original-card__badge-text">Original</span></div>
+                                    <button class="original-card__wishlist" data-wishlist>♡</button>
+                                </div>
+                                <div class="original-card__body">
+                                    <div class="original-card__name">K-drama inspired night of Korean BBQ and karaoke
+                                    </div>
+                                    <div class="original-card__meta">Seoul, South Korea</div>
+                                    <div class="original-card__price">From ₹8,722 / guest · <span
+                                            class="original-card__rating">★ 5.0</span></div>
+                                </div>
+                            </div>
+
+                            <div class="original-card original-card--see-all">
+                                <div class="original-card__img">
+                                    <div class="see-all-stack">
+                                        <img class="see-all-stack__img"
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTHlyaiNXkWRFunWiyuTCgoRvEgIAzGc3PTQ&s"
+                                            alt="" />
+                                        <img class="see-all-stack__img"
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-ijGgmWciiEtkfA9KbzmqCEpirpAqgbVUhg&s"
+                                            alt="" />
+                                    </div>
+                                    <span class="see-all-text">See all</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"originals-grid"</span><span class="hl-tag">&gt;</span>
+
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__img"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo.jpg"</span> <span class="hl-attr">alt</span>=<span class="hl-str">""</span> <span class="hl-tag">/&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__badge"</span><span class="hl-tag">&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__badge-icon"</span><span class="hl-tag">&gt;</span>✏️<span class="hl-tag">&lt;/span&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__badge-text"</span><span class="hl-tag">&gt;</span>Original<span class="hl-tag">&lt;/span&gt;</span>
+      <span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__wishlist"</span> <span class="hl-attr">data-wishlist</span><span class="hl-tag">&gt;</span>♡<span class="hl-tag">&lt;/button&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__body"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__name"</span><span class="hl-tag">&gt;</span>Workshop Title<span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__meta"</span><span class="hl-tag">&gt;</span>City, Country<span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"original-card__price"</span><span class="hl-tag">&gt;</span>From ₹5,979 / guest<span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  GALLERY
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="gallery">
+                <div class="doc-eyebrow">Components · gallery.css</div>
+                <h2 class="doc-section-title">Location <em>Gallery</em></h2>
+                <p class="doc-lead">Five-photo masonry grid — large hero left, 2×2 right — exactly matching the Airbnb
+                    listing page layout. With Share/Save overlays and "Show all photos" button.</p>
+                <span class="doc-file-tag">📄 gallery.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--flush">
+                        <div class="gallery" style="width:100%">
+                            <div class="gallery-grid">
+                                <div class="gallery-item gallery-item--hero">
+                                    <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/d63b5c24-b11c-4d23-972d-df725b1ef78a.jpeg?im_w=1200"
+                                        alt="" />
+                                </div>
+                                <div class="gallery-item gallery-item--top-right">
+                                    <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/eaf0aeef-65ac-4971-a1ee-423b97fa9d53.jpeg?im_w=720"
+                                        alt="" />
+                                </div>
+                                <div class="gallery-item gallery-item--top-far">
+                                    <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/b2988fe6-4c4a-486f-bdfa-a46bb2282c28.jpeg?im_w=720"
+                                        alt="" />
+                                </div>
+                                <div class="gallery-item gallery-item--bottom-right">
+                                    <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/c07c148a-bd27-43b8-9ed4-b2f8b0e8427d.jpeg?im_w=720"
+                                        alt="" />
+                                </div>
+                                <div class="gallery-item gallery-item--bottom-far">
+                                    <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1476007189964274532/original/61c5a2c8-5d5d-4e9c-b734-b8a2844f9415.jpeg?im_w=720"
+                                        alt="" />
+                                </div>
+                            </div>
+                            <div class="gallery-actions">
+                                <button class="gallery-action-btn">↑ Share</button>
+                                <button class="gallery-action-btn">♡ Save</button>
+                            </div>
+                            <button class="gallery-show-all">⊞ Show all photos</button>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-grid"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-item gallery-item--hero"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"main.jpg"</span> <span class="hl-tag">/&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-item gallery-item--top-right"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo2.jpg"</span> <span class="hl-tag">/&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-item gallery-item--top-far"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo3.jpg"</span> <span class="hl-tag">/&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-item gallery-item--bottom-right"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo4.jpg"</span> <span class="hl-tag">/&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-item gallery-item--bottom-far"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-str">"photo5.jpg"</span> <span class="hl-tag">/&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-actions"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-action-btn"</span><span class="hl-tag">&gt;</span>↑ Share<span class="hl-tag">&lt;/button&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-action-btn"</span><span class="hl-tag">&gt;</span>♡ Save<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"gallery-show-all"</span><span class="hl-tag">&gt;</span>⊞ Show all photos<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  BOOKING CARD
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="booking-card">
+                <div class="doc-eyebrow">Components · booking-card.css</div>
+                <h2 class="doc-section-title">Booking <em>Card</em></h2>
+                <p class="doc-lead">Sticky price sidebar with check-in/out input grid, guest dropdown, reserve CTA,
+                    free-cancellation notice, and full price breakdown. Includes mobile sticky bottom bar variant.</p>
+                <span class="doc-file-tag">📄 booking-card.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey"
+                        style="justify-content:flex-start;gap:32px;flex-wrap:wrap">
+                        <div class="booking-card" style="width:340px;position:static">
+                            <div class="booking-card__price-fees-banner">
+                                <span class="icon">🏷️</span> Prices include all fees
+                            </div>
+                            <div class="booking-card__price">
+                                <span class="booking-card__price-original">₹13,008</span>
+                                <span class="booking-card__price-amount">₹10,098</span>
+                                <span class="booking-card__price-period">for 2 nights</span>
+                                <span class="booking-card__rating" style="margin-left:auto">
+                                    <span class="star-icon">★</span> 4.95
+                                    <span class="booking-card__rating-count">· 21 reviews</span>
+                                </span>
+                            </div>
+                            <div class="booking-card__inputs">
+                                <div class="booking-card__date-row">
+                                    <div class="booking-card__field booking-card__field--has-value">
+                                        <span class="booking-card__field-label">Check-in</span>
+                                        <span class="booking-card__field-value">4/10/2026</span>
+                                    </div>
+                                    <div class="booking-card__field booking-card__field--has-value">
+                                        <span class="booking-card__field-label">Checkout</span>
+                                        <span class="booking-card__field-value">4/12/2026</span>
+                                    </div>
+                                </div>
+                                <div class="booking-card__field">
+                                    <div class="booking-card__guests-row">
+                                        <div>
+                                            <span class="booking-card__field-label">Guests</span>
+                                            <span class="booking-card__field-value">1 guest</span>
+                                        </div>
+                                        <span class="booking-card__guests-arrow">⌄</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="booking-card__cancellation">Free cancellation before <strong>9 April</strong>
+                            </div>
+                            <button class="booking-card__reserve">Reserve</button>
+                            <p class="booking-card__notice">You won't be charged yet</p>
+                            <div class="booking-card__breakdown">
+                                <div class="booking-card__breakdown-row">
+                                    <span class="booking-card__breakdown-row--label">₹5,049 × 2 nights</span>
+                                    <span>₹10,098</span>
+                                </div>
+                                <div class="booking-card__breakdown-row">
+                                    <span class="booking-card__breakdown-row--label">Cleaning fee</span>
+                                    <span>₹1,800</span>
+                                </div>
+                                <div class="booking-card__breakdown-row">
+                                    <span class="booking-card__breakdown-row--label">Airbnb service fee</span>
+                                    <span>₹910</span>
+                                </div>
+                                <div class="booking-card__breakdown-row booking-card__breakdown-row--total">
+                                    <span>Total before taxes</span><span>₹12,808</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p
+                                style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:10px">
+                                Mobile bar</p>
+                            <div class="mobile-price-bar" style="border-radius:16px;border:1px solid #ddd;width:340px">
+                                <div>
+                                    <div class="mobile-price-bar__price">₹3,000 <span>/ guest</span></div>
+                                    <div class="mobile-price-bar__cancellation">Free cancellation</div>
+                                </div>
+                                <button class="btn-primary-pill">Show dates</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__price"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__price-amount"</span><span class="hl-tag">&gt;</span>₹10,098<span class="hl-tag">&lt;/span&gt;</span>
+    <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__price-period"</span><span class="hl-tag">&gt;</span>for 2 nights<span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__inputs"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__date-row"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__field"</span><span class="hl-tag">&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__field-label"</span><span class="hl-tag">&gt;</span>Check-in<span class="hl-tag">&lt;/span&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__field-value"</span><span class="hl-tag">&gt;</span>Add date<span class="hl-tag">&lt;/span&gt;</span>
+      <span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__field"</span><span class="hl-tag">&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__field-label"</span><span class="hl-tag">&gt;</span>Checkout<span class="hl-tag">&lt;/span&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__field-value"</span><span class="hl-tag">&gt;</span>Add date<span class="hl-tag">&lt;/span&gt;</span>
+      <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"booking-card__reserve"</span><span class="hl-tag">&gt;</span>Reserve<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  REVIEW CARD
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="review-card">
+                <div class="doc-eyebrow">Components · review-card.css</div>
+                <h2 class="doc-section-title">Review <em>Card</em></h2>
+                <p class="doc-lead">Review grid with score header, Guest Favourite badge, six-category rating bars,
+                    avatar + stars per review, and expandable body text.</p>
+                <span class="doc-file-tag">📄 review-card.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey" style="flex-direction:column;align-items:stretch">
+                        <div class="review-header">
+                            <span class="review-header__star">★</span>
+                            <span class="review-header__score">5.0</span>
+                            <span class="review-header__count">· 19 reviews</span>
+                            <div class="review-header__guest-fav">
+                                <span class="review-header__guest-fav-icon">🏅</span>
+                                <div>
+                                    <div
+                                        style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#999;margin-bottom:2px">
+                                        Guest favourite</div>
+                                    <div class="review-header__guest-fav-text">One of the most loved homes on Airbnb
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-categories" style="margin-bottom:24px">
+                            <div class="review-category"><span class="review-category__name">Cleanliness</span><span
+                                    class="review-category__score">4.9</span>
+                                <div class="review-category__bar-wrap">
+                                    <div class="review-category__fill" style="width:98%"></div>
+                                </div>
+                            </div>
+                            <div class="review-category"><span class="review-category__name">Accuracy</span><span
+                                    class="review-category__score">4.9</span>
+                                <div class="review-category__bar-wrap">
+                                    <div class="review-category__fill" style="width:98%"></div>
+                                </div>
+                            </div>
+                            <div class="review-category"><span class="review-category__name">Check-in</span><span
+                                    class="review-category__score">4.9</span>
+                                <div class="review-category__bar-wrap">
+                                    <div class="review-category__fill" style="width:98%"></div>
+                                </div>
+                            </div>
+                            <div class="review-category"><span class="review-category__name">Communication</span><span
+                                    class="review-category__score">5.0</span>
+                                <div class="review-category__bar-wrap">
+                                    <div class="review-category__fill" style="width:100%"></div>
+                                </div>
+                            </div>
+                            <div class="review-category"><span class="review-category__name">Location</span><span
+                                    class="review-category__score">5.0</span>
+                                <div class="review-category__bar-wrap">
+                                    <div class="review-category__fill" style="width:100%"></div>
+                                </div>
+                            </div>
+                            <div class="review-category"><span class="review-category__name">Value</span><span
+                                    class="review-category__score">4.8</span>
+                                <div class="review-category__bar-wrap">
+                                    <div class="review-category__fill" style="width:96%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-grid">
+                            <div class="review-card">
+                                <div class="review-card__header">
+                                    <div class="avatar avatar--lg"
+                                        style="background:linear-gradient(135deg,#f5a623,#e8821a);color:white;flex-shrink:0">
+                                        B</div>
+                                    <div class="review-card__meta">
+                                        <div class="review-card__name">Binita</div>
+                                        <div class="review-card__location">Guwahati, India</div>
+                                    </div>
+                                </div>
+                                <div class="review-card__rating-row">
+                                    <div class="review-card__stars"><span class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span class="review-card__star">★</span>
+                                    </div>
+                                    <span class="review-card__date">September 2025</span>
+                                </div>
+                                <p class="review-card__body" id="rv1">We had a wonderful experience with this photo
+                                    walk. Nairit and Arindam curated an unforgettable experience with beautiful pandals
+                                    and street food experience. Everything was well organised and everything went
+                                    perfectly.</p>
+                                <button class="review-card__show-more" onclick="toggleReview('rv1',this)">Show
+                                    more</button>
+                            </div>
+                            <div class="review-card">
+                                <div class="review-card__header">
+                                    <div class="avatar avatar--lg"
+                                        style="background:linear-gradient(135deg,#5b7ff1,#3b5fcf);color:white;flex-shrink:0">
+                                        N</div>
+                                    <div class="review-card__meta">
+                                        <div class="review-card__name">Nivashan</div>
+                                        <div class="review-card__location">Johannesburg, South Africa</div>
+                                    </div>
+                                </div>
+                                <div class="review-card__rating-row">
+                                    <div class="review-card__stars"><span class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span
+                                            class="review-card__star">★</span><span class="review-card__star">★</span>
+                                    </div>
+                                    <span class="review-card__date">April 2025</span>
+                                </div>
+                                <p class="review-card__body">We had an amazing time during this photoshoot experience!
+                                    Nairit and Onyx were incredibly professional, friendly, and clearly very
+                                    experienced, which made us feel comfortable and confident throughout the entire
+                                    session.</p>
+                            </div>
+                        </div>
+                        <button class="show-all-btn">Show all 19 reviews →</button>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-grid"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__header"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"avatar avatar--lg"</span><span class="hl-tag">&gt;</span>B<span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__meta"</span><span class="hl-tag">&gt;</span>
+        <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__name"</span><span class="hl-tag">&gt;</span>Binita<span class="hl-tag">&lt;/div&gt;</span>
+        <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__location"</span><span class="hl-tag">&gt;</span>Guwahati, India<span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__rating-row"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__stars"</span><span class="hl-tag">&gt;</span>
+        <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__star"</span><span class="hl-tag">&gt;</span>★<span class="hl-tag">&lt;/span&gt;</span> <span class="hl-cmt">× 5</span>
+      <span class="hl-tag">&lt;/div&gt;</span>
+      <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__date"</span><span class="hl-tag">&gt;</span>September 2025<span class="hl-tag">&lt;/span&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__body"</span><span class="hl-tag">&gt;</span>Review text…<span class="hl-tag">&lt;/p&gt;</span>
+    <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"review-card__show-more"</span>
+      <span class="hl-attr">onclick</span>=<span class="hl-str">"toggleReview('bodyId', this)"</span><span class="hl-tag">&gt;</span>Show more<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  MODAL
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="modal">
+                <div class="doc-eyebrow">Components · modal.css</div>
+                <h2 class="doc-section-title"><em>Modal</em></h2>
+                <p class="doc-lead">Spring-animated overlay dialog. Locks body scroll, closes on backdrop click and <kbd
+                        style="background:#f5f5f5;padding:1px 6px;border-radius:4px;border:1px solid #ddd;font-size:11px">Esc</kbd>.
+                    Becomes a bottom sheet on mobile.</p>
+                <span class="doc-file-tag">📄 modal.css</span>
+
+                <div class="doc-callout doc-callout--tip">
+                    <strong>JS methods:</strong> <code>openModal('id')</code> and <code>closeModal('id')</code> —
+                    provided by <code>HolidaySeva.js</code>.
+                </div>
+
+                <div class="doc-block" style="margin-top:20px">
+                    <div class="doc-preview doc-preview--grey" style="justify-content:center;padding:40px 28px">
+                        <button class="btn btn-primary" onclick="openModal('demoModal')">Open Modal</button>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cmt">&lt;!-- Trigger --&gt;</span>
+<span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"btn btn-primary"</span>
+  <span class="hl-attr">onclick</span>=<span class="hl-str">"openModal('myModal')"</span><span class="hl-tag">&gt;</span>Open Modal<span class="hl-tag">&lt;/button&gt;</span>
+
+<span class="hl-cmt">&lt;!-- Dialog --&gt;</span>
+<span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"modal-overlay modal-overlay--hidden"</span> <span class="hl-attr">id</span>=<span class="hl-str">"myModal"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"modal"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"modal__header"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"modal__close"</span>
+        <span class="hl-attr">onclick</span>=<span class="hl-str">"closeModal('myModal')"</span><span class="hl-tag">&gt;</span>✕<span class="hl-tag">&lt;/button&gt;</span>
+      <span class="hl-tag">&lt;h2</span> <span class="hl-attr">class</span>=<span class="hl-str">"modal__title"</span><span class="hl-tag">&gt;</span>About this space<span class="hl-tag">&lt;/h2&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+    <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"modal__body"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;p&gt;</span>Content goes here…<span class="hl-tag">&lt;/p&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  DROPDOWN
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="dropdown">
+                <div class="doc-eyebrow">Components · dropdown.css</div>
+                <h2 class="doc-section-title"><em>Dropdown</em> &amp; Counter</h2>
+                <p class="doc-lead">Animated dropdown panels with menu lists and guest counter rows. Toggled by
+                    <code>toggleDropdown()</code> in <code>HolidaySeva.js</code>.
+                </p>
+                <span class="doc-file-tag">📄 dropdown.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview" style="gap:20px;align-items:flex-start;min-height:280px">
+                        <!-- Menu dropdown -->
+                        <div class="dropdown dropdown--open" id="menuDrop">
+                            <button class="dropdown__trigger" onclick="toggleDropdown('menuDrop')" aria-expanded="true">
+                                Sort by <span class="dropdown__arrow">▾</span>
+                            </button>
+                            <div class="dropdown__panel">
+                                <ul class="dropdown__menu">
+                                    <li><button class="dropdown__item dropdown__item--active">Top rated</button></li>
+                                    <li><button class="dropdown__item">Price: Low to high</button></li>
+                                    <li><button class="dropdown__item">Price: High to low</button></li>
+                                    <li><button class="dropdown__item">Most reviewed</button></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Guest counter dropdown -->
+                        <div class="dropdown dropdown--open" id="guestDrop" style="width:260px">
+                            <button class="dropdown__trigger" style="width:100%" onclick="toggleDropdown('guestDrop')"
+                                aria-expanded="true">
+                                2 guests <span class="dropdown__arrow">▾</span>
+                            </button>
+                            <div class="dropdown__panel"
+                                style="width:100%;position:relative;top:6px;transform:none;opacity:1;pointer-events:all">
+                                <div class="dropdown__body">
+                                    <div class="dropdown__row">
+                                        <div class="dropdown__row-label">
+                                            <div class="dropdown__row-title">Adults</div>
+                                            <div class="dropdown__row-sub">Age 13+</div>
+                                        </div>
+                                        <div class="counter">
+                                            <button class="counter__btn"
+                                                onclick="changeCount('adults',-1,{min:1})">−</button>
+                                            <span class="counter__value" id="adults-count">2</span>
+                                            <button class="counter__btn"
+                                                onclick="changeCount('adults',1,{max:8})">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown__row">
+                                        <div class="dropdown__row-label">
+                                            <div class="dropdown__row-title">Children</div>
+                                            <div class="dropdown__row-sub">Ages 2–12</div>
+                                        </div>
+                                        <div class="counter">
+                                            <button class="counter__btn"
+                                                onclick="changeCount('children',-1,{min:0})">−</button>
+                                            <span class="counter__value" id="children-count">0</span>
+                                            <button class="counter__btn"
+                                                onclick="changeCount('children',1,{max:6})">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"dropdown"</span> <span class="hl-attr">id</span>=<span class="hl-str">"myDrop"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"dropdown__trigger"</span>
+    <span class="hl-attr">onclick</span>=<span class="hl-str">"toggleDropdown('myDrop')"</span><span class="hl-tag">&gt;</span>
+    Sort by <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"dropdown__arrow"</span><span class="hl-tag">&gt;</span>▾<span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"dropdown__panel"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;ul</span> <span class="hl-attr">class</span>=<span class="hl-str">"dropdown__menu"</span><span class="hl-tag">&gt;</span>
+      <span class="hl-tag">&lt;li&gt;&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"dropdown__item"</span><span class="hl-tag">&gt;</span>Top rated<span class="hl-tag">&lt;/button&gt;&lt;/li&gt;</span>
+    <span class="hl-tag">&lt;/ul&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+
+<span class="hl-cmt">&lt;!-- Counter row inside dropdown --&gt;</span>
+<span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"counter"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"counter__btn"</span>
+    <span class="hl-attr">onclick</span>=<span class="hl-str">"changeCount('adults',-1,{min:1})"</span><span class="hl-tag">&gt;</span>−<span class="hl-tag">&lt;/button&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-str">"counter__value"</span><span class="hl-tag">&gt;</span>2<span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"counter__btn"</span>
+    <span class="hl-attr">onclick</span>=<span class="hl-str">"changeCount('adults',1,{max:8})"</span><span class="hl-tag">&gt;</span>+<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  VERIFIED STAMP
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="verified-stamp">
+                <div class="doc-eyebrow">Components · verified-stamp.css</div>
+                <h2 class="doc-section-title">Verified <em>Stamp</em></h2>
+                <p class="doc-lead">Gold wax-seal quality card used on listing pages to signal photographer / host
+                    vetting. Cream background, centered layout.</p>
+                <span class="doc-file-tag">📄 verified-stamp.css</span>
+
+                <div class="doc-block">
+                    <div class="doc-preview doc-preview--grey doc-preview--center">
+                        <div class="verified-card" style="max-width:400px">
+                            <div class="verified-card__seal">
+                                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <radialGradient id="g1" cx="40%" cy="35%" r="65%">
+                                            <stop offset="0%" stop-color="#FFE57A" />
+                                            <stop offset="40%" stop-color="#F5C518" />
+                                            <stop offset="100%" stop-color="#B8860B" />
+                                        </radialGradient>
+                                        <radialGradient id="g2" cx="45%" cy="40%" r="60%">
+                                            <stop offset="0%" stop-color="#FFD700" />
+                                            <stop offset="100%" stop-color="#C8960C" />
+                                        </radialGradient>
+                                    </defs>
+                                    <path
+                                        d="M40 4 L45.9 14.2 L57.7 11.1 L58.5 23.2 L69.6 27.6 L64.5 38.4 L72 47.6 L62.1 53.1 L62.1 65.3 L50 63.4 L43.2 73.6 L40 64.2 L36.8 73.6 L30 63.4 L17.9 65.3 L17.9 53.1 L8 47.6 L15.5 38.4 L10.4 27.6 L21.5 23.2 L22.3 11.1 L34.1 14.2 Z"
+                                        fill="url(#g1)" stroke="#D4A017" stroke-width="0.5" />
+                                    <circle cx="40" cy="40" r="22" fill="url(#g2)" stroke="#C8960C" stroke-width="1" />
+                                    <path
+                                        d="M40 24 C37 24 35 27 35 27 L26 42 C24.5 44.5 26 46 27.5 46 C29 46 30 44.5 30.5 43.5 L32 40.5 L33 38.5 C34 36.5 36 35.5 37.5 35.5 L42.5 35.5 C44 35.5 46 36.5 47 38.5 L48 40.5 L49.5 43.5 C50 44.5 51 46 52.5 46 C54 46 55.5 44.5 54 42 L45 27 C45 27 43 24 40 24 Z M40 30 C41 30 42 31 43 33 L44.5 36 L35.5 36 L37 33 C38 31 39 30 40 30 Z"
+                                        fill="white" />
+                                </svg>
+                            </div>
+                            <h3 class="verified-card__title">Photographers on Airbnb<br>are vetted for quality</h3>
+                            <p class="verified-card__desc">Photographers are evaluated for their professional
+                                experience, portfolio of strong work and reputation for excellence.</p>
+                            <button class="verified-card__link">Learn more</button>
+                        </div>
+                    </div>
+                    <div class="doc-code">
+                        <div class="doc-code__bar"><span class="doc-code__lang">HTML</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"verified-card"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-str">"verified-card__seal"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-cmt">&lt;!-- SVG gold seal --&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;h3</span> <span class="hl-attr">class</span>=<span class="hl-str">"verified-card__title"</span><span class="hl-tag">&gt;</span>
+    Photographers on Airbnb are vetted for quality
+  <span class="hl-tag">&lt;/h3&gt;</span>
+  <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-str">"verified-card__desc"</span><span class="hl-tag">&gt;</span>
+    Photographers are evaluated for their professional experience…
+  <span class="hl-tag">&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;button</span> <span class="hl-attr">class</span>=<span class="hl-str">"verified-card__link"</span><span class="hl-tag">&gt;</span>Learn more<span class="hl-tag">&lt;/button&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  JS API
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="js-api">
+                <div class="doc-eyebrow">JavaScript · HolidaySeva.js</div>
+                <h2 class="doc-section-title">JavaScript <em>API</em></h2>
+                <p class="doc-lead">All interactive behaviour is handled by <code>HolidaySeva.js</code>. It auto-inits
+                    on
+                    <code>DOMContentLoaded</code> and exposes a global <code>HolidaySevaUI</code> object plus
+                    convenience
+                    functions.
+                </p>
+
+                <div class="doc-block">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Function</th>
+                                <th>Signature</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>openModal</code></td>
+                                <td><code>openModal(id)</code></td>
+                                <td>Show modal overlay by element ID. Locks body scroll, focuses close button.</td>
+                            </tr>
+                            <tr>
+                                <td><code>closeModal</code></td>
+                                <td><code>closeModal(id)</code></td>
+                                <td>Hide modal by element ID. Restores body scroll.</td>
+                            </tr>
+                            <tr>
+                                <td><code>toggleDropdown</code></td>
+                                <td><code>toggleDropdown(idOrEl)</code></td>
+                                <td>Toggle a dropdown open/closed. Pass the <code>.dropdown</code> element's ID or the
+                                    element itself.</td>
+                            </tr>
+                            <tr>
+                                <td><code>closeAllDropdowns</code></td>
+                                <td><code>closeAllDropdowns()</code></td>
+                                <td>Close every open dropdown on the page.</td>
+                            </tr>
+                            <tr>
+                                <td><code>changeCount</code></td>
+                                <td><code>changeCount(type, delta, opts?)</code></td>
+                                <td>Increment/decrement a counter. <code>type</code> is
+                                    <code>'adults'</code>/<code>'children'</code>/<code>'infants'</code>.
+                                    <code>opts</code> accepts <code>{min, max}</code>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>initCalendar</code></td>
+                                <td><code>initCalendar(el)</code></td>
+                                <td>Manually init a calendar wrapper element (auto-called on page load).</td>
+                            </tr>
+                            <tr>
+                                <td><code>clearCalendar</code></td>
+                                <td><code>clearCalendar(el?)</code></td>
+                                <td>Clear selected date range. Without argument, targets <code>#calendarEl</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>toggleReview</code></td>
+                                <td><code>toggleReview(id, btn)</code></td>
+                                <td>Toggle truncated/expanded state of a review body.</td>
+                            </tr>
+                            <tr>
+                                <td><code>doCopy</code></td>
+                                <td><code>doCopy(btn)</code></td>
+                                <td>Copy code from nearest <code>pre</code> to clipboard. Shows "Copied!" feedback.</td>
+                            </tr>
+                            <tr>
+                                <td><code>formatDate</code></td>
+                                <td><code>formatDate(date)</code></td>
+                                <td>Returns a locale-formatted date string from a JS <code>Date</code> object.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- ───────────────────────────────────────────────────────
+  JS EVENTS
+─────────────────────────────────────────────────────────── -->
+            <section class="doc-section" id="js-events">
+                <div class="doc-eyebrow">JavaScript · Events & Attributes</div>
+                <h2 class="doc-section-title">Events <em>&amp; Data Attributes</em></h2>
+                <p class="doc-lead">HolidaySeva emits custom events and recognises special data attributes for
+                    integration
+                    with your own code.</p>
+
+                <div class="doc-block">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Event / Attribute</th>
+                                <th>Where</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>calendar:change</code></td>
+                                <td>Event on <code>.calendar-wrapper</code></td>
+                                <td>Fires when a date is selected. <code>event.detail</code> contains
+                                    <code>{ start: Date, end: Date|null }</code>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>data-booking</code></td>
+                                <td>Ancestor of calendar</td>
+                                <td>Marks the booking context. Calendar searches upward to find and update check-in/out
+                                    text spans.</td>
+                            </tr>
+                            <tr>
+                                <td><code>data-wishlist</code></td>
+                                <td>Any button</td>
+                                <td>Auto-inited toggle: adds <code>.is-wishlisted</code> class and changes color to
+                                    primary red on click.</td>
+                            </tr>
+                            <tr>
+                                <td><code>data-calendar</code></td>
+                                <td>Wrapper div</td>
+                                <td>Alternative to <code>.calendar-wrapper</code> class for triggering calendar
+                                    auto-init.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-block">
+                    <div class="doc-code" style="border-radius:16px;border:1px solid var(--doc-code-border)">
+                        <div class="doc-code__bar"><span class="doc-code__lang">JavaScript</span><button
+                                class="doc-code__copy" onclick="doCopy(this)">Copy</button></div>
+                        <pre><span class="hl-cmt">// Listen to calendar date changes</span>
+<span class="hl-key">const</span> cal = document.getElementById(<span class="hl-str">'calendarEl'</span>);
+cal.addEventListener(<span class="hl-str">'calendar:change'</span>, (e) => {
+  <span class="hl-key">const</span> { start, end } = e.detail;
+  <span class="hl-key">if</span> (start && end) {
+    <span class="hl-key">const</span> nights = Math.round((end - start) / <span class="hl-val">86_400_000</span>);
+    console.log(<span class="hl-str">`${nights} nights selected`</span>);
+  }
+});
+
+<span class="hl-cmt">// Programmatic modal control</span>
+HolidaySevaUI.openModal(<span class="hl-str">'myModal'</span>);
+setTimeout(() => HolidaySevaUI.closeModal(<span class="hl-str">'myModal'</span>), <span class="hl-val">3000</span>);
+
+<span class="hl-cmt">// Increment adult count</span>
+HolidaySevaUI.changeCount(<span class="hl-str">'adults'</span>, <span class="hl-val">1</span>, { min: <span class="hl-val">1</span>, max: <span class="hl-val">8</span> });</pre>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div><!-- /doc-layout -->
+
+
+    <!-- ══ DEMO MODAL ══════════════════════════════════════════ -->
+    <div class="modal-overlay modal-overlay--hidden" id="demoModal">
+        <div class="modal">
+            <div class="modal__header">
+                <button class="modal__close" onclick="closeModal('demoModal')">✕</button>
+                <h2 class="modal__title">About this space</h2>
+                <div style="width:32px"></div>
+            </div>
+            <div class="modal__body">
+                <p style="font-size:15px;line-height:1.7;color:#484848;margin-bottom:20px">
+                    Escape the chaos of the city and unwind at Grace Ganga View Retreat — a peaceful 2BHK stay just 2km
+                    from Assi Ghat. This cozy home offers all modern comforts, a private balcony, AC bedrooms, and a
+                    fully equipped kitchen.
+                </p>
+                <hr style="border:none;border-top:1px solid #ebebeb;margin:20px 0" />
+                <p style="font-size:15px;font-weight:600;margin-bottom:8px">The space</p>
+                <p style="font-size:15px;line-height:1.7;color:#484848">Welcome to Grace Ganga — a peaceful 2BHK
+                    homestay tucked away in a calm residential colony of Varanasi. Both bedrooms are air-conditioned for
+                    your comfort. The home includes a functional kitchen equipped for everyday cooking with utensils
+                    provided. The highlight is access to a shared terrace on the 5th floor with a Ganga view.</p>
+                <hr style="border:none;border-top:1px solid #ebebeb;margin:20px 0" />
+                <p style="font-size:15px;font-weight:600;margin-bottom:8px">Guest access</p>
+                <p style="font-size:15px;line-height:1.7;color:#484848">You'll have full private access to the entire
+                    2-bedroom apartment — no shared spaces inside. Ideal for families, couples, or solo travellers
+                    looking for a homely escape.</p>
+            </div>
+            <div class="modal__footer"
+                style="padding:16px 24px;border-top:1px solid #ebebeb;display:flex;justify-content:flex-end;gap:10px">
+                <button class="btn btn-outline" onclick="closeModal('demoModal')">Close</button>
+                <button class="btn btn-primary" onclick="closeModal('demoModal')">Got it</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="HolidaySeva.js"></script>
+    <script>
+        /* ── Doc-specific JS ─────────────────────────────────── */
+
+        // Copy button
+        function doCopy(btn) {
+            const pre = btn.closest('.doc-code').querySelector('pre');
+            const text = pre.innerText || pre.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+
+        // Review toggle
+        function toggleReview(id, btn) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.style.webkitLineClamp === 'unset') {
+                el.style.webkitLineClamp = '';
+                el.style.overflow = '';
+                btn.textContent = 'Show more';
+            } else {
+                el.style.webkitLineClamp = 'unset';
+                el.style.overflow = 'visible';
+                btn.textContent = 'Show less';
+            }
+        }
+
+        // Sidebar active state on scroll
+        const sections = document.querySelectorAll('.doc-section[id]');
+        const navLinks = document.querySelectorAll('.doc-nav-link[href^="#"]');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    navLinks.forEach(l => l.classList.remove('is-active'));
+                    const link = document.querySelector(`.doc-nav-link[href="#${e.target.id}"]`);
+                    if (link) link.classList.add('is-active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+
+        // Flex pills toggle
+        document.querySelectorAll('.calendar-flex-pill').forEach(p => {
+            p.addEventListener('click', () => {
+                p.closest('.calendar-flex-pills').querySelectorAll('.calendar-flex-pill').forEach(x => x.classList.remove('is-active'));
+                p.classList.add('is-active');
+            });
+        });
+
+        // Wishlist toggles
+        document.querySelectorAll('[data-wishlist]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('is-wishlisted');
+                btn.innerHTML = btn.classList.contains('is-wishlisted') ? '♥' : '♡';
+            });
+        });
+
+        // Simple counter for doc example (fallback if HolidaySeva.js not present)
+        function changeCount(type, delta, opts = {}) {
+            const el = document.getElementById(type + '-count');
+            if (!el) return;
+            let v = parseInt(el.textContent) + delta;
+            if (opts.min !== undefined) v = Math.max(opts.min, v);
+            if (opts.max !== undefined) v = Math.min(opts.max, v);
+            el.textContent = v;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+/* =============================================================
+   HolidaySeva UI Framework
+   File: holidayseva_framework.css
+   Version: 1.0.0
+
+   USAGE:
+     <link rel="stylesheet" href="holidayseva_framework.css">
+
+   This file:
+   1. Defines global CSS custom properties (design tokens)
+   2. Sets a base reset & typography
+   3. Imports all component stylesheets
+   ============================================================= */
+
+/* ─── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ─── Design Tokens ─────────────────────────────────────────── */
+:root {
+    /* Brand */
+    --hs-color-primary: #FF385C;
+    --hs-color-primary-dark: #E0002E;
+    --hs-color-secondary: #00A699;
+
+    /* Neutral */
+    --hs-color-text: #222222;
+    --hs-color-muted: #717171;
+    --hs-color-border: #DDDDDD;
+    --hs-color-bg: #FFFFFF;
+    --hs-color-bg-soft: #F7F7F7;
+    --hs-color-bg-warm: #F0EDE8;
+
+    /* Rating */
+    --hs-color-star: #F5A623;
+
+    /* Typography */
+    --hs-font-display: 'Playfair Display', Georgia, serif;
+    --hs-font-body: 'Nunito Sans', 'Helvetica Neue', Arial, sans-serif;
+
+    /* Radius */
+    --hs-radius-sm: 8px;
+    --hs-radius-md: 12px;
+    --hs-radius-lg: 16px;
+    --hs-radius-xl: 20px;
+    --hs-radius-pill: 9999px;
+
+    /* Shadow */
+    --hs-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --hs-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --hs-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+
+    /* Transition */
+    --hs-transition: 0.22s ease;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--hs-font-body);
+    color: var(--hs-color-text);
+    background: var(--hs-color-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ─── Component Imports ──────────────────────────────────────── */
+/* NOTE: When using individual files, replace these @imports
+   with <link> tags in your HTML. These work when files are
+   served from the same /css/ folder.                           */
+
+@import url('.Assets/css/hs-carousel.css');
+@import url('.Assets/css/hs-datepicker.css');
+@import url('.Assets/css/hs-package-cards.css');
+@import url('.Assets/css/hs-modal.css');
+
+/* ─── Utility Classes ────────────────────────────────────────── */
+
+/* Container */
+.hs-container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+    .hs-container {
+        padding: 0 16px;
+    }
+}
+
+/* Section spacing */
+.hs-section {
+    padding: 40px 0;
+}
+
+.hs-section-sm {
+    padding: 24px 0;
+}
+
+/* Typography helpers */
+.hs-title {
+    font-family: var(--hs-font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--hs-color-text);
+    letter-spacing: -0.4px;
+    margin: 0;
+}
+
+.hs-subtitle {
+    font-size: 14px;
+    color: var(--hs-color-muted);
+    margin: 4px 0 0;
+}
+
+/* Flex helpers */
+.hs-flex {
+    display: flex;
+}
+
+.hs-flex-center {
+    display: flex;
+    align-items: center;
+}
+
+.hs-flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hs-gap-8 {
+    gap: 8px;
+}
+
+.hs-gap-12 {
+    gap: 12px;
+}
+
+.hs-gap-16 {
+    gap: 16px;
+}
+
+/* Visibility */
+.hs-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}

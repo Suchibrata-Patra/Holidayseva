@@ -1,0 +1,335 @@
+/* =========================================================
+   HolidaySeva — Date Picker Component
+   File: css/hs-datepicker.css
+   ========================================================= */
+
+.hs-datepicker-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: transparent;
+    display: none;
+}
+
+.hs-datepicker-overlay.hs-open {
+    display: block;
+}
+
+.hs-datepicker {
+    font-family: var(--hs-font-body, 'Nunito Sans', sans-serif);
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.18);
+    padding: 28px 28px 20px;
+    width: 700px;
+    max-width: 95vw;
+    position: absolute;
+    z-index: 1000;
+    animation: hsDpSlideIn 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes hsDpSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Tabs */
+.hs-dp-tabs {
+    display: flex;
+    background: #f0ede8;
+    border-radius: 30px;
+    padding: 4px;
+    width: fit-content;
+    margin: 0 auto 24px;
+    gap: 2px;
+}
+
+.hs-dp-tab {
+    padding: 8px 22px;
+    border-radius: 26px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--hs-color-muted, #717171);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.hs-dp-tab.hs-active {
+    background: #fff;
+    color: var(--hs-color-text, #222);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendars */
+.hs-dp-calendars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.hs-dp-cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.hs-dp-cal-nav-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hs-color-text, #222);
+    transition: background 0.15s;
+}
+
+.hs-dp-cal-nav-btn:hover {
+    background: #f5f5f5;
+}
+
+.hs-dp-cal-nav-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.hs-dp-cal-nav-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+.hs-dp-month-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--hs-color-text, #222);
+    letter-spacing: -0.2px;
+}
+
+/* Grid */
+.hs-dp-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px 0;
+}
+
+.hs-dp-weekday {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--hs-color-muted, #717171);
+    padding: 4px 0 10px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.hs-dp-day {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13.5px;
+    color: var(--hs-color-text, #222);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+    z-index: 1;
+}
+
+.hs-dp-day:hover:not(.hs-dp-day--disabled):not(.hs-dp-day--empty) {
+    background: #f0ede8;
+}
+
+.hs-dp-day--today {
+    font-weight: 700;
+    border: 1.5px solid var(--hs-color-text, #222);
+}
+
+.hs-dp-day--disabled,
+.hs-dp-day--past {
+    color: #ccc;
+    cursor: default;
+    text-decoration: line-through;
+}
+
+.hs-dp-day--empty {
+    cursor: default;
+}
+
+.hs-dp-day--start,
+.hs-dp-day--end {
+    background: var(--hs-color-text, #222) !important;
+    color: #fff !important;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.hs-dp-day--start {
+    border-radius: 50% 0 0 50%;
+}
+
+.hs-dp-day--end {
+    border-radius: 0 50% 50% 0;
+}
+
+.hs-dp-day--start.hs-dp-day--end {
+    border-radius: 50%;
+}
+
+.hs-dp-day--in-range {
+    background: #f0ede8;
+    border-radius: 0;
+    color: var(--hs-color-text, #222);
+}
+
+.hs-dp-day--in-range:first-child {
+    border-radius: 50% 0 0 50%;
+}
+
+.hs-dp-day--in-range:last-child {
+    border-radius: 0 50% 50% 0;
+}
+
+/* Offset ring for today */
+.hs-dp-day--today.hs-dp-day--start,
+.hs-dp-day--today.hs-dp-day--end {
+    border: none;
+}
+
+/* Footer */
+.hs-dp-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #f0ede8;
+    flex-wrap: wrap;
+}
+
+.hs-dp-flex-chip {
+    padding: 6px 16px;
+    border-radius: 30px;
+    border: 1.5px solid var(--hs-color-border, #ddd);
+    background: #fff;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--hs-color-text, #222);
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: inherit;
+}
+
+.hs-dp-flex-chip.hs-active,
+.hs-dp-flex-chip:hover {
+    border-color: var(--hs-color-text, #222);
+    background: var(--hs-color-text, #222);
+    color: #fff;
+}
+
+.hs-dp-clear {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--hs-color-muted, #717171);
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 4px;
+    font-family: inherit;
+}
+
+.hs-dp-clear:hover {
+    color: var(--hs-color-text, #222);
+}
+
+/* Trigger button (the "When" pill) */
+.hs-dp-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: 40px;
+    border: 1.5px solid var(--hs-color-border, #ddd);
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--hs-color-text, #222);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    white-space: nowrap;
+}
+
+.hs-dp-trigger:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.hs-dp-trigger.hs-active {
+    border-color: var(--hs-color-text, #222);
+}
+
+.hs-dp-trigger-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--hs-color-text, #222);
+    display: block;
+    letter-spacing: 0.3px;
+}
+
+.hs-dp-trigger-value {
+    font-size: 13px;
+    color: var(--hs-color-muted, #717171);
+    display: block;
+}
+
+.hs-dp-trigger-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: var(--hs-color-muted, #717171);
+    transition: color 0.15s;
+}
+
+.hs-dp-trigger-clear:hover {
+    color: var(--hs-color-text, #222);
+}
+
+.hs-dp-trigger-clear svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+    .hs-datepicker {
+        padding: 20px 16px;
+    }
+
+    .hs-dp-calendars {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .hs-datepicker {
+        width: 95vw;
+    }
+}
