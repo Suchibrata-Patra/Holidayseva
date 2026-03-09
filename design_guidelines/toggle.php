@@ -439,6 +439,6 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
     });
   }
 </script>
-
+<?php include __DIR__ . '/footer.php'; ?>
 </body>
 </html>

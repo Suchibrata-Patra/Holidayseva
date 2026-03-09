@@ -154,4 +154,3 @@
     sections.forEach(s => spy.observe(s));
   });
 </script>
-<?php include __DIR__ . '/footer.php'; ?>
