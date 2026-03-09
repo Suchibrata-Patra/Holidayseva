@@ -93,42 +93,77 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   const TIER1_H = globalNav.offsetHeight;   // 52px
   const TIER2_H = sectionNav.offsetHeight;  // 44px
   const FULL_H  = TIER1_H + TIER2_H;       // 96px
+  const DURATION = 280;                     // must match CSS transition ms
 
-  let lastY  = 0;
-  let hidden = false;
+  let lastY    = 0;
+  let hidden   = false;
+  let rafId    = null;
+  let animStart = null;
+  let fromOffset = FULL_H;
+  let toOffset   = FULL_H;
 
-  // Transitions
-  globalNav.style.transition  = 'transform 0.28s ease';
-  sectionNav.style.transition = 'top 0.28s ease';
+  // Header transitions
+  globalNav.style.transition  = 'transform ' + DURATION + 'ms ease';
+  sectionNav.style.transition = 'top '       + DURATION + 'ms ease';
+
+  // Sidebars: NO CSS transition — JS drives them frame-by-frame
+  if (sidebarLeft)  sidebarLeft.style.transition  = 'none';
+  if (sidebarRight) sidebarRight.style.transition = 'none';
 
   // Set initial positions
   sectionNav.style.top = TIER1_H + 'px';
+  applySidebarOffset(FULL_H);
 
-  function setSidebarOffset(offset) {
-    // offset = total header height currently visible
-    if (sidebarLeft)  { sidebarLeft.style.top  = offset + 'px'; sidebarLeft.style.height  = 'calc(100vh - ' + offset + 'px)'; }
-    if (sidebarRight) { sidebarRight.style.top = offset + 'px'; sidebarRight.style.height = 'calc(100vh - ' + offset + 'px)'; }
+  function applySidebarOffset(px) {
+    if (sidebarLeft)  { sidebarLeft.style.top  = px + 'px'; sidebarLeft.style.height  = 'calc(100vh - ' + px + 'px)'; }
+    if (sidebarRight) { sidebarRight.style.top = px + 'px'; sidebarRight.style.height = 'calc(100vh - ' + px + 'px)'; }
   }
 
-  // Initial sidebar offset = full header height
-  setSidebarOffset(FULL_H);
+  // Ease function matching CSS 'ease' cubic-bezier(0.25,0.1,0.25,1)
+  function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  function animateSidebars(from, to, ts) {
+    if (!animStart) animStart = ts;
+    const elapsed = ts - animStart;
+    const progress = Math.min(elapsed / DURATION, 1);
+    const eased = easeInOut(progress);
+    const current = from + (to - from) * eased;
+    applySidebarOffset(current);
+
+    if (progress < 1) {
+      rafId = requestAnimationFrame((t) => animateSidebars(from, to, t));
+    } else {
+      applySidebarOffset(to);
+      animStart = null;
+      rafId = null;
+    }
+  }
+
+  function startSidebarAnim(to) {
+    const from = fromOffset;
+    toOffset   = to;
+    fromOffset = to;
+    if (rafId) cancelAnimationFrame(rafId);
+    animStart = null;
+    rafId = requestAnimationFrame((ts) => animateSidebars(from, to, ts));
+  }
 
   function onScroll() {
     const y         = window.scrollY;
     const goingDown = y > lastY;
 
     if (goingDown && y > TIER1_H && !hidden) {
-      // Hide Tier 1, Tier 2 moves to top:0, sidebars shrink to only Tier 2 offset
       globalNav.style.transform = 'translateY(-100%)';
       sectionNav.style.top      = '0px';
-      setSidebarOffset(TIER2_H);
+      startSidebarAnim(TIER2_H);
       hidden = true;
 
     } else if (hidden && y <= 0) {
-      // Fully back at top: restore everything
       globalNav.style.transform = 'translateY(0)';
       sectionNav.style.top      = TIER1_H + 'px';
-      setSidebarOffset(FULL_H);
+      startSidebarAnim(FULL_H);
       hidden = false;
     }
 
