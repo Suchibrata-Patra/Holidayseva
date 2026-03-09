@@ -610,23 +610,9 @@
   <div class="page-shell">
 
     <!-- Sidebar — in PHP: <?php include 'sidebar.php'; ?> -->
-    <aside class="sidebar-slot" id="sidebar">
-      <?php include 'sidebar.php'; ?>
-
-      <!-- Static fallback for plain HTML preview -->
-      <noscript>
-        <p class="sidebar-section-label">On This Page</p>
-        <ul class="sidebar-nav">
-          <li><a href="#overview" class="active">Overview</a></li>
-          <li><a href="#anatomy">Anatomy</a></li>
-          <li><a href="#specs">Specifications</a></li>
-          <li><a href="#usage">HTML Usage</a></li>
-          <li><a href="#javascript">JavaScript API</a></li>
-          <li><a href="#integration">Integration</a></li>
-          <li><a href="#accessibility">Accessibility</a></li>
-        </ul>
-      </noscript>
-    </aside>
+    <aside class="sidebar-slot">
+    <?php include 'sidebar.php'; ?>
+</aside>
 
     <!-- Main Documentation Content -->
     <main class="main-content">
