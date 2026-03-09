@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design_guidelines/Components/toggle.css">
   <style>
     /* ─── Reset ──────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -231,29 +232,7 @@
     }
     .demo-state.on { color: var(--red); font-weight: 500; }
 
-    /* ─── Toggle component ───────────────────────── */
-    .toggle {
-      position: relative;
-      width: 280px; height: 160px;
-      background: #d1d1d6;
-      border-radius: 80px;
-      cursor: pointer;
-      transition: background 0.28s ease;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .toggle.active { background: var(--red); }
-    .toggle-circle {
-      position: absolute;
-      width: 140px; height: 140px;
-      background: #fff;
-      border-radius: 50%;
-      top: 10px; left: 10px;
-      transition: left 0.36s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.14);
-    }
-    .toggle.active .toggle-circle { left: 130px; }
+    /* .toggle and .toggle-circle styles come from toggle.css */
 
     /* ─── Anatomy diagram ────────────────────────── */
     .anatomy-box {
@@ -698,19 +677,13 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
   <span class="footer-text">v1.0</span>
 </footer>
 
+<script src="/design_guidelines/JS/components.js"></script>
 <script>
-  // Demo
-  const demo  = document.getElementById('demoToggle');
-  const state = document.getElementById('demoState');
-  demo.addEventListener('click', () => {
-    demo.classList.toggle('active');
-    const on = demo.classList.contains('active');
-    demo.setAttribute('aria-checked', on);
-    state.textContent = 'State: ' + (on ? 'on' : 'off');
-    state.className = 'demo-state' + (on ? ' on' : '');
-  });
-  demo.addEventListener('keydown', e => {
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); demo.click(); }
+  // Update the state label in the demo when the toggle fires its event
+  document.getElementById('demoToggle').addEventListener('toggle-change', (e) => {
+    const stateEl = document.getElementById('demoState');
+    stateEl.textContent = 'State: ' + e.detail.state;
+    stateEl.className = 'demo-state' + (e.detail.isActive ? ' on' : '');
   });
 
   // Scroll spy
