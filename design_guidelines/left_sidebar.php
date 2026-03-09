@@ -1,9 +1,15 @@
 <?php
 /**
  * left_sidebar.php
- * Left navigation — exact Apple HIG developer.apple.com style
+ * Left navigation — Apple HIG style
+ * Three sections: Getting Started · Foundations · Components
+ * Active state detected via current PHP page filename
+ *
  * Include: <?php include __DIR__ . '/left_sidebar.php'; ?>
  */
+
+// Detect current page so we can mark the right link active
+$current = basename($_SERVER['PHP_SELF']);
 ?>
 
 <div class="sb-filter">
@@ -15,202 +21,211 @@
 
 <nav class="sb-nav" id="sbNav">
 
-  <div class="sb-group" id="grp-gettingstarted">
+  <!-- ════════════════════════════════════════
+       1. GETTING STARTED
+  ════════════════════════════════════════ -->
+  <div class="sb-group <?= in_array($current, ['index.php','introduction.php']) ? 'open' : '' ?>" id="grp-gettingstarted">
     <button class="sb-group-btn" onclick="toggleGroup('grp-gettingstarted')">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       Getting started
     </button>
-    <ul class="sb-items" hidden>
-      <li><a href="#" class="sb-link">
+    <ul class="sb-items" <?= !in_array($current, ['index.php','introduction.php']) ? 'hidden' : '' ?>>
+
+      <li><a href="introduction.php" class="sb-link <?= $current === 'introduction.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M8 5v4l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M8 5v3.5L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
         Introduction
       </a></li>
+
+      <li><a href="overview.php" class="sb-link <?= $current === 'overview.php' ? 'active' : '' ?>">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <rect x="2" y="2" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="8.5" y="2" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="2" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        Overview
+      </a></li>
+
+      <li><a href="whats-new.php" class="sb-link <?= $current === 'whats-new.php' ? 'active' : '' ?>">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2l1.5 4.5H14l-3.7 2.7 1.4 4.3L8 11l-3.7 2.5 1.4-4.3L2 6.5h4.5L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        What's new
+      </a></li>
+
     </ul>
   </div>
 
-  <div class="sb-group" id="grp-foundations">
+
+  <!-- ════════════════════════════════════════
+       2. FOUNDATIONS
+  ════════════════════════════════════════ -->
+  <?php
+  $foundationPages = ['colour.php','typography.php','spacing.php','icons.php','layout.php'];
+  $foundationOpen  = in_array($current, $foundationPages);
+  ?>
+  <div class="sb-group <?= $foundationOpen ? 'open' : '' ?>" id="grp-foundations">
     <button class="sb-group-btn" onclick="toggleGroup('grp-foundations')">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       Foundations
     </button>
-    <ul class="sb-items" hidden>
-      <li><a href="#" class="sb-link">
+    <ul class="sb-items" <?= !$foundationOpen ? 'hidden' : '' ?>>
+
+      <li><a href="colour.php" class="sb-link <?= $current === 'colour.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="2" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="5.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="10.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="8" cy="10.5" r="3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
         Colour
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="typography.php" class="sb-link <?= $current === 'typography.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M3 12V4l5 6 5-6v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 4h10M8 4v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
         Typography
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="spacing.php" class="sb-link <?= $current === 'spacing.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M4 5v6M12 5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4"/>
         </svg>
         Spacing
       </a></li>
+
+      <li><a href="icons.php" class="sb-link <?= $current === 'icons.php' ? 'active' : '' ?>">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2l1.8 3.6L14 6.2l-3 2.9.7 4.1L8 11.1l-3.7 2.1.7-4.1-3-2.9 4.2-.6L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        Icons
+      </a></li>
+
+      <li><a href="layout.php" class="sb-link <?= $current === 'layout.php' ? 'active' : '' ?>">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M2 6h12M6 6v8" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        Layout
+      </a></li>
+
     </ul>
   </div>
 
-  <div class="sb-group open" id="grp-patterns">
-    <button class="sb-group-btn" onclick="toggleGroup('grp-patterns')">
+
+  <!-- ════════════════════════════════════════
+       3. COMPONENTS
+  ════════════════════════════════════════ -->
+  <?php
+  $componentPages = ['button.php','input.php','toggle.php','modal.php','avatar.php',
+                     'badge.php','card.php','dropdown.php','tabs.php','tooltip.php'];
+  $componentOpen  = in_array($current, $componentPages);
+  ?>
+  <div class="sb-group <?= $componentOpen ? 'open' : '' ?>" id="grp-components">
+    <button class="sb-group-btn" onclick="toggleGroup('grp-components')">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      Patterns
+      Components
     </button>
-    <ul class="sb-items">
-      <li><a href="charting-data.php" class="sb-link active">
+    <ul class="sb-items" <?= !$componentOpen ? 'hidden' : '' ?>>
+
+      <li><a href="button.php" class="sb-link <?= $current === 'button.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="9" width="3" height="5" rx="0.5" fill="currentColor"/>
-          <rect x="6.5" y="6" width="3" height="8" rx="0.5" fill="currentColor"/>
-          <rect x="11" y="3" width="3" height="11" rx="0.5" fill="currentColor"/>
+          <rect x="1.5" y="5" width="13" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/>
         </svg>
-        Charting data
+        Button
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="input.php" class="sb-link <?= $current === 'input.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="6" cy="6" r="3.5" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M8.5 4.5h4M8.5 7h2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="1.5" y="4" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M5 8h6M5 10.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        Collaboration and sharing
+        Input
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="toggle.php" class="sb-link <?= $current === 'toggle.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="3" width="9" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M11 6l3 2-3 2V6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+          <rect x="1" y="5" width="14" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="11.5" cy="8" r="2" fill="currentColor"/>
         </svg>
-        Drag and drop
+        Toggle
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="modal.php" class="sb-link <?= $current === 'modal.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="4" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M5 8h6M5 11h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M1.5 6.5h13" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M5 9.5h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        Entering data
+        Modal
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="avatar.php" class="sb-link <?= $current === 'avatar.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
-          <circle cx="3" cy="8" r="1.5" fill="currentColor"/>
-          <circle cx="13" cy="8" r="1.5" fill="currentColor"/>
-          <path d="M8 3.5V2M8 14v-1.5M12.2 4l-1 1M4.8 11l-1 1M12.2 12l-1-1M4.8 5l-1-1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M2.5 14c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        Feedback
+        Avatar
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="badge.php" class="sb-link <?= $current === 'badge.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M4 2h8l2 3H2L4 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-          <rect x="2" y="5" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M6 9l1.5 1.5L10 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="3" y="5" width="10" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M8 7v2M7 8h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        File management
+        Badge
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="card.php" class="sb-link <?= $current === 'card.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M2 14l4-4 3 3 5-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M10 5h4v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M4 6.5h5M4 9h8M4 11h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        Going full screen
+        Card
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="dropdown.php" class="sb-link <?= $current === 'dropdown.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M7 5l4 3-4 3V5z" fill="currentColor"/>
+          <rect x="1.5" y="4" width="13" height="5" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M2 11h12M2 13.5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".35"/>
+          <path d="M11 6.5l2 1.5-2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Launching
+        Dropdown
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="tabs.php" class="sb-link <?= $current === 'tabs.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="1" y="4" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M11 7l4 2.5-4 2.5V7z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M2 10V5.5A1.5 1.5 0 013.5 4H7l1.5 2H14v4a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 10z" stroke="currentColor" stroke-width="1.2"/>
         </svg>
-        Live-viewing apps
+        Tabs
       </a></li>
-      <li><a href="#" class="sb-link">
+
+      <li><a href="tooltip.php" class="sb-link <?= $current === 'tooltip.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
-          <path d="M5.5 5.5a3.5 3.5 0 000 5M10.5 5.5a3.5 3.5 0 010 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M3 3a7 7 0 000 10M13 3a7 7 0 010 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="2" y="2" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M5 10.5l1.5 2.5 1.5-2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 5.5h6M5 7.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        Loading
+        Tooltip
       </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        Managing accounts
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M11 10.5l1.5 1.5 2.5-2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Managing notifications
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/>
-          <rect x="5" y="5" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        </svg>
-        Modality
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="1" y="3" width="6.5" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/>
-          <rect x="8.5" y="3" width="6.5" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        </svg>
-        Multitasking
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
-          <path d="M8 7v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          <circle cx="8" cy="5" r="0.8" fill="currentColor"/>
-        </svg>
-        Offering help
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M5 4c0-1.66 1.34-3 3-3s3 1.34 3 3c0 2-3 3-3 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-          <circle cx="8" cy="13" r="1" fill="currentColor"/>
-        </svg>
-        Onboarding
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M3 6c0-2.76 2.24-5 5-5s5 2.24 5 5c0 3.5-5 9-5 9S3 9.5 3 6z" stroke="currentColor" stroke-width="1.2"/>
-        </svg>
-        Playing audio
-      </a></li>
-      <li><a href="#" class="sb-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
-          <circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.2"/>
-          <circle cx="8" cy="8" r="0.8" fill="currentColor"/>
-        </svg>
-        Playing haptics
-      </a></li>
+
     </ul>
   </div>
 
 </nav>
 
 <style>
-  /* ── Filter ─────────────────────────────── */
+  /* ── Filter bar ─────────────────────────────────── */
   .sb-filter {
     display: flex;
     align-items: center;
@@ -233,11 +248,11 @@
   }
   .sb-filter input::placeholder { color: #aeaeb2; }
 
-  /* ── Nav wrapper ─────────────────────────── */
+  /* ── Nav wrapper ────────────────────────────────── */
   .sb-nav { padding: 0 8px; }
-  .sb-group { margin-bottom: 0; }
+  .sb-group { margin-bottom: 2px; }
 
-  /* ── Group toggle button ─────────────────── */
+  /* ── Group header button ────────────────────────── */
   .sb-group-btn {
     width: 100%;
     display: flex;
@@ -259,7 +274,7 @@
   }
   .sb-group-btn:hover { background: #f2f2f7; }
 
-  /* ── Chevron ─────────────────────────────── */
+  /* ── Chevron ────────────────────────────────────── */
   .sb-chevron {
     flex-shrink: 0;
     color: #8e8e93;
@@ -269,7 +284,7 @@
     transform: rotate(90deg);
   }
 
-  /* ── Items ───────────────────────────────── */
+  /* ── Items list ─────────────────────────────────── */
   .sb-items {
     list-style: none;
     padding: 0 0 6px 0;
@@ -277,7 +292,7 @@
   }
   .sb-items[hidden] { display: none; }
 
-  /* ── Link ────────────────────────────────── */
+  /* ── Individual link ────────────────────────────── */
   .sb-link {
     display: flex;
     align-items: flex-start;
@@ -303,7 +318,7 @@
   }
   .sb-link:hover svg { color: #6e6e73; }
 
-  /* Active — just bold, no background fill */
+  /* Active — bold + dark, no background fill */
   .sb-link.active {
     font-weight: 600;
     color: #1d1d1f;
