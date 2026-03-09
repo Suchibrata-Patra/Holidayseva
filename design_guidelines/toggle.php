@@ -41,16 +41,16 @@
     <div class="demo-stage">
       <span class="demo-label">Interactive demo — click to toggle</span>
 
-      <div class="toggle"
+      <div class="toggle active"
            id="demoToggle"
            role="switch"
-           aria-checked="false"
+           aria-checked="true"
            tabindex="0"
            aria-label="Demo toggle switch">
         <div class="toggle-circle"></div>
       </div>
 
-      <span class="demo-state" id="demoState">state: off</span>
+      <span class="demo-state on" id="demoState">state: on</span>
     </div>
 
     <!-- ── Anatomy ────────────────────────── -->
@@ -387,6 +387,10 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
 
 </div>
 
+<footer class="footer">
+  <span class="footer-text">Holidayseva Design Guidelines · Toggle</span>
+  <span class="footer-text">v1.0</span>
+</footer>
 
 <!-- Toggle component JS — from toggle.js — auto-inits .toggle on DOMContentLoaded -->
 <script src="/JS/toggle.js"></script>
@@ -435,5 +439,6 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
     });
   }
 </script>
+<?php include __DIR__ . '/footer.php'; ?>
 </body>
 </html>
