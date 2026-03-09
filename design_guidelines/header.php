@@ -31,7 +31,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
         alt="" width="18" height="18"
       >
     </span> -->
-    Holidayseva
+    <strong>Holidayseva</strong>.com
   </a>
 
   <!-- Hairline pip between brand and links -->
