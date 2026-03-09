@@ -16,7 +16,7 @@ $current = basename($_SERVER['PHP_SELF']);
   <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
     <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
   </svg>
-  <input type="text" placeholder="Filter" id="sbFilter" oninput="filterSidebar(this.value)" />
+  <input type="text" placeholder="Filter" class="sb-filter-input" oninput="filterSidebar(this)" />
 </div>
 
 <nav class="sb-nav" id="sbNav">
@@ -28,8 +28,8 @@ $current = basename($_SERVER['PHP_SELF']);
   $gettingStartedPages = ['index.php','introduction.php','overview.php','whats-new.php'];
   $gettingStartedOpen  = in_array($current, $gettingStartedPages);
   ?>
-  <div class="sb-group <?= $gettingStartedOpen ? 'open' : '' ?>" id="grp-gettingstarted">
-    <button class="sb-group-btn" onclick="toggleGroup('grp-gettingstarted')">
+  <div class="sb-group <?= $gettingStartedOpen ? 'open' : '' ?>">
+    <button class="sb-group-btn" onclick="toggleGroup(this)">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -73,8 +73,8 @@ $current = basename($_SERVER['PHP_SELF']);
   $foundationPages = ['colour.php','typography.php','spacing.php','icons.php','layout.php'];
   $foundationOpen  = in_array($current, $foundationPages);
   ?>
-  <div class="sb-group <?= $foundationOpen ? 'open' : '' ?>" id="grp-foundations">
-    <button class="sb-group-btn" onclick="toggleGroup('grp-foundations')">
+  <div class="sb-group <?= $foundationOpen ? 'open' : '' ?>">
+    <button class="sb-group-btn" onclick="toggleGroup(this)">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -133,8 +133,8 @@ $current = basename($_SERVER['PHP_SELF']);
                      'badge.php','card.php','dropdown.php','tabs.php','tooltip.php'];
   $componentOpen  = in_array($current, $componentPages);
   ?>
-  <div class="sb-group <?= $componentOpen ? 'open' : '' ?>" id="grp-components">
-    <button class="sb-group-btn" onclick="toggleGroup('grp-components')">
+  <div class="sb-group <?= $componentOpen ? 'open' : '' ?>">
+    <button class="sb-group-btn" onclick="toggleGroup(this)">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -333,24 +333,31 @@ $current = basename($_SERVER['PHP_SELF']);
 </style>
 
 <script>
-  function toggleGroup(id) {
-    const grp = document.getElementById(id);
+  // Use closest() so these work whether the sidebar is rendered
+  // as the desktop aside OR inside the mobile drawer — no IDs needed.
+
+  function toggleGroup(btn) {
+    const grp  = btn.closest('.sb-group');
     const list = grp.querySelector('.sb-items');
-    const open = grp.classList.contains('open');
-    grp.classList.toggle('open', !open);
-    if (open) list.setAttribute('hidden', '');
-    else list.removeAttribute('hidden');
+    const isOpen = grp.classList.contains('open');
+    grp.classList.toggle('open', !isOpen);
+    if (isOpen) list.setAttribute('hidden', '');
+    else        list.removeAttribute('hidden');
   }
 
-  function filterSidebar(q) {
-    const term = q.toLowerCase().trim();
-    document.querySelectorAll('.sb-link').forEach(a => {
-      const match = a.textContent.toLowerCase().includes(term);
+  function filterSidebar(input) {
+    const term = input.value.toLowerCase().trim();
+    // Scope to the sb-nav that contains this input
+    const nav = input.closest('.sidebar-left, .drawer-sidebar') || document;
+    nav.querySelectorAll('.sb-link').forEach(a => {
+      const match = !term || a.textContent.toLowerCase().includes(term);
       a.classList.toggle('hidden', !match);
       if (match && term) {
         const grp = a.closest('.sb-group');
-        grp.classList.add('open');
-        grp.querySelector('.sb-items').removeAttribute('hidden');
+        if (grp) {
+          grp.classList.add('open');
+          grp.querySelector('.sb-items').removeAttribute('hidden');
+        }
       }
     });
   }
