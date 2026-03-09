@@ -269,7 +269,7 @@ $current = basename($_SERVER['PHP_SELF']);
     font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
     font-size: 14px;
     font-weight: 400;
-    color: #6e6e73;
+    color: #86868b;
     text-align: left;
     border-radius: 6px;
     transition: background 0.1s, color 0.1s;
@@ -312,7 +312,7 @@ $current = basename($_SERVER['PHP_SELF']);
     gap: 9px;
     font-size: 13.5px;
     font-weight: 400;
-    color: #6e6e73;
+    color: #86868b;
     text-decoration: none;
     padding: 5px 10px 5px 26px;
     border-radius: 6px;
@@ -329,7 +329,7 @@ $current = basename($_SERVER['PHP_SELF']);
     background: #f2f2f7;
     color: #1d1d1f;
   }
-  .sb-link:hover svg { color: #6e6e73; }
+  .sb-link:hover svg { color: #86868b; }
 
   /* Active — bold + pure black only */
   .sb-link.active {
