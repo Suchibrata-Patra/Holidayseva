@@ -387,10 +387,6 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
 
 </div>
 
-<footer class="footer">
-  <span class="footer-text">Holidayseva Design Guidelines · Toggle</span>
-  <span class="footer-text">v1.0</span>
-</footer>
 
 <!-- Toggle component JS — from toggle.js — auto-inits .toggle on DOMContentLoaded -->
 <script src="/JS/toggle.js"></script>

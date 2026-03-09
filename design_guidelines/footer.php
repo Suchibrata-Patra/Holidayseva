@@ -7,7 +7,7 @@
  */
 ?>
 
-<footer class="site-footer" role="contentinfo" style="z-index:100000;">
+<footer class="site-footer" role="contentinfo">
 
   <!-- ── Breadcrumb bar ────────────────────────────── -->
   <div class="footer-breadcrumb">
@@ -134,6 +134,9 @@
 <style>
   /* ── Footer shell ────────────────────────────────── */
   .site-footer {
+    /* Push footer inward to clear both fixed sidebars */
+    margin-left: var(--sidebar-w, 240px);
+    margin-right: var(--toc-w, 200px);
     background: #f5f5f7;
     border-top: 1px solid #d2d2d7;
     font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
@@ -298,7 +301,14 @@
   .footer-legal-links span[aria-hidden] { color: #aeaeb2; }
 
   /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 1100px) {
+    /* Right TOC sidebar typically hidden at this width */
+    .site-footer { margin-right: 0; }
+  }
+
   @media (max-width: 900px) {
+    /* Left sidebar hidden — full-width footer */
+    .site-footer { margin-left: 0; margin-right: 0; }
     .footer-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 32px 0;
