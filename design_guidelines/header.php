@@ -25,12 +25,12 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 
   <!-- Brand -->
   <a class="global-nav-brand" href="/" aria-label="Holidayseva home">
-    <span class="global-nav-brand-mark" aria-hidden="true">
+    <!-- <span class="global-nav-brand-mark" aria-hidden="true">
       <img
         src=""
         alt="" width="18" height="18"
       >
-    </span>
+    </span> -->
     Holidayseva
   </a>
 
