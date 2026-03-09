@@ -1,5 +1,5 @@
 /* ============================================================
-   NAVIGATION BUTTONS
+   NAVIGATION BUTTONS COMPONENT
    ============================================================ */
 
 .nav-btn {
@@ -17,7 +17,6 @@
     transition: all var(--transition-fast);
     flex-shrink: 0;
     box-shadow: var(--shadow-xs);
-    outline: none;
 }
 
 .nav-btn:hover:not(:disabled) {
@@ -30,13 +29,18 @@
     transform: scale(0.96);
 }
 
+.nav-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 .nav-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-/* Sizes */
+/* ── Sizes ── */
 .nav-btn--sm {
     width: 28px;
     height: 28px;
@@ -49,7 +53,7 @@
     font-size: 18px;
 }
 
-/* Variants */
+/* ── Variants ── */
 .nav-btn--filled {
     background: var(--color-text-primary);
     color: white;
@@ -59,17 +63,6 @@
 .nav-btn--filled:hover:not(:disabled) {
     background: #000;
     border-color: #000;
-}
-
-.nav-btn--ghost {
-    border-color: transparent;
-    box-shadow: none;
-}
-
-.nav-btn--ghost:hover:not(:disabled) {
-    background: var(--color-muted);
-    border-color: transparent;
-    box-shadow: none;
 }
 
 .nav-btn--dark {
@@ -83,7 +76,29 @@
     background: rgba(0, 0, 0, 0.85);
 }
 
-/* Pair layout */
+.nav-btn--ghost {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.nav-btn--ghost:hover:not(:disabled) {
+    background: var(--color-muted);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.nav-btn--primary {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.nav-btn--primary:hover:not(:disabled) {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+/* ── Pair layout ── */
 .nav-btn-pair {
     display: flex;
     align-items: center;
