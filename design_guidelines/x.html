@@ -2,9 +2,6 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toggle — Test Page</title>
     <link rel="stylesheet" href="/design_guidelines/Components/toggle.css">
 </head>
 
@@ -15,6 +12,12 @@
     </div>
 
     <script src="/design_guidelines/JS/components.js"></script>
+    <script>
+        document.querySelector('.toggle').addEventListener('toggle-change', (e) => {
+            console.log(e.detail.state); // "on" or "off"
+        });
+    </script>
+
 </body>
 
 </html>
