@@ -4,3857 +4,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Guidelines — UI Framework</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap"
-        rel="stylesheet">
+    <title>Toggle | Design Guidelines</title>
 
-    <style>
-        /* ══════════════════════════════════════
-       DESIGN TOKENS (from colors.css + typography.css)
-    ══════════════════════════════════════ */
-        :root {
-            --color-primary: #FF385C;
-            --color-primary-light: #FF5A76;
-            --color-primary-dark: #D93B55;
-            --color-primary-alpha: rgba(255, 56, 92, 0.12);
-            --color-secondary: #222222;
-            --color-secondary-muted: #484848;
-            --color-accent: #00A699;
-            --color-accent-light: #00BDB2;
-            --color-accent-dark: #008C81;
-            --color-surface: #FFFFFF;
-            --color-surface-raised: #F7F7F7;
-            --color-bg: #FFFFFF;
-            --color-bg-muted: #F7F7F7;
-            --color-bg-dark: #1A1A1A;
-            --color-text-primary: #222222;
-            --color-text-secondary: #717171;
-            --color-text-muted: #B0B0B0;
-            --color-text-inverse: #FFFFFF;
-            --color-muted: #EBEBEB;
-            --color-muted-dark: #DDDDDD;
-            --color-border: #DDDDDD;
-            --color-border-dark: #B0B0B0;
-            --color-border-focus: #222222;
-            --color-success: #008A05;
-            --color-warning: #C45508;
-            --color-error: #C13515;
-            --color-star: #FF385C;
-            --color-star-empty: #DDDDDD;
-            --color-overlay: rgba(0, 0, 0, 0.5);
+    <!-- Design system: layout, typography, components -->
+    <link rel="stylesheet" href="/design-system.css">
 
-            --space-xs: 4px;
-            --space-sm: 8px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-2xl: 48px;
-            --space-3xl: 64px;
-
-            --font-primary: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --font-mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
-            --font-display: 'Fraunces', Georgia, serif;
-
-            --text-xs: clamp(.625rem, .5vw + .5rem, .75rem);
-            --text-sm: clamp(.75rem, .6vw + .6rem, .875rem);
-            --text-base: clamp(.875rem, .8vw + .7rem, 1rem);
-            --text-md: clamp(1rem, 1vw + .8rem, 1.125rem);
-            --text-lg: clamp(1.125rem, 1.2vw + .9rem, 1.375rem);
-            --text-xl: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
-            --text-2xl: clamp(1.5rem, 2vw + 1rem, 2.25rem);
-            --text-3xl: clamp(1.875rem, 2.5vw + 1rem, 3rem);
-            --text-4xl: clamp(2.25rem, 3.5vw + 1rem, 3.75rem);
-
-            --leading-tight: 1.2;
-            --leading-snug: 1.35;
-            --leading-normal: 1.5;
-            --leading-relaxed: 1.65;
-
-            --weight-normal: 400;
-            --weight-medium: 500;
-            --weight-semibold: 600;
-            --weight-bold: 700;
-
-            --tracking-tight: -0.02em;
-            --tracking-normal: 0;
-            --tracking-wide: 0.02em;
-            --tracking-wider: 0.05em;
-
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --radius-xl: 16px;
-            --radius-2xl: 24px;
-            --radius-pill: 9999px;
-
-            --shadow-xs: 0 1px 2px rgba(0, 0, 0, .08);
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, .08), 0 1px 2px rgba(0, 0, 0, .06);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, .10), 0 2px 6px rgba(0, 0, 0, .06);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, .12), 0 4px 12px rgba(0, 0, 0, .06);
-            --shadow-xl: 0 16px 48px rgba(0, 0, 0, .14), 0 6px 20px rgba(0, 0, 0, .08);
-            --shadow-card: 0 2px 8px rgba(0, 0, 0, .08), 0 1px 3px rgba(0, 0, 0, .05);
-            --shadow-hover: 0 6px 24px rgba(0, 0, 0, .14), 0 2px 8px rgba(0, 0, 0, .08);
-            --shadow-modal: 0 20px 60px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12);
-
-            --transition-fast: 150ms ease;
-            --transition-base: 200ms ease;
-            --transition-slow: 300ms ease;
-            --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
-
-            --z-dropdown: 100;
-            --z-sticky: 200;
-            --z-overlay: 300;
-            --z-modal: 400;
-
-            /* Layout */
-            --sidebar-width: 260px;
-            --content-max: 860px;
-            --header-h: 60px;
-        }
-
-        /* ══════════════════════════════════════
-       RESET + BASE
-    ══════════════════════════════════════ */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
-
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased
-        }
-
-        body {
-            font-family: var(--font-primary);
-            font-size: var(--text-base);
-            color: var(--color-text-primary);
-            background: var(--color-bg);
-            line-height: var(--leading-normal)
-        }
-
-        img,
-        svg {
-            display: block;
-            max-width: 100%
-        }
-
-        button {
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-family: inherit
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none
-        }
-
-        input,
-        select,
-        textarea {
-            font-family: inherit
-        }
-
-        code {
-            font-family: var(--font-mono)
-        }
-
-        /* ══════════════════════════════════════
-       GLOBAL HEADER
-    ══════════════════════════════════════ */
-        .site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: var(--header-h);
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--color-border);
-            z-index: var(--z-sticky);
-            display: flex;
-            align-items: center;
-            padding: 0 var(--space-xl);
-            gap: var(--space-lg);
-        }
-
-        .site-header__logo {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            font-weight: var(--weight-bold);
-            font-size: var(--text-md);
-            letter-spacing: var(--tracking-tight);
-            white-space: nowrap;
-        }
-
-        .site-header__logo-mark {
-            width: 28px;
-            height: 28px;
-            background: var(--color-primary);
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-            font-weight: var(--weight-bold);
-        }
-
-        .site-header__divider {
-            width: 1px;
-            height: 20px;
-            background: var(--color-border);
-        }
-
-        .site-header__section-label {
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            font-weight: var(--weight-medium);
-            flex: 1;
-        }
-
-        .site-header__actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            margin-left: auto;
-        }
-
-        .site-header__version {
-            font-size: var(--text-xs);
-            color: var(--color-text-muted);
-            font-family: var(--font-mono);
-            background: var(--color-muted);
-            padding: 3px 8px;
-            border-radius: var(--radius-pill);
-        }
-
-        /* ══════════════════════════════════════
-       SHELL LAYOUT
-    ══════════════════════════════════════ */
-        .shell {
-            display: flex;
-            padding-top: var(--header-h);
-            min-height: 100vh;
-        }
-
-        /* ══════════════════════════════════════
-       SIDEBAR
-    ══════════════════════════════════════ */
-        .sidebar {
-            position: fixed;
-            top: var(--header-h);
-            left: 0;
-            width: var(--sidebar-width);
-            height: calc(100vh - var(--header-h));
-            overflow-y: auto;
-            overflow-x: hidden;
-            border-right: 1px solid var(--color-border);
-            padding: var(--space-lg) 0 var(--space-3xl);
-            scrollbar-width: thin;
-            scrollbar-color: var(--color-muted-dark) transparent;
-            background: var(--color-surface);
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 4px
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: var(--color-muted-dark);
-            border-radius: 2px
-        }
-
-        .sidebar__group {
-            margin-bottom: var(--space-lg)
-        }
-
-        .sidebar__group-label {
-            font-size: 10px;
-            font-weight: var(--weight-bold);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            padding: 0 var(--space-lg);
-            margin-bottom: var(--space-xs);
-            display: block;
-        }
-
-        .sidebar__link {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: 7px var(--space-lg);
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            font-weight: var(--weight-medium);
-            transition: all var(--transition-fast);
-            border-left: 2px solid transparent;
-            position: relative;
-        }
-
-        .sidebar__link:hover {
-            color: var(--color-text-primary);
-            background: var(--color-bg-muted);
-        }
-
-        .sidebar__link.active {
-            color: var(--color-primary);
-            border-left-color: var(--color-primary);
-            background: var(--color-primary-alpha);
-            font-weight: var(--weight-semibold);
-        }
-
-        .sidebar__link-icon {
-            font-size: 14px;
-            width: 18px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        /* ══════════════════════════════════════
-       MAIN CONTENT
-    ══════════════════════════════════════ */
-        .main {
-            margin-left: var(--sidebar-width);
-            flex: 1;
-            min-width: 0;
-        }
-
-        /* ══════════════════════════════════════
-       HERO / INTRO BANNER
-    ══════════════════════════════════════ */
-        .page-hero {
-            background: linear-gradient(160deg, #fff 0%, #fff8f9 40%, #f0fffe 100%);
-            border-bottom: 1px solid var(--color-border);
-            padding: var(--space-3xl) var(--space-3xl) var(--space-2xl);
-        }
-
-        .page-hero__eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: var(--text-xs);
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--tracking-wider);
-            text-transform: uppercase;
-            color: var(--color-primary-dark);
-            background: var(--color-primary-alpha);
-            padding: 5px 12px;
-            border-radius: var(--radius-pill);
-            margin-bottom: var(--space-md);
-        }
-
-        .page-hero h1 {
-            font-family: var(--font-display);
-            font-size: var(--text-4xl);
-            font-weight: 600;
-            letter-spacing: var(--tracking-tight);
-            line-height: var(--leading-tight);
-            margin-bottom: var(--space-md);
-            max-width: 620px;
-        }
-
-        .page-hero h1 em {
-            color: var(--color-primary);
-            font-style: italic;
-        }
-
-        .page-hero__sub {
-            font-size: var(--text-lg);
-            color: var(--color-text-secondary);
-            max-width: 540px;
-            line-height: var(--leading-relaxed);
-            margin-bottom: var(--space-xl);
-        }
-
-        .page-hero__pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-sm);
-        }
-
-        .hero-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-xs);
-            padding: 6px 14px;
-            border-radius: var(--radius-pill);
-            font-size: var(--text-sm);
-            font-weight: var(--weight-medium);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            color: var(--color-text-secondary);
-        }
-
-        .hero-pill strong {
-            color: var(--color-text-primary);
-            font-weight: var(--weight-bold)
-        }
-
-        /* ══════════════════════════════════════
-       DOC PAGE SECTIONS
-    ══════════════════════════════════════ */
-        .doc-section {
-            padding: var(--space-3xl) var(--space-3xl) var(--space-2xl);
-            border-bottom: 1px solid var(--color-border);
-            max-width: var(--content-max);
-        }
-
-        .doc-section:last-of-type {
-            border-bottom: none
-        }
-
-        .doc-section__eyebrow {
-            font-size: 10px;
-            font-weight: var(--weight-bold);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            margin-bottom: var(--space-sm);
-            display: block;
-        }
-
-        .doc-section h2 {
-            font-family: var(--font-display);
-            font-size: var(--text-2xl);
-            font-weight: 600;
-            letter-spacing: var(--tracking-tight);
-            line-height: var(--leading-tight);
-            margin-bottom: var(--space-sm);
-        }
-
-        .doc-section__intro {
-            font-size: var(--text-base);
-            color: var(--color-text-secondary);
-            line-height: var(--leading-relaxed);
-            margin-bottom: var(--space-2xl);
-            max-width: 580px;
-        }
-
-        .doc-section h3 {
-            font-size: var(--text-md);
-            font-weight: var(--weight-semibold);
-            margin-bottom: var(--space-sm);
-            margin-top: var(--space-xl);
-            letter-spacing: var(--tracking-tight);
-        }
-
-        .doc-section p {
-            color: var(--color-text-secondary);
-            line-height: var(--leading-relaxed);
-            margin-bottom: var(--space-md);
-            font-size: var(--text-base);
-        }
-
-        /* ══════════════════════════════════════
-       COMPONENT PREVIEW FRAME
-    ══════════════════════════════════════ */
-        .preview-frame {
-            background: var(--color-bg-muted);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            padding: var(--space-2xl);
-            margin-bottom: var(--space-md);
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-lg);
-            align-items: flex-start;
-            justify-content: flex-start;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .preview-frame--center {
-            justify-content: center;
-            align-items: center;
-        }
-
-        .preview-frame--dark {
-            background: var(--color-bg-dark);
-            border-color: #333;
-        }
-
-        .preview-frame--tall {
-            min-height: 300px;
-        }
-
-        .preview-frame__label {
-            position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            font-size: 10px;
-            font-weight: var(--weight-bold);
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-        }
-
-        /* ══════════════════════════════════════
-       CODE BLOCK
-    ══════════════════════════════════════ */
-        .code-block {
-            background: #1a1a2e;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: var(--space-xl);
-            position: relative;
-        }
-
-        .code-block__header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px var(--space-md);
-            background: rgba(255, 255, 255, 0.04);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .code-block__lang {
-            font-size: 11px;
-            font-family: var(--font-mono);
-            color: rgba(255, 255, 255, 0.4);
-            text-transform: uppercase;
-            letter-spacing: .08em;
-        }
-
-        .code-block__dots {
-            display: flex;
-            gap: 5px;
-        }
-
-        .code-block__dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .code-block__dot--red {
-            background: #FF5F56
-        }
-
-        .code-block__dot--yellow {
-            background: #FFBD2E
-        }
-
-        .code-block__dot--green {
-            background: #27C93F
-        }
-
-        .code-block__copy {
-            font-size: var(--text-xs);
-            font-family: var(--font-mono);
-            color: rgba(255, 255, 255, 0.45);
-            padding: 4px 10px;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: none;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-        }
-
-        .code-block__copy:hover {
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3)
-        }
-
-        .code-block__copy.copied {
-            color: #27C93F;
-            border-color: rgba(39, 201, 63, 0.4)
-        }
-
-        .code-block__body {
-            padding: var(--space-lg);
-            overflow-x: auto;
-        }
-
-        .code-block__body pre {
-            font-family: var(--font-mono);
-            font-size: 13px;
-            line-height: 1.7;
-            color: #e8eaf6;
-            white-space: pre;
-            tab-size: 2;
-        }
-
-        /* Syntax colors */
-        .tk {
-            color: #89ddff
-        }
-
-        /* tag/keyword */
-        .ta {
-            color: #ffcb6b
-        }
-
-        /* attribute */
-        .tv {
-            color: #c3e88d
-        }
-
-        /* value/string */
-        .tc {
-            color: #f07178
-        }
-
-        /* class name */
-        .tp {
-            color: #89ddff
-        }
-
-        /* property */
-        .tco {
-            color: #546e7a;
-            font-style: italic
-        }
-
-        /* comment */
-        .tnum {
-            color: #f78c6c
-        }
-
-        /* number */
-        .tsel {
-            color: #c792ea
-        }
-
-        /* selector */
-        .tprop {
-            color: #80cbc4
-        }
-
-        /* css property */
-
-        /* ══════════════════════════════════════
-       CALLOUT / INFO BOX
-    ══════════════════════════════════════ */
-        .callout {
-            border-radius: var(--radius-lg);
-            padding: var(--space-md) var(--space-lg);
-            margin-bottom: var(--space-xl);
-            display: flex;
-            gap: var(--space-md);
-            align-items: flex-start;
-            font-size: var(--text-sm);
-            line-height: var(--leading-relaxed);
-        }
-
-        .callout--info {
-            background: rgba(0, 122, 184, 0.08);
-            border-left: 3px solid #007AB8;
-            color: #004d75;
-        }
-
-        .callout--tip {
-            background: rgba(0, 138, 5, 0.08);
-            border-left: 3px solid #008A05;
-            color: #004d02;
-        }
-
-        .callout--warn {
-            background: rgba(196, 85, 8, 0.08);
-            border-left: 3px solid #C45508;
-            color: #6b2e00;
-        }
-
-        .callout__icon {
-            font-size: 16px;
-            flex-shrink: 0;
-            margin-top: 1px
-        }
-
-        .callout p {
-            margin-bottom: 0;
-            color: inherit
-        }
-
-        .callout strong {
-            color: inherit
-        }
-
-        /* ══════════════════════════════════════
-       DESIGN TOKENS TABLE
-    ══════════════════════════════════════ */
-        .token-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: var(--text-sm);
-            margin-bottom: var(--space-xl);
-        }
-
-        .token-table th,
-        .token-table td {
-            text-align: left;
-            padding: 10px var(--space-md);
-            border-bottom: 1px solid var(--color-border);
-            vertical-align: middle;
-        }
-
-        .token-table th {
-            font-size: 10px;
-            font-weight: var(--weight-bold);
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            color: var(--color-text-muted);
-            background: var(--color-bg-muted);
-        }
-
-        .token-table tr:last-child td {
-            border-bottom: none
-        }
-
-        .token-table tr:hover td {
-            background: var(--color-bg-muted)
-        }
-
-        .token-table code {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            background: var(--color-muted);
-            padding: 2px 7px;
-            border-radius: var(--radius-sm);
-            color: var(--color-primary-dark);
-        }
-
-        .token-preview-color {
-            width: 28px;
-            height: 28px;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            display: inline-block;
-        }
-
-        /* ══════════════════════════════════════
-       COLOR SWATCHES
-    ══════════════════════════════════════ */
-        .color-palette {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: var(--space-sm);
-            margin-bottom: var(--space-xl);
-        }
-
-        .color-swatch {
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .color-swatch__color {
-            height: 72px;
-            transition: transform var(--transition-base);
-        }
-
-        .color-swatch:hover .color-swatch__color {
-            transform: scale(1.03)
-        }
-
-        .color-swatch__info {
-            padding: var(--space-sm) var(--space-md) var(--space-sm);
-            background: var(--color-surface);
-        }
-
-        .color-swatch__name {
-            font-size: 11px;
-            font-weight: var(--weight-semibold);
-            color: var(--color-text-primary);
-            display: block;
-        }
-
-        .color-swatch__var {
-            font-size: 10px;
-            font-family: var(--font-mono);
-            color: var(--color-text-muted);
-            display: block;
-            margin-top: 2px;
-        }
-
-        .color-swatch__hex {
-            font-size: 10px;
-            font-family: var(--font-mono);
-            color: var(--color-text-muted);
-        }
-
-        /* ══════════════════════════════════════
-       PROP TABLE (component API)
-    ══════════════════════════════════════ */
-        .prop-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: var(--text-sm);
-            margin-bottom: var(--space-xl);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-        }
-
-        .prop-table th,
-        .prop-table td {
-            text-align: left;
-            padding: 10px var(--space-md);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .prop-table th {
-            font-size: 10px;
-            font-weight: var(--weight-bold);
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            color: var(--color-text-muted);
-            background: var(--color-bg-muted);
-        }
-
-        .prop-table tr:last-child td {
-            border-bottom: none
-        }
-
-        .prop-table code {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            background: var(--color-muted);
-            padding: 2px 7px;
-            border-radius: var(--radius-sm);
-        }
-
-        .prop-badge {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: var(--weight-semibold);
-            padding: 2px 7px;
-            border-radius: var(--radius-pill);
-            font-family: var(--font-mono);
-        }
-
-        .prop-badge--mod {
-            background: rgba(0, 122, 184, 0.12);
-            color: #007AB8
-        }
-
-        .prop-badge--elem {
-            background: rgba(0, 138, 5, 0.12);
-            color: var(--color-success)
-        }
-
-        .prop-badge--state {
-            background: var(--color-primary-alpha);
-            color: var(--color-primary-dark)
-        }
-
-        /* ══════════════════════════════════════
-       SPACING SCALE VISUAL
-    ══════════════════════════════════════ */
-        .spacing-scale {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-sm)
-        }
-
-        .spacing-row {
-            display: grid;
-            grid-template-columns: 80px 1fr 60px;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
-        .spacing-row__label {
-            font-size: 12px;
-            font-family: var(--font-mono);
-            color: var(--color-text-secondary);
-        }
-
-        .spacing-row__bar-wrap {
-            height: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .spacing-row__bar {
-            height: 8px;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
-            border-radius: var(--radius-pill);
-            opacity: 0.8;
-        }
-
-        .spacing-row__px {
-            font-size: 11px;
-            font-family: var(--font-mono);
-            color: var(--color-text-muted);
-            text-align: right;
-        }
-
-        /* ══════════════════════════════════════
-       TYPE SCALE VISUAL
-    ══════════════════════════════════════ */
-        .type-scale {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
-            margin-bottom: var(--space-xl)
-        }
-
-        .type-row {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: var(--space-lg);
-            align-items: baseline;
-            padding: var(--space-sm) 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .type-row:last-child {
-            border-bottom: none
-        }
-
-        .type-row__meta {
-            font-size: 11px;
-            font-family: var(--font-mono);
-            color: var(--color-text-muted);
-        }
-
-        /* ══════════════════════════════════════
-       SHADOW SHOWCASE
-    ══════════════════════════════════════ */
-        .shadow-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: var(--space-lg);
-            margin-bottom: var(--space-xl);
-        }
-
-        .shadow-item {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: var(--space-lg);
-            text-align: center;
-        }
-
-        .shadow-item__label {
-            font-size: 11px;
-            font-family: var(--font-mono);
-            color: var(--color-text-muted);
-            margin-top: var(--space-sm);
-        }
-
-        /* ══════════════════════════════════════
-       RADIUS SHOWCASE
-    ══════════════════════════════════════ */
-        .radius-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-lg);
-            align-items: flex-end;
-            margin-bottom: var(--space-xl);
-        }
-
-        .radius-item {
-            text-align: center
-        }
-
-        .radius-item__box {
-            width: 64px;
-            height: 64px;
-            background: var(--color-primary-alpha);
-            border: 2px solid var(--color-primary);
-            margin-bottom: 6px;
-        }
-
-        .radius-item__label {
-            font-size: 11px;
-            font-family: var(--font-mono);
-            color: var(--color-text-muted);
-        }
-
-        /* ══════════════════════════════════════
-       BUTTONS (from existing)
-    ══════════════════════════════════════ */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-xs);
-            padding: 12px var(--space-lg);
-            font-size: var(--text-base);
-            font-weight: var(--weight-bold);
-            font-family: inherit;
-            line-height: 1;
-            border-radius: var(--radius-md);
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all var(--transition-base);
-            white-space: nowrap;
-            user-select: none;
-            text-decoration: none;
-        }
-
-        .btn:focus-visible {
-            outline: 3px solid var(--color-primary);
-            outline-offset: 2px
-        }
-
-        .btn:disabled {
-            opacity: .5;
-            cursor: not-allowed;
-            pointer-events: none
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--color-primary), var(--color-primary-light));
-            color: white
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(to right, var(--color-primary-dark), var(--color-primary));
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md)
-        }
-
-        .btn-secondary {
-            background: var(--color-secondary);
-            color: white
-        }
-
-        .btn-secondary:hover {
-            background: #333;
-            transform: translateY(-1px)
-        }
-
-        .btn-outline {
-            background: transparent;
-            border-color: var(--color-text-primary);
-            color: var(--color-text-primary)
-        }
-
-        .btn-outline:hover {
-            background: var(--color-text-primary);
-            color: white
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--color-text-primary)
-        }
-
-        .btn-ghost:hover {
-            background: var(--color-muted)
-        }
-
-        .btn-sm {
-            padding: 8px 12px;
-            font-size: var(--text-sm);
-            border-radius: var(--radius-sm)
-        }
-
-        .btn-lg {
-            padding: 16px var(--space-xl);
-            font-size: var(--text-lg);
-            border-radius: var(--radius-lg)
-        }
-
-        .btn-full {
-            width: 100%
-        }
-
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            padding: 0;
-            border-radius: 50%
-        }
-
-        /* ══════════════════════════════════════
-       BADGE (from existing)
-    ══════════════════════════════════════ */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            border-radius: var(--radius-pill);
-            font-size: var(--text-xs);
-            font-weight: var(--weight-bold);
-            line-height: 1;
-            letter-spacing: var(--tracking-wide);
-        }
-
-        .badge-primary {
-            background: var(--color-primary-alpha);
-            color: var(--color-primary-dark)
-        }
-
-        .badge-success {
-            background: rgba(0, 138, 5, .12);
-            color: var(--color-success)
-        }
-
-        .badge-warning {
-            background: rgba(196, 85, 8, .12);
-            color: var(--color-warning)
-        }
-
-        .badge-error {
-            background: rgba(193, 53, 21, .12);
-            color: var(--color-error)
-        }
-
-        .badge-muted {
-            background: var(--color-muted);
-            color: var(--color-text-secondary)
-        }
-
-        .badge-dark {
-            background: var(--color-secondary);
-            color: white
-        }
-
-        /* Badge card */
-        .badge-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: var(--space-xl);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            gap: var(--space-md);
-            transition: box-shadow var(--transition-base);
-        }
-
-        .badge-card:hover {
-            box-shadow: var(--shadow-md)
-        }
-
-        .badge-card__icon {
-            width: 64px;
-            height: 64px;
-            border-radius: var(--radius-xl);
-            background: var(--color-bg-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            transition: transform var(--transition-spring);
-        }
-
-        .badge-card:hover .badge-card__icon {
-            transform: scale(1.08) rotate(-4deg)
-        }
-
-        .badge-card__title {
-            font-size: var(--text-lg);
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--tracking-tight)
-        }
-
-        .badge-card__desc {
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            line-height: var(--leading-relaxed);
-            max-width: 220px
-        }
-
-        /* ══════════════════════════════════════
-       AVATAR (from existing)
-    ══════════════════════════════════════ */
-        .avatar {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--color-muted);
-            flex-shrink: 0;
-            position: relative;
-            font-weight: var(--weight-bold);
-            color: var(--color-text-secondary);
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block
-        }
-
-        .avatar-xs {
-            width: 24px;
-            height: 24px;
-            font-size: 10px
-        }
-
-        .avatar-sm {
-            width: 32px;
-            height: 32px;
-            font-size: var(--text-xs)
-        }
-
-        .avatar-md {
-            width: 48px;
-            height: 48px;
-            font-size: var(--text-sm)
-        }
-
-        .avatar-lg {
-            width: 64px;
-            height: 64px;
-            font-size: var(--text-md)
-        }
-
-        .avatar-xl {
-            width: 80px;
-            height: 80px;
-            font-size: var(--text-xl)
-        }
-
-        .avatar-group {
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center
-        }
-
-        .avatar-group .avatar {
-            border: 2px solid var(--color-surface);
-            margin-left: -8px;
-            transition: transform var(--transition-fast)
-        }
-
-        .avatar-group .avatar:last-child {
-            margin-left: 0
-        }
-
-        .avatar-group .avatar:hover {
-            transform: translateY(-4px);
-            z-index: 10
-        }
-
-        /* ══════════════════════════════════════
-       GALLERY (from gallery.css)
-    ══════════════════════════════════════ */
-        .gallery {
-            position: relative;
-            border-radius: var(--radius-xl);
-            overflow: hidden
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            grid-template-rows: repeat(2, 200px);
-            gap: 4px;
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            background: var(--color-muted);
-            cursor: pointer
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform var(--transition-slow)
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.04)
-        }
-
-        .gallery-item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0);
-            transition: background var(--transition-base)
-        }
-
-        .gallery-item:hover::after {
-            background: rgba(0, 0, 0, .08)
-        }
-
-        .gallery-item--hero {
-            grid-row: 1/3;
-            grid-column: 1;
-            border-radius: var(--radius-xl) 0 0 var(--radius-xl)
-        }
-
-        .gallery-grid .gallery-item:nth-child(3) {
-            border-radius: 0 var(--radius-xl) 0 0
-        }
-
-        .gallery-grid .gallery-item:nth-child(5) {
-            border-radius: 0 0 var(--radius-xl) 0
-        }
-
-        .gallery-show-all {
-            position: absolute;
-            bottom: var(--space-md);
-            right: var(--space-md);
-            background: var(--color-surface);
-            color: var(--color-text-primary);
-            border: 1.5px solid var(--color-text-primary);
-            padding: 8px 14px;
-            border-radius: var(--radius-md);
-            font-size: var(--text-sm);
-            font-weight: var(--weight-semibold);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-            transition: all var(--transition-fast);
-            z-index: 5;
-        }
-
-        .gallery-show-all:hover {
-            background: var(--color-text-primary);
-            color: white
-        }
-
-        .gallery-actions {
-            position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            display: flex;
-            gap: var(--space-sm);
-            z-index: 5
-        }
-
-        .gallery-action-btn {
-            width: 36px;
-            height: 36px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            border: none;
-            font-size: 14px;
-        }
-
-        .gallery-action-btn:hover {
-            transform: scale(1.08);
-            box-shadow: var(--shadow-md)
-        }
-
-        /* ══════════════════════════════════════
-       BOOKING CARD (from booking-card.css)
-    ══════════════════════════════════════ */
-        .booking-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            padding: var(--space-lg);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .booking-card__price {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: var(--space-xs);
-            margin-bottom: var(--space-md)
-        }
-
-        .booking-card__price-amount {
-            font-size: var(--text-2xl);
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--tracking-tight)
-        }
-
-        .booking-card__price-original {
-            font-size: var(--text-base);
-            color: var(--color-text-secondary);
-            text-decoration: line-through
-        }
-
-        .booking-card__price-period {
-            font-size: var(--text-base);
-            font-weight: var(--weight-normal);
-            color: var(--color-text-secondary)
-        }
-
-        .booking-card__price-discount {
-            font-size: var(--text-sm);
-            font-weight: var(--weight-bold);
-            color: var(--color-error);
-            background: rgba(193, 53, 21, .1);
-            padding: 2px 8px;
-            border-radius: var(--radius-pill)
-        }
-
-        .booking-card__rating {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: var(--text-sm);
-            margin-left: auto
-        }
-
-        .booking-card__rating .star-icon {
-            color: var(--color-star);
-            font-size: 12px
-        }
-
-        .booking-card__rating-count {
-            color: var(--color-text-secondary)
-        }
-
-        .booking-card__inputs {
-            border: 1.5px solid var(--color-border-dark);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: var(--space-md)
-        }
-
-        .booking-card__date-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr
-        }
-
-        .booking-card__field {
-            padding: 12px var(--space-md);
-            cursor: pointer;
-            transition: background var(--transition-fast)
-        }
-
-        .booking-card__field:hover {
-            background: var(--color-bg-muted)
-        }
-
-        .booking-card__field+.booking-card__field {
-            border-left: 1.5px solid var(--color-border-dark)
-        }
-
-        .booking-card__date-row+.booking-card__field {
-            border-top: 1.5px solid var(--color-border-dark)
-        }
-
-        .booking-card__field-label {
-            display: block;
-            font-size: 10px;
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--tracking-wider);
-            text-transform: uppercase;
-            color: var(--color-text-primary);
-            margin-bottom: 2px
-        }
-
-        .booking-card__field-value {
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary)
-        }
-
-        .booking-card__reserve {
-            width: 100%;
-            background: linear-gradient(135deg, var(--color-primary), #E31C5F);
-            color: white;
-            border: none;
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            font-size: var(--text-md);
-            font-weight: var(--weight-semibold);
-            cursor: pointer;
-            transition: all var(--transition-base);
-            margin-bottom: var(--space-md);
-        }
-
-        .booking-card__reserve:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(255, 56, 92, .4)
-        }
-
-        .booking-card__notice {
-            text-align: center;
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            margin-bottom: var(--space-md)
-        }
-
-        .booking-card__breakdown {
-            border-top: 1px solid var(--color-border);
-            padding-top: var(--space-md);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-sm)
-        }
-
-        .booking-card__breakdown-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: var(--text-sm)
-        }
-
-        .booking-card__breakdown-row--label {
-            color: var(--color-text-secondary);
-            text-decoration: underline;
-            cursor: pointer
-        }
-
-        .booking-card__breakdown-row--total {
-            border-top: 1px solid var(--color-border);
-            padding-top: var(--space-sm);
-            margin-top: var(--space-xs);
-            font-weight: var(--weight-bold);
-            font-size: var(--text-base)
-        }
-
-        /* ══════════════════════════════════════
-       CALENDAR (from calendar.css)
-    ══════════════════════════════════════ */
-        .calendar-wrapper {
-            background: var(--color-surface);
-            border-radius: var(--radius-xl);
-            padding: var(--space-lg);
-            box-shadow: var(--shadow-modal);
-            display: inline-flex;
-            flex-direction: column;
-            gap: var(--space-md);
-            max-width: 700px;
-            width: 100%;
-        }
-
-        .calendar-months {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-2xl)
-        }
-
-        .calendar-month__header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: var(--space-md)
-        }
-
-        .calendar-month__title {
-            font-size: var(--text-md);
-            font-weight: var(--weight-semibold);
-            letter-spacing: var(--tracking-tight)
-        }
-
-        .calendar-nav-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1.5px solid var(--color-border);
-            background: var(--color-surface);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            color: var(--color-text-primary);
-            font-size: 14px;
-        }
-
-        .calendar-nav-btn:hover {
-            background: var(--color-muted);
-            border-color: var(--color-border-dark)
-        }
-
-        .calendar-nav-btn:disabled {
-            opacity: .3;
-            cursor: not-allowed;
-            pointer-events: none
-        }
-
-        .calendar-nav-btn--hidden {
-            visibility: hidden
-        }
-
-        .calendar-weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            text-align: center;
-            margin-bottom: var(--space-xs)
-        }
-
-        .calendar-weekday {
-            font-size: var(--text-xs);
-            font-weight: var(--weight-semibold);
-            color: var(--color-text-secondary);
-            padding: var(--space-xs) 0;
-            letter-spacing: var(--tracking-wide)
-        }
-
-        .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: var(--text-sm);
-            cursor: pointer;
-            border-radius: 50%;
-            transition: all var(--transition-fast);
-            background: none;
-            border: none;
-            font-family: inherit;
-            color: var(--color-text-primary);
-            min-width: 0;
-        }
-
-        .calendar-day:hover:not(:disabled):not(.calendar-day--selected) {
-            background: var(--color-muted)
-        }
-
-        .calendar-day--empty {
-            cursor: default;
-            pointer-events: none
-        }
-
-        .calendar-day--disabled {
-            color: var(--color-muted-dark);
-            cursor: not-allowed;
-            text-decoration: line-through
-        }
-
-        .calendar-day--today {
-            font-weight: var(--weight-bold)
-        }
-
-        .calendar-day--today::after {
-            content: '';
-            position: absolute;
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background: var(--color-primary);
-            border-radius: 50%
-        }
-
-        .calendar-day--selected {
-            background: var(--color-secondary) !important;
-            color: white !important;
-            border-radius: 50% !important;
-            font-weight: var(--weight-semibold)
-        }
-
-        .calendar-day--in-range {
-            background: var(--color-primary-alpha);
-            border-radius: 0;
-            color: var(--color-text-primary)
-        }
-
-        .calendar-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: var(--space-md);
-            border-top: 1px solid var(--color-border);
-            gap: var(--space-md);
-            flex-wrap: wrap
-        }
-
-        /* ══════════════════════════════════════
-       DROPDOWN (from existing)
-    ══════════════════════════════════════ */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            width: 100%
-        }
-
-        .dropdown__trigger {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-md) var(--space-lg);
-            background: var(--color-surface);
-            border: 1.5px solid var(--color-border-dark);
-            border-radius: var(--radius-lg);
-            font-size: var(--text-base);
-            font-weight: var(--weight-medium);
-            font-family: inherit;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            gap: var(--space-sm);
-        }
-
-        .dropdown__trigger:hover {
-            border-color: var(--color-text-primary)
-        }
-
-        .dropdown__arrow {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-            transition: transform var(--transition-base)
-        }
-
-        .dropdown__trigger[aria-expanded="true"] .dropdown__arrow {
-            transform: rotate(180deg)
-        }
-
-        .dropdown__panel {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            right: 0;
-            min-width: max-content;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
-            z-index: var(--z-dropdown);
-            opacity: 0;
-            transform: translateY(-8px) scale(.98);
-            transform-origin: top center;
-            pointer-events: none;
-            transition: opacity var(--transition-base), transform var(--transition-spring);
-            overflow: hidden;
-        }
-
-        .dropdown--open .dropdown__panel {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: auto
-        }
-
-        .dropdown__item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-md) var(--space-lg);
-            gap: var(--space-md);
-            border-bottom: 1px solid var(--color-border)
-        }
-
-        .dropdown__item:last-child {
-            border-bottom: none
-        }
-
-        .dropdown__item-info {
-            flex: 1
-        }
-
-        .dropdown__item-label {
-            font-size: var(--text-base);
-            font-weight: var(--weight-medium);
-            color: var(--color-text-primary);
-            display: block
-        }
-
-        .dropdown__item-desc {
-            font-size: var(--text-xs);
-            color: var(--color-text-secondary);
-            display: block;
-            margin-top: 2px
-        }
-
-        .dropdown__counter {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm)
-        }
-
-        .dropdown__counter-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1.5px solid var(--color-border-dark);
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-            color: var(--color-text-secondary);
-            transition: all var(--transition-fast);
-            flex-shrink: 0;
-        }
-
-        .dropdown__counter-btn:hover:not(:disabled) {
-            border-color: var(--color-text-primary);
-            color: var(--color-text-primary)
-        }
-
-        .dropdown__counter-btn:disabled {
-            opacity: .3;
-            cursor: not-allowed
-        }
-
-        .dropdown__counter-value {
-            min-width: 24px;
-            text-align: center;
-            font-size: var(--text-base);
-            font-weight: var(--weight-medium)
-        }
-
-        /* ══════════════════════════════════════
-       REVIEW CARD (from existing)
-    ══════════════════════════════════════ */
-        .review-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-            gap: var(--space-lg)
-        }
-
-        .review-card {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md)
-        }
-
-        .review-card__header {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md)
-        }
-
-        .review-card__name {
-            font-size: var(--text-base);
-            font-weight: var(--weight-bold)
-        }
-
-        .review-card__location {
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary)
-        }
-
-        .review-card__rating-row {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm)
-        }
-
-        .review-card__stars {
-            display: flex;
-            gap: 1px
-        }
-
-        .review-card__star {
-            color: var(--color-star);
-            font-size: 12px
-        }
-
-        .review-card__date {
-            font-size: var(--text-xs);
-            color: var(--color-text-secondary)
-        }
-
-        .review-card__body {
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            line-height: var(--leading-relaxed)
-        }
-
-        .review-card__body--truncated {
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden
-        }
-
-        .review-card__show-more {
-            background: none;
-            border: none;
-            padding: 0;
-            font-size: var(--text-sm);
-            font-weight: var(--weight-bold);
-            color: var(--color-text-primary);
-            cursor: pointer;
-            text-decoration: underline;
-            font-family: inherit
-        }
-
-        .review-summary {
-            display: flex;
-            align-items: center;
-            gap: var(--space-lg);
-            flex-wrap: wrap
-        }
-
-        .review-summary__score {
-            font-size: var(--text-4xl);
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--tracking-tight)
-        }
-
-        .review-summary__stars {
-            display: flex;
-            gap: 2px
-        }
-
-        .review-summary__star {
-            color: var(--color-star);
-            font-size: var(--text-md)
-        }
-
-        .review-summary__count {
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            margin-top: 2px
-        }
-
-        .review-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: var(--space-md);
-            margin-bottom: var(--space-lg)
-        }
-
-        .review-category {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm)
-        }
-
-        .review-category__name {
-            font-size: var(--text-sm);
-            font-weight: var(--weight-medium);
-            min-width: 80px
-        }
-
-        .review-category__bar {
-            flex: 1;
-            height: 4px;
-            background: var(--color-muted);
-            border-radius: var(--radius-pill);
-            overflow: hidden
-        }
-
-        .review-category__fill {
-            height: 100%;
-            background: var(--color-text-primary);
-            border-radius: var(--radius-pill)
-        }
-
-        .review-category__score {
-            font-size: var(--text-sm);
-            font-weight: var(--weight-medium);
-            min-width: 28px;
-            text-align: right
-        }
-
-        /* ══════════════════════════════════════
-       MODAL (from modal.css)
-    ══════════════════════════════════════ */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--color-overlay);
-            z-index: var(--z-overlay);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--space-md);
-            opacity: 0;
-            transition: opacity var(--transition-base);
-            backdrop-filter: blur(2px);
-            pointer-events: none;
-        }
-
-        .modal-overlay--visible {
-            opacity: 1;
-            pointer-events: auto
-        }
-
-        .modal {
-            background: var(--color-surface);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-modal);
-            width: 100%;
-            max-width: 520px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            transform: scale(.95) translateY(16px);
-            transition: transform var(--transition-spring), opacity var(--transition-base);
-            opacity: 0;
-            overflow: hidden;
-        }
-
-        .modal-overlay--visible .modal {
-            transform: scale(1) translateY(0);
-            opacity: 1
-        }
-
-        .modal__header {
-            display: flex;
-            align-items: center;
-            padding: var(--space-md) var(--space-lg);
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-            gap: var(--space-md)
-        }
-
-        .modal__title {
-            font-size: var(--text-md);
-            font-weight: var(--weight-semibold);
-            flex: 1;
-            text-align: center
-        }
-
-        .modal__close {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            background: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--color-text-primary);
-            font-size: 18px;
-            transition: background var(--transition-fast);
-            flex-shrink: 0
-        }
-
-        .modal__close:hover {
-            background: var(--color-muted)
-        }
-
-        .modal__body {
-            overflow-y: auto;
-            padding: var(--space-lg);
-            flex: 1;
-            overscroll-behavior: contain
-        }
-
-        .modal__footer {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: var(--space-sm);
-            padding: var(--space-md) var(--space-lg);
-            border-top: 1px solid var(--color-border);
-            flex-shrink: 0
-        }
-
-        /* ══════════════════════════════════════
-       NAV BUTTONS (from existing)
-    ══════════════════════════════════════ */
-        .nav-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1.5px solid var(--color-border-dark);
-            background: var(--color-surface);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            color: var(--color-text-primary);
-            flex-shrink: 0;
-            user-select: none;
-            font-size: 14px;
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            border-color: var(--color-text-primary);
-            box-shadow: var(--shadow-sm)
-        }
-
-        .nav-btn:active:not(:disabled) {
-            transform: scale(.94)
-        }
-
-        .nav-btn:disabled {
-            opacity: .3;
-            cursor: not-allowed
-        }
-
-        .nav-btn--sm {
-            width: 28px;
-            height: 28px
-        }
-
-        .nav-btn--lg {
-            width: 44px;
-            height: 44px;
-            font-size: 16px
-        }
-
-        .nav-btn--filled {
-            background: var(--color-surface);
-            border-color: transparent;
-            box-shadow: var(--shadow-md)
-        }
-
-        .nav-btn--filled:hover:not(:disabled) {
-            box-shadow: var(--shadow-hover);
-            transform: scale(1.05);
-            border-color: transparent
-        }
-
-        .nav-btn--dark {
-            background: var(--color-secondary);
-            border-color: var(--color-secondary);
-            color: white
-        }
-
-        .nav-btn--dark:hover:not(:disabled) {
-            background: #333;
-            border-color: #333
-        }
-
-        .nav-btn-pair {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm)
-        }
-
-        /* ══════════════════════════════════════
-       PRICE CARD (from existing)
-    ══════════════════════════════════════ */
-        .price-card {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            padding: var(--space-md) var(--space-lg);
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-md);
-            transition: box-shadow var(--transition-base);
-        }
-
-        .price-card:hover {
-            box-shadow: var(--shadow-hover)
-        }
-
-        .price-card__info {
-            flex: 1;
-            min-width: 0
-        }
-
-        .price-card__from {
-            font-size: var(--text-xs);
-            color: var(--color-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: var(--tracking-wider);
-            font-weight: var(--weight-medium);
-            display: block
-        }
-
-        .price-card__amount {
-            font-size: var(--text-xl);
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--tracking-tight);
-            display: block
-        }
-
-        .price-card__per {
-            font-size: var(--text-sm);
-            font-weight: var(--weight-normal);
-            color: var(--color-text-secondary)
-        }
-
-        .price-card__cta {
-            flex-shrink: 0;
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-lg);
-            padding: 10px var(--space-md);
-            font-size: var(--text-sm);
-            font-weight: var(--weight-bold);
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all var(--transition-base);
-            font-family: inherit
-        }
-
-        .price-card__cta:hover {
-            background: var(--color-primary-dark);
-            transform: translateY(-1px)
-        }
-
-        /* ══════════════════════════════════════
-       DO / DON'T BLOCKS
-    ══════════════════════════════════════ */
-        .do-dont {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-md);
-            margin-bottom: var(--space-xl);
-        }
-
-        .do-block,
-        .dont-block {
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid;
-        }
-
-        .do-block {
-            border-color: rgba(0, 138, 5, 0.3)
-        }
-
-        .dont-block {
-            border-color: rgba(193, 53, 21, 0.3)
-        }
-
-        .do-block__header,
-        .dont-block__header {
-            padding: 8px var(--space-md);
-            font-size: 11px;
-            font-weight: var(--weight-bold);
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .do-block__header {
-            background: rgba(0, 138, 5, 0.08);
-            color: var(--color-success)
-        }
-
-        .dont-block__header {
-            background: rgba(193, 53, 21, 0.08);
-            color: var(--color-error)
-        }
-
-        .do-block__body,
-        .dont-block__body {
-            padding: var(--space-lg);
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            line-height: var(--leading-relaxed);
-        }
-
-        /* ══════════════════════════════════════
-       SECTION DIVIDER (between sections)
-    ══════════════════════════════════════ */
-        .on-this-page {
-            position: sticky;
-            top: calc(var(--header-h) + var(--space-lg));
-            width: 200px;
-            flex-shrink: 0;
-            align-self: flex-start;
-        }
-
-        /* ══════════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════════ */
-        @media (max-width: 960px) {
-            .sidebar {
-                display: none
-            }
-
-            .main {
-                margin-left: 0
-            }
-
-            .doc-section {
-                padding: var(--space-2xl) var(--space-lg)
-            }
-
-            .page-hero {
-                padding: var(--space-2xl) var(--space-lg)
-            }
-
-            .calendar-months {
-                grid-template-columns: 1fr
-            }
-
-            .do-dont {
-                grid-template-columns: 1fr
-            }
-        }
-
-        @media (max-width: 600px) {
-            .site-header {
-                padding: 0 var(--space-md)
-            }
-
-            .color-palette {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))
-            }
-        }
-
-        /* ══════════════════════════════════════
-       MISC HELPERS
-    ══════════════════════════════════════ */
-        .divider {
-            height: 1px;
-            background: var(--color-border);
-            margin-block: var(--space-lg)
-        }
-
-        .mb-xl {
-            margin-bottom: var(--space-xl)
-        }
-
-        .mb-lg {
-            margin-bottom: var(--space-lg)
-        }
-
-        .mb-md {
-            margin-bottom: var(--space-md)
-        }
-
-        .flex {
-            display: flex
-        }
-
-        .flex-wrap {
-            flex-wrap: wrap
-        }
-
-        .items-center {
-            align-items: center
-        }
-
-        .gap-sm {
-            gap: var(--space-sm)
-        }
-
-        .gap-md {
-            gap: var(--space-md)
-        }
-
-        .gap-lg {
-            gap: var(--space-lg)
-        }
-
-        /* Superhost badge (from existing, used in badges section) */
-        .superhost-badge {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: 10px var(--space-md);
-            background: var(--color-bg-muted);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border)
-        }
-
-        .superhost-badge__icon {
-            font-size: 20px;
-            flex-shrink: 0
-        }
-
-        .superhost-badge__title {
-            font-size: var(--text-sm);
-            font-weight: var(--weight-bold)
-        }
-
-        .superhost-badge__desc {
-            font-size: var(--text-xs);
-            color: var(--color-text-secondary)
-        }
-    </style>
+    <!-- Toggle component CSS — defines .toggle and .toggle-circle -->
+    <link rel="stylesheet" href="/Components/toggle.css">
 </head>
 
 <body>
 
-    <!-- ════════════════════════════════════════ -->
-    <!-- SITE HEADER                              -->
-    <!-- ════════════════════════════════════════ -->
-    <header class="site-header">
-        <div class="site-header__logo">
-            <div class="site-header__logo-mark">H</div>
-            HolidaySeva
-        </div>
-        <div class="site-header__divider"></div>
-        <span class="site-header__section-label">Design Guidelines</span>
-        <div class="site-header__actions">
-            <span class="site-header__version">v1.0.0</span>
-        </div>
-    </header>
+    <?php include __DIR__ . '/header.php'; ?>
 
-    <!-- ════════════════════════════════════════ -->
-    <!-- SHELL                                    -->
-    <!-- ════════════════════════════════════════ -->
-    <div class="shell">
+    <!-- Mobile drawer sidebar (hidden on desktop) -->
+    <?php include __DIR__ . '/drawer_sidebar.php'; ?>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar" aria-label="Design guidelines navigation">
+    <div class="page-layout">
 
-            <div class="sidebar__group">
-                <span class="sidebar__group-label">Introduction</span>
-                <a class="sidebar__link active" href="#overview">
-                    <span class="sidebar__link-icon">⬡</span> Overview
-                </a>
-            </div>
-
-            <div class="sidebar__group">
-                <span class="sidebar__group-label">Foundations</span>
-                <a class="sidebar__link" href="#colors">
-                    <span class="sidebar__link-icon">◉</span> Color
-                </a>
-                <a class="sidebar__link" href="#typography">
-                    <span class="sidebar__link-icon">T</span> Typography
-                </a>
-                <a class="sidebar__link" href="#spacing">
-                    <span class="sidebar__link-icon">⇔</span> Spacing
-                </a>
-                <a class="sidebar__link" href="#shadows">
-                    <span class="sidebar__link-icon">◫</span> Shadows
-                </a>
-                <a class="sidebar__link" href="#radius">
-                    <span class="sidebar__link-icon">▢</span> Border Radius
-                </a>
-            </div>
-
-            <div class="sidebar__group">
-                <span class="sidebar__group-label">Components</span>
-                <a class="sidebar__link" href="#buttons">
-                    <span class="sidebar__link-icon">⬜</span> Button
-                </a>
-                <a class="sidebar__link" href="#badges">
-                    <span class="sidebar__link-icon">◈</span> Badge
-                </a>
-                <a class="sidebar__link" href="#avatars">
-                    <span class="sidebar__link-icon">◯</span> Avatar
-                </a>
-                <a class="sidebar__link" href="#gallery">
-                    <span class="sidebar__link-icon">⊞</span> Gallery
-                </a>
-                <a class="sidebar__link" href="#booking">
-                    <span class="sidebar__link-icon">⊟</span> Booking Card
-                </a>
-                <a class="sidebar__link" href="#calendar">
-                    <span class="sidebar__link-icon">◻</span> Calendar
-                </a>
-                <a class="sidebar__link" href="#dropdown">
-                    <span class="sidebar__link-icon">▾</span> Dropdown
-                </a>
-                <a class="sidebar__link" href="#reviews">
-                    <span class="sidebar__link-icon">★</span> Review Card
-                </a>
-                <a class="sidebar__link" href="#modal">
-                    <span class="sidebar__link-icon">▣</span> Modal
-                </a>
-                <a class="sidebar__link" href="#navbtns">
-                    <span class="sidebar__link-icon">◁▷</span> Nav Buttons
-                </a>
-                <a class="sidebar__link" href="#pricecard">
-                    <span class="sidebar__link-icon">₹</span> Price Card
-                </a>
-            </div>
-
+        <!-- ── Left sidebar ──────────────────────── -->
+        <aside class="sidebar-left">
+            <?php include __DIR__ . '/left_sidebar.php'; ?>
         </aside>
 
-        <!-- MAIN -->
-        <main class="main">
+        <!-- ── Main content ──────────────────────── -->
+        <main class="page-main">
 
-            <!-- ══ COLORS ══ -->
-            <section class="doc-section" id="colors">
-                <span class="doc-section__eyebrow">Foundations · Color</span>
-                <h2>Color</h2>
-                <p class="doc-section__intro">All colors are exposed as CSS custom properties on <code>:root</code>. Use
-                    semantic tokens — never hardcode hex values in components.</p>
+            <!-- Hero -->
+            <div id="overview">
+                <p class="page-eyebrow">Components · Form Controls</p>
+                <h1 class="page-title">Toggle</h1>
+                <p class="page-lead">A binary switch for enabling or disabling a single option. Communicates state
+                    instantly through colour and position.</p>
+            </div>
 
-                <h3>Brand Palette</h3>
-                <div class="color-palette mb-xl">
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#FF385C"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Primary</span>
-                            <span class="color-swatch__var">--color-primary</span>
-                            <span class="color-swatch__hex">#FF385C</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#FF5A76"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Primary Light</span>
-                            <span class="color-swatch__var">--color-primary-light</span>
-                            <span class="color-swatch__hex">#FF5A76</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#D93B55"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Primary Dark</span>
-                            <span class="color-swatch__var">--color-primary-dark</span>
-                            <span class="color-swatch__hex">#D93B55</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#222222"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Secondary</span>
-                            <span class="color-swatch__var">--color-secondary</span>
-                            <span class="color-swatch__hex">#222222</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#00A699"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Accent</span>
-                            <span class="color-swatch__var">--color-accent</span>
-                            <span class="color-swatch__hex">#00A699</span>
-                        </div>
-                    </div>
+            <hr class="rule">
+
+            <!-- ── Live demo ─────────────────────────
+         .toggle and .toggle-circle are styled
+         entirely by toggle.css — no inline CSS
+    ──────────────────────────────────────── -->
+            <div class="demo-stage">
+                <span class="demo-label">Interactive demo — click to toggle</span>
+
+                <div class="toggle active" id="demoToggle" role="switch" aria-checked="true" tabindex="0"
+                    aria-label="Demo toggle switch">
+                    <div class="toggle-circle"></div>
                 </div>
 
-                <h3>Semantic Colors</h3>
-                <div class="color-palette mb-xl">
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#008A05"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Success</span>
-                            <span class="color-swatch__var">--color-success</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#C45508"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Warning</span>
-                            <span class="color-swatch__var">--color-warning</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#C13515"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Error</span>
-                            <span class="color-swatch__var">--color-error</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#717171"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Text Secondary</span>
-                            <span class="color-swatch__var">--color-text-secondary</span>
-                        </div>
-                    </div>
-                    <div class="color-swatch">
-                        <div class="color-swatch__color" style="background:#EBEBEB;border:1px solid #ddd"></div>
-                        <div class="color-swatch__info">
-                            <span class="color-swatch__name">Muted</span>
-                            <span class="color-swatch__var">--color-muted</span>
-                        </div>
-                    </div>
-                </div>
+                <span class="demo-state on" id="demoState">state: on</span>
+            </div>
 
-                <div class="callout callout--info">
-                    <span class="callout__icon">ℹ</span>
-                    <p>Always use semantic tokens like <code>--color-text-primary</code> in components, not raw hex
-                        values. This ensures global theming and dark mode support work without component-level changes.
-                    </p>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">css</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tco>/* colors.css — always import this first */</tco>
-<tsel>:root</tsel> {
-  <tprop>--color-primary</tprop>:       <tv>#FF385C</tv>;
-  <tprop>--color-primary-light</tprop>: <tv>#FF5A76</tv>;
-  <tprop>--color-primary-dark</tprop>:  <tv>#D93B55</tv>;
-  <tprop>--color-secondary</tprop>:     <tv>#222222</tv>;
-  <tprop>--color-accent</tprop>:        <tv>#00A699</tv>;
-  <tprop>--color-success</tprop>:       <tv>#008A05</tv>;
-  <tprop>--color-error</tprop>:         <tv>#C13515</tv>;
-}
-
-<tco>/* Usage in a component */</tco>
-<tsel>.my-button</tsel> {
-  <tprop>background</tprop>: <tk>var</tk>(<tv>--color-primary</tv>);
-  <tprop>color</tprop>:      <tk>var</tk>(<tv>--color-text-inverse</tv>);
-}</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ TYPOGRAPHY ══ -->
-            <section class="doc-section" id="typography">
-                <span class="doc-section__eyebrow">Foundations · Typography</span>
-                <h2>Typography</h2>
-                <p class="doc-section__intro">A fluid type scale built with <code>clamp()</code>. Sizes scale smoothly
-                    between viewport widths so you never need breakpoint-specific overrides for font size.</p>
-
-                <h3>Type Scale</h3>
-                <div class="type-scale mb-xl">
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-xs<br>≈ 10–12px</div>
-                        <div style="font-size:var(--text-xs)">The quick brown fox jumps over the lazy dog</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-sm<br>≈ 12–14px</div>
-                        <div style="font-size:var(--text-sm)">The quick brown fox jumps over the lazy dog</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-base<br>≈ 14–16px</div>
-                        <div style="font-size:var(--text-base)">The quick brown fox jumps over the lazy dog</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-md<br>≈ 16–18px</div>
-                        <div style="font-size:var(--text-md);font-weight:500">The quick brown fox jumps</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-lg<br>≈ 18–22px</div>
-                        <div style="font-size:var(--text-lg);font-weight:600">Design with intention</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-xl<br>≈ 20–28px</div>
-                        <div style="font-size:var(--text-xl);font-weight:700">Design with intention</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-2xl<br>≈ 24–36px</div>
-                        <div style="font-size:var(--text-2xl);font-weight:700;letter-spacing:-0.02em">Design with
-                            intention</div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row__meta">--text-3xl<br>≈ 30–48px</div>
-                        <div style="font-size:var(--text-3xl);font-weight:700;letter-spacing:-0.02em">Design at scale
-                        </div>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">css</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tco>/* Fluid type tokens — scale automatically */</tco>
-<tsel>:root</tsel> {
-  <tprop>--text-xs</tprop>:   <tk>clamp</tk>(<tnum>0.625rem</tnum>, <tnum>0.5vw</tnum> + <tnum>0.5rem</tnum>, <tnum>0.75rem</tnum>);
-  <tprop>--text-sm</tprop>:   <tk>clamp</tk>(<tnum>0.75rem</tnum>,  <tnum>0.6vw</tnum> + <tnum>0.6rem</tnum>, <tnum>0.875rem</tnum>);
-  <tprop>--text-base</tprop>: <tk>clamp</tk>(<tnum>0.875rem</tnum>, <tnum>0.8vw</tnum> + <tnum>0.7rem</tnum>, <tnum>1rem</tnum>);
-  <tprop>--text-md</tprop>:   <tk>clamp</tk>(<tnum>1rem</tnum>,     <tnum>1vw</tnum>   + <tnum>0.8rem</tnum>, <tnum>1.125rem</tnum>);
-  <tprop>--text-lg</tprop>:   <tk>clamp</tk>(<tnum>1.125rem</tnum>, <tnum>1.2vw</tnum> + <tnum>0.9rem</tnum>, <tnum>1.375rem</tnum>);
-  <tprop>--text-xl</tprop>:   <tk>clamp</tk>(<tnum>1.25rem</tnum>,  <tnum>1.5vw</tnum> + <tnum>1rem</tnum>,   <tnum>1.75rem</tnum>);
-  <tprop>--text-2xl</tprop>:  <tk>clamp</tk>(<tnum>1.5rem</tnum>,   <tnum>2vw</tnum>   + <tnum>1rem</tnum>,   <tnum>2.25rem</tnum>);
-  <tprop>--text-3xl</tprop>:  <tk>clamp</tk>(<tnum>1.875rem</tnum>, <tnum>2.5vw</tnum> + <tnum>1rem</tnum>,   <tnum>3rem</tnum>);
-  <tprop>--text-4xl</tprop>:  <tk>clamp</tk>(<tnum>2.25rem</tnum>,  <tnum>3.5vw</tnum> + <tnum>1rem</tnum>,   <tnum>3.75rem</tnum>);
-}</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ SPACING ══ -->
-            <section class="doc-section" id="spacing">
-                <span class="doc-section__eyebrow">Foundations · Spacing</span>
-                <h2>Spacing</h2>
-                <p class="doc-section__intro">An 8-point spacing scale. All gaps, padding, and margins should use these
-                    tokens. Never use arbitrary pixel values for spacing.</p>
-
-                <div class="spacing-scale mb-xl">
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-xs</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:4px"></div>
-                        </div>
-                        <div class="spacing-row__px">4px</div>
-                    </div>
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-sm</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:8px"></div>
-                        </div>
-                        <div class="spacing-row__px">8px</div>
-                    </div>
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-md</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:16px"></div>
-                        </div>
-                        <div class="spacing-row__px">16px</div>
-                    </div>
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-lg</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:24px"></div>
-                        </div>
-                        <div class="spacing-row__px">24px</div>
-                    </div>
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-xl</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:32px"></div>
-                        </div>
-                        <div class="spacing-row__px">32px</div>
-                    </div>
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-2xl</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:48px"></div>
-                        </div>
-                        <div class="spacing-row__px">48px</div>
-                    </div>
-                    <div class="spacing-row">
-                        <div class="spacing-row__label">--space-3xl</div>
-                        <div class="spacing-row__bar-wrap">
-                            <div class="spacing-row__bar" style="width:64px"></div>
-                        </div>
-                        <div class="spacing-row__px">64px</div>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">css</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tsel>:root</tsel> {
-  <tprop>--space-xs</tprop>:  <tnum>4px</tnum>;
-  <tprop>--space-sm</tprop>:  <tnum>8px</tnum>;
-  <tprop>--space-md</tprop>:  <tnum>16px</tnum>;
-  <tprop>--space-lg</tprop>:  <tnum>24px</tnum>;
-  <tprop>--space-xl</tprop>:  <tnum>32px</tnum>;
-  <tprop>--space-2xl</tprop>: <tnum>48px</tnum>;
-  <tprop>--space-3xl</tprop>: <tnum>64px</tnum>;
-}
-
-<tco>/* Usage */</tco>
-<tsel>.card</tsel> {
-  <tprop>padding</tprop>: <tk>var</tk>(<tv>--space-lg</tv>);
-  <tprop>gap</tprop>:     <tk>var</tk>(<tv>--space-md</tv>);
-}</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ SHADOWS ══ -->
-            <section class="doc-section" id="shadows">
-                <span class="doc-section__eyebrow">Foundations · Shadows</span>
-                <h2>Shadows</h2>
-                <p class="doc-section__intro">Layered, multi-stop shadows create depth that feels natural. Use the right
-                    elevation for the right context — don't over-shadow flat surfaces.</p>
-
-                <div class="shadow-grid mb-xl">
-                    <div class="shadow-item" style="box-shadow:var(--shadow-xs)">
-                        <div class="shadow-item__label">shadow-xs</div>
-                    </div>
-                    <div class="shadow-item" style="box-shadow:var(--shadow-sm)">
-                        <div class="shadow-item__label">shadow-sm</div>
-                    </div>
-                    <div class="shadow-item" style="box-shadow:var(--shadow-md)">
-                        <div class="shadow-item__label">shadow-md</div>
-                    </div>
-                    <div class="shadow-item" style="box-shadow:var(--shadow-lg)">
-                        <div class="shadow-item__label">shadow-lg</div>
-                    </div>
-                    <div class="shadow-item" style="box-shadow:var(--shadow-xl)">
-                        <div class="shadow-item__label">shadow-xl</div>
-                    </div>
-                    <div class="shadow-item" style="box-shadow:var(--shadow-modal)">
-                        <div class="shadow-item__label">shadow-modal</div>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">css</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tsel>:root</tsel> {
-  <tprop>--shadow-xs</tprop>:    <tnum>0 1px 2px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.08</tnum>);
-  <tprop>--shadow-sm</tprop>:    <tnum>0 2px 4px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.08</tnum>), <tnum>0 1px 2px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.06</tnum>);
-  <tprop>--shadow-md</tprop>:    <tnum>0 4px 16px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.10</tnum>), <tnum>0 2px 6px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.06</tnum>);
-  <tprop>--shadow-lg</tprop>:    <tnum>0 8px 32px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.12</tnum>), <tnum>0 4px 12px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.06</tnum>);
-  <tprop>--shadow-modal</tprop>: <tnum>0 20px 60px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.2</tnum>), <tnum>0 8px 24px</tnum> <tk>rgba</tk>(<tnum>0,0,0,.12</tnum>);
-}</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ BORDER RADIUS ══ -->
-            <section class="doc-section" id="radius">
-                <span class="doc-section__eyebrow">Foundations · Border Radius</span>
-                <h2>Border Radius</h2>
-                <p class="doc-section__intro">Consistent corner radii give the design a cohesive, friendly character.
-                    Larger surfaces use larger radii; inline elements use tighter ones.</p>
-
-                <div class="radius-grid mb-xl">
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:var(--radius-sm)"></div>
-                        <div class="radius-item__label">sm · 4px</div>
-                    </div>
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:var(--radius-md)"></div>
-                        <div class="radius-item__label">md · 8px</div>
-                    </div>
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:var(--radius-lg)"></div>
-                        <div class="radius-item__label">lg · 12px</div>
-                    </div>
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:var(--radius-xl)"></div>
-                        <div class="radius-item__label">xl · 16px</div>
-                    </div>
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:var(--radius-2xl)"></div>
-                        <div class="radius-item__label">2xl · 24px</div>
-                    </div>
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:var(--radius-pill)"></div>
-                        <div class="radius-item__label">pill · ∞</div>
-                    </div>
-                    <div class="radius-item">
-                        <div class="radius-item__box" style="border-radius:50%"></div>
-                        <div class="radius-item__label">circle · 50%</div>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">css</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tsel>:root</tsel> {
-  <tprop>--radius-sm</tprop>:   <tnum>4px</tnum>;
-  <tprop>--radius-md</tprop>:   <tnum>8px</tnum>;
-  <tprop>--radius-lg</tprop>:   <tnum>12px</tnum>;
-  <tprop>--radius-xl</tprop>:   <tnum>16px</tnum>;
-  <tprop>--radius-2xl</tprop>:  <tnum>24px</tnum>;
-  <tprop>--radius-pill</tprop>: <tnum>9999px</tnum>;
-}
-
-<tco>/* Usage */</tco>
-<tsel>.card</tsel>   { <tprop>border-radius</tprop>: <tk>var</tk>(<tv>--radius-xl</tv>)   }  <tco>/* Large surface */</tco>
-<tsel>.badge</tsel>  { <tprop>border-radius</tprop>: <tk>var</tk>(<tv>--radius-pill</tv>) }  <tco>/* Inline label */</tco>
-<tsel>.button</tsel> { <tprop>border-radius</tprop>: <tk>var</tk>(<tv>--radius-md</tv>)   }  <tco>/* Interactive  */</tco></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ BUTTONS ══ -->
-            <section class="doc-section" id="buttons">
-                <span class="doc-section__eyebrow">Components · Button</span>
-                <h2>Button</h2>
-                <p class="doc-section__intro">Buttons communicate actions. Use <strong>Primary</strong> for the most
-                    important action on screen, <strong>Secondary</strong> for supporting actions, and
-                    <strong>Ghost</strong> for tertiary or destructive actions in low-emphasis contexts.
+            <!-- ── Anatomy ────────────────────────── -->
+            <section id="anatomy">
+                <h2 class="section-title">Anatomy</h2>
+                <p class="body-text">
+                    The component has two elements. The <strong>track</strong> (<code>.toggle</code>) is the
+                    pill-shaped container whose background colour reflects state. The <strong>thumb</strong>
+                    (<code>.toggle-circle</code>) is the white circle that slides inside the track.
                 </p>
 
-                <h3>Variants</h3>
-                <div class="preview-frame mb-md">
-                    <span class="preview-frame__label">Preview</span>
-                    <button class="btn btn-primary">Reserve</button>
-                    <button class="btn btn-secondary">Save</button>
-                    <button class="btn btn-outline">Share</button>
-                    <button class="btn btn-ghost">Cancel</button>
-                    <button class="btn btn-primary" disabled>Disabled</button>
+                <div class="anatomy-stage">
+                    <div class="anat-toggle">
+                        <div class="anat-circle"></div>
+                        <!-- Annotation: track -->
+                        <div class="anat-ann ann-track">
+                            <div class="anat-ann-dot"></div>
+                            <div class="anat-ann-line"></div>
+                            <span>.toggle</span>
+                        </div>
+                        <!-- Annotation: thumb -->
+                        <div class="anat-ann ann-thumb">
+                            <div class="anat-ann-dot"></div>
+                            <div class="anat-ann-line"></div>
+                            <span>.toggle-circle</span>
+                        </div>
+                    </div>
                 </div>
+            </section>
+
+            <hr class="rule">
+
+            <!-- ── Specifications ────────────────── -->
+            <section id="specs">
+                <h2 class="section-title">Specifications</h2>
+                <p class="body-text">
+                    Default (desktop) dimensions as defined in <code>toggle.css</code>.
+                    A responsive breakpoint at 480 px scales the component proportionally.
+                </p>
+
+                <div class="spec-table">
+                    <div class="spec-row">
+                        <span class="spec-key">Width</span>
+                        <span class="spec-val">280px</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Height</span>
+                        <span class="spec-val">160px</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Border radius</span>
+                        <span class="spec-val">80px</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Thumb diameter</span>
+                        <span class="spec-val">140px</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Thumb inset</span>
+                        <span class="spec-val">10px (all sides)</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Thumb travel</span>
+                        <span class="spec-val">left: 10px → left: 130px</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Easing</span>
+                        <span class="spec-val">cubic-bezier(0.4, 0, 0.2, 1) — 0.4s</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Off colour</span>
+                        <span class="spec-val">
+                            <span class="spec-swatch" style="background:#DDDDDD"></span>#DDDDDD
+                        </span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Active colour</span>
+                        <span class="spec-val">
+                            <span class="spec-swatch" style="background:#FF385C"></span>#FF385C
+                        </span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-key">Thumb colour</span>
+                        <span class="spec-val">
+                            <span class="spec-swatch" style="background:#fff;border-color:#ccc"></span>#ffffff
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="rule">
+
+            <!-- ── HTML Usage ─────────────────────── -->
+            <section id="usage">
+                <h2 class="section-title">HTML Usage</h2>
+                <p class="body-text">
+                    Link <code>toggle.css</code> in <code>&lt;head&gt;</code> and place the two-element
+                    markup anywhere in your template. <code>toggle.js</code> auto-initialises every
+                    <code>.toggle</code> on <code>DOMContentLoaded</code> — no manual wiring needed.
+                </p>
 
                 <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
+                    <div class="code-bar">
+                        <span class="code-lang-tag">HTML</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                     </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary"</tv><tk>&gt;</tk>Reserve<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-secondary"</tv><tk>&gt;</tk>Save<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-outline"</tv><tk>&gt;</tk>Share<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-ghost"</tv><tk>&gt;</tk>Cancel<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary"</tv> <ta>disabled</ta><tk>&gt;</tk>Disabled<tk>&lt;/button&gt;</tk></pre>
-                    </div>
+                    <pre><code><span class="c">&lt;!-- In &lt;head&gt; --&gt;</span>
+<span class="t">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"/Components/toggle.css"</span><span class="t">&gt;</span>
+
+<span class="c">&lt;!-- Component markup --&gt;</span>
+<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle"</span>
+     <span class="a">role</span>=<span class="s">"switch"</span>
+     <span class="a">aria-checked</span>=<span class="s">"false"</span>
+     <span class="a">tabindex</span>=<span class="s">"0"</span>
+     <span class="a">aria-label</span>=<span class="s">"Enable notifications"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle-circle"</span><span class="t">&gt;&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- Before &lt;/body&gt; --&gt;</span>
+<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
                 </div>
 
-                <h3>Sizes</h3>
-                <div class="preview-frame" style="align-items:center">
-                    <span class="preview-frame__label">Preview</span>
-                    <button class="btn btn-primary btn-sm">Small</button>
-                    <button class="btn btn-primary">Default</button>
-                    <button class="btn btn-primary btn-lg">Large</button>
-                    <button class="btn btn-primary btn-icon">★</button>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tco>&lt;!-- Sizes: add btn-sm or btn-lg --&gt;</tco>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary btn-sm"</tv><tk>&gt;</tk>Small<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary"</tv><tk>&gt;</tk>Default<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary btn-lg"</tv><tk>&gt;</tk>Large<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary btn-icon"</tv><tk>&gt;</tk>★<tk>&lt;/button&gt;</tk>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary btn-full"</tv><tk>&gt;</tk>Full Width<tk>&lt;/button&gt;</tk></pre>
-                    </div>
-                </div>
-
-                <div class="do-dont">
-                    <div class="do-block">
-                        <div class="do-block__header">✓ Do</div>
-                        <div class="do-block__body">Use one Primary button per view. It signals the clearest path
-                            forward. Pair with Ghost or Outline for secondary options.</div>
-                    </div>
-                    <div class="dont-block">
-                        <div class="dont-block__header">✕ Don't</div>
-                        <div class="dont-block__body">Don't use multiple Primary buttons side-by-side. It creates visual
-                            noise and makes users uncertain about which action to take.</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ BADGES ══ -->
-            <section class="doc-section" id="badges">
-                <span class="doc-section__eyebrow">Components · Badge</span>
-                <h2>Badge</h2>
-                <p class="doc-section__intro">Badges convey status, category, or short labels at a glance. Use semantic
-                    variants that match the intent of the message — success, warning, error, or neutral.</p>
-
-                <h3>Inline Badges</h3>
-                <div class="preview-frame mb-md flex flex-wrap gap-sm items-center">
-                    <span class="preview-frame__label">Preview</span>
-                    <span class="badge badge-primary">Superhost</span>
-                    <span class="badge badge-success">Verified</span>
-                    <span class="badge badge-warning">Limited availability</span>
-                    <span class="badge badge-error">Rare find</span>
-                    <span class="badge badge-muted">New</span>
-                    <span class="badge badge-dark">Staff pick</span>
-                </div>
+                <p class="subsection-title">Pre-active state</p>
+                <p class="body-text">
+                    Add the <code>active</code> class in markup to render the toggle in the on state on
+                    first paint. Pair it with <code>aria-checked="true"</code>.
+                </p>
 
                 <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
+                    <div class="code-bar">
+                        <span class="code-lang-tag">HTML</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                     </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;span</tk> <ta>class</ta>=<tv>"badge badge-primary"</tv><tk>&gt;</tk>Superhost<tk>&lt;/span&gt;</tk>
-<tk>&lt;span</tk> <ta>class</ta>=<tv>"badge badge-success"</tv><tk>&gt;</tk>Verified<tk>&lt;/span&gt;</tk>
-<tk>&lt;span</tk> <ta>class</ta>=<tv>"badge badge-warning"</tv><tk>&gt;</tk>Limited availability<tk>&lt;/span&gt;</tk>
-<tk>&lt;span</tk> <ta>class</ta>=<tv>"badge badge-error"</tv><tk>&gt;</tk>Rare find<tk>&lt;/span&gt;</tk>
-<tk>&lt;span</tk> <ta>class</ta>=<tv>"badge badge-muted"</tv><tk>&gt;</tk>New<tk>&lt;/span&gt;</tk>
-<tk>&lt;span</tk> <ta>class</ta>=<tv>"badge badge-dark"</tv><tk>&gt;</tk>Staff pick<tk>&lt;/span&gt;</tk></pre>
-                    </div>
+                    <pre><code><span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle active"</span>
+     <span class="a">role</span>=<span class="s">"switch"</span>
+     <span class="a">aria-checked</span>=<span class="s">"true"</span>
+     <span class="a">tabindex</span>=<span class="s">"0"</span>
+     <span class="a">aria-label</span>=<span class="s">"Notifications enabled"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle-circle"</span><span class="t">&gt;&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span></code></pre>
                 </div>
 
-                <h3>Badge Cards</h3>
-                <div class="preview-frame flex-wrap" style="gap:var(--space-md)">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="badge-card" style="max-width:180px">
-                        <div class="badge-card__icon">🏆</div>
-                        <div class="badge-card__title">Superhost</div>
-                        <p class="badge-card__desc">Top-rated hosts with consistent 5-star reviews.</p>
-                    </div>
-                    <div class="badge-card" style="max-width:180px">
-                        <div class="badge-card__icon">✓</div>
-                        <div class="badge-card__title">Verified</div>
-                        <p class="badge-card__desc">Identity and listing details confirmed by Airframe.</p>
-                    </div>
-                    <div class="badge-card" style="max-width:180px">
-                        <div class="badge-card__icon">⚡</div>
-                        <div class="badge-card__title">Instant Book</div>
-                        <p class="badge-card__desc">Confirm your booking without waiting for host approval.</p>
-                    </div>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"badge-card"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"badge-card__icon"</tv><tk>&gt;</tk>🏆<tk>&lt;/div&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"badge-card__title"</tv><tk>&gt;</tk>Superhost<tk>&lt;/div&gt;</tk>
-  <tk>&lt;p</tk>   <ta>class</ta>=<tv>"badge-card__desc"</tv><tk>&gt;</tk>Top-rated hosts.<tk>&lt;/p&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
+                <div class="note warn">
+                    <p>Always include <code>role="switch"</code>, <code>aria-checked</code>,
+                        <code>tabindex="0"</code>, and a descriptive <code>aria-label</code>.
+                        <code>toggle.js</code> keeps <code>aria-checked</code> in sync automatically
+                        on every state change.
+                    </p>
                 </div>
             </section>
 
-            <!-- ══ AVATARS ══ -->
-            <section class="doc-section" id="avatars">
-                <span class="doc-section__eyebrow">Components · Avatar</span>
-                <h2>Avatar</h2>
-                <p class="doc-section__intro">Circular user representations. Use image-based avatars when available, and
-                    initials fallbacks when not. The avatar-group stacks avatars for team/reviewer displays.</p>
+            <hr class="rule">
 
-                <h3>Sizes</h3>
-                <div class="preview-frame items-center gap-lg mb-md">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="avatar avatar-xs"><img src="https://i.pravatar.cc/48?img=1" alt=""></div>
-                    <div class="avatar avatar-sm"><img src="https://i.pravatar.cc/48?img=2" alt=""></div>
-                    <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=3" alt=""></div>
-                    <div class="avatar avatar-lg"><img src="https://i.pravatar.cc/128?img=4" alt=""></div>
-                    <div class="avatar avatar-xl"><img src="https://i.pravatar.cc/160?img=5" alt=""></div>
-                    <div class="avatar avatar-md" style="background:var(--color-primary);color:white">A</div>
-                </div>
+            <!-- ── JavaScript API ─────────────────── -->
+            <section id="javascript">
+                <h2 class="section-title">JavaScript API</h2>
+                <p class="body-text">
+                    <code>ToggleSwitch</code> is defined in <code>toggle.js</code> and auto-instantiated
+                    on page load via the <code>'.toggle'</code> selector. Construct a new instance for
+                    programmatic control.
+                </p>
 
-                <h3>Avatar Group</h3>
-                <div class="preview-frame items-center mb-md">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="avatar-group">
-                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=9" alt=""></div>
-                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=8" alt=""></div>
-                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=7" alt=""></div>
-                        <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=6" alt=""></div>
-                    </div>
-                    <span
-                        style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-left:var(--space-md)">+128
-                        guests</span>
-                </div>
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Arguments</th>
+                            <th>Returns</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>getState(el)</td>
+                            <td>HTMLElement</td>
+                            <td><code>"on"</code> | <code>"off"</code></td>
+                            <td>Reads the current state from the element's <code>data-state</code> attribute.</td>
+                        </tr>
+                        <tr>
+                            <td>setState(el, state)</td>
+                            <td>HTMLElement, <code>"on"</code> | <code>"off"</code></td>
+                            <td>—</td>
+                            <td>Sets state silently — does not fire <code>toggle-change</code>.</td>
+                        </tr>
+                        <tr>
+                            <td>toggle(el)</td>
+                            <td>HTMLElement</td>
+                            <td>—</td>
+                            <td>Flips the current state silently.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="subsection-title">Listening for state changes</p>
+                <p class="body-text">
+                    Every user click dispatches a <code>toggle-change</code> CustomEvent on the element.
+                    The <code>detail</code> object exposes a string state and a boolean.
+                </p>
 
                 <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
+                    <div class="code-bar">
+                        <span class="code-lang-tag">JavaScript</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                     </div>
-                    <div class="code-block__body">
-                        <pre><tco>&lt;!-- Sizes: xs / sm / md / lg / xl / 2xl --&gt;</tco>
-<tk>&lt;div</tk> <ta>class</ta>=<tv>"avatar avatar-md"</tv><tk>&gt;</tk>
-  <tk>&lt;img</tk> <ta>src</ta>=<tv>"photo.jpg"</tv> <ta>alt</ta>=<tv>"Priya"</tv><tk>&gt;</tk>
-<tk>&lt;/div&gt;</tk>
+                    <pre><code><span class="k">const</span> el = document.<span class="k">querySelector</span>(<span class="s">'.toggle'</span>);
 
-<tco>&lt;!-- Initials fallback --&gt;</tco>
-<tk>&lt;div</tk> <ta>class</ta>=<tv>"avatar avatar-md"</tv><tk>&gt;</tk>P<tk>&lt;/div&gt;</tk>
-
-<tco>&lt;!-- Stacked group --&gt;</tco>
-<tk>&lt;div</tk> <ta>class</ta>=<tv>"avatar-group"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"avatar avatar-md"</tv><tk>&gt;&lt;img</tk> <ta>src</ta>=<tv>"..."</tv><tk>&gt;&lt;/div&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"avatar avatar-md"</tv><tk>&gt;&lt;img</tk> <ta>src</ta>=<tv>"..."</tv><tk>&gt;&lt;/div&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ GALLERY ══ -->
-            <section class="doc-section" id="gallery">
-                <span class="doc-section__eyebrow">Components · Gallery</span>
-                <h2>Image Gallery</h2>
-                <p class="doc-section__intro">A 5-photo hero grid. The main image spans the full height on the left,
-                    with 4 supporting thumbnails on the right. Collapses gracefully to a single image on mobile.</p>
-
-                <div class="preview-frame preview-frame--tall" style="padding:var(--space-lg)">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="gallery" style="width:100%">
-                        <div class="gallery-actions">
-                            <button class="gallery-action-btn" aria-label="Share">↗</button>
-                            <button class="gallery-action-btn" aria-label="Save">♡</button>
-                        </div>
-                        <div class="gallery-grid">
-                            <div class="gallery-item gallery-item--hero">
-                                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop"
-                                    alt="Living room">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format&fit=crop"
-                                    alt="Bedroom">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&auto=format&fit=crop"
-                                    alt="Kitchen">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&auto=format&fit=crop"
-                                    alt="Bathroom">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&auto=format&fit=crop"
-                                    alt="Balcony">
-                            </div>
-                        </div>
-                        <button class="gallery-show-all">⊞ Show all photos</button>
-                    </div>
+el.<span class="k">addEventListener</span>(<span class="s">'toggle-change'</span>, (e) => {
+  console.<span class="k">log</span>(e.detail.state);    <span class="c">// "on" | "off"</span>
+  console.<span class="k">log</span>(e.detail.isActive); <span class="c">// true | false</span>
+});</code></pre>
                 </div>
 
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"gallery"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"gallery-actions"</tv><tk>&gt;</tk>
-    <tk>&lt;button</tk> <ta>class</ta>=<tv>"gallery-action-btn"</tv><tk>&gt;</tk>↗<tk>&lt;/button&gt;</tk>
-    <tk>&lt;button</tk> <ta>class</ta>=<tv>"gallery-action-btn"</tv><tk>&gt;</tk>♡<tk>&lt;/button&gt;</tk>
-  <tk>&lt;/div&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"gallery-grid"</tv><tk>&gt;</tk>
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"gallery-item gallery-item--hero"</tv><tk>&gt;</tk>
-      <tk>&lt;img</tk> <ta>src</ta>=<tv>"main.jpg"</tv> <ta>alt</ta>=<tv>"Living room"</tv><tk>&gt;</tk>
-    <tk>&lt;/div&gt;</tk>
-    <tco>&lt;!-- 4 more .gallery-item elements --&gt;</tco>
-  <tk>&lt;/div&gt;</tk>
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"gallery-show-all"</tv><tk>&gt;</tk>⊞ Show all photos<tk>&lt;/button&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ BOOKING CARD ══ -->
-            <section class="doc-section" id="booking">
-                <span class="doc-section__eyebrow">Components · Booking Card</span>
-                <h2>Booking Card</h2>
-                <p class="doc-section__intro">A sticky pricing sidebar with date selection, guest counter, and a price
-                    breakdown. Becomes static (non-sticky) below 960px to avoid viewport conflicts on mobile.</p>
-
-                <div class="preview-frame preview-frame--center">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="booking-card" style="max-width:360px;width:100%">
-                        <div class="booking-card__price">
-                            <span class="booking-card__price-amount">₹8,500</span>
-                            <span class="booking-card__price-original">₹12,000</span>
-                            <span class="booking-card__price-period">/ night</span>
-                            <span class="booking-card__price-discount">29% off</span>
-                            <div class="booking-card__rating">
-                                <span class="star-icon">★</span>
-                                <span>4.92</span>
-                                <span class="booking-card__rating-count">(128)</span>
-                            </div>
-                        </div>
-                        <div class="booking-card__inputs">
-                            <div class="booking-card__date-row">
-                                <div class="booking-card__field">
-                                    <label class="booking-card__field-label">Check-in</label>
-                                    <div class="booking-card__field-value">Mar 15</div>
-                                </div>
-                                <div class="booking-card__field">
-                                    <label class="booking-card__field-label">Check-out</label>
-                                    <div class="booking-card__field-value">Mar 20</div>
-                                </div>
-                            </div>
-                            <div class="booking-card__field">
-                                <label class="booking-card__field-label">Guests</label>
-                                <div class="booking-card__field-value">2 guests</div>
-                            </div>
-                        </div>
-                        <button class="booking-card__reserve">Reserve</button>
-                        <p class="booking-card__notice">You won't be charged yet</p>
-                        <div class="booking-card__breakdown">
-                            <div class="booking-card__breakdown-row">
-                                <span class="booking-card__breakdown-row--label">₹8,500 × 5 nights</span>
-                                <span>₹42,500</span>
-                            </div>
-                            <div class="booking-card__breakdown-row">
-                                <span class="booking-card__breakdown-row--label">Cleaning fee</span>
-                                <span>₹1,500</span>
-                            </div>
-                            <div class="booking-card__breakdown-row booking-card__breakdown-row--total">
-                                <span>Total before taxes</span>
-                                <span>₹44,000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"booking-card"</tv><tk>&gt;</tk>
-
-  <tco>&lt;!-- Price header --&gt;</tco>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"booking-card__price"</tv><tk>&gt;</tk>
-    <tk>&lt;span</tk> <ta>class</ta>=<tv>"booking-card__price-amount"</tv><tk>&gt;</tk>₹8,500<tk>&lt;/span&gt;</tk>
-    <tk>&lt;span</tk> <ta>class</ta>=<tv>"booking-card__price-period"</tv><tk>&gt;</tk>/ night<tk>&lt;/span&gt;</tk>
-  <tk>&lt;/div&gt;</tk>
-
-  <tco>&lt;!-- Date / guest fields --&gt;</tco>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"booking-card__inputs"</tv><tk>&gt;</tk>
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"booking-card__date-row"</tv><tk>&gt;</tk>
-      <tk>&lt;div</tk> <ta>class</ta>=<tv>"booking-card__field"</tv><tk>&gt;</tk>
-        <tk>&lt;label</tk> <ta>class</ta>=<tv>"booking-card__field-label"</tv><tk>&gt;</tk>Check-in<tk>&lt;/label&gt;</tk>
-        <tk>&lt;div</tk>   <ta>class</ta>=<tv>"booking-card__field-value"</tv><tk>&gt;</tk>Mar 15<tk>&lt;/div&gt;</tk>
-      <tk>&lt;/div&gt;</tk>
-      <tco>&lt;!-- Check-out field --&gt;</tco>
-    <tk>&lt;/div&gt;</tk>
-    <tco>&lt;!-- Guests field --&gt;</tco>
-  <tk>&lt;/div&gt;</tk>
-
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"booking-card__reserve"</tv><tk>&gt;</tk>Reserve<tk>&lt;/button&gt;</tk>
-  <tk>&lt;p</tk> <ta>class</ta>=<tv>"booking-card__notice"</tv><tk>&gt;</tk>You won't be charged yet<tk>&lt;/p&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ CALENDAR ══ -->
-            <section class="doc-section" id="calendar">
-                <span class="doc-section__eyebrow">Components · Calendar</span>
-                <h2>Calendar</h2>
-                <p class="doc-section__intro">A dual-month date-range picker. Supports start/end selection, in-range
-                    highlighting, today indicator, and past-date blocking. Renders one month on narrow containers.</p>
-
-                <div class="preview-frame preview-frame--tall" style="flex-direction:column;align-items:flex-start">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="calendar-wrapper">
-                        <div style="text-align:center;font-size:var(--text-md);font-weight:var(--weight-semibold)">
-                            Select check-in date</div>
-                        <div class="calendar-months" id="calendarEl"></div>
-                        <div class="calendar-footer">
-                            <button class="btn btn-ghost btn-sm" onclick="clearCalendar()">Clear dates</button>
-                            <button class="btn btn-secondary btn-sm">Close</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"calendar-wrapper"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"calendar-months"</tv> <ta>id</ta>=<tv>"calendarEl"</tv><tk>&gt;&lt;/div&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"calendar-footer"</tv><tk>&gt;</tk>
-    <tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-ghost btn-sm"</tv> <ta>onclick</ta>=<tv>"clearCalendar()"</tv><tk>&gt;</tk>
-      Clear dates
-    <tk>&lt;/button&gt;</tk>
-    <tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-secondary btn-sm"</tv><tk>&gt;</tk>Close<tk>&lt;/button&gt;</tk>
-  <tk>&lt;/div&gt;</tk>
-<tk>&lt;/div&gt;</tk>
-
-<tco>/* JS: call renderCalendar() to populate */</tco></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ DROPDOWN ══ -->
-            <section class="doc-section" id="dropdown">
-                <span class="doc-section__eyebrow">Components · Dropdown</span>
-                <h2>Dropdown</h2>
-                <p class="doc-section__intro">An animated dropdown with counter controls. Responds to keyboard (Escape
-                    to close) and outside-click dismissal. Uses <code>aria-expanded</code> for screen readers.</p>
-
-                <div class="preview-frame" style="flex-direction:column">
-                    <span class="preview-frame__label">Preview</span>
-                    <div style="max-width:380px;width:100%">
-                        <div class="dropdown" id="guestDrop">
-                            <button class="dropdown__trigger" aria-expanded="false"
-                                onclick="toggleDropdown('guestDrop')">
-                                <span id="guestLabel">2 guests, 1 infant</span>
-                                <svg class="dropdown__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5">
-                                    <polyline points="6 9 12 15 18 9" />
-                                </svg>
-                            </button>
-                            <div class="dropdown__panel">
-                                <div class="dropdown__item">
-                                    <div class="dropdown__item-info">
-                                        <span class="dropdown__item-label">Adults</span>
-                                        <span class="dropdown__item-desc">Ages 13 or above</span>
-                                    </div>
-                                    <div class="dropdown__counter">
-                                        <button class="dropdown__counter-btn" onclick="changeCount('adults',-1)"
-                                            id="adultsDown">−</button>
-                                        <span class="dropdown__counter-value" id="adultsCount">2</span>
-                                        <button class="dropdown__counter-btn"
-                                            onclick="changeCount('adults',1)">+</button>
-                                    </div>
-                                </div>
-                                <div class="dropdown__item">
-                                    <div class="dropdown__item-info">
-                                        <span class="dropdown__item-label">Children</span>
-                                        <span class="dropdown__item-desc">Ages 2–12</span>
-                                    </div>
-                                    <div class="dropdown__counter">
-                                        <button class="dropdown__counter-btn" onclick="changeCount('children',-1)"
-                                            id="childrenDown" disabled>−</button>
-                                        <span class="dropdown__counter-value" id="childrenCount">0</span>
-                                        <button class="dropdown__counter-btn"
-                                            onclick="changeCount('children',1)">+</button>
-                                    </div>
-                                </div>
-                                <div class="dropdown__item">
-                                    <div class="dropdown__item-info">
-                                        <span class="dropdown__item-label">Infants</span>
-                                        <span class="dropdown__item-desc">Under 2</span>
-                                    </div>
-                                    <div class="dropdown__counter">
-                                        <button class="dropdown__counter-btn" onclick="changeCount('infants',-1)"
-                                            id="infantsDown">−</button>
-                                        <span class="dropdown__counter-value" id="infantsCount">1</span>
-                                        <button class="dropdown__counter-btn"
-                                            onclick="changeCount('infants',1)">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"dropdown"</tv> <ta>id</ta>=<tv>"myDrop"</tv><tk>&gt;</tk>
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"dropdown__trigger"</tv>
-           <ta>aria-expanded</ta>=<tv>"false"</tv>
-           <ta>onclick</ta>=<tv>"toggleDropdown('myDrop')"</tv><tk>&gt;</tk>
-    2 guests
-    <tk>&lt;svg</tk> <ta>class</ta>=<tv>"dropdown__arrow"</tv> <ta>viewBox</ta>=<tv>"0 0 24 24"</tv> ...<tk>&gt;&lt;/svg&gt;</tk>
-  <tk>&lt;/button&gt;</tk>
-
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"dropdown__panel"</tv><tk>&gt;</tk>
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"dropdown__item"</tv><tk>&gt;</tk>
-      <tk>&lt;div</tk> <ta>class</ta>=<tv>"dropdown__item-info"</tv><tk>&gt;</tk>
-        <tk>&lt;span</tk> <ta>class</ta>=<tv>"dropdown__item-label"</tv><tk>&gt;</tk>Adults<tk>&lt;/span&gt;</tk>
-      <tk>&lt;/div&gt;</tk>
-      <tk>&lt;div</tk> <ta>class</ta>=<tv>"dropdown__counter"</tv><tk>&gt;</tk>
-        <tk>&lt;button</tk> <ta>class</ta>=<tv>"dropdown__counter-btn"</tv><tk>&gt;</tk>−<tk>&lt;/button&gt;</tk>
-        <tk>&lt;span</tk>  <ta>class</ta>=<tv>"dropdown__counter-value"</tv><tk>&gt;</tk>2<tk>&lt;/span&gt;</tk>
-        <tk>&lt;button</tk> <ta>class</ta>=<tv>"dropdown__counter-btn"</tv><tk>&gt;</tk>+<tk>&lt;/button&gt;</tk>
-      <tk>&lt;/div&gt;</tk>
-    <tk>&lt;/div&gt;</tk>
-  <tk>&lt;/div&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ REVIEWS ══ -->
-            <section class="doc-section" id="reviews">
-                <span class="doc-section__eyebrow">Components · Review Card</span>
-                <h2>Review Card</h2>
-                <p class="doc-section__intro">A review summary with rating score, per-category bars, and an auto-fitting
-                    grid of individual review cards with expandable text.</p>
-
-                <div class="preview-frame preview-frame--tall" style="flex-direction:column">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="review-summary mb-lg">
-                        <div class="review-summary__score">4.92</div>
-                        <div>
-                            <div class="review-summary__stars">
-                                <span class="review-summary__star">★</span><span class="review-summary__star">★</span>
-                                <span class="review-summary__star">★</span><span class="review-summary__star">★</span>
-                                <span class="review-summary__star">★</span>
-                            </div>
-                            <div class="review-summary__count">128 reviews</div>
-                        </div>
-                    </div>
-                    <div class="review-categories">
-                        <div class="review-category"><span class="review-category__name">Cleanliness</span>
-                            <div class="review-category__bar">
-                                <div class="review-category__fill" style="width:98%"></div>
-                            </div><span class="review-category__score">4.9</span>
-                        </div>
-                        <div class="review-category"><span class="review-category__name">Accuracy</span>
-                            <div class="review-category__bar">
-                                <div class="review-category__fill" style="width:96%"></div>
-                            </div><span class="review-category__score">4.8</span>
-                        </div>
-                        <div class="review-category"><span class="review-category__name">Location</span>
-                            <div class="review-category__bar">
-                                <div class="review-category__fill" style="width:94%"></div>
-                            </div><span class="review-category__score">4.7</span>
-                        </div>
-                    </div>
-                    <div class="review-grid">
-                        <div class="review-card">
-                            <div class="review-card__header">
-                                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=1" alt="Priya">
-                                </div>
-                                <div>
-                                    <div class="review-card__name">Priya Sharma</div>
-                                    <div class="review-card__location">Mumbai, India</div>
-                                </div>
-                            </div>
-                            <div class="review-card__rating-row">
-                                <div class="review-card__stars"><span class="review-card__star">★</span><span
-                                        class="review-card__star">★</span><span class="review-card__star">★</span><span
-                                        class="review-card__star">★</span><span class="review-card__star">★</span></div>
-                                <span class="review-card__date">March 2025</span>
-                            </div>
-                            <p class="review-card__body review-card__body--truncated" id="rev1">Absolutely stunning
-                                property! The views were breathtaking and the host was incredibly responsive. Every
-                                detail was perfect, from the luxurious bedding to the fully equipped kitchen.</p>
-                            <button class="review-card__show-more" onclick="toggleReview('rev1',this)">Show
-                                more</button>
-                        </div>
-                        <div class="review-card">
-                            <div class="review-card__header">
-                                <div class="avatar avatar-md"><img src="https://i.pravatar.cc/96?img=5" alt="Arjun">
-                                </div>
-                                <div>
-                                    <div class="review-card__name">Arjun Patel</div>
-                                    <div class="review-card__location">Bengaluru, India</div>
-                                </div>
-                            </div>
-                            <div class="review-card__rating-row">
-                                <div class="review-card__stars"><span class="review-card__star">★</span><span
-                                        class="review-card__star">★</span><span class="review-card__star">★</span><span
-                                        class="review-card__star">★</span><span class="review-card__star">★</span></div>
-                                <span class="review-card__date">February 2025</span>
-                            </div>
-                            <p class="review-card__body">Great location and a beautiful, clean space. The host was warm
-                                and welcoming. We'll definitely be back!</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tco>&lt;!-- Summary block --&gt;</tco>
-<tk>&lt;div</tk> <ta>class</ta>=<tv>"review-summary"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"review-summary__score"</tv><tk>&gt;</tk>4.92<tk>&lt;/div&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"review-summary__stars"</tv><tk>&gt;</tk>...★★★★★...<tk>&lt;/div&gt;</tk>
-<tk>&lt;/div&gt;</tk>
-
-<tco>&lt;!-- Individual review card --&gt;</tco>
-<tk>&lt;div</tk> <ta>class</ta>=<tv>"review-card"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"review-card__header"</tv><tk>&gt;</tk>
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"avatar avatar-md"</tv><tk>&gt;&lt;img</tk> <ta>src</ta>=<tv>"..."</tv><tk>&gt;&lt;/div&gt;</tk>
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"review-card__name"</tv><tk>&gt;</tk>Priya Sharma<tk>&lt;/div&gt;</tk>
-  <tk>&lt;/div&gt;</tk>
-  <tk>&lt;p</tk> <ta>class</ta>=<tv>"review-card__body review-card__body--truncated"</tv><tk>&gt;</tk>
-    ...review text...
-  <tk>&lt;/p&gt;</tk>
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"review-card__show-more"</tv><tk>&gt;</tk>Show more<tk>&lt;/button&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ MODAL ══ -->
-            <section class="doc-section" id="modal">
-                <span class="doc-section__eyebrow">Components · Modal</span>
-                <h2>Modal</h2>
-                <p class="doc-section__intro">An overlay dialog with spring animation. Closes on backdrop click or
-                    Escape key. On mobile it becomes a bottom sheet with drag handle.</p>
-
-                <div class="preview-frame items-center" style="min-height:160px">
-                    <span class="preview-frame__label">Preview</span>
-                    <button class="btn btn-primary" onclick="openModal('demoModal')">Open Modal</button>
-                    <button class="btn btn-outline" onclick="openModal('demoModalSm')">Small Modal</button>
-                </div>
-
-                <!-- Modal instances -->
-                <div class="modal-overlay" id="demoModal">
-                    <div class="modal">
-                        <div class="modal__header">
-                            <button class="modal__close" onclick="closeModal('demoModal')">✕</button>
-                            <span class="modal__title">Confirm your booking</span>
-                            <div style="width:32px"></div>
-                        </div>
-                        <div class="modal__body">
-                            <p style="color:var(--color-text-secondary);line-height:var(--leading-relaxed)">Review your
-                                selected dates, guests, and the total price before confirming. You won't be charged
-                                until you tap <strong>Confirm</strong>.</p>
-                            <div
-                                style="margin-top:var(--space-lg);padding:var(--space-md);background:var(--color-bg-muted);border-radius:var(--radius-lg)">
-                                <div
-                                    style="display:flex;justify-content:space-between;font-size:var(--text-sm);margin-bottom:var(--space-sm)">
-                                    <span>Mar 15 – Mar 20</span><span>5 nights</span>
-                                </div>
-                                <div style="display:flex;justify-content:space-between;font-size:var(--text-sm)"><span>2
-                                        guests</span><span style="font-weight:var(--weight-bold)">₹44,000 total</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal__footer">
-                            <button class="btn btn-ghost btn-sm" onclick="closeModal('demoModal')">Cancel</button>
-                            <button class="btn btn-primary btn-sm">Confirm Reservation</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-overlay" id="demoModalSm">
-                    <div class="modal" style="max-width:420px">
-                        <div class="modal__header">
-                            <button class="modal__close" onclick="closeModal('demoModalSm')">✕</button>
-                            <span class="modal__title">Report a concern</span>
-                            <div style="width:32px"></div>
-                        </div>
-                        <div class="modal__body">
-                            <p style="color:var(--color-text-secondary)">Choose a reason to help us understand the issue
-                                better.</p>
-                        </div>
-                        <div class="modal__footer">
-                            <button class="btn btn-ghost btn-sm" onclick="closeModal('demoModalSm')">Cancel</button>
-                            <button class="btn btn-secondary btn-sm">Submit</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="code-block" style="margin-top:var(--space-md)">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"modal-overlay"</tv> <ta>id</ta>=<tv>"myModal"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"modal"</tv><tk>&gt;</tk>
-
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"modal__header"</tv><tk>&gt;</tk>
-      <tk>&lt;button</tk> <ta>class</ta>=<tv>"modal__close"</tv>
-              <ta>onclick</ta>=<tv>"closeModal('myModal')"</tv><tk>&gt;</tk>✕<tk>&lt;/button&gt;</tk>
-      <tk>&lt;span</tk> <ta>class</ta>=<tv>"modal__title"</tv><tk>&gt;</tk>Title<tk>&lt;/span&gt;</tk>
-    <tk>&lt;/div&gt;</tk>
-
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"modal__body"</tv><tk>&gt;</tk>Content<tk>&lt;/div&gt;</tk>
-
-    <tk>&lt;div</tk> <ta>class</ta>=<tv>"modal__footer"</tv><tk>&gt;</tk>
-      <tk>&lt;button</tk> <ta>class</ta>=<tv>"btn btn-primary"</tv><tk>&gt;</tk>Confirm<tk>&lt;/button&gt;</tk>
-    <tk>&lt;/div&gt;</tk>
-
-  <tk>&lt;/div&gt;</tk>
-<tk>&lt;/div&gt;</tk>
-
-<tco>/* JS */</tco>
-<tk>function</tk> <ta>openModal</ta>(id)  { document.getElementById(id).classList.add(<tv>'modal-overlay--visible'</tv>) }
-<tk>function</tk> <ta>closeModal</ta>(id) { document.getElementById(id).classList.remove(<tv>'modal-overlay--visible'</tv>) }</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ══ NAV BUTTONS ══ -->
-            <section class="doc-section" id="navbtns">
-                <span class="doc-section__eyebrow">Components · Nav Buttons</span>
-                <h2>Navigation Buttons</h2>
-                <p class="doc-section__intro">Circular navigation controls for carousels, photo galleries, and paginated
-                    content. Available in three sizes and four style variants.</p>
-
-                <div class="preview-frame flex-wrap items-center gap-lg mb-md">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="nav-btn-pair">
-                        <button class="nav-btn nav-btn--sm">←</button>
-                        <button class="nav-btn nav-btn--sm">→</button>
-                    </div>
-                    <div class="nav-btn-pair">
-                        <button class="nav-btn">←</button>
-                        <button class="nav-btn">→</button>
-                    </div>
-                    <div class="nav-btn-pair">
-                        <button class="nav-btn nav-btn--lg">←</button>
-                        <button class="nav-btn nav-btn--lg">→</button>
-                    </div>
-                    <div class="nav-btn-pair">
-                        <button class="nav-btn nav-btn--filled">←</button>
-                        <button class="nav-btn nav-btn--filled">→</button>
-                    </div>
-                    <div class="nav-btn-pair">
-                        <button class="nav-btn nav-btn--dark">←</button>
-                        <button class="nav-btn nav-btn--dark">→</button>
-                    </div>
-                    <button class="nav-btn" disabled>←</button>
-                </div>
+                <p class="subsection-title">Programmatic control</p>
 
                 <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
+                    <div class="code-bar">
+                        <span class="code-lang-tag">JavaScript</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                     </div>
-                    <div class="code-block__body">
-                        <pre><tco>&lt;!-- Sizes: (default) / nav-btn--sm / nav-btn--lg --&gt;</tco>
-<tk>&lt;div</tk> <ta>class</ta>=<tv>"nav-btn-pair"</tv><tk>&gt;</tk>
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"nav-btn"</tv><tk>&gt;</tk>←<tk>&lt;/button&gt;</tk>
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"nav-btn"</tv><tk>&gt;</tk>→<tk>&lt;/button&gt;</tk>
-<tk>&lt;/div&gt;</tk>
+                    <pre><code><span class="k">const</span> sw = <span class="k">new</span> ToggleSwitch(<span class="s">'.toggle'</span>);
+<span class="k">const</span> el = document.<span class="k">querySelector</span>(<span class="s">'#myToggle'</span>);
 
-<tco>&lt;!-- Style variants --&gt;</tco>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"nav-btn nav-btn--filled"</tv><tk>&gt;</tk>←<tk>&lt;/button&gt;</tk>  <tco>&lt;!-- floating --&gt;</tco>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"nav-btn nav-btn--dark"</tv><tk>&gt;</tk>←<tk>&lt;/button&gt;</tk>    <tco>&lt;!-- dark   --&gt;</tco>
-<tk>&lt;button</tk> <ta>class</ta>=<tv>"nav-btn"</tv> <ta>disabled</ta><tk>&gt;</tk>←<tk>&lt;/button&gt;</tk>        <tco>&lt;!-- no more pages --&gt;</tco></pre>
-                    </div>
+sw.<span class="k">setState</span>(el, <span class="s">'on'</span>);   <span class="c">// force on  — no event</span>
+sw.<span class="k">setState</span>(el, <span class="s">'off'</span>);  <span class="c">// force off — no event</span>
+sw.<span class="k">toggle</span>(el);            <span class="c">// flip      — no event</span>
+sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "off"</span></code></pre>
+                </div>
+
+                <div class="note">
+                    <p><code>setState()</code> and <code>toggle()</code> do not fire <code>toggle-change</code>.
+                        Only user-initiated clicks dispatch the custom event.</p>
                 </div>
             </section>
 
-            <!-- ══ PRICE CARD ══ -->
-            <section class="doc-section" id="pricecard">
-                <span class="doc-section__eyebrow">Components · Price Card</span>
-                <h2>Price Card</h2>
-                <p class="doc-section__intro">A compact floating card for listing-grid overlays or bottom bars. Shows
-                    the starting price and a direct booking CTA in a single inline row.</p>
+            <hr class="rule">
 
-                <div class="preview-frame preview-frame--center mb-md">
-                    <span class="preview-frame__label">Preview</span>
-                    <div class="price-card" style="max-width:360px;width:100%">
-                        <div class="price-card__info">
-                            <span class="price-card__from">from</span>
-                            <span class="price-card__amount">₹8,500 <span class="price-card__per">/ night</span></span>
-                        </div>
-                        <button class="price-card__cta">Check availability</button>
-                    </div>
-                </div>
+            <!-- ── Integration ────────────────────── -->
+            <section id="integration">
+                <h2 class="section-title">Integration</h2>
+                <p class="body-text">
+                    Include <code>toggle.js</code> once before <code>&lt;/body&gt;</code>. It auto-initialises
+                    all <code>.toggle</code> elements present at load time. Elements added dynamically after
+                    load require a fresh <code>new ToggleSwitch(selector)</code> call.
+                </p>
 
                 <div class="code-block">
-                    <div class="code-block__header">
-                        <div class="code-block__dots">
-                            <div class="code-block__dot code-block__dot--red"></div>
-                            <div class="code-block__dot code-block__dot--yellow"></div>
-                            <div class="code-block__dot code-block__dot--green"></div>
-                        </div>
-                        <span class="code-block__lang">html</span>
-                        <button class="code-block__copy" onclick="copyCode(this)">Copy</button>
+                    <div class="code-bar">
+                        <span class="code-lang-tag">HTML</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                     </div>
-                    <div class="code-block__body">
-                        <pre><tk>&lt;div</tk> <ta>class</ta>=<tv>"price-card"</tv><tk>&gt;</tk>
-  <tk>&lt;div</tk> <ta>class</ta>=<tv>"price-card__info"</tv><tk>&gt;</tk>
-    <tk>&lt;span</tk> <ta>class</ta>=<tv>"price-card__from"</tv><tk>&gt;</tk>from<tk>&lt;/span&gt;</tk>
-    <tk>&lt;span</tk> <ta>class</ta>=<tv>"price-card__amount"</tv><tk>&gt;</tk>
-      ₹8,500
-      <tk>&lt;span</tk> <ta>class</ta>=<tv>"price-card__per"</tv><tk>&gt;</tk>/ night<tk>&lt;/span&gt;</tk>
-    <tk>&lt;/span&gt;</tk>
-  <tk>&lt;/div&gt;</tk>
-  <tk>&lt;button</tk> <ta>class</ta>=<tv>"price-card__cta"</tv><tk>&gt;</tk>Check availability<tk>&lt;/button&gt;</tk>
-<tk>&lt;/div&gt;</tk></pre>
-                    </div>
+                    <pre><code><span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
                 </div>
 
-                <!-- Footer -->
-                <div
-                    style="margin-top:var(--space-3xl);padding-top:var(--space-xl);border-top:1px solid var(--color-border)">
-                    <div
-                        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-md)">
-                        <div>
-                            <div style="font-weight:var(--weight-bold);margin-bottom:var(--space-xs)">Airframe UI Design
-                                Guidelines</div>
-                            <div style="font-size:var(--text-sm);color:var(--color-text-muted)">Pure CSS · Vanilla JS ·
-                                Zero dependencies</div>
-                        </div>
-                        <span class="badge badge-muted">v1.0.0</span>
+                <p class="subsection-title">File structure</p>
+
+                <div class="code-block">
+                    <div class="code-bar">
+                        <span class="code-lang-tag">Directory</span>
                     </div>
+                    <pre><code>design_guidelines/
+├── header.php
+├── left_sidebar.php
+├── right_sidebar.php
+├── toggle.php
+├── design-system.css
+├── Components/
+│   └── toggle.css
+└── JS/
+    └── toggle.js</code></pre>
+                </div>
+            </section>
+
+            <hr class="rule">
+
+            <!-- ── Accessibility ──────────────────── -->
+            <section id="accessibility">
+                <h2 class="section-title">Accessibility</h2>
+                <p class="body-text">
+                    The toggle is a custom control — ARIA attributes must be set explicitly in markup.
+                    <code>toggle.js</code> keeps <code>aria-checked</code> synchronised on every state
+                    transition. The element is keyboard-operable via Space or Enter when focused.
+                </p>
+
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>role</td>
+                            <td><code>"switch"</code></td>
+                            <td>Identifies the element as a binary switch to screen readers.</td>
+                        </tr>
+                        <tr>
+                            <td>aria-checked</td>
+                            <td><code>"true"</code> / <code>"false"</code></td>
+                            <td>Kept in sync by <code>toggle.js</code>. Set the initial value in markup.</td>
+                        </tr>
+                        <tr>
+                            <td>tabindex</td>
+                            <td><code>"0"</code></td>
+                            <td>Places the element in the natural tab order.</td>
+                        </tr>
+                        <tr>
+                            <td>aria-label</td>
+                            <td>Descriptive string</td>
+                            <td>Describes what is toggled, e.g. <code>"Enable dark mode"</code>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="subsection-title">Keyboard activation</p>
+
+                <div class="code-block">
+                    <div class="code-bar">
+                        <span class="code-lang-tag">JavaScript</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>document.<span class="k">querySelectorAll</span>(<span class="s">'.toggle'</span>).<span class="k">forEach</span>(el => {
+  el.<span class="k">addEventListener</span>(<span class="s">'keydown'</span>, e => {
+    <span class="k">if</span> (e.key === <span class="s">' '</span> || e.key === <span class="s">'Enter'</span>) {
+      e.<span class="k">preventDefault</span>(); el.<span class="k">click</span>();
+    }
+  });
+});</code></pre>
                 </div>
             </section>
 
         </main>
+
+        <!-- ── Right TOC ──────────────────────── -->
+        <aside class="sidebar-right">
+            <?php include __DIR__ . '/right_sidebar.php'; ?>
+        </aside>
+
     </div>
 
+    <footer class="footer">
+        <span class="footer-text">Holidayseva Design Guidelines · Toggle</span>
+        <span class="footer-text">v1.0</span>
+    </footer>
+
+    <!-- Toggle component JS — from toggle.js — auto-inits .toggle on DOMContentLoaded -->
+    <script src="/JS/toggle.js"></script>
+
     <script>
-        /* ── CALENDAR ── */
-        const CAL = { start: null, end: null };
-        const today = new Date(); today.setHours(0, 0, 0, 0);
-        let currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-
-        function renderCalendar() {
-            const el = document.getElementById('calendarEl');
-            if (!el) return;
-            el.innerHTML = '';
-            for (let m = 0; m < 2; m++) {
-                const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + m, 1);
-                el.appendChild(buildMonth(d, m));
-            }
-        }
-
-        function buildMonth(monthDate, idx) {
-            const div = document.createElement('div');
-            div.className = 'calendar-month';
-            const year = monthDate.getFullYear(), month = monthDate.getMonth();
-            const mName = monthDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-            const prevBtn = `<button class="calendar-nav-btn${idx > 0 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(-1)">←</button>`;
-            const nextBtn = `<button class="calendar-nav-btn${idx < 1 ? ' calendar-nav-btn--hidden' : ''}" onclick="shiftMonth(1)">→</button>`;
-            div.innerHTML = `
-      <div class="calendar-month__header">
-        ${prevBtn}
-        <span class="calendar-month__title">${mName}</span>
-        ${nextBtn}
-      </div>
-      <div class="calendar-weekdays">
-        ${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => `<div class="calendar-weekday">${d}</div>`).join('')}
-      </div>
-      <div class="calendar-days" id="days-${idx}"></div>`;
-            const daysEl = div.querySelector(`#days-${idx}`);
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            for (let i = 0; i < firstDay; i++) {
-                const e = document.createElement('button');
-                e.className = 'calendar-day calendar-day--empty'; daysEl.appendChild(e);
-            }
-            for (let d = 1; d <= daysInMonth; d++) {
-                const date = new Date(year, month, d);
-                const btn = document.createElement('button');
-                btn.textContent = d; btn.className = 'calendar-day';
-                if (date < today) { btn.className += ' calendar-day--disabled'; btn.disabled = true; }
-                if (date.toDateString() === today.toDateString()) btn.className += ' calendar-day--today';
-                if (CAL.start && date.toDateString() === CAL.start.toDateString()) btn.className += ' calendar-day--selected';
-                else if (CAL.end && date.toDateString() === CAL.end.toDateString()) btn.className += ' calendar-day--selected';
-                else if (CAL.start && CAL.end && date > CAL.start && date < CAL.end) btn.className += ' calendar-day--in-range';
-                btn.onclick = () => selectDay(date);
-                daysEl.appendChild(btn);
-            }
-            return div;
-        }
-
-        function selectDay(date) {
-            if (!CAL.start || (CAL.start && CAL.end)) { CAL.start = date; CAL.end = null; }
-            else if (date < CAL.start) { CAL.end = CAL.start; CAL.start = date; }
-            else { CAL.end = date; }
-            renderCalendar();
-        }
-        function shiftMonth(dir) { currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + dir, 1); renderCalendar(); }
-        function clearCalendar() { CAL.start = null; CAL.end = null; renderCalendar(); }
-        renderCalendar();
-
-        /* ── DROPDOWN ── */
-        const guestCounts = { adults: 2, children: 0, infants: 1 };
-        function toggleDropdown(id) {
-            const el = document.getElementById(id);
-            const isOpen = el.classList.contains('dropdown--open');
-            document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); });
-            if (!isOpen) { el.classList.add('dropdown--open'); el.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'true'); }
-        }
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); });
+        /* Wire demo state badge to the toggle-change event from toggle.js */
+        document.getElementById('demoToggle').addEventListener('toggle-change', (e) => {
+            const el = document.getElementById('demoState');
+            el.textContent = 'state: ' + e.detail.state;
+            el.className = 'demo-state' + (e.detail.isActive ? ' on' : '');
+            /* Keep aria-checked in sync */
+            document.getElementById('demoToggle').setAttribute('aria-checked', e.detail.isActive);
         });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') document.querySelectorAll('.dropdown--open').forEach(d => { d.classList.remove('dropdown--open'); d.querySelector('.dropdown__trigger').setAttribute('aria-expanded', 'false'); });
-        });
-        function changeCount(type, delta) {
-            guestCounts[type] = Math.max(0, guestCounts[type] + delta);
-            if (type === 'adults' && guestCounts.adults < 1) guestCounts.adults = 1;
-            document.getElementById(type + 'Count').textContent = guestCounts[type];
-            document.getElementById(type + 'Down').disabled = guestCounts[type] <= (type === 'adults' ? 1 : 0);
-            const total = guestCounts.adults + guestCounts.children;
-            const parts = [`${total} guest${total !== 1 ? 's' : ''}`];
-            if (guestCounts.infants) parts.push(`${guestCounts.infants} infant${guestCounts.infants !== 1 ? 's' : ''}`);
-            document.getElementById('guestLabel').textContent = parts.join(', ');
-        }
 
-        /* ── REVIEW ── */
-        function toggleReview(id, btn) {
-            const el = document.getElementById(id);
-            const isTruncated = el.classList.contains('review-card__body--truncated');
-            el.classList.toggle('review-card__body--truncated', !isTruncated);
-            btn.textContent = isTruncated ? 'Show less' : 'Show more';
-        }
-
-        /* ── MODAL ── */
-        function openModal(id) {
-            document.getElementById(id).classList.add('modal-overlay--visible');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('modal-overlay--visible');
-            document.body.style.overflow = '';
-        }
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') document.querySelectorAll('.modal-overlay--visible').forEach(m => { m.classList.remove('modal-overlay--visible'); document.body.style.overflow = ''; });
-        });
-        document.querySelectorAll('.modal-overlay').forEach(o => { o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }); });
-
-        /* ── SIDEBAR ACTIVE ── */
-        const sections = document.querySelectorAll('section[id]');
-        const links = document.querySelectorAll('.sidebar__link');
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    links.forEach(l => l.classList.remove('active'));
-                    const active = document.querySelector(`.sidebar__link[href="#${e.target.id}"]`);
-                    if (active) active.classList.add('active');
-                }
+        /* Keyboard support for all toggles */
+        document.querySelectorAll('.toggle').forEach(el => {
+            el.addEventListener('keydown', e => {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); el.click(); }
             });
-        }, { threshold: 0.2, rootMargin: '-60px 0px -60% 0px' });
-        sections.forEach(s => obs.observe(s));
+        });
 
-        /* ── COPY CODE ── */
+        /* TOC scroll-spy */
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocLinks = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('section[id], div[id]');
+            const spy = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        tocLinks.forEach(a => {
+                            a.classList.remove('active');
+                            if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
+                        });
+                    }
+                });
+            }, { rootMargin: '-15% 0px -75% 0px' });
+            sections.forEach(s => spy.observe(s));
+        });
+
+        /* Copy code buttons */
         function copyCode(btn) {
-            const pre = btn.closest('.code-block').querySelector('pre');
-            const text = pre.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+            navigator.clipboard.writeText(
+                btn.closest('.code-block').querySelector('pre').innerText
+            ).then(() => {
+                btn.textContent = 'Copied';
+                setTimeout(() => btn.textContent = 'Copy', 1800);
             });
         }
     </script>
+    <?php include __DIR__ . '/footer.php'; ?>
 </body>
 
 </html>
