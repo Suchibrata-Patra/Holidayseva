@@ -7,6 +7,7 @@
 
   <!-- ▸ Toggle component styles — from toggle.css -->
   <link rel="stylesheet" href="/Components/toggle.css">
+  <link rel="stylesheet" href="design-system.css">
 
   <style>
     /* ─────────────────────────────────────────────────
