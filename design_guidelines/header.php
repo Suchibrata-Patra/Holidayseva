@@ -27,7 +27,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   <a class="global-nav-brand" href="/" aria-label="Holidayseva home">
     <span class="global-nav-brand-mark" aria-hidden="true">
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Airbnb_Logo_B%C3%A9lo.svg/512px-Airbnb_Logo_B%C3%A9lo.svg.png"
+        src=""
         alt="" width="18" height="18"
       >
     </span>
@@ -37,7 +37,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   <!-- Hairline pip between brand and links -->
   <span class="global-nav-sep" aria-hidden="true"></span>
 
-  <!-- Centred nav links -->
+  <!-- Centred nav links
   <ul class="global-nav-links" role="list" aria-label="Main navigation">
     <li><a href="index.php"
         <?= $current === 'index.php' ? 'class="active"' : '' ?>>Get Started</a></li>
@@ -49,7 +49,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
         <?= in_array($current, $patternPages) ? 'class="active"' : '' ?>>Patterns</a></li>
     <li><a href="resources.php"
         <?= $current === 'resources.php' ? 'class="active"' : '' ?>>Resources</a></li>
-  </ul>
+  </ul> -->
 
   <!-- Right: search + account -->
   <div class="global-nav-actions">
