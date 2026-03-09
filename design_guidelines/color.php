@@ -82,3 +82,5 @@ include __DIR__ . '/../includes/layout.php';
         <strong>Dark mode ready:</strong> Because all colors are CSS variables, you can add a <code>[data-theme="dark"]</code> selector and override just the token values — no other changes needed.
     </div>
 </section>
+
+<?php include __DIR__ . '/../includes/layout-footer.php'; ?>
