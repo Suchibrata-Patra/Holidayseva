@@ -10,70 +10,16 @@
   <link rel="stylesheet" href="/Components/toggle.css">
   <style>
     /* ─── Reset ──────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ─── Tokens ─────────────────────────────────── */
-    :root {
-      --white:       #ffffff;
-      --off-white:   #f5f5f7;
-      --rule:        #d2d2d7;
-      --rule-light:  #e8e8ed;
-      --ink:         #1d1d1f;
-      --ink-2:       #424245;
-      --ink-3:       #6e6e73;
-      --ink-4:       #aeaeb2;
-      --blue:        #0066cc;
-      --red:         #ff385c;
-      --red-bg:      #fff2f4;
-      --mono: 'SF Mono', 'Fira Code', ui-monospace, monospace;
-      --sans: 'SF Pro Text', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --display: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+    
 
-    html { scroll-behavior: smooth; font-size: 16px; }
-
-    body {
-      font-family: var(--sans);
-      background: var(--white);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
 
     /* ─── Top bar ────────────────────────────────── */
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 52px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid var(--rule-light);
-      display: flex; align-items: center;
-      padding: 0 22px;
-      gap: 6px;
-    }
-    .topbar-crumb {
-      font-size: 12px;
-      color: var(--ink-3);
-      text-decoration: none;
-      font-weight: 400;
-    }
-    .topbar-crumb:hover { color: var(--blue); }
-    .topbar-sep {
-      font-size: 12px;
-      color: var(--ink-4);
-      margin: 0 2px;
-    }
-    .topbar-current {
-      font-size: 12px;
-      color: var(--ink);
-      font-weight: 500;
-    }
 
     /* ─── Layout ─────────────────────────────────── */
     .layout {
       display: flex;
-      padding-top: 52px;
+      padding-top: calc(var(--topbar-h) + var(--subbar-h));
       min-height: 100vh;
     }
 
@@ -82,26 +28,13 @@
       width: 240px;
       flex-shrink: 0;
       position: sticky;
-      top: 52px;
-      height: calc(100vh - 52px);
+      top: calc(var(--topbar-h) + var(--subbar-h));
+      height: calc(100vh - var(--topbar-h) - var(--subbar-h));
       overflow-y: auto;
-      padding: 24px 0 40px;
-      border-right: 1px solid var(--rule-light);
+      padding: 36px 0 40px;
+      border-right: 1px solid var(--border-light);
     }
     .sidebar::-webkit-scrollbar { width: 0; }
-
-    /* ─── Right TOC sidebar ─────────────────────── */
-    .toc-sidebar {
-      width: 200px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 52px;
-      height: calc(100vh - 52px);
-      overflow-y: auto;
-      padding: 40px 0;
-      border-left: 1px solid var(--rule-light);
-    }
-    .toc-sidebar::-webkit-scrollbar { width: 0; }
 
     .sb-section { margin-bottom: 28px; padding: 0 20px; }
 
@@ -110,7 +43,7 @@
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--ink-4);
+      color: var(--text-quaternary);
       margin-bottom: 10px;
       padding: 0 8px;
     }
@@ -121,7 +54,7 @@
       display: block;
       font-size: 13px;
       font-weight: 400;
-      color: var(--ink-2);
+      color: var(--text-secondary);
       text-decoration: none;
       padding: 5px 8px;
       border-radius: 6px;
@@ -129,11 +62,11 @@
       line-height: 1.4;
     }
     .sb-section ul li a:hover {
-      background: var(--off-white);
-      color: var(--ink);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
     }
     .sb-section ul li a[data-active] {
-      color: var(--blue);
+      color: var(--accent);
       font-weight: 500;
       background: #e8f0fb;
     }
@@ -152,24 +85,24 @@
       font-weight: 500;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--ink-3);
+      color: var(--text-tertiary);
       margin-bottom: 12px;
     }
 
     .page-title {
-      font-family: var(--display);
+      font-family: var(--font-display);
       font-size: 56px;
       font-weight: 700;
       letter-spacing: -0.025em;
       line-height: 1.04;
-      color: var(--ink);
+      color: var(--text-primary);
       margin-bottom: 20px;
     }
 
     .page-lead {
       font-size: 19px;
       font-weight: 300;
-      color: var(--ink-2);
+      color: var(--text-secondary);
       line-height: 1.6;
       max-width: 560px;
       margin-bottom: 0;
@@ -177,7 +110,7 @@
 
     .title-rule {
       border: none;
-      border-top: 1px solid var(--rule-light);
+      border-top: 1px solid var(--border-light);
       margin: 40px 0 52px;
     }
 
@@ -185,25 +118,25 @@
     .section { margin-bottom: 60px; }
 
     .section-title {
-      font-family: var(--display);
+      font-family: var(--font-display);
       font-size: 28px;
       font-weight: 700;
       letter-spacing: -0.015em;
-      color: var(--ink);
+      color: var(--text-primary);
       margin-bottom: 16px;
     }
 
     .subsection-title {
       font-size: 17px;
       font-weight: 600;
-      color: var(--ink);
+      color: var(--text-primary);
       margin: 36px 0 12px;
     }
 
     .body-text {
       font-size: 15px;
       font-weight: 400;
-      color: var(--ink-2);
+      color: var(--text-secondary);
       line-height: 1.75;
       margin-bottom: 20px;
     }
@@ -211,18 +144,18 @@
 
     /* inline code */
     code {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 12.5px;
-      background: var(--off-white);
-      border: 1px solid var(--rule-light);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
       border-radius: 4px;
       padding: 1px 5px;
-      color: var(--ink);
+      color: var(--text-primary);
     }
 
     /* ─── Demo stage ─────────────────────────────── */
     .demo-stage {
-      background: var(--off-white);
+      background: var(--bg-secondary);
       border-radius: 18px;
       padding: 60px 40px;
       display: flex;
@@ -236,14 +169,14 @@
       font-weight: 600;
       letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: var(--ink-4);
+      color: var(--text-quaternary);
     }
     .demo-state {
       font-size: 13px;
-      color: var(--ink-4);
+      color: var(--text-quaternary);
       transition: color 0.25s;
     }
-    .demo-state.on { color: var(--red); font-weight: 500; }
+    .demo-state.on { color: var(--brand); font-weight: 500; }
 
     /* ─── Toggle component (from toggle.css) ────── */
     .toggle {
@@ -279,7 +212,7 @@
 
     /* ─── Anatomy diagram ────────────────────────── */
     .anatomy-box {
-      background: var(--off-white);
+      background: var(--bg-secondary);
       border-radius: 18px;
       padding: 52px 72px;
       display: flex;
@@ -307,13 +240,13 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--ink-3);
+      color: var(--text-tertiary);
       white-space: nowrap;
     }
-    .anat-ann-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
-    .anat-ann-line { height: 1px; background: var(--rule); }
+    .anat-ann-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-tertiary); flex-shrink: 0; }
+    .anat-ann-line { height: 1px; background: var(--border); }
     .ann-track { right: -196px; top: 50%; transform: translateY(6px); }
     .ann-track .anat-ann-line { width: 44px; }
     .ann-thumb { left: -188px; top: 36%; flex-direction: row-reverse; }
@@ -322,25 +255,25 @@
     /* ─── Spec table ─────────────────────────────── */
     .spec-table {
       width: 100%;
-      border-top: 1px solid var(--rule-light);
+      border-top: 1px solid var(--border-light);
       font-size: 14px;
       margin: 24px 0;
     }
     .spec-row {
       display: grid;
       grid-template-columns: 200px 1fr;
-      border-bottom: 1px solid var(--rule-light);
+      border-bottom: 1px solid var(--border-light);
       padding: 14px 0;
     }
     .spec-key {
       font-weight: 500;
-      color: var(--ink);
+      color: var(--text-primary);
       font-size: 13.5px;
     }
     .spec-val {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 12.5px;
-      color: var(--ink-2);
+      color: var(--text-secondary);
     }
 
     /* ─── Code blocks ────────────────────────────── */
@@ -348,50 +281,50 @@
       margin: 20px 0;
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid var(--rule-light);
+      border: 1px solid var(--border-light);
     }
     .code-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 9px 16px;
-      background: var(--off-white);
-      border-bottom: 1px solid var(--rule-light);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-light);
     }
     .code-lang-tag {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--ink-4);
+      color: var(--text-quaternary);
     }
     .copy-btn {
       font-size: 11px;
       font-weight: 500;
-      color: var(--ink-3);
+      color: var(--text-tertiary);
       background: none;
       border: none;
       cursor: pointer;
-      font-family: var(--sans);
+      font-family: var(--font-sans);
       padding: 2px 6px;
       border-radius: 4px;
       transition: background 0.12s, color 0.12s;
     }
-    .copy-btn:hover { background: var(--rule-light); color: var(--ink); }
+    .copy-btn:hover { background: var(--border-light); color: var(--text-primary); }
     pre {
-      background: var(--off-white);
+      background: var(--bg-secondary);
       margin: 0;
       padding: 18px 20px;
       overflow-x: auto;
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 12.5px;
       line-height: 1.7;
-      color: var(--ink);
+      color: var(--text-primary);
     }
     /* syntax */
     .k { color: #c0185e; }
     .s { color: #1a7e41; }
-    .c { color: var(--ink-4); font-style: italic; }
+    .c { color: var(--text-quaternary); font-style: italic; }
     .t { color: #c0185e; }
     .a { color: #b85000; }
     .v { color: #1a7e41; }
@@ -409,21 +342,21 @@
       font-weight: 600;
       letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: var(--ink-4);
+      color: var(--text-quaternary);
       padding: 0 12px 12px 0;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--border);
     }
     .api-table tbody td {
       padding: 12px 12px 12px 0;
-      border-bottom: 1px solid var(--rule-light);
+      border-bottom: 1px solid var(--border-light);
       vertical-align: top;
-      color: var(--ink-2);
+      color: var(--text-secondary);
       line-height: 1.55;
     }
     .api-table tbody td:first-child {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 12px;
-      color: var(--ink);
+      color: var(--text-primary);
       white-space: nowrap;
     }
 
@@ -431,37 +364,34 @@
     .note {
       display: flex;
       gap: 12px;
-      background: var(--off-white);
-      border-left: 3px solid var(--blue);
+      background: var(--bg-secondary);
+      border-left: 3px solid var(--accent);
       border-radius: 0 8px 8px 0;
       padding: 14px 18px;
       margin: 20px 0;
     }
-    .note.warn { border-left-color: var(--red); }
+    .note.warn { border-left-color: var(--brand); }
     .note p {
       font-size: 13.5px;
-      color: var(--ink-2);
+      color: var(--text-secondary);
       line-height: 1.6;
       margin: 0;
     }
 
     /* ─── Section divider ────────────────────────── */
-    .rule { border: none; border-top: 1px solid var(--rule-light); margin: 60px 0; }
+    .rule { border: none; border-top: 1px solid var(--border-light); margin: 60px 0; }
 
     /* ─── Footer ─────────────────────────────────── */
     .footer {
-      border-top: 1px solid var(--rule-light);
+      border-top: 1px solid var(--border-light);
       padding: 32px 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .footer-text { font-size: 12px; color: var(--ink-4); }
+    .footer-text { font-size: 12px; color: var(--text-quaternary); }
 
     /* ─── Responsive ─────────────────────────────── */
-    @media (max-width: 1100px) {
-      .toc-sidebar { display: none; }
-    }
     @media (max-width: 860px) {
       .main { padding: 48px 32px 80px; }
       .page-title { font-size: 42px; }
@@ -475,18 +405,11 @@
 </head>
 <body>
 
-<!-- Top breadcrumb bar -->
-<header class="topbar">
-  <a class="topbar-crumb" href="#">Design Guidelines</a>
-  <span class="topbar-sep">›</span>
-  <a class="topbar-crumb" href="#">Components</a>
-  <span class="topbar-sep">›</span>
-  <span class="topbar-current">Toggle</span>
-</header>
+<?php include __DIR__ . '/header.php'; ?>
 
 <div class="layout">
 
-  <!-- Left sidebar -->
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
@@ -717,7 +640,7 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
 
   </main>
 
-  <!-- Right TOC sidebar -->
+  <!-- Right TOC -->
   <aside class="toc-sidebar" id="toc">
     <?php include __DIR__ . '/right_sidebar.php'; ?>
   </aside>
@@ -738,7 +661,20 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
     stateEl.className = 'demo-state' + (e.detail.isActive ? ' on' : '');
   });
 
-
+  // Scroll spy
+  const targets  = document.querySelectorAll('section[id], div[id]');
+  const links    = document.querySelectorAll('.sb-link');
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => {
+          delete a.dataset.active;
+          if (a.getAttribute('href') === '#' + entry.target.id) a.dataset.active = '';
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  targets.forEach(t => spy.observe(t));
 
   // Copy
   function copyCode(btn) {
