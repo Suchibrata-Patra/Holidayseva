@@ -1,0 +1,129 @@
+/* ============================================================
+   GRID SYSTEM
+   ============================================================ */
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md)
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md)
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md)
+}
+
+.grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-md)
+}
+
+.grid-6 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-md)
+}
+
+/* Auto-fill grids */
+.grid-auto-sm {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-md)
+}
+
+.grid-auto-md {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-md)
+}
+
+.grid-auto-lg {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-md)
+}
+
+/* Sidebar layout */
+.layout-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: var(--space-2xl);
+    align-items: start;
+}
+
+.layout-sidebar--left {
+    grid-template-columns: 280px 1fr;
+}
+
+/* ── Gap modifiers ── */
+.grid-gap-sm {
+    gap: var(--space-sm)
+}
+
+.grid-gap-md {
+    gap: var(--space-md)
+}
+
+.grid-gap-lg {
+    gap: var(--space-lg)
+}
+
+.grid-gap-xl {
+    gap: var(--space-xl)
+}
+
+/* ── Span helpers ── */
+.col-span-2 {
+    grid-column: span 2
+}
+
+.col-span-3 {
+    grid-column: span 3
+}
+
+.col-full {
+    grid-column: 1 / -1
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .layout-sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .grid-5 {
+        grid-template-columns: repeat(3, 1fr)
+    }
+
+    .grid-6 {
+        grid-template-columns: repeat(3, 1fr)
+    }
+}
+
+@media (max-width: 640px) {
+
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .grid-5,
+    .grid-6 {
+        grid-template-columns: 1fr
+    }
+
+    .col-span-2,
+    .col-span-3 {
+        grid-column: span 1
+    }
+}
