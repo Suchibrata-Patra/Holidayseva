@@ -512,7 +512,7 @@
 
 <body>
 
-    <?php include __DIR__ . '/header.php'; ?>
+    <?php include __DIR__ . '/design_guidelines/header.phpheader.php'; ?>
     <?php include __DIR__ . '/drawer_sidebar.php'; ?>
 
     <div class="home-layout">
