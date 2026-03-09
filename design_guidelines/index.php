@@ -33,7 +33,7 @@
             <!-- Hero -->
             <div id="overview">
                 <p class="page-eyebrow">Components · Form Controls</p>
-                <h1 class="page-title">Toggle</h1>
+                <h1 class="page-title">Developer Guidelines</h1>
                 <p class="page-lead">A binary switch for enabling or disabling a single option. Communicates state
                     instantly through colour and position.</p>
             </div>
