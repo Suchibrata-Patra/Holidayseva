@@ -159,7 +159,7 @@ body {
 
 /* ============================================================
    GLOBAL NAV — ultra-premium light frosted top bar
-   White glass, hairline border, subtle shadow depth
+   #fafafc base with glass blur, hairline border, depth shadow
    ============================================================ */
 .global-nav {
     position: fixed;
@@ -168,11 +168,11 @@ body {
     right: 0;
     z-index: 9000;
     height: var(--topbar-h);
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(250, 250, 252, 0.88);
     backdrop-filter: saturate(200%) blur(24px);
     -webkit-backdrop-filter: saturate(200%) blur(24px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, .04), 0 2px 16px rgba(0, 0, 0, .04);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .03), 0 2px 20px rgba(0, 0, 0, .04);
     display: flex;
     align-items: center;
     padding: 0 28px;
@@ -201,19 +201,25 @@ body {
     flex-shrink: 0;
 }
 
-/* Brand logo mark — H letterform container */
+/* Brand logo mark — dark pill containing the H image */
 .global-nav-brand-mark {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     background: var(--text-primary);
-    border-radius: 7px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.global-nav-brand-mark svg rect {
-    fill: #ffffff;
+.global-nav-brand-mark img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0) invert(1);
 }
 
 /* Nav links — centred */
@@ -292,8 +298,8 @@ body {
 
 
 /* ============================================================
-   SECTION NAV — white frosted sub-bar
-   Left: section title  |  Right: tab links with blue underline
+   SECTION NAV — #fafafc frosted sub-bar
+   Left: section title + divider pip | tabs | right: version badge
    ============================================================ */
 .section-nav {
     position: fixed;
@@ -302,10 +308,10 @@ body {
     right: 0;
     z-index: 8000;
     height: var(--subbar-h);
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(250, 250, 252, 0.95);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     display: flex;
     align-items: center;
     padding: 0 28px;
