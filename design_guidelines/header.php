@@ -37,19 +37,19 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   <!-- Hairline pip between brand and links -->
   <span class="global-nav-sep" aria-hidden="true"></span>
 
-  <!-- Centred nav links
+  <!-- Centred nav links -->
   <ul class="global-nav-links" role="list" aria-label="Main navigation">
     <li><a href="index.php"
         <?= $current === 'index.php' ? 'class="active"' : '' ?>>Get Started</a></li>
     <li><a href="foundations.php"
-        <?= in_array($current, $foundationPages) ? 'class="active"' : '' ?>>Foundations</a></li>
+        <?= in_array($current, $foundationPages) ? 'class="active"' : '' ?>>UI/UX</a></li>
     <li><a href="components.php"
         <?= in_array($current, $componentPages) ? 'class="active"' : '' ?>>Components</a></li>
     <li><a href="patterns.php"
-        <?= in_array($current, $patternPages) ? 'class="active"' : '' ?>>Patterns</a></li>
+        <?= in_array($current, $patternPages) ? 'class="active"' : '' ?>>API</a></li>
     <li><a href="resources.php"
-        <?= $current === 'resources.php' ? 'class="active"' : '' ?>>Resources</a></li>
-  </ul> -->
+        <?= $current === 'resources.php' ? 'class="active"' : '' ?>>DBMS</a></li>
+  </ul>
 
   <!-- Right: search + account -->
   <div class="global-nav-actions">
