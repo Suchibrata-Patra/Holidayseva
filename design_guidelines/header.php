@@ -88,38 +88,37 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   const globalNav  = document.getElementById('globalNav');
   const sectionNav = document.getElementById('sectionNav');
 
-  const TIER1_H = globalNav.offsetHeight;   // 52px from design-system
-  const TIER2_H = sectionNav.offsetHeight;  // 44px from design-system
+  const TIER1_H = globalNav.offsetHeight;
 
-  let lastY   = 0;
-  let hidden  = false;
+  let lastY  = 0;
+  let hidden = false;
 
-  /* Snap to correct position on load */
+  // Set initial position of section nav
   sectionNav.style.top = TIER1_H + 'px';
 
+  // Transitions
+  globalNav.style.transition  = 'transform 0.28s ease';
+  sectionNav.style.transition = 'top 0.28s ease';
+
   function onScroll() {
-    const y       = window.scrollY;
+    const y         = window.scrollY;
     const goingDown = y > lastY;
 
     if (goingDown && y > TIER1_H && !hidden) {
-      /* Scroll down past Tier 1 height — slide Tier 1 away */
-      globalNav.style.transform  = 'translateY(-100%)';
-      sectionNav.style.top       = '0px';
+      // Scrolling down past Tier 1 height: hide Tier 1
+      globalNav.style.transform = 'translateY(-100%)';
+      sectionNav.style.top      = '0px';
       hidden = true;
 
-    } else if (!goingDown && hidden) {
-      /* Scroll up — bring Tier 1 back */
-      globalNav.style.transform  = 'translateY(0)';
-      sectionNav.style.top       = TIER1_H + 'px';
+    } else if (hidden && y <= 0) {
+      // Only restore Tier 1 when user has scrolled all the way back to the very top
+      globalNav.style.transform = 'translateY(0)';
+      sectionNav.style.top      = TIER1_H + 'px';
       hidden = false;
     }
 
     lastY = y;
   }
-
-  /* Smooth transitions via design-system transition tokens */
-  globalNav.style.transition  = 'transform 0.28s ease';
-  sectionNav.style.transition = 'top 0.28s ease';
 
   window.addEventListener('scroll', onScroll, { passive: true });
 })();
