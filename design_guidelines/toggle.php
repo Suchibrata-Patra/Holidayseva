@@ -232,7 +232,37 @@
     }
     .demo-state.on { color: var(--red); font-weight: 500; }
 
-    /* .toggle and .toggle-circle styles come from toggle.css */
+    /* ─── Toggle component (from toggle.css) ────── */
+    .toggle {
+      position: relative;
+      width: 280px;
+      height: 160px;
+      background: #DDDDDD;
+      border-radius: 80px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .toggle.active { background: #FF385C; }
+    .toggle-circle {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background: white;
+      border-radius: 50%;
+      top: 10px;
+      left: 10px;
+      transition: left 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .toggle.active .toggle-circle { left: 130px; }
+    @media (max-width: 480px) {
+      .toggle { width: 220px; height: 130px; border-radius: 65px; }
+      .toggle-circle { width: 110px; height: 110px; }
+      .toggle.active .toggle-circle { left: 100px; }
+    }
 
     /* ─── Anatomy diagram ────────────────────────── */
     .anatomy-box {
@@ -688,7 +718,7 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
 
   // Scroll spy
   const targets  = document.querySelectorAll('section[id], div[id]');
-  const links    = document.querySelectorAll('.sb-section ul li a');
+  const links    = document.querySelectorAll('.sb-link');
   const spy = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
