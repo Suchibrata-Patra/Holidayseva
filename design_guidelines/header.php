@@ -22,7 +22,7 @@
         <rect x="1"   y="6.25" width="14"  height="2.5" rx="1" fill="white"/>
       </svg>
     </span>
-    Developer
+    Holidayseva
   </a>
 
   <span class="global-nav-sep" aria-hidden="true"></span>
