@@ -1,348 +1,1539 @@
+<?php
+/**
+ * HolidaySeva UI — Date Picker Component Documentation
+ * File: design_guidelines/hs-datepicker.php
+ *
+ * Asset paths are relative to this file's location:
+ *   design_guidelines/hs-datepicker.php
+ *   → ../Assets/css/hs-datepicker.css
+ *   → ../Assets/js/hs-datepicker.js
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HolidaySeva UI — Component Demo</title>
-    <link rel="stylesheet" href="../Assets/css/holidayseva_framework.css">
+    <title>HSDatepicker — HolidaySeva UI Docs</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Component CSS -->
+    <link rel="stylesheet" href="../Assets/css/hs-datepicker.css">
+
     <style>
+        /* ── Design tokens ── */
+        :root {
+            --doc-bg: #F7F6F3;
+            --doc-surface: #FFFFFF;
+            --doc-border: #E8E4DC;
+            --doc-text: #1A1A1A;
+            --doc-muted: #6B6B6B;
+            --doc-primary: #FF385C;
+            --doc-code-bg: #1E1E2E;
+            --doc-code-text: #CDD6F4;
+            --doc-tag-green: #E6F4EA;
+            --doc-tag-green-t: #2E7D32;
+            --doc-tag-blue: #E3F0FF;
+            --doc-tag-blue-t: #1565C0;
+            --doc-tag-orange: #FFF3E0;
+            --doc-tag-orange-t: #E65100;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Nunito Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background: #f7f7f7;
-            padding: 40px 0;
+            font-family: var(--font-body);
+            background: var(--doc-bg);
+            color: var(--doc-text);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            min-height: 100vh;
         }
 
-        .demo-page {
-            max-width: 1220px;
-            margin: 0 auto;
-            padding: 0 24px;
+        /* ── Sidebar ── */
+        .doc-sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background: var(--doc-surface);
+            border-right: 1px solid var(--doc-border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .demo-section {
-            background: #fff;
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        .doc-sidebar-logo {
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid var(--doc-border);
         }
 
-        .demo-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: #FF385C;
-            margin: 0 0 20px;
-        }
-
-        /* Search bar demo wrapper */
-        .demo-search-bar {
+        .doc-sidebar-logo a {
+            text-decoration: none;
             display: flex;
             align-items: center;
-            border: 1.5px solid #ddd;
-            border-radius: 40px;
-            overflow: hidden;
-            width: fit-content;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            background: #fff;
-            position: relative;
+            gap: 10px;
         }
 
-        .demo-search-field {
-            padding: 14px 20px;
-            border: none;
-            background: none;
-            font-size: 14px;
-            outline: none;
-            font-family: inherit;
-            min-width: 160px;
+        .doc-logo-mark {
+            width: 32px;
+            height: 32px;
+            background: var(--doc-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .demo-search-divider {
-            width: 1px;
-            height: 28px;
-            background: #ddd;
+        .doc-logo-mark svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .doc-logo-name {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--doc-text);
+            line-height: 1.1;
+        }
+
+        .doc-logo-sub {
+            font-size: 10px;
+            color: var(--doc-muted);
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .doc-nav {
+            padding: 20px 0 40px;
+            flex: 1;
+        }
+
+        .doc-nav-group {
+            margin-bottom: 8px;
+        }
+
+        .doc-nav-group-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--doc-muted);
+            padding: 8px 24px 6px;
+        }
+
+        .doc-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 24px;
+            font-size: 13.5px;
+            color: var(--doc-muted);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+            font-weight: 500;
+        }
+
+        .doc-nav-link:hover {
+            color: var(--doc-text);
+            background: #f5f4f1;
+        }
+
+        .doc-nav-link.active {
+            color: var(--doc-primary);
+            border-left-color: var(--doc-primary);
+            background: #fff5f7;
+            font-weight: 700;
+        }
+
+        .doc-nav-link svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.7;
             flex-shrink: 0;
         }
 
-        .demo-search-btn {
-            margin: 6px 6px 6px 0;
-            padding: 10px 20px;
-            background: #FF385C;
-            border: none;
-            border-radius: 30px;
-            color: #fff;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: inherit;
+        /* ── Main ── */
+        .doc-main {
+            flex: 1;
+            min-width: 0;
+            padding: 48px 60px 80px;
+            max-width: 980px;
+        }
+
+        /* ── Page Header ── */
+        .doc-page-header {
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--doc-border);
+        }
+
+        .doc-breadcrumb {
+            font-size: 12px;
+            color: var(--doc-muted);
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .demo-search-btn svg {
-            width: 16px;
-            height: 16px;
+        .doc-breadcrumb a {
+            color: var(--doc-muted);
+            text-decoration: none;
+        }
+
+        .doc-breadcrumb a:hover {
+            color: var(--doc-primary);
+        }
+
+        .doc-page-title {
+            font-family: var(--font-display);
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--doc-text);
+            letter-spacing: -0.8px;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+
+        .doc-page-desc {
+            font-size: 16px;
+            color: var(--doc-muted);
+            line-height: 1.65;
+            max-width: 620px;
+            margin-bottom: 20px;
+        }
+
+        .doc-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .doc-tag {
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .doc-tag--green {
+            background: var(--doc-tag-green);
+            color: var(--doc-tag-green-t);
+        }
+
+        .doc-tag--blue {
+            background: var(--doc-tag-blue);
+            color: var(--doc-tag-blue-t);
+        }
+
+        .doc-tag--orange {
+            background: var(--doc-tag-orange);
+            color: var(--doc-tag-orange-t);
+        }
+
+        /* ── Section headings ── */
+        .doc-section {
+            margin-bottom: 52px;
+        }
+
+        .doc-section-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--doc-text);
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .doc-section-subtitle {
+            font-size: 14px;
+            color: var(--doc-muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        /* ── Demo cards ── */
+        .doc-demo-card {
+            background: var(--doc-surface);
+            border: 1px solid var(--doc-border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .doc-demo-label {
+            padding: 12px 20px;
+            background: #FAFAF8;
+            border-bottom: 1px solid var(--doc-border);
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--doc-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .doc-demo-label-badge {
+            background: var(--doc-primary);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .doc-demo-body {
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            background: #FDFCFB;
+            min-height: 120px;
+        }
+
+        .doc-demo-body--center {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-demo-body--dark {
+            background: #1A1A2E;
+        }
+
+        /* ── Output box ── */
+        .doc-output-box {
+            background: #f0ede8;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-size: 13px;
+            font-family: var(--font-mono);
+            color: var(--doc-text);
+            min-width: 260px;
+        }
+
+        .doc-output-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--doc-muted);
+            margin-bottom: 4px;
+            font-family: var(--font-body);
+        }
+
+        /* ── Code blocks ── */
+        .doc-code-wrap {
+            position: relative;
+            margin-bottom: 0;
+        }
+
+        pre.doc-code {
+            background: var(--doc-code-bg);
+            color: var(--doc-code-text);
+            padding: 22px 24px;
+            border-radius: 0 0 16px 16px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.75;
+            overflow-x: auto;
+            margin: 0;
+            tab-size: 2;
+        }
+
+        .doc-copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #cdd6f4;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: background 0.15s;
+        }
+
+        .doc-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .doc-copy-btn.copied {
+            background: #a6e3a1;
+            color: #1e1e2e;
+            border-color: #a6e3a1;
+        }
+
+        /* Syntax colours */
+        .tk {
+            color: #89DCEB;
+        }
+
+        /* keyword */
+        .ts {
+            color: #A6E3A1;
+        }
+
+        /* string */
+        .tc {
+            color: #6C7086;
+        }
+
+        /* comment */
+        .tn {
+            color: #FAB387;
+        }
+
+        /* number */
+        .tf {
+            color: #89B4FA;
+        }
+
+        /* function/prop */
+        .tpk {
+            color: #CBA6F7;
+        }
+
+        /* pink keyword */
+        .tg {
+            color: #F38BA8;
+        }
+
+        /* pink/red */
+
+        /* ── Props table ── */
+        .doc-table-wrap {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--doc-border);
+        }
+
+        table.doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+
+        .doc-table thead th {
+            background: #FAFAF8;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--doc-muted);
+            border-bottom: 1px solid var(--doc-border);
+        }
+
+        .doc-table tbody td {
+            padding: 13px 16px;
+            border-bottom: 1px solid #F2EFE8;
+            vertical-align: top;
+            line-height: 1.55;
+        }
+
+        .doc-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .doc-table tbody tr:hover td {
+            background: #FAFAF8;
+        }
+
+        .doc-prop-name {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            color: var(--doc-primary);
+            font-weight: 500;
+        }
+
+        .doc-prop-type {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            background: var(--doc-tag-blue);
+            color: var(--doc-tag-blue-t);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .doc-prop-default {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            background: #F5F4F1;
+            color: var(--doc-muted);
+            padding: 2px 7px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* ── Methods table ── */
+        .doc-method-card {
+            background: var(--doc-surface);
+            border: 1px solid var(--doc-border);
+            border-radius: 12px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .doc-method-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: #FAFAF8;
+            border-bottom: 1px solid var(--doc-border);
+        }
+
+        .doc-method-name {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--doc-text);
+        }
+
+        .doc-method-returns {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            background: var(--doc-tag-green);
+            color: var(--doc-tag-green-t);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .doc-method-body {
+            padding: 14px 20px;
+            font-size: 13.5px;
+            color: var(--doc-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Events table ── */
+        .doc-event-row {
+            display: flex;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--doc-border);
+            align-items: flex-start;
+        }
+
+        .doc-event-row:last-child {
+            border-bottom: none;
+        }
+
+        .doc-event-name {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--doc-primary);
+            font-weight: 500;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .doc-event-desc {
+            font-size: 13.5px;
+            color: var(--doc-muted);
+            line-height: 1.6;
+        }
+
+        /* ── File path box ── */
+        .doc-filepath {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--doc-code-bg);
+            color: #A6E3A1;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .doc-filepath svg {
+            width: 13px;
+            height: 13px;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        /* ── Info callout ── */
+        .doc-callout {
+            display: flex;
+            gap: 14px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .doc-callout--info {
+            background: var(--doc-tag-blue);
+            border-left: 3px solid #1565C0;
+        }
+
+        .doc-callout--warn {
+            background: var(--doc-tag-orange);
+            border-left: 3px solid #E65100;
+        }
+
+        .doc-callout--tip {
+            background: var(--doc-tag-green);
+            border-left: 3px solid #2E7D32;
+        }
+
+        .doc-callout-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            line-height: 1.5;
+        }
+
+        .doc-callout-text {
+            font-size: 13.5px;
+            line-height: 1.65;
+            color: var(--doc-text);
+        }
+
+        .doc-callout-text strong {
+            font-weight: 700;
+        }
+
+        /* ── Divider ── */
+        .doc-divider {
+            height: 1px;
+            background: var(--doc-border);
+            margin: 48px 0;
+        }
+
+        /* ── ToC (right rail) — hidden on small screens ── */
+        .doc-toc {
+            width: 200px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 48px;
+            height: fit-content;
+            padding: 0 24px;
+            display: none;
+        }
+
+        @media (min-width: 1300px) {
+            .doc-toc {
+                display: block;
+            }
+        }
+
+        .doc-toc-title {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--doc-muted);
+            margin-bottom: 12px;
+        }
+
+        .doc-toc-link {
+            display: block;
+            font-size: 12.5px;
+            color: var(--doc-muted);
+            text-decoration: none;
+            padding: 4px 0;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+            transition: all 0.15s;
+        }
+
+        .doc-toc-link:hover,
+        .doc-toc-link.active {
+            color: var(--doc-primary);
+            border-left-color: var(--doc-primary);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .doc-sidebar {
+                display: none;
+            }
+
+            .doc-main {
+                padding: 32px 24px 60px;
+            }
+        }
+
+        /* ── Demo: variant labels ── */
+        .demo-variant-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--doc-muted);
+            margin-bottom: 10px;
+        }
+
+        .demo-variant-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-start;
         }
     </style>
 </head>
 
 <body>
-    <div class="demo-page">
 
-        <!-- ════════════════════════════════════════
-       COMPONENT 1: CARD CAROUSEL
-       ════════════════════════════════════════ -->
-        <div class="demo-section">
-            <p class="demo-label">Component 01 — Card Carousel</p>
-
-            <div data-hs-carousel>
-                <!-- Header with title + nav buttons -->
-                <div class="hs-carousel-header">
-                    <div>
-                        <h2 class="hs-carousel-title">
-                            <span class="hs-carousel-title-icon">
-                                ✨ Airbnb Originals
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </span>
-                        </h2>
-                        <p class="hs-carousel-subtitle">Hosted by the world's most interesting people</p>
-                    </div>
-                    <div class="hs-carousel-nav">
-                        <button class="hs-carousel-btn" data-hs-prev aria-label="Previous">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </button>
-                        <button class="hs-carousel-btn" data-hs-next aria-label="Next">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-                    </div>
+    <!-- ═══════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════ -->
+    <aside class="doc-sidebar">
+        <div class="doc-sidebar-logo">
+            <a href="#">
+                <div class="doc-logo-mark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    </svg>
                 </div>
-
-                <!-- Viewport & Track — cards injected via JS below -->
-                <div class="hs-carousel-viewport">
-                    <div class="hs-carousel-track"></div>
+                <div>
+                    <div class="doc-logo-name">HolidaySeva</div>
+                    <div class="doc-logo-sub">UI Framework</div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- ════════════════════════════════════════
-       COMPONENT 2: DATE PICKER
-       ════════════════════════════════════════ -->
-        <div class="demo-section">
-            <p class="demo-label">Component 02 — Date Picker</p>
+        <nav class="doc-nav">
+            <div class="doc-nav-group">
+                <div class="doc-nav-group-label">Getting Started</div>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18" />
+                    </svg>
+                    Overview
+                </a>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4l3 3" />
+                    </svg>
+                    Installation
+                </a>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z" />
+                    </svg>
+                    Design Tokens
+                </a>
+            </div>
 
-            <!-- Simulated Airbnb-style search bar -->
-            <div class="demo-search-bar">
-                <div style="padding: 4px 0;">
-                    <div class="demo-search-field" style="border-right:none; cursor:pointer;">
-                        <div style="font-size:11px;font-weight:700;font-family:var(--hs-font-body)">Where</div>
-                        <div style="font-size:13px;color:#717171;font-family:var(--hs-font-body)">Search destinations
+            <div class="doc-nav-group">
+                <div class="doc-nav-group-label">Components</div>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" />
+                        <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                    </svg>
+                    Card Carousel
+                </a>
+                <a href="hs-datepicker.php" class="doc-nav-link active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <path d="M16 2v4M8 2v4M3 10h18" />
+                    </svg>
+                    Date Picker
+                </a>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 10h16M4 14h8" />
+                    </svg>
+                    Package Cards
+                </a>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                    </svg>
+                    Modal / Show More
+                </a>
+            </div>
+
+            <div class="doc-nav-group">
+                <div class="doc-nav-group-label">Resources</div>
+                <a href="#" class="doc-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════ -->
+    <main class="doc-main">
+
+        <!-- ── Page Header ── -->
+        <header class="doc-page-header">
+            <div class="doc-breadcrumb">
+                <a href="#">Components</a>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+                Date Picker
+            </div>
+            <h1 class="doc-page-title">HSDatepicker</h1>
+            <p class="doc-page-desc">
+                A fully-featured date range picker with dual-calendar layout, hover range preview, flexible date chips,
+                and auto-positioning. Works with any trigger element via a simple JS constructor.
+            </p>
+            <div class="doc-tags">
+                <span class="doc-tag doc-tag--green">✓ Vanilla JS</span>
+                <span class="doc-tag doc-tag--blue">Range &amp; Single</span>
+                <span class="doc-tag doc-tag--blue">Auto-positioning</span>
+                <span class="doc-tag doc-tag--orange">No Dependencies</span>
+            </div>
+        </header>
+
+
+        <!-- ═══════════════════════
+         SECTION 1 — INSTALLATION
+    ════════════════════════ -->
+        <section class="doc-section" id="installation">
+            <h2 class="doc-section-title">Installation</h2>
+            <p class="doc-section-subtitle">Drop two files into your project. No build tools or dependencies needed.</p>
+
+            <div class="doc-filepath">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                </svg>
+                /Users/suchibratapatra/Documents/Holidayseva/Assets/css/hs-datepicker.css
+            </div>
+            <br>
+            <div class="doc-filepath">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                </svg>
+                /Users/suchibratapatra/Documents/Holidayseva/Assets/js/hs-datepicker.js
+            </div>
+
+            <div class="doc-demo-card" style="margin-top:24px;">
+                <div class="doc-demo-label">HTML — include in &lt;head&gt; and before &lt;/body&gt;</div>
+                <div class="doc-code-wrap">
+                    <button class="doc-copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre
+                        class="doc-code"><span class="tc">&lt;!-- In &lt;head&gt; --&gt;</span>
+<span class="tk">&lt;link</span> <span class="tf">rel</span>=<span class="ts">"stylesheet"</span> <span class="tf">href</span>=<span class="ts">"../Assets/css/hs-datepicker.css"</span><span class="tk">&gt;</span>
+
+<span class="tc">&lt;!-- Before &lt;/body&gt; --&gt;</span>
+<span class="tk">&lt;script</span> <span class="tf">src</span>=<span class="ts">"../Assets/js/hs-datepicker.js"</span><span class="tk">&gt;&lt;/script&gt;</span></pre>
+                </div>
+            </div>
+
+            <div class="doc-callout doc-callout--info">
+                <div class="doc-callout-icon">💡</div>
+                <div class="doc-callout-text">
+                    <strong>Using the framework bundle?</strong> If you already load
+                    <code>holidayseva_framework.js</code> and <code>holidayseva_framework.css</code>, HSDatepicker is
+                    already included — you don't need to add the individual files.
+                </div>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 2 — LIVE DEMOS
+    ════════════════════════ -->
+        <section class="doc-section" id="demos">
+            <h2 class="doc-section-title">Live Demos</h2>
+            <p class="doc-section-subtitle">Click any trigger below to see the picker in action. All instances are
+                independent.</p>
+
+            <!-- Demo 1: Range Picker (default) -->
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">
+                    Demo 1 — Range Picker (default)
+                    <span class="doc-demo-label-badge">LIVE</span>
+                </div>
+                <div class="doc-demo-body">
+                    <div class="demo-variant-label">Click the trigger to open</div>
+                    <div class="demo-variant-row">
+                        <div id="demo1-trigger" class="hs-dp-trigger">
+                            <div>
+                                <span class="hs-dp-trigger-label">When</span>
+                                <span class="hs-dp-trigger-value">Add dates</span>
+                            </div>
+                            <button class="hs-dp-trigger-clear" style="display:none;" aria-label="Clear">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M15 9l-6 6M9 9l6 6" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="doc-output-box" id="demo1-output">
+                            <div class="doc-output-label">onChange output</div>
+                            <span style="color:#aaa;">Waiting for selection…</span>
                         </div>
                     </div>
                 </div>
-                <div class="demo-search-divider"></div>
+            </div>
 
-                <!-- Date picker trigger -->
-                <div class="hs-dp-trigger" id="datePickerTrigger" data-hs-datepicker
-                    style="border:none; border-radius:0; box-shadow:none; display:flex; align-items:center; gap:10px; padding:10px 18px; cursor:pointer;">
-                    <div>
-                        <span class="hs-dp-trigger-label">When</span>
-                        <span class="hs-dp-trigger-value">Add dates</span>
+            <!-- Demo 2: Single Date -->
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">
+                    Demo 2 — Single Date Picker
+                    <span class="doc-demo-label-badge">LIVE</span>
+                </div>
+                <div class="doc-demo-body">
+                    <div class="demo-variant-label">range: false — closes on single click</div>
+                    <div class="demo-variant-row">
+                        <div id="demo2-trigger" class="hs-dp-trigger">
+                            <div>
+                                <span class="hs-dp-trigger-label">Check-in</span>
+                                <span class="hs-dp-trigger-value">Pick a date</span>
+                            </div>
+                        </div>
+
+                        <div class="doc-output-box" id="demo2-output">
+                            <div class="doc-output-label">Selected date</div>
+                            <span style="color:#aaa;">None</span>
+                        </div>
                     </div>
-                    <button class="hs-dp-trigger-clear" style="display:none;" aria-label="Clear dates">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M15 9l-6 6M9 9l6 6" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="demo-search-divider"></div>
-                <div class="demo-search-field">
-                    <div style="font-size:11px;font-weight:700;font-family:var(--hs-font-body)">Who</div>
-                    <div style="font-size:13px;color:#717171;font-family:var(--hs-font-body)">Add guests</div>
-                </div>
-                <button class="demo-search-btn">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-                    </svg>
-                    Search
-                </button>
-            </div>
-
-            <p style="font-size:13px;color:#717171;margin-top:16px;">👆 Click <strong>"When"</strong> to open the date
-                picker</p>
-        </div>
-
-        <!-- ════════════════════════════════════════
-       COMPONENT 3: TOUR PACKAGE CARDS
-       ════════════════════════════════════════ -->
-        <div class="demo-section">
-            <p class="demo-label">Component 03 — Tour Package Cards</p>
-
-            <div id="tourPackages">
-                <div class="hs-packages-header">
-                    <h2 class="hs-packages-title">Most popular tour packages by verified agents</h2>
-                </div>
-                <div class="hs-packages-grid"></div>
-            </div>
-        </div>
-
-        <!-- ════════════════════════════════════════
-       COMPONENT 4: SHOW MORE MODAL
-       ════════════════════════════════════════ -->
-        <div class="demo-section">
-            <p class="demo-label">Component 04 — Show More Modal</p>
-
-            <div id="spaceDescription" data-hs-show-more
-                data-hs-show-more-options='{"truncateHeight":"100px","triggerLabel":"Show more","modalTitle":"About this space","useModal":true}'>
-                <p>Escape the chaos of the city and unwind at Grace Ganga View Retreat — a peaceful 2BHK stay just 2km
-                    from Assi Ghat. Tucked away in a quiet lane, this cozy home offers all modern comforts, a private
-                    balcony, AC bedrooms, and a fully equipped kitchen.</p>
-                <p>Whether you're here to explore or rest, our calm and welcoming space is the perfect base to
-                    experience the real soul of Varanasi — peacefully.</p>
-                <p style="color:#888;font-size:13px;">note: the proper view is from terrace on 5th floor</p>
-
-                <div class="hs-modal-section">
-                    <h3 class="hs-modal-section-title">The space</h3>
-                    <p>Welcome to Grace Ganga, a peaceful 2BHK homestay tucked away in a calm residential colony of
-                        Varanasi—far from the chaos and noise of the city, yet close enough to reach key attractions
-                        with ease. Both bedrooms are air-conditioned for your comfort, while the living room is airy and
-                        naturally ventilated, though it does not have AC.</p>
-                    <p>The home includes a functional kitchen equipped for everyday cooking (Utensils). While there is
-                        no generator, an inverter ensures basic power backup during occasional outages—though power cuts
-                        are rare in this area.</p>
-                    <p>One of the highlights of your stay is access to a shared terrace on the 5th floor (by stairs)
-                        where you can enjoy a beautiful view of the Ganga. Ideal for families, couples, or solo
-                        travelers, Grace Ganga offers a homely, quiet escape in one of the most spiritual cities in
-                        India.</p>
-                    <div class="hs-modal-note">NOTE: WE HAVE INVERTERS FOR POWER BACKUP. PARKING: WE DON'T HAVE PARKING
-                        AT PLACE BUT STREET PARKING IS AVAILABLE.</div>
-                </div>
-
-                <div class="hs-modal-section">
-                    <h3 class="hs-modal-section-title">Guest access</h3>
-                    <p>You'll have full private access to the entire 2-bedroom apartment — no shared spaces inside. This
-                        includes:</p>
-                    <ul>
-                        <li>Both airy bedrooms with cooling</li>
-                        <li>A well-equipped kitchen with utensils</li>
-                        <li>Living and dining area</li>
-                        <li>Private bathrooms</li>
-                        <li>Shared rooftop terrace (5th floor, stairs only)</li>
-                    </ul>
                 </div>
             </div>
-        </div>
 
-    </div>
+            <!-- Demo 3: position bottom-right -->
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">
+                    Demo 3 — Position: bottom-right
+                    <span class="doc-demo-label-badge">LIVE</span>
+                </div>
+                <div class="doc-demo-body" style="align-items:flex-end;">
+                    <div class="demo-variant-label">Panel anchors to the right edge of trigger</div>
+                    <div id="demo3-trigger" class="hs-dp-trigger">
+                        <div>
+                            <span class="hs-dp-trigger-label">Select dates</span>
+                            <span class="hs-dp-trigger-value">Add dates</span>
+                        </div>
+                        <button class="hs-dp-trigger-clear" style="display:none;" aria-label="Clear">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-    <script src="../Assets/js/holidayseva_framework.js"></script>
+            <!-- Demo 4: Pre-set dates via setDates() -->
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">
+                    Demo 4 — Pre-set dates via <code style="font-family:var(--font-mono);">setDates()</code>
+                    <span class="doc-demo-label-badge">LIVE</span>
+                </div>
+                <div class="doc-demo-body">
+                    <div class="demo-variant-label">Picker opens with a range already selected</div>
+                    <div class="demo-variant-row">
+                        <div id="demo4-trigger" class="hs-dp-trigger">
+                            <div>
+                                <span class="hs-dp-trigger-label">Trip dates</span>
+                                <span class="hs-dp-trigger-value">Loading…</span>
+                            </div>
+                            <button class="hs-dp-trigger-clear" style="display:none;" aria-label="Clear">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M15 9l-6 6M9 9l6 6" />
+                                </svg>
+                            </button>
+                        </div>
+                        <button onclick="demo4.clear()"
+                            style="padding:8px 16px;border:1.5px solid #ddd;border-radius:30px;background:#fff;cursor:pointer;font-size:13px;font-family:var(--font-body);">Clear
+                            dates</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo 5: Airbnb-style search bar integration -->
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">
+                    Demo 5 — Airbnb-style search bar integration
+                    <span class="doc-demo-label-badge">LIVE</span>
+                </div>
+                <div class="doc-demo-body doc-demo-body--center" style="padding: 40px 32px;">
+                    <div
+                        style="display:flex; align-items:center; border:1.5px solid #ddd; border-radius:40px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); background:#fff; width:fit-content;">
+                        <div style="padding:14px 20px; min-width:160px; border-right:1px solid #ddd;">
+                            <div style="font-size:11px;font-weight:700;">Where</div>
+                            <div style="font-size:13px;color:#717171;">Search destinations</div>
+                        </div>
+
+                        <div id="demo5-trigger" class="hs-dp-trigger"
+                            style="border:none;border-radius:0;box-shadow:none;border-right:1px solid #ddd;">
+                            <div>
+                                <span class="hs-dp-trigger-label">When</span>
+                                <span class="hs-dp-trigger-value">Add dates</span>
+                            </div>
+                            <button class="hs-dp-trigger-clear" style="display:none;" aria-label="Clear">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M15 9l-6 6M9 9l6 6" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div style="padding:14px 20px; min-width:140px;">
+                            <div style="font-size:11px;font-weight:700;">Who</div>
+                            <div style="font-size:13px;color:#717171;">Add guests</div>
+                        </div>
+
+                        <button
+                            style="margin:6px;padding:10px 20px;background:#FF385C;border:none;border-radius:30px;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:6px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                            </svg>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 3 — USAGE
+    ════════════════════════ -->
+        <section class="doc-section" id="usage">
+            <h2 class="doc-section-title">Usage</h2>
+            <p class="doc-section-subtitle">Three ways to use HSDatepicker — HTML attribute, JS constructor, or
+                programmatic control.</p>
+
+            <!-- HTML trigger structure -->
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;margin-top:24px;">1. HTML Trigger Structure</h3>
+            <p style="font-size:13.5px;color:var(--doc-muted);margin-bottom:12px;">The trigger must be a
+                <strong>non-button element</strong> (use <code>&lt;div&gt;</code>) if it contains a nested clear button.
+            </p>
+
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">Recommended trigger HTML</div>
+                <div class="doc-code-wrap">
+                    <button class="doc-copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre class="doc-code"><span class="tc">&lt;!-- ✅ Use a &lt;div&gt; when nesting the clear button --&gt;</span>
+<span class="tk">&lt;div</span> <span class="tf">id</span>=<span class="ts">"myTrigger"</span> <span class="tf">class</span>=<span class="ts">"hs-dp-trigger"</span><span class="tk">&gt;</span>
+  <span class="tk">&lt;div&gt;</span>
+    <span class="tk">&lt;span</span> <span class="tf">class</span>=<span class="ts">"hs-dp-trigger-label"</span><span class="tk">&gt;</span>When<span class="tk">&lt;/span&gt;</span>
+    <span class="tk">&lt;span</span> <span class="tf">class</span>=<span class="ts">"hs-dp-trigger-value"</span><span class="tk">&gt;</span>Add dates<span class="tk">&lt;/span&gt;</span>
+  <span class="tk">&lt;/div&gt;</span>
+  <span class="tk">&lt;button</span> <span class="tf">class</span>=<span class="ts">"hs-dp-trigger-clear"</span> <span class="tf">style</span>=<span class="ts">"display:none"</span><span class="tk">&gt;</span>
+    <span class="tc">&lt;!-- × icon --&gt;</span>
+    <span class="tk">&lt;svg</span> <span class="tf">viewBox</span>=<span class="ts">"0 0 24 24"</span> <span class="tf">fill</span>=<span class="ts">"none"</span> <span class="tf">stroke</span>=<span class="ts">"currentColor"</span> <span class="tf">stroke-width</span>=<span class="ts">"2.5"</span><span class="tk">&gt;</span>
+      <span class="tk">&lt;circle</span> <span class="tf">cx</span>=<span class="ts">"12"</span> <span class="tf">cy</span>=<span class="ts">"12"</span> <span class="tf">r</span>=<span class="ts">"10"</span><span class="tk">/&gt;</span>
+      <span class="tk">&lt;path</span> <span class="tf">d</span>=<span class="ts">"M15 9l-6 6M9 9l6 6"</span><span class="tk">/&gt;</span>
+    <span class="tk">&lt;/svg&gt;</span>
+  <span class="tk">&lt;/button&gt;</span>
+<span class="tk">&lt;/div&gt;</span></pre>
+                </div>
+            </div>
+
+            <!-- Auto-init via data attr -->
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;margin-top:28px;">2. Auto-init via
+                <code>data-hs-datepicker</code>
+            </h3>
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">Automatic — no JS needed</div>
+                <div class="doc-code-wrap">
+                    <button class="doc-copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre class="doc-code"><span class="tk">&lt;div</span> <span class="tf">id</span>=<span class="ts">"myTrigger"</span>
+     <span class="tf">class</span>=<span class="ts">"hs-dp-trigger"</span>
+     <span class="tf">data-hs-datepicker</span>
+     <span class="tf">data-hs-datepicker-options</span>=<span class="ts">'{"range":true,"position":"bottom-left"}'</span><span class="tk">&gt;</span>
+  <span class="tc">&lt;!-- trigger inner HTML --&gt;</span>
+<span class="tk">&lt;/div&gt;</span></pre>
+                </div>
+            </div>
+
+            <!-- JS constructor -->
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;margin-top:28px;">3. JS Constructor (recommended
+                for callbacks)</h3>
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">Full constructor with all options</div>
+                <div class="doc-code-wrap">
+                    <button class="doc-copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre class="doc-code"><span class="tpk">const</span> <span class="tf">picker</span> = <span class="tpk">new</span> <span class="tk">HSDatepicker</span>(<span class="ts">'#myTrigger'</span>, {
+  <span class="tf">range</span>:      <span class="tn">true</span>,
+  <span class="tf">position</span>:  <span class="ts">'bottom-left'</span>,   <span class="tc">// 'bottom-left' | 'bottom-right' | 'bottom-center'</span>
+  <span class="tf">minDate</span>:   <span class="tpk">new</span> <span class="tk">Date</span>(),        <span class="tc">// default: today</span>
+  <span class="tf">maxDate</span>:   <span class="tn">null</span>,              <span class="tc">// no upper limit by default</span>
+  <span class="tf">flexChips</span>: [
+    <span class="ts">'Exact dates'</span>, <span class="ts">'± 1 day'</span>, <span class="ts">'± 2 days'</span>,
+    <span class="ts">'± 3 days'</span>,   <span class="ts">'± 7 days'</span>, <span class="ts">'± 14 days'</span>
+  ],
+  <span class="tf">onChange</span>: ({ <span class="tf">startDate</span>, <span class="tf">endDate</span> }) =&gt; {
+    <span class="tpk">console</span>.<span class="tf">log</span>(<span class="ts">'Start:'</span>, startDate);
+    <span class="tpk">console</span>.<span class="tf">log</span>(<span class="ts">'End:'</span>,   endDate);
+  }
+});</pre>
+                </div>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 4 — OPTIONS
+    ════════════════════════ -->
+        <section class="doc-section" id="options">
+            <h2 class="doc-section-title">Options</h2>
+            <p class="doc-section-subtitle">Passed as the second argument to the constructor, or as JSON in
+                <code>data-hs-datepicker-options</code>.
+            </p>
+
+            <div class="doc-table-wrap">
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="doc-prop-name">range</span></td>
+                            <td><span class="doc-prop-type">boolean</span></td>
+                            <td><span class="doc-prop-default">true</span></td>
+                            <td>Enable range selection (start + end). Set <code>false</code> for single-date mode —
+                                picker closes on first click.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">position</span></td>
+                            <td><span class="doc-prop-type">string</span></td>
+                            <td><span class="doc-prop-default">'bottom-left'</span></td>
+                            <td>Panel alignment relative to trigger. Values: <code>'bottom-left'</code>,
+                                <code>'bottom-right'</code>, <code>'bottom-center'</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">minDate</span></td>
+                            <td><span class="doc-prop-type">Date</span></td>
+                            <td><span class="doc-prop-default">new Date()</span></td>
+                            <td>Earliest date the user can select. Past dates are greyed out and struck through by
+                                default.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">maxDate</span></td>
+                            <td><span class="doc-prop-type">Date</span></td>
+                            <td><span class="doc-prop-default">null</span></td>
+                            <td>Latest selectable date. <code>null</code> means no upper limit.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">flexChips</span></td>
+                            <td><span class="doc-prop-type">string[]</span></td>
+                            <td><span class="doc-prop-default">['Exact dates', …]</span></td>
+                            <td>Array of labels for the flexibility chips in the footer. The first chip is active by
+                                default. Pass an empty array to hide the footer chips.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">onChange</span></td>
+                            <td><span class="doc-prop-type">Function</span></td>
+                            <td><span class="doc-prop-default">null</span></td>
+                            <td>Callback fired when dates change. Receives
+                                <code>{ startDate: Date|null, endDate: Date|null }</code>. Also fires on
+                                <code>clear()</code>.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 5 — METHODS
+    ════════════════════════ -->
+        <section class="doc-section" id="methods">
+            <h2 class="doc-section-title">Methods</h2>
+            <p class="doc-section-subtitle">All public methods available on the HSDatepicker instance.</p>
+
+            <div class="doc-method-card">
+                <div class="doc-method-header">
+                    <span class="doc-method-name">picker.open()</span>
+                    <span class="doc-method-returns">void</span>
+                </div>
+                <div class="doc-method-body">Opens the date picker panel and positions it below the trigger element.
+                    Also adds <code>hs-active</code> class to the trigger.</div>
+            </div>
+
+            <div class="doc-method-card">
+                <div class="doc-method-header">
+                    <span class="doc-method-name">picker.close()</span>
+                    <span class="doc-method-returns">void</span>
+                </div>
+                <div class="doc-method-body">Closes the panel and removes the <code>hs-active</code> class from the
+                    trigger.</div>
+            </div>
+
+            <div class="doc-method-card">
+                <div class="doc-method-header">
+                    <span class="doc-method-name">picker.toggle()</span>
+                    <span class="doc-method-returns">void</span>
+                </div>
+                <div class="doc-method-body">Toggles open/close state. Equivalent to calling <code>open()</code> or
+                    <code>close()</code> depending on current state.
+                </div>
+            </div>
+
+            <div class="doc-method-card">
+                <div class="doc-method-header">
+                    <span class="doc-method-name">picker.clear()</span>
+                    <span class="doc-method-returns">void</span>
+                </div>
+                <div class="doc-method-body">Resets both start and end dates to <code>null</code>, re-renders the
+                    calendars, updates the trigger display, and fires the <code>onChange</code> callback.</div>
+            </div>
+
+            <div class="doc-method-card">
+                <div class="doc-method-header">
+                    <span class="doc-method-name">picker.getDates()</span>
+                    <span class="doc-method-returns">{ startDate, endDate }</span>
+                </div>
+                <div class="doc-method-body">Returns the currently selected dates as an object:
+                    <code>{ startDate: Date|null, endDate: Date|null }</code>.
+                </div>
+            </div>
+
+            <div class="doc-method-card">
+                <div class="doc-method-header">
+                    <span class="doc-method-name">picker.setDates(start, end?)</span>
+                    <span class="doc-method-returns">void</span>
+                </div>
+                <div class="doc-method-body">
+                    Programmatically sets the date range. Navigates the calendar view to the start month and updates the
+                    trigger label.
+                    <div style="margin-top:10px;">
+                        <div class="doc-code-wrap" style="border-radius:8px;overflow:hidden;">
+                            <pre class="doc-code" style="border-radius:8px;font-size:12px;padding:14px 18px;"><span class="tpk">const</span> <span class="tf">start</span> = <span class="tpk">new</span> <span class="tk">Date</span>(<span class="ts">'2026-04-10'</span>);
+<span class="tpk">const</span> <span class="tf">end</span>   = <span class="tpk">new</span> <span class="tk">Date</span>(<span class="ts">'2026-04-15'</span>);
+picker.<span class="tf">setDates</span>(start, end);</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 6 — EVENTS
+    ════════════════════════ -->
+        <section class="doc-section" id="events">
+            <h2 class="doc-section-title">Events</h2>
+            <p class="doc-section-subtitle">In addition to the <code>onChange</code> callback, HSDatepicker fires a
+                native custom DOM event on the trigger element.</p>
+
+            <div style="padding: 0 4px;">
+                <div class="doc-event-row">
+                    <span class="doc-event-name">hs:datechange</span>
+                    <div class="doc-event-desc">
+                        Fired on the trigger element whenever dates change (selection or clear). Use
+                        <code>event.detail</code> to access <code>startDate</code> and <code>endDate</code>.
+                        <div style="margin-top:10px;">
+                            <div class="doc-code-wrap" style="border-radius:8px;overflow:hidden;">
+                                <pre class="doc-code" style="border-radius:8px;font-size:12px;padding:14px 18px;"><span class="tpk">document</span>.<span class="tf">getElementById</span>(<span class="ts">'myTrigger'</span>)
+  .<span class="tf">addEventListener</span>(<span class="ts">'hs:datechange'</span>, (e) =&gt; {
+    <span class="tpk">const</span> { <span class="tf">startDate</span>, <span class="tf">endDate</span> } = e.<span class="tf">detail</span>;
+    <span class="tpk">console</span>.<span class="tf">log</span>(startDate, endDate);
+  });</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 7 — CSS CLASSES
+    ════════════════════════ -->
+        <section class="doc-section" id="css-classes">
+            <h2 class="doc-section-title">CSS Classes Reference</h2>
+            <p class="doc-section-subtitle">All classes used by the component — useful for custom theming.</p>
+
+            <div class="doc-table-wrap">
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Element</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-trigger</span></td>
+                            <td>Trigger wrapper</td>
+                            <td>The clickable pill/element that opens the picker.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-trigger-label</span></td>
+                            <td>span</td>
+                            <td>Small uppercase label above the value (e.g. "When").</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-trigger-value</span></td>
+                            <td>span</td>
+                            <td>Displays the selected date range or placeholder text.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-trigger-clear</span></td>
+                            <td>button</td>
+                            <td>The × button to clear selection. Hidden until a date is picked.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-trigger.hs-active</span></td>
+                            <td>Trigger</td>
+                            <td>Applied when the panel is open.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-datepicker-overlay</span></td>
+                            <td>div</td>
+                            <td>Full-screen invisible overlay that closes panel on outside click.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-datepicker-overlay.hs-open</span></td>
+                            <td>div</td>
+                            <td>Applied when picker is open (toggles <code>display: block</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-datepicker</span></td>
+                            <td>Panel div</td>
+                            <td>The main picker panel (white card with shadow).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-day--today</span></td>
+                            <td>day cell</td>
+                            <td>Today's date — bold with a border ring.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-day--start</span></td>
+                            <td>day cell</td>
+                            <td>Range start date — dark filled.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-day--end</span></td>
+                            <td>day cell</td>
+                            <td>Range end date — dark filled.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-day--in-range</span></td>
+                            <td>day cell</td>
+                            <td>Days between start and end — warm tint background.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-day--disabled</span></td>
+                            <td>day cell</td>
+                            <td>Non-selectable day — greyed out with strikethrough.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="doc-prop-name">.hs-dp-flex-chip.hs-active</span></td>
+                            <td>button</td>
+                            <td>The currently selected flexibility chip in the footer.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 8 — THEMING
+    ════════════════════════ -->
+        <section class="doc-section" id="theming">
+            <h2 class="doc-section-title">Theming</h2>
+            <p class="doc-section-subtitle">Override CSS custom properties to match your brand. All colours, fonts, and
+                shadows flow from the root tokens.</p>
+
+            <div class="doc-demo-card">
+                <div class="doc-demo-label">Override design tokens in your own CSS</div>
+                <div class="doc-code-wrap">
+                    <button class="doc-copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre class="doc-code"><span class="tc">/* In your stylesheet, after importing hs-datepicker.css */</span>
+<span class="tpk">:root</span> {
+  <span class="tc">/* Brand colour — affects selected days & active chips */</span>
+  <span class="tf">--hs-color-text</span>:   <span class="ts">#1A1A2E</span>;   <span class="tc">/* dark navy instead of #222 */</span>
+  <span class="tf">--hs-color-muted</span>:  <span class="ts">#8E8E93</span>;
+
+  <span class="tc">/* Range highlight background */</span>
+  <span class="tc">/* Override directly in CSS: */</span>
+}
+
+<span class="tc">/* Custom range colour example */</span>
+<span class="tpk">.hs-dp-day--in-range</span> {
+  <span class="tf">background</span>: <span class="ts">#FFF0F3</span> <span class="tpk">!important</span>;
+}
+
+<span class="tpk">.hs-dp-day--start</span>,
+<span class="tpk">.hs-dp-day--end</span> {
+  <span class="tf">background</span>: <span class="ts">#FF385C</span> <span class="tpk">!important</span>;
+}</pre>
+                </div>
+            </div>
+
+            <div class="doc-callout doc-callout--tip">
+                <div class="doc-callout-icon">🎨</div>
+                <div class="doc-callout-text">
+                    <strong>Tip:</strong> The component inherits <code>--hs-color-text</code> and
+                    <code>--hs-color-muted</code> from <code>holidayseva_framework.css</code>. If you use the framework,
+                    you only need to override those root tokens — all components update automatically.
+                </div>
+            </div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+
+        <!-- ═══════════════════════
+         SECTION 9 — KNOWN ISSUES
+    ════════════════════════ -->
+        <section class="doc-section" id="notes">
+            <h2 class="doc-section-title">Notes &amp; Known Constraints</h2>
+
+            <div class="doc-callout doc-callout--warn" style="margin-bottom:14px;">
+                <div class="doc-callout-icon">⚠️</div>
+                <div class="doc-callout-text">
+                    <strong>Never nest a &lt;button&gt; inside a &lt;button&gt;.</strong> If your trigger is a
+                    <code>&lt;button&gt;</code> and you need a clear ×, the inner button will be silently dropped by the
+                    browser. Use <code>&lt;div class="hs-dp-trigger"&gt;</code> as shown in the usage examples above.
+                </div>
+            </div>
+
+            <div class="doc-callout doc-callout--warn" style="margin-bottom:14px;">
+                <div class="doc-callout-icon">⚠️</div>
+                <div class="doc-callout-text">
+                    <strong>Panel is appended to <code>&lt;body&gt;</code>.</strong> The overlay and panel are injected
+                    into <code>document.body</code> at construction time, not inside the trigger's parent. This avoids
+                    overflow/clip issues but means the panel is not scoped to a specific container.
+                </div>
+            </div>
+
+            <div class="doc-callout doc-callout--info">
+                <div class="doc-callout-icon">📌</div>
+                <div class="doc-callout-text">
+                    <strong>Window resize:</strong> The panel position is calculated on <code>open()</code>, not
+                    live-tracked. If the page layout shifts after opening, call <code>picker.close()</code> and reopen
+                    to reposition.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════════
+     COMPONENT JS
+═══════════════════════════════════════════ -->
+    <script src="../Assets/js/hs-datepicker.js"></script>
+
     <script>
-        /* ──────────────────────────────────────────────────────────
-           Demo Data
-           ────────────────────────────────────────────────────────── */
-
-        // 1. Carousel items
-        const carouselItems = [
-            {
-                image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Atlanta, United States',
-                name: 'Sip Vibe & Design A Vintage T-shirt Workshop',
-                priceFrom: 'From', price: '₹5,979 / guest', rating: '4.96', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'San Isidro, Argentina',
-                name: 'Make Guaraní pottery with a clay artist',
-                priceFrom: 'From', price: '₹6,365 / guest', rating: '5.0', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Paris, France',
-                name: 'Bake traditional French pastries with Grandma',
-                priceFrom: 'From', price: '₹8,015 / guest', rating: '4.95', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Seoul, South Korea',
-                name: 'K-drama inspired night of Korean BBQ and karaoke',
-                priceFrom: 'From', price: '₹8,722 / guest', rating: '5.0', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Chang Phueak, Thailand',
-                name: 'Meditate and learn mindfulness at Wat Jed Yot',
-                priceFrom: 'From', price: '₹2,780 / guest', rating: '4.95', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Denver, United States',
-                name: 'Explore behind the scenes at the Still Museum',
-                priceFrom: 'From', price: '₹4,599 / guest', rating: '5.0', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Mumbai, India',
-                name: 'Cook a traditional Maharashtrian thali with a chef',
-                priceFrom: 'From', price: '₹3,200 / guest', rating: '4.92', href: '#'
-            },
-            {
-                image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=530&fit=crop',
-                badge: 'Original', location: 'Jaipur, India',
-                name: 'Block printing masterclass in the Pink City',
-                priceFrom: 'From', price: '₹2,100 / guest', rating: '4.88', href: '#'
-            }
-        ];
-
-        new HSCarousel('[data-hs-carousel]', {
-            items: carouselItems,
-            scrollBy: 3,
-            gap: 16,
-            seeAllHref: '#',
-            seeAllAvatars: [
-                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop',
-                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&h=60&fit=crop',
-                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop',
-                'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=60&h=60&fit=crop'
-            ]
-        });
-
-        // 2. Date Picker
-        const dp = new HSDatepicker('#datePickerTrigger', {
-            position: 'bottom-left',
+        /* ── Demo 1: Range picker ── */
+        const demo1 = new HSDatepicker('#demo1-trigger', {
             range: true,
+            position: 'bottom-left',
             onChange: ({ startDate, endDate }) => {
-                console.log('Dates selected:', startDate, endDate);
+                const out = document.getElementById('demo1-output');
+                const fmt = d => d ? d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '–';
+                out.innerHTML = `<div class="doc-output-label">onChange output</div>
+                <strong>Start:</strong> ${fmt(startDate)}<br>
+                <strong>End&nbsp;&nbsp;:</strong> ${fmt(endDate)}`;
             }
         });
 
-        // 3. Package Cards
-        const packages = [
-            { tab: 'India', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=320&fit=crop', duration: '7 Nights / 8 Days', name: 'Shimla Manali Dalhousie Tour for 7 Nights 8 Days', route: ['Shimla(2N)', 'Manali(3N)', 'Dalhousie(2N)'], agent: 'Meet My Holiders India Pvt. Ltd.', rating: '4.1', reviewCount: 108, priceOriginal: '₹11,999', priceFinal: '₹9,999', discount: '16% off', href: '#' },
-            { tab: 'India', image: 'https://images.unsplash.com/photo-1609766857510-7a7e2ef5c2de?w=500&h=320&fit=crop', duration: '9 Nights / 10 Days', name: 'Deluxe Chardham Package for 9 Nights 10 Days', route: ['Barkot(2N)', 'Uttarkashi(2N)', 'Guptkashi(2N)', 'Kedarnath(1N)', 'Auli(2N)'], agent: 'Uttra Holidays', rating: '4.3', reviewCount: 11, priceOriginal: '', priceFinal: '₹23,000', href: '#' },
-            { tab: 'India', image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=500&h=320&fit=crop', duration: '2 Nights / 3 Days', name: '2 Nights 3 Days Kullu Manali Volvo Package from Delhi', route: ['Manali(2N)'], agent: 'Himalayan Seekers', rating: '4.8', reviewCount: 57, priceOriginal: '₹6,500', priceFinal: '₹5,500', discount: '15% off', href: '#' },
-            { tab: 'India', image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=500&h=320&fit=crop', duration: '3 Nights / 4 Days', name: 'Best of Manali Volvo Package - 3 Night', route: ['Manali(3N)'], agent: 'Wtp Holiday Private Limited', rating: '3.6', reviewCount: 49, priceOriginal: '₹10,000', priceFinal: '₹7,000', discount: '30% off', href: '#' },
-            { tab: 'International', image: 'https://images.unsplash.com/photo-1499856871958-5b9357fce882?w=500&h=320&fit=crop', duration: '5 Nights / 6 Days', name: 'Paris & Swiss Alps Explorer Package', route: ['Paris(3N)', 'Zurich(2N)'], agent: 'Euro Travel Co', rating: '4.7', reviewCount: 203, priceOriginal: '₹85,000', priceFinal: '₹74,999', discount: '12% off', href: '#' },
-            { tab: 'International', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&h=320&fit=crop', duration: '6 Nights / 7 Days', name: 'Tokyo & Kyoto Cultural Immersion Tour', route: ['Tokyo(3N)', 'Kyoto(3N)'], agent: 'Japan Wanderlust', rating: '4.9', reviewCount: 88, priceOriginal: '₹1,10,000', priceFinal: '₹95,000', discount: '14% off', href: '#' },
-            { tab: 'International', image: 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=500&h=320&fit=crop', duration: '4 Nights / 5 Days', name: 'Dubai Luxury Escape with Desert Safari', route: ['Dubai(4N)'], agent: 'Gulf Getaways', rating: '4.5', reviewCount: 312, priceOriginal: '₹55,000', priceFinal: '₹44,999', discount: '18% off', href: '#' },
-            { tab: 'International', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=320&fit=crop', duration: '7 Nights / 8 Days', name: 'Bali Bliss — Temples, Rice Fields & Beaches', route: ['Ubud(3N)', 'Seminyak(4N)'], agent: 'Bali Dreams Travel', rating: '4.6', reviewCount: 145, priceOriginal: '₹70,000', priceFinal: '₹57,999', discount: '17% off', href: '#' }
-        ];
-
-        new HSPackageCards('#tourPackages', {
-            items: packages,
-            tabs: ['India', 'International'],
-            ctaLabel: 'Get Offers ›',
-            onCta: (item) => alert(`Enquiring about: ${item.name}`)
+        /* ── Demo 2: Single date ── */
+        const demo2 = new HSDatepicker('#demo2-trigger', {
+            range: false,
+            position: 'bottom-left',
+            onChange: ({ startDate }) => {
+                const out = document.getElementById('demo2-output');
+                const fmt = d => d ? d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'None';
+                out.innerHTML = `<div class="doc-output-label">Selected date</div><strong>${fmt(startDate)}</strong>`;
+            }
         });
+
+        /* ── Demo 3: Position bottom-right ── */
+        const demo3 = new HSDatepicker('#demo3-trigger', {
+            range: true,
+            position: 'bottom-right'
+        });
+
+        /* ── Demo 4: Pre-set dates ── */
+        const demo4 = new HSDatepicker('#demo4-trigger', {
+            range: true,
+            position: 'bottom-left'
+        });
+
+        // Set dates 10 days from now for +7 days
+        const d4start = new Date(); d4start.setDate(d4start.getDate() + 10);
+        const d4end = new Date(); d4end.setDate(d4end.getDate() + 17);
+        demo4.setDates(d4start, d4end);
+
+        /* ── Demo 5: Search bar integration ── */
+        const demo5 = new HSDatepicker('#demo5-trigger', {
+            range: true,
+            position: 'bottom-left'
+        });
+
+        /* ── Copy button ── */
+        function copyCode(btn) {
+            const pre = btn.nextElementSibling;
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                btn.textContent = '✓ Copied';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
     </script>
+
 </body>
 
 </html>
