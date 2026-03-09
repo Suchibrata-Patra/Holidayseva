@@ -24,16 +24,16 @@ $current = basename($_SERVER['PHP_SELF']);
   <!-- ════════════════════════════════════════
        1. GETTING STARTED
   ════════════════════════════════════════ -->
-  <div class="sb-group <?= in_array($current, ['index.php','introduction.php']) ? 'open' : '' ?>" id="grp-gettingstarted">
+  <div class="sb-group <?= in_array($current, ['index.php','index.php']) ? 'open' : '' ?>" id="grp-gettingstarted">
     <button class="sb-group-btn" onclick="toggleGroup('grp-gettingstarted')">
       <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
         <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       Getting started
     </button>
-    <ul class="sb-items" <?= !in_array($current, ['index.php','introduction.php']) ? 'hidden' : '' ?>>
+    <ul class="sb-items" <?= !in_array($current, ['index.php','index.php']) ? 'hidden' : '' ?>>
 
-      <li><a href="introduction.php" class="sb-link <?= $current === 'introduction.php' ? 'active' : '' ?>">
+      <li><a href="index.php" class="sb-link <?= $current === 'index.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
           <path d="M8 5v3.5L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
