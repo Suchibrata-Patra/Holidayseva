@@ -1,0 +1,106 @@
+/* ============================================================
+   NAVIGATION BUTTONS COMPONENT
+   ============================================================ */
+
+.nav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border-dark);
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font-size: 14px;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-xs);
+}
+
+.nav-btn:hover:not(:disabled) {
+    border-color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+    transform: scale(1.06);
+}
+
+.nav-btn:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+.nav-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Sizes ── */
+.nav-btn--sm {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+}
+
+.nav-btn--lg {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+}
+
+/* ── Variants ── */
+.nav-btn--filled {
+    background: var(--color-text-primary);
+    color: white;
+    border-color: var(--color-text-primary);
+}
+
+.nav-btn--filled:hover:not(:disabled) {
+    background: #000;
+    border-color: #000;
+}
+
+.nav-btn--dark {
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+    border-color: transparent;
+    backdrop-filter: blur(4px);
+}
+
+.nav-btn--dark:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.nav-btn--ghost {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.nav-btn--ghost:hover:not(:disabled) {
+    background: var(--color-muted);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.nav-btn--primary {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.nav-btn--primary:hover:not(:disabled) {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+/* ── Pair layout ── */
+.nav-btn-pair {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}

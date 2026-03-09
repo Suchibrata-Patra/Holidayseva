@@ -1,0 +1,173 @@
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+
+/* Display */
+.flex {
+    display: flex
+}
+
+.inline-flex {
+    display: inline-flex
+}
+
+.grid {
+    display: grid
+}
+
+.block {
+    display: block
+}
+
+.inline {
+    display: inline
+}
+
+.hidden {
+    display: none
+}
+
+/* Flex direction */
+.flex-col {
+    flex-direction: column
+}
+
+.flex-row {
+    flex-direction: row
+}
+
+/* Flex wrap */
+.flex-wrap {
+    flex-wrap: wrap
+}
+
+.flex-nowrap {
+    flex-wrap: nowrap
+}
+
+/* Align items */
+.items-start {
+    align-items: flex-start
+}
+
+.items-center {
+    align-items: center
+}
+
+.items-end {
+    align-items: flex-end
+}
+
+.items-stretch {
+    align-items: stretch
+}
+
+/* Justify content */
+.justify-start {
+    justify-content: flex-start
+}
+
+.justify-center {
+    justify-content: center
+}
+
+.justify-end {
+    justify-content: flex-end
+}
+
+.justify-between {
+    justify-content: space-between
+}
+
+.justify-around {
+    justify-content: space-around
+}
+
+/* Flex grow/shrink */
+.flex-1 {
+    flex: 1
+}
+
+.flex-auto {
+    flex: auto
+}
+
+.flex-none {
+    flex: none
+}
+
+.shrink-0 {
+    flex-shrink: 0
+}
+
+/* Position */
+.relative {
+    position: relative
+}
+
+.absolute {
+    position: absolute
+}
+
+.fixed {
+    position: fixed
+}
+
+.sticky {
+    position: sticky
+}
+
+.inset-0 {
+    inset: 0
+}
+
+/* Width / Height */
+.w-full {
+    width: 100%
+}
+
+.h-full {
+    height: 100%
+}
+
+.w-auto {
+    width: auto
+}
+
+.min-w-0 {
+    min-width: 0
+}
+
+/* Overflow */
+.overflow-hidden {
+    overflow: hidden
+}
+
+.overflow-auto {
+    overflow: auto
+}
+
+.overflow-x-auto {
+    overflow-x: auto
+}
+
+.overflow-y-auto {
+    overflow-y: auto
+}
+
+/* Z-index */
+.z-raised {
+    z-index: var(--z-raised)
+}
+
+.z-dropdown {
+    z-index: var(--z-dropdown)
+}
+
+.z-sticky {
+    z-index: var(--z-sticky)
+}
+
+.z-modal {
+    z-index: var(--z-modal)
+}
