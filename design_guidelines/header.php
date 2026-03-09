@@ -85,35 +85,50 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 
 <script>
 (function () {
-  const globalNav  = document.getElementById('globalNav');
-  const sectionNav = document.getElementById('sectionNav');
+  const globalNav    = document.getElementById('globalNav');
+  const sectionNav   = document.getElementById('sectionNav');
+  const sidebarLeft  = document.querySelector('.sidebar-left');
+  const sidebarRight = document.querySelector('.sidebar-right');
 
-  const TIER1_H = globalNav.offsetHeight;
+  const TIER1_H = globalNav.offsetHeight;   // 52px
+  const TIER2_H = sectionNav.offsetHeight;  // 44px
+  const FULL_H  = TIER1_H + TIER2_H;       // 96px
 
   let lastY  = 0;
   let hidden = false;
 
-  // Set initial position of section nav
-  sectionNav.style.top = TIER1_H + 'px';
-
   // Transitions
   globalNav.style.transition  = 'transform 0.28s ease';
   sectionNav.style.transition = 'top 0.28s ease';
+
+  // Set initial positions
+  sectionNav.style.top = TIER1_H + 'px';
+
+  function setSidebarOffset(offset) {
+    // offset = total header height currently visible
+    if (sidebarLeft)  { sidebarLeft.style.top  = offset + 'px'; sidebarLeft.style.height  = 'calc(100vh - ' + offset + 'px)'; }
+    if (sidebarRight) { sidebarRight.style.top = offset + 'px'; sidebarRight.style.height = 'calc(100vh - ' + offset + 'px)'; }
+  }
+
+  // Initial sidebar offset = full header height
+  setSidebarOffset(FULL_H);
 
   function onScroll() {
     const y         = window.scrollY;
     const goingDown = y > lastY;
 
     if (goingDown && y > TIER1_H && !hidden) {
-      // Scrolling down past Tier 1 height: hide Tier 1
+      // Hide Tier 1, Tier 2 moves to top:0, sidebars shrink to only Tier 2 offset
       globalNav.style.transform = 'translateY(-100%)';
       sectionNav.style.top      = '0px';
+      setSidebarOffset(TIER2_H);
       hidden = true;
 
     } else if (hidden && y <= 0) {
-      // Only restore Tier 1 when user has scrolled all the way back to the very top
+      // Fully back at top: restore everything
       globalNav.style.transform = 'translateY(0)';
       sectionNav.style.top      = TIER1_H + 'px';
+      setSidebarOffset(FULL_H);
       hidden = false;
     }
 
