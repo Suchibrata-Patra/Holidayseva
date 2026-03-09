@@ -892,11 +892,84 @@ body {
 
 
 /* ============================================================
+   MOBILE DRAWER — left sidebar as slide-in panel
+   ============================================================ */
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    color: var(--text-tertiary);
+    transition: background var(--t-fast), color var(--t-fast);
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-hamburger:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.nav-hamburger svg {
+    display: block;
+    transition: opacity var(--t-fast), transform var(--t-fast);
+}
+
+.nav-hamburger .icon-close {
+    display: none;
+}
+
+.nav-hamburger.is-open .icon-menu {
+    display: none;
+}
+
+.nav-hamburger.is-open .icon-close {
+    display: block;
+}
+
+/* Drawer backdrop */
+.drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 6999;
+    opacity: 0;
+    transition: opacity 280ms ease;
+}
+
+.drawer-backdrop.is-visible {
+    display: block;
+}
+
+.drawer-backdrop.is-active {
+    opacity: 1;
+}
+
+/* Drawer container — wraps sidebar-left on mobile */
+.drawer-sidebar {
+    display: none;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1100px) {
     .sidebar-right {
         display: none;
+    }
+
+    .page-layout {
+        padding-right: 0;
     }
 
     .page-main {
@@ -911,23 +984,209 @@ body {
 }
 
 @media (max-width: 680px) {
+
+    /* ── Layout adjustments ─────────────────────────────────── */
+    .page-layout {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Hide the fixed desktop left sidebar */
     .sidebar-left {
         display: none;
     }
 
-    .page-main {
-        padding: 36px 20px 80px;
+    /* ── Global nav — compact mobile ───────────────────────── */
+    .global-nav {
+        padding: 0 16px;
     }
 
     .global-nav-links {
         display: none;
     }
 
-    .section-nav-tabs {
+    .global-nav-sep {
         display: none;
     }
 
+    /* Show hamburger */
+    .nav-hamburger {
+        display: flex;
+    }
+
+    /* Push actions to right edge */
+    .global-nav-actions {
+        margin-left: auto;
+    }
+
+    /* ── Section nav — mobile ───────────────────────────────── */
+    .section-nav {
+        padding: 0 16px;
+        gap: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .section-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .section-nav-title {
+        font-size: 13px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .section-nav-tabs {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .section-nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .section-nav-tabs a {
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .section-nav-badge {
+        display: none;
+    }
+
+    /* ── Main content ───────────────────────────────────────── */
+    .page-main {
+        padding: 32px 20px 100px;
+    }
+
+    .page-title {
+        font-size: 34px;
+    }
+
+    .page-lead {
+        font-size: 15px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .demo-stage {
+        padding: 40px 20px;
+    }
+
+    .anatomy-stage {
+        padding: 48px 20px;
+        overflow-x: auto;
+    }
+
+    .api-table {
+        font-size: 12px;
+    }
+
+    .api-table td,
+    .api-table th {
+        padding: 10px 12px;
+    }
+
+    .spec-key {
+        width: 130px;
+    }
+
     .footer {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
         padding: 24px 20px;
+    }
+
+    /* ── Drawer sidebar ─────────────────────────────────────── */
+    .drawer-sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: min(300px, 82vw);
+        height: 100dvh;
+        background: var(--bg-primary);
+        z-index: 7000;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        border-right: 1px solid var(--border-light);
+        box-shadow: var(--shadow-lg);
+        transform: translateX(-105%);
+        transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+        will-change: transform;
+        padding-bottom: env(safe-area-inset-bottom, 24px);
+    }
+
+    .drawer-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    /* Drawer top bar with close button */
+    .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px 12px;
+        border-bottom: 1px solid var(--border-light);
+        position: sticky;
+        top: 0;
+        background: var(--bg-primary);
+        z-index: 1;
+    }
+
+    .drawer-header-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .drawer-close {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: var(--apple-gray-6);
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--text-tertiary);
+        -webkit-tap-highlight-color: transparent;
+        flex-shrink: 0;
+    }
+
+    .drawer-close:hover {
+        background: var(--apple-gray-5);
+        color: var(--text-primary);
+    }
+
+    /* Drawer sidebar content spacing */
+    .drawer-sidebar .sb-filter {
+        margin: 14px 14px 10px;
+    }
+
+    .drawer-sidebar .sb-nav {
+        padding: 0 6px 24px;
+    }
+
+    .drawer-sidebar .sb-group-btn {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .drawer-sidebar .sb-link {
+        font-size: 14px;
+        padding: 7px 10px 7px 28px;
+        min-height: 38px;
+        /* easier tap target */
     }
 }

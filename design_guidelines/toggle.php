@@ -15,6 +15,9 @@
 
 <?php include __DIR__ . '/header.php'; ?>
 
+<!-- Mobile drawer sidebar (hidden on desktop) -->
+<?php include __DIR__ . '/drawer_sidebar.php'; ?>
+
 <div class="page-layout">
 
   <!-- ── Left sidebar ──────────────────────── -->

@@ -24,6 +24,16 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
      ══════════════════════════════════════════════════════ -->
 <header class="global-nav" id="globalNav" role="banner">
 
+  <!-- Hamburger — only visible on mobile (≤680px via CSS) -->
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="drawerSidebar">
+    <svg class="icon-menu" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <svg class="icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
   <a class="global-nav-brand" href="/" aria-label="Holidayseva home">
     <strong>Holidayseva</strong>
   </a>
@@ -62,6 +72,11 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 </header>
 
 <!-- ══════════════════════════════════════════════════════
+     MOBILE DRAWER BACKDROP
+     ══════════════════════════════════════════════════════ -->
+<div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════════════
      TIER 2 — Section nav (always visible, sticks to top)
      ══════════════════════════════════════════════════════ -->
 <nav class="section-nav" id="sectionNav" aria-label="Section navigation">
@@ -85,21 +100,20 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 
 <script>
 (function () {
-  const root       = document.documentElement;
-  const globalNav  = document.getElementById('globalNav');
-  const sectionNav = document.getElementById('sectionNav');
+  const root        = document.documentElement;
+  const globalNav   = document.getElementById('globalNav');
+  const sectionNav  = document.getElementById('sectionNav');
+  const hamburger   = document.getElementById('navHamburger');
+  const backdrop    = document.getElementById('drawerBackdrop');
 
   const TIER1_H = 52;   // --topbar-h
   const TIER2_H = 44;   // --subbar-h
   const FULL_H  = TIER1_H + TIER2_H;
 
-  // CSS drives sidebar top/height via --header-h; JS only sets that one variable.
-  // The CSS transition on sidebar-left / sidebar-right handles the smooth movement.
   function setHeaderHeight(px) {
     root.style.setProperty('--header-h', px + 'px');
   }
 
-  // Initialise
   setHeaderHeight(FULL_H);
   sectionNav.style.top = TIER1_H + 'px';
 
@@ -111,24 +125,90 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
     const goingDown = y > lastY;
 
     if (goingDown && y > TIER1_H && !hidden) {
-      // Slide global-nav up; section-nav floats to top=0
       globalNav.style.transform = 'translateY(-100%)';
       sectionNav.style.top      = '0px';
-      // Tell sidebars: only section-nav is visible
       setHeaderHeight(TIER2_H);
       hidden = true;
-
     } else if (!goingDown && hidden && y <= 0) {
-      // Restore both bars when back at very top
       globalNav.style.transform = 'translateY(0)';
       sectionNav.style.top      = TIER1_H + 'px';
       setHeaderHeight(FULL_H);
       hidden = false;
     }
-
     lastY = y;
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── Mobile drawer ─────────────────────────────────── */
+  let drawerOpen = false;
+
+  function getDrawer() {
+    return document.getElementById('drawerSidebar');
+  }
+
+  function openDrawer() {
+    const drawer = getDrawer();
+    if (!drawer) return;
+    drawerOpen = true;
+    drawer.classList.add('is-open');
+    backdrop.classList.add('is-visible');
+    hamburger.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    document.body.style.overflow = 'hidden';
+    // Trigger backdrop fade
+    requestAnimationFrame(() => backdrop.classList.add('is-active'));
+    // Trap focus
+    const firstLink = drawer.querySelector('a, button, input');
+    if (firstLink) firstLink.focus();
+  }
+
+  function closeDrawer() {
+    const drawer = getDrawer();
+    if (!drawer) return;
+    drawerOpen = false;
+    drawer.classList.remove('is-open');
+    backdrop.classList.remove('is-active');
+    hamburger.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+    document.body.style.overflow = '';
+    // Hide backdrop after transition
+    setTimeout(() => backdrop.classList.remove('is-visible'), 300);
+    hamburger.focus();
+  }
+
+  function toggleDrawer() {
+    drawerOpen ? closeDrawer() : openDrawer();
+  }
+
+  if (hamburger) hamburger.addEventListener('click', toggleDrawer);
+
+  // Close on backdrop tap
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawerOpen) closeDrawer();
+  });
+
+  // Close drawer on nav link click (smooth UX)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.drawer-sidebar .sb-link');
+    if (link) setTimeout(closeDrawer, 120);
+  });
+
+  // Swipe-left to close drawer
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (!drawerOpen) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (dx < -60) closeDrawer();
+  }, { passive: true });
+
 })();
 </script>
