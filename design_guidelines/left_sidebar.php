@@ -333,9 +333,6 @@ $current = basename($_SERVER['PHP_SELF']);
 </style>
 
 <script>
-  // Use closest() so these work whether the sidebar is rendered
-  // as the desktop aside OR inside the mobile drawer — no IDs needed.
-
   function toggleGroup(btn) {
     const grp  = btn.closest('.sb-group');
     const list = grp.querySelector('.sb-items');
@@ -347,18 +344,40 @@ $current = basename($_SERVER['PHP_SELF']);
 
   function filterSidebar(input) {
     const term = input.value.toLowerCase().trim();
-    // Scope to the sb-nav that contains this input
-    const nav = input.closest('.sidebar-left, .drawer-sidebar') || document;
-    nav.querySelectorAll('.sb-link').forEach(a => {
-      const match = !term || a.textContent.toLowerCase().includes(term);
-      a.classList.toggle('hidden', !match);
-      if (match && term) {
-        const grp = a.closest('.sb-group');
-        if (grp) {
-          grp.classList.add('open');
-          grp.querySelector('.sb-items').removeAttribute('hidden');
-        }
+    const nav  = input.closest('.sidebar-left, .drawer-sidebar') || document;
+
+    if (!term) {
+      // Filter cleared — restore every link, and restore each group
+      // back to whatever open/closed state it was in before filtering
+      nav.querySelectorAll('.sb-link').forEach(a => a.classList.remove('hidden'));
+      nav.querySelectorAll('.sb-group').forEach(grp => {
+        const list   = grp.querySelector('.sb-items');
+        const isOpen = grp.classList.contains('open');
+        if (isOpen) list.removeAttribute('hidden');
+        else        list.setAttribute('hidden', '');
+      });
+      return;
+    }
+
+    // Filter active — show/hide links, auto-expand groups that have matches
+    // but DON'T collapse groups that have no matches (user may have opened them manually)
+    nav.querySelectorAll('.sb-group').forEach(grp => {
+      const links      = grp.querySelectorAll('.sb-link');
+      const list       = grp.querySelector('.sb-items');
+      let   hasMatch   = false;
+
+      links.forEach(a => {
+        const match = a.textContent.toLowerCase().includes(term);
+        a.classList.toggle('hidden', !match);
+        if (match) hasMatch = true;
+      });
+
+      if (hasMatch) {
+        // Expand groups that contain matches so results are visible
+        grp.classList.add('open');
+        list.removeAttribute('hidden');
       }
+      // Groups with no matches stay in their current state — don't force-close them
     });
   }
 </script>
