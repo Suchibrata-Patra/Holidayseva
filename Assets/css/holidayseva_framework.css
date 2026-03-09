@@ -82,11 +82,11 @@ button {
    with <link> tags in your HTML. These work when files are
    served from the same /css/ folder.                           */
 
-/* Importing the elemnet */
 @import url('./hs-carousel.css');
 @import url('./hs-datepicker.css');
 @import url('./hs-package-cards.css');
 @import url('./hs-modal.css');
+
 /* ─── Utility Classes ────────────────────────────────────────── */
 
 /* Container */

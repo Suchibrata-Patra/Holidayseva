@@ -5,10 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HolidaySeva UI — Component Demo</title>
-    <!-- ✅ CORRECT -->
     <link rel="stylesheet" href="../Assets/css/holidayseva_framework.css">
-    <!-- ✅ CORRECT -->
-    <script src="../Assets/js/holidayseva_framework.js"></script>
     <style>
         body {
             background: #f7f7f7;
@@ -154,7 +151,7 @@
 
                 <!-- Date picker trigger -->
                 <div class="hs-dp-trigger" id="datePickerTrigger" data-hs-datepicker
-                    style="border:none; border-radius:0; box-shadow:none;">
+                    style="border:none; border-radius:0; box-shadow:none; display:flex; align-items:center; gap:10px; padding:10px 18px; cursor:pointer;">
                     <div>
                         <span class="hs-dp-trigger-label">When</span>
                         <span class="hs-dp-trigger-value">Add dates</span>
@@ -180,8 +177,7 @@
                 </button>
             </div>
 
-            <p style="font-size:13px;color:#717171;margin-top:16px;">👆 Click <strong>"When"</strong> to open the
-                date
+            <p style="font-size:13px;color:#717171;margin-top:16px;">👆 Click <strong>"When"</strong> to open the date
                 picker</p>
         </div>
 
@@ -207,10 +203,8 @@
 
             <div id="spaceDescription" data-hs-show-more
                 data-hs-show-more-options='{"truncateHeight":"100px","triggerLabel":"Show more","modalTitle":"About this space","useModal":true}'>
-                <p>Escape the chaos of the city and unwind at Grace Ganga View Retreat — a peaceful 2BHK stay just
-                    2km
-                    from Assi Ghat. Tucked away in a quiet lane, this cozy home offers all modern comforts, a
-                    private
+                <p>Escape the chaos of the city and unwind at Grace Ganga View Retreat — a peaceful 2BHK stay just 2km
+                    from Assi Ghat. Tucked away in a quiet lane, this cozy home offers all modern comforts, a private
                     balcony, AC bedrooms, and a fully equipped kitchen.</p>
                 <p>Whether you're here to explore or rest, our calm and welcoming space is the perfect base to
                     experience the real soul of Varanasi — peacefully.</p>
@@ -220,27 +214,22 @@
                     <h3 class="hs-modal-section-title">The space</h3>
                     <p>Welcome to Grace Ganga, a peaceful 2BHK homestay tucked away in a calm residential colony of
                         Varanasi—far from the chaos and noise of the city, yet close enough to reach key attractions
-                        with ease. Both bedrooms are air-conditioned for your comfort, while the living room is airy
-                        and
+                        with ease. Both bedrooms are air-conditioned for your comfort, while the living room is airy and
                         naturally ventilated, though it does not have AC.</p>
-                    <p>The home includes a functional kitchen equipped for everyday cooking (Utensils). While there
-                        is
-                        no generator, an inverter ensures basic power backup during occasional outages—though power
-                        cuts
+                    <p>The home includes a functional kitchen equipped for everyday cooking (Utensils). While there is
+                        no generator, an inverter ensures basic power backup during occasional outages—though power cuts
                         are rare in this area.</p>
                     <p>One of the highlights of your stay is access to a shared terrace on the 5th floor (by stairs)
                         where you can enjoy a beautiful view of the Ganga. Ideal for families, couples, or solo
                         travelers, Grace Ganga offers a homely, quiet escape in one of the most spiritual cities in
                         India.</p>
-                    <div class="hs-modal-note">NOTE: WE HAVE INVERTERS FOR POWER BACKUP. PARKING: WE DON'T HAVE
-                        PARKING
+                    <div class="hs-modal-note">NOTE: WE HAVE INVERTERS FOR POWER BACKUP. PARKING: WE DON'T HAVE PARKING
                         AT PLACE BUT STREET PARKING IS AVAILABLE.</div>
                 </div>
 
                 <div class="hs-modal-section">
                     <h3 class="hs-modal-section-title">Guest access</h3>
-                    <p>You'll have full private access to the entire 2-bedroom apartment — no shared spaces inside.
-                        This
+                    <p>You'll have full private access to the entire 2-bedroom apartment — no shared spaces inside. This
                         includes:</p>
                     <ul>
                         <li>Both airy bedrooms with cooling</li>
@@ -255,6 +244,7 @@
 
     </div>
 
+    <script src="../Assets/js/holidayseva_framework.js"></script>
     <script>
         /* ──────────────────────────────────────────────────────────
            Demo Data
