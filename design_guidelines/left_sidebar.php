@@ -269,19 +269,28 @@ $current = basename($_SERVER['PHP_SELF']);
     font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
     font-size: 14px;
     font-weight: 400;
-    color: #424245;
+    color: #6e6e73;
     text-align: left;
     border-radius: 6px;
-    transition: background 0.1s;
+    transition: background 0.1s, color 0.1s;
     -webkit-font-smoothing: antialiased;
     line-height: 1.4;
   }
-  .sb-group-btn:hover { background: #f2f2f7; }
+  .sb-group-btn:hover { background: #f2f2f7; color: #1d1d1f; }
+
+  /* Group label bold+black when it contains the active page */
+  .sb-group.has-active > .sb-group-btn {
+    font-weight: 600;
+    color: #1d1d1f;
+  }
+  .sb-group.has-active > .sb-group-btn .sb-chevron {
+    color: #1d1d1f;
+  }
 
   /* ── Chevron ────────────────────────────────────── */
   .sb-chevron {
     flex-shrink: 0;
-    color: #8e8e93;
+    color: #aeaeb2;
     transition: transform 0.16s ease;
   }
   .sb-group.open > .sb-group-btn .sb-chevron {
@@ -296,14 +305,14 @@ $current = basename($_SERVER['PHP_SELF']);
   }
   .sb-items[hidden] { display: none; }
 
-  /* ── Individual link ────────────────────────────── */
+  /* ── Individual link — deep grey by default ─────── */
   .sb-link {
     display: flex;
     align-items: flex-start;
     gap: 9px;
     font-size: 13.5px;
     font-weight: 400;
-    color: #424245;
+    color: #6e6e73;
     text-decoration: none;
     padding: 5px 10px 5px 26px;
     border-radius: 6px;
@@ -313,7 +322,7 @@ $current = basename($_SERVER['PHP_SELF']);
   }
   .sb-link svg {
     flex-shrink: 0;
-    color: #8e8e93;
+    color: #aeaeb2;
     margin-top: 1px;
   }
   .sb-link:hover {
@@ -322,7 +331,7 @@ $current = basename($_SERVER['PHP_SELF']);
   }
   .sb-link:hover svg { color: #6e6e73; }
 
-  /* Active — bold + dark, no background fill */
+  /* Active — bold + pure black only */
   .sb-link.active {
     font-weight: 600;
     color: #1d1d1f;
@@ -333,6 +342,14 @@ $current = basename($_SERVER['PHP_SELF']);
 </style>
 
 <script>
+  // Mark the parent group of the active link with .has-active on load
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.sb-link.active').forEach(link => {
+      const grp = link.closest('.sb-group');
+      if (grp) grp.classList.add('has-active');
+    });
+  });
+
   function toggleGroup(btn) {
     const grp  = btn.closest('.sb-group');
     const list = grp.querySelector('.sb-items');
@@ -347,8 +364,6 @@ $current = basename($_SERVER['PHP_SELF']);
     const nav  = input.closest('.sidebar-left, .drawer-sidebar') || document;
 
     if (!term) {
-      // Filter cleared — restore every link, and restore each group
-      // back to whatever open/closed state it was in before filtering
       nav.querySelectorAll('.sb-link').forEach(a => a.classList.remove('hidden'));
       nav.querySelectorAll('.sb-group').forEach(grp => {
         const list   = grp.querySelector('.sb-items');
@@ -359,12 +374,10 @@ $current = basename($_SERVER['PHP_SELF']);
       return;
     }
 
-    // Filter active — show/hide links, auto-expand groups that have matches
-    // but DON'T collapse groups that have no matches (user may have opened them manually)
     nav.querySelectorAll('.sb-group').forEach(grp => {
-      const links      = grp.querySelectorAll('.sb-link');
-      const list       = grp.querySelector('.sb-items');
-      let   hasMatch   = false;
+      const links    = grp.querySelectorAll('.sb-link');
+      const list     = grp.querySelector('.sb-items');
+      let   hasMatch = false;
 
       links.forEach(a => {
         const match = a.textContent.toLowerCase().includes(term);
@@ -373,11 +386,9 @@ $current = basename($_SERVER['PHP_SELF']);
       });
 
       if (hasMatch) {
-        // Expand groups that contain matches so results are visible
         grp.classList.add('open');
         list.removeAttribute('hidden');
       }
-      // Groups with no matches stay in their current state — don't force-close them
     });
   }
 </script>
