@@ -560,7 +560,7 @@
 <span class="t">&lt;/div&gt;</span>
 
 <span class="c">&lt;!-- Before &lt;/body&gt; --&gt;</span>
-<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/design_guidelines/JS/components.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
+<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/design_guidelines/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
       </div>
 
       <p class="subsection-title">Pre-active state</p>
@@ -707,7 +707,7 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
   <span class="footer-text">v1.0</span>
 </footer>
 
-<script src="/design_guidelines/JS/components.js"></script>
+<script src="/design_guidelines/JS/toggle.js"></script>
 <script>
   // Update the state label in the demo when the toggle fires its event
   document.getElementById('demoToggle').addEventListener('toggle-change', (e) => {
