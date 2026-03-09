@@ -981,6 +981,29 @@ body {
     .page-main {
         padding: 48px 36px 80px 40px;
     }
+
+    /* Tablet: shrink the section nav title so tabs still fit */
+    .section-nav {
+        padding: 0 16px;
+        gap: 8px;
+    }
+
+    .section-nav-title {
+        font-size: 13px;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-nav-tabs a {
+        padding: 0 10px;
+        font-size: 12.5px;
+    }
+
+    .section-nav-badge {
+        display: none;
+    }
 }
 
 @media (max-width: 680px) {
@@ -1021,40 +1044,46 @@ body {
 
     /* ── Section nav — mobile ───────────────────────────────── */
     .section-nav {
-        padding: 0 16px;
-        gap: 10px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
+        padding: 0;
+        gap: 0;
+        overflow: visible;
     }
 
-    .section-nav::-webkit-scrollbar {
+    /* Hide the "Design Guidelines" label, pip, badge on mobile — tabs need all the room */
+    .section-nav-title,
+    .section-nav-divider,
+    .section-nav-badge,
+    .section-nav-meta {
         display: none;
     }
 
-    .section-nav-title {
-        font-size: 13px;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-
+    /* Tabs ul stretches full width and scrolls horizontally */
     .section-nav-tabs {
+        width: 100%;
+        height: var(--subbar-h);
+        margin-right: 0;
         overflow-x: auto;
-        scrollbar-width: none;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 8px;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: stretch;
     }
 
     .section-nav-tabs::-webkit-scrollbar {
         display: none;
     }
 
-    .section-nav-tabs a {
-        padding: 0 10px;
-        font-size: 12px;
+    .section-nav-tabs li {
+        flex-shrink: 0;
     }
 
-    .section-nav-badge {
-        display: none;
+    .section-nav-tabs a {
+        padding: 0 14px;
+        font-size: 13px;
+        white-space: nowrap;
     }
 
     /* ── Main content ───────────────────────────────────────── */
