@@ -308,7 +308,9 @@ body {
     right: 0;
     z-index: 8000;
     height: var(--subbar-h);
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.52);
+    /* Glass Effect reduce the value to get the same glass Effect*/
+
     backdrop-filter: saturate(200%) blur(28px);
     -webkit-backdrop-filter: saturate(200%) blur(28px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
