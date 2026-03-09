@@ -85,85 +85,44 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 
 <script>
 (function () {
-  const globalNav    = document.getElementById('globalNav');
-  const sectionNav   = document.getElementById('sectionNav');
-  const sidebarLeft  = document.querySelector('.sidebar-left');
-  const sidebarRight = document.querySelector('.sidebar-right');
+  const root       = document.documentElement;
+  const globalNav  = document.getElementById('globalNav');
+  const sectionNav = document.getElementById('sectionNav');
 
-  const TIER1_H = globalNav.offsetHeight;   // 52px
-  const TIER2_H = sectionNav.offsetHeight;  // 44px
-  const FULL_H  = TIER1_H + TIER2_H;       // 96px
-  const DURATION = 280;                     // must match CSS transition ms
+  const TIER1_H = 52;   // --topbar-h
+  const TIER2_H = 44;   // --subbar-h
+  const FULL_H  = TIER1_H + TIER2_H;
 
-  let lastY    = 0;
-  let hidden   = false;
-  let rafId    = null;
-  let animStart = null;
-  let fromOffset = FULL_H;
-  let toOffset   = FULL_H;
+  // CSS drives sidebar top/height via --header-h; JS only sets that one variable.
+  // The CSS transition on sidebar-left / sidebar-right handles the smooth movement.
+  function setHeaderHeight(px) {
+    root.style.setProperty('--header-h', px + 'px');
+  }
 
-  // Header transitions
-  globalNav.style.transition  = 'transform ' + DURATION + 'ms ease';
-  sectionNav.style.transition = 'top '       + DURATION + 'ms ease';
-
-  // Sidebars: NO CSS transition — JS drives them frame-by-frame
-  if (sidebarLeft)  sidebarLeft.style.transition  = 'none';
-  if (sidebarRight) sidebarRight.style.transition = 'none';
-
-  // Set initial positions
+  // Initialise
+  setHeaderHeight(FULL_H);
   sectionNav.style.top = TIER1_H + 'px';
-  applySidebarOffset(FULL_H);
 
-  function applySidebarOffset(px) {
-    if (sidebarLeft)  { sidebarLeft.style.top  = px + 'px'; sidebarLeft.style.height  = 'calc(100vh - ' + px + 'px)'; }
-    if (sidebarRight) { sidebarRight.style.top = px + 'px'; sidebarRight.style.height = 'calc(100vh - ' + px + 'px)'; }
-  }
-
-  // Ease function matching CSS 'ease' cubic-bezier(0.25,0.1,0.25,1)
-  function easeInOut(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  }
-
-  function animateSidebars(from, to, ts) {
-    if (!animStart) animStart = ts;
-    const elapsed = ts - animStart;
-    const progress = Math.min(elapsed / DURATION, 1);
-    const eased = easeInOut(progress);
-    const current = from + (to - from) * eased;
-    applySidebarOffset(current);
-
-    if (progress < 1) {
-      rafId = requestAnimationFrame((t) => animateSidebars(from, to, t));
-    } else {
-      applySidebarOffset(to);
-      animStart = null;
-      rafId = null;
-    }
-  }
-
-  function startSidebarAnim(to) {
-    const from = fromOffset;
-    toOffset   = to;
-    fromOffset = to;
-    if (rafId) cancelAnimationFrame(rafId);
-    animStart = null;
-    rafId = requestAnimationFrame((ts) => animateSidebars(from, to, ts));
-  }
+  let lastY  = 0;
+  let hidden = false;
 
   function onScroll() {
     const y         = window.scrollY;
     const goingDown = y > lastY;
 
     if (goingDown && y > TIER1_H && !hidden) {
+      // Slide global-nav up; section-nav floats to top=0
       globalNav.style.transform = 'translateY(-100%)';
       sectionNav.style.top      = '0px';
-      startSidebarAnim(TIER2_H);
+      // Tell sidebars: only section-nav is visible
+      setHeaderHeight(TIER2_H);
       hidden = true;
 
-    } else if (hidden && y <= 0) {
+    } else if (!goingDown && hidden && y <= 0) {
+      // Restore both bars when back at very top
       globalNav.style.transform = 'translateY(0)';
       sectionNav.style.top      = TIER1_H + 'px';
-      startSidebarAnim(FULL_H);
+      setHeaderHeight(FULL_H);
       hidden = false;
     }
 

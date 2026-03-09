@@ -122,6 +122,8 @@
     /* section nav                       */
     --sidebar-w: 240px;
     --toc-w: 200px;
+    /* Dynamic header offset — updated by JS on scroll */
+    --header-h: calc(var(--topbar-h) + var(--subbar-h));
 
     /* ── Transitions ─────────────────────────────────────── */
     --t-fast: 0.12s ease;
@@ -176,6 +178,7 @@ body {
     display: flex;
     align-items: center;
     padding: 0 28px;
+    transition: transform 280ms ease;
 }
 
 /* Brand mark */
@@ -316,6 +319,7 @@ body {
     align-items: center;
     padding: 0 28px;
     gap: 20px;
+    transition: top 280ms ease;
 }
 
 .section-nav-title {
@@ -410,13 +414,16 @@ body {
 .sidebar-left {
     width: var(--sidebar-w);
     flex-shrink: 0;
-    position: sticky;
-    top: calc(var(--topbar-h) + var(--subbar-h));
-    height: calc(100vh - var(--topbar-h) - var(--subbar-h));
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    height: calc(100vh - var(--header-h));
     overflow-y: auto;
     padding: 24px 0 40px;
     border-right: 1px solid var(--border-light);
     background: var(--bg-primary);
+    z-index: 100;
+    transition: top var(--t-slow), height var(--t-slow);
 }
 
 .sidebar-left::-webkit-scrollbar {
@@ -427,13 +434,22 @@ body {
 .sidebar-right {
     width: var(--toc-w);
     flex-shrink: 0;
-    position: sticky;
-    top: calc(var(--topbar-h) + var(--subbar-h));
-    height: calc(100vh - var(--topbar-h) - var(--subbar-h));
+    position: fixed;
+    top: var(--header-h);
+    right: 0;
+    height: calc(100vh - var(--header-h));
     overflow-y: auto;
     padding: 32px 0;
     border-left: 1px solid var(--border-light);
     background: var(--bg-primary);
+    z-index: 100;
+    transition: top var(--t-slow), height var(--t-slow);
+}
+
+/* ── Compensate for fixed sidebars in three-column layout ─── */
+.page-layout {
+    padding-left: var(--sidebar-w);
+    padding-right: var(--toc-w);
 }
 
 .sidebar-right::-webkit-scrollbar {
