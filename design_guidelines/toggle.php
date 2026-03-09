@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/design_guidelines/Components/toggle.css">
+  <link rel="stylesheet" href="/Components/toggle.css">
   <style>
     /* ─── Reset ──────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -707,7 +707,7 @@ sw.getState(el);          <span class="c">// "on" | "off"</span></code></pre>
   <span class="footer-text">v1.0</span>
 </footer>
 
-<script src="/design_guidelines/JS/toggle.js"></script>
+<script src="/JS/toggle.js"></script>
 <script>
   // Update the state label in the demo when the toggle fires its event
   document.getElementById('demoToggle').addEventListener('toggle-change', (e) => {
