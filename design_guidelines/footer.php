@@ -7,7 +7,7 @@
  */
 ?>
 
-<footer class="site-footer" role="contentinfo">
+<footer class="site-footer" role="contentinfo" style="z-index:100000;">
 
   <!-- ── Breadcrumb bar ────────────────────────────── -->
   <div class="footer-breadcrumb">
