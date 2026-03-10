@@ -18,7 +18,7 @@ $partials        = __DIR__ . '/../../';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?= htmlspecialchars($pageTitle) ?> — Design Guidelines · Holidayseva</title>
+  <title>Colors| Holidayseva</title>
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>" />
 
   <link rel="stylesheet" href="/design-system.css" />
