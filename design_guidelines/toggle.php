@@ -8,8 +8,8 @@
   <!-- Design system: layout, typography, components -->
   <link rel="stylesheet" href="/design-system.css">
 <!-- No <base> tag at all -->
-<link rel="stylesheet" href="/UI/Components/toggle/toggle.css">
-<script type="module" src="/UI/Components/toggle/toggle.js"></script>
+<link rel="stylesheet" href="https://holidayseva.com/UI/Components/toggle/toggle.css">
+<script type="module" src="https://holidayseva.com/UI/Components/toggle/toggle.js"></script>
 </head>
 <body>
 
