@@ -61,8 +61,7 @@ function scanComponentCategory(string $baseDir, string $category): array {
         if (!is_dir($fullPath)) continue;
 
         // Link target — URLs are relative to the web root (developer.holidayseva.com)
-        // Always uses subfolder pattern: Category/item/item.php
-        // e.g. Atom/button/button.php  or  Components/toggle/toggle.php
+        // Always: Category/item/item.php  e.g. Atom/button/button.php
         $page = $category . '/' . $entry . '/' . $entry . '.php';
 
         // Icon web URL — component-specific .ico if it exists
