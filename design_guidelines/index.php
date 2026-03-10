@@ -41,7 +41,7 @@
       background: rgba(255,255,255,0.72);
       box-shadow: 0 2px 32px rgba(0,0,0,.04);
       backdrop-filter: blur(0px);
-      animation: floatShape 8s ease-in-out infinite;
+      animation: floatsisiShape 8s ease-in-out infinite;
     }
     .dg-shape-1 { width: 260px; height: 180px; border-radius: 38% 62% 60% 40%/52% 36% 64% 48%; top: 12%; left: 8%; animation-delay: 0s; }
     .dg-shape-2 { width: 80px;  height: 80px;  border-radius: 50%; top: 10%; right: 28%; animation-delay: 1.2s; }
@@ -287,7 +287,6 @@
 <div class="page-layout">
 
   <aside class="sidebar-left">
-    <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
 
   <main class="page-main" style="padding-left:0;padding-right:0;padding-top:0;min-width:0;flex:1 1 0%;max-width:none;overflow:hidden;">
