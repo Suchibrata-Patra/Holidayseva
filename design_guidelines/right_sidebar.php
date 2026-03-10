@@ -57,7 +57,7 @@
 
   <!-- TOC links — no "On this page" label, just the list -->
   <ul class="toc-list" id="tocList">
-    <li><a class="toc-link" href="#overview">Toggle</a></li>
+    <li><a class="toc-link" href="#overview">Element</a></li>
     <li><a class="toc-link" href="#anatomy">Anatomy</a></li>
     <li><a class="toc-link" href="#specs">Specifications</a></li>
     <li><a class="toc-link" href="#usage">HTML Usage</a></li>
