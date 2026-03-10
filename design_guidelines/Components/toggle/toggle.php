@@ -13,17 +13,23 @@
 </head>
 <body>
 
-<?php include __DIR__ . '/header.php'; ?>
-
-<!-- Mobile drawer sidebar (hidden on desktop) -->
-<?php include __DIR__ . '/drawer_sidebar.php'; ?>
 
 <div class="page-layout">
 
-  <!-- ── Left sidebar ──────────────────────── -->
-  <aside class="sidebar-left">
-    <?php include __DIR__ . '/left_sidebar.php'; ?>
+<?php
+$partials = __DIR__ . '/../../';
+?>
+
+<?php include $partials . 'header.php'; ?>
+<?php include $partials . 'drawer_sidebar.php'; ?>
+
+<div class="page-layout">
+
+  <!-- ── Left sidebar (untouched) ── -->
+  <aside class="sidebar-left" style="z-index:10000;">
+    <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
+
 
   <!-- ── Main content ──────────────────────── -->
   <main class="page-main">
