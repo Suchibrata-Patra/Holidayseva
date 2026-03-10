@@ -18,6 +18,7 @@ $partials        = __DIR__ . '/../../';
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>" />
   <link rel="stylesheet" href="/colors.css" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
+  <link rel="stylesheet" href="https://developer.holidayseva.com/design-system.css" />
 
   <style>
     /* ══════════════════════════════════════════════════════════
