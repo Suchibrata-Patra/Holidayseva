@@ -287,6 +287,7 @@
 <div class="page-layout">
 
   <aside class="sidebar-left">
+    <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
 
   <main class="page-main" style="padding-left:0;padding-right:0;padding-top:0;min-width:0;flex:1 1 0%;max-width:none;overflow:hidden;">
