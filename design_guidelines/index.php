@@ -329,7 +329,7 @@
     <div class="cat-section" id="atoms">
       <div class="cat-header">
         <span class="cat-title">Atoms</span>
-        <a href="UI/Atom/Atom.php" class="cat-see-all">See all 19 →</a>
+        <a href="https://holidayseva.com/UI/Atom/Atom.php" class="cat-see-all">See all 19 →</a>
       </div>
       <div class="comp-grid">
         <?php foreach ($atomsPreview as $a): ?>
