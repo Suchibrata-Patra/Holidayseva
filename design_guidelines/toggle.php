@@ -395,8 +395,6 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
   <span class="footer-text">v1.0</span>
 </footer>
 
-<!-- Toggle component JS — from toggle.js — auto-inits .toggle on DOMContentLoaded -->
-<script src="/JS/toggle.js"></script>
 
 <script>
   /* Wire demo state badge to the toggle-change event from toggle.js */
