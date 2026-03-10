@@ -391,7 +391,7 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
 
   <!-- ── Right TOC ──────────────────────── -->
   <aside class="sidebar-right">
-    <?php include __DIR__ . '/right_sidebar.php'; ?>
+  <?php include $partials . 'right_sidebar.php'; ?>
   </aside>
 
 </div>
