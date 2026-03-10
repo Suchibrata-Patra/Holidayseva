@@ -24,6 +24,8 @@
       overflow: hidden;
       background: #f5f5f7;
       margin-bottom: 0;
+      box-sizing: border-box;
+      align-self: stretch;
     }
 
     /* Abstract floating shapes — pure CSS, no images */
@@ -288,7 +290,7 @@
     <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
 
-  <main class="page-main" style="padding-top:0;">
+  <main class="page-main" style="padding-left:0;padding-right:0;padding-top:0;min-width:0;flex:1 1 0%;max-width:none;overflow:hidden;">
 
     <!-- ══════════════════════════════════════════════
          HERO  (Apple Developer Docs style)
