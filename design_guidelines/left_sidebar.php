@@ -349,16 +349,17 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
     gap: 8px;
     margin: 0 16px 18px;
     padding: 7px 13px;
-    background: #f2f2f7;
+    background: #ffffff;
     border: 1px solid #e5e5ea;
     border-radius: 10px;
-    color: #aeaeb2;
+    color: #000000;
   }
   .sb-filter input {
     border: none;
     background: none;
     outline: none;
     font-size: 15px;
+    font-weight:500;
     color: #1d1d1f;
     font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
     width: 100%;
