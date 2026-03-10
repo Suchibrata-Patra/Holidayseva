@@ -65,7 +65,7 @@ function scanComponentCategory(string $baseDir, string $category): array {
         // anchor fallback: Category/Category.php#item e.g. Components/Components.php#toggle
         $phpFile = $fullPath . '/' . $entry . '.php';
         $page    = file_exists($phpFile)
-                   ? $category . '/' . $entry . '.php'
+                   ? $category . '/' . $entry . '/' . $entry . '.php'
                    : $category . '/' . $category . '.php#' . $entry;
 
         // Icon web URL — component-specific .ico if it exists
@@ -157,7 +157,7 @@ endif;
 $baseDir        = __DIR__;
 
 // Default icon — served via https, no filesystem path needed in HTML
-$defaultIconUrl = SITE_WEB_ROOT . '/favicon.ico';
+$defaultIconUrl = SITE_WEB_ROOT . '/Assets/favicon.ico';
 
 // Categories to show as collapsible sections
 $categories = [
