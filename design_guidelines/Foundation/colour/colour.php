@@ -1,14 +1,18 @@
 <?php
 /**
- * colors.php
+ * colours.php
  * Design Guidelines — Color System
  * developer.holidayseva.com
+ * 
+ * Integrated with left_sidebar.php and right_sidebar.php
+ * All colors managed via colors.css CSS variables only
  */
 
 // ── Page meta ────────────────────────────────────────────────────────────────
 $pageTitle       = 'Colors';
 $pageDescription = 'Color tokens, semantic usage, and accessibility guidelines for the Holidayseva design system.';
 $activePage      = 'colors'; // used by left_sidebar to mark the active link
+$partials        = __DIR__; // Directory for sidebar includes
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +21,8 @@ $activePage      = 'colors'; // used by left_sidebar to mark the active link
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= htmlspecialchars($pageTitle) ?> — Design Guidelines · Holidayseva</title>
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>" />
+  
+  <!-- Colors CSS — all color tokens as CSS variables -->
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
 
   <!-- SF Pro via Apple CDN (falls back to system-ui) -->
@@ -209,460 +215,475 @@ $activePage      = 'colors'; // used by left_sidebar to mark the active link
     .overview-swatch-name {
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.04em;
       text-transform: uppercase;
-      opacity: 0.7;
+      letter-spacing: 0.08em;
+      color: var(--color-text-secondary);
     }
 
     .overview-swatch-hex {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 700;
-      letter-spacing: -0.01em;
-      font-variant-numeric: tabular-nums;
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
     }
 
-    .overview-swatch-desc {
+    .overview-swatch-rgb {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      font-family: 'Menlo', 'Monaco', monospace;
+    }
+
+    /* ── Grid of color samples ──────────────────────────────────────────── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .color-sample {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px var(--color-overlay-light);
+      border: 1px solid var(--color-border);
+      transition: transform 0.15s ease;
+    }
+
+    .color-sample:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--color-overlay-light);
+    }
+
+    .color-sample-swatch {
+      height: 100px;
+      background-size: cover;
+      position: relative;
+    }
+
+    .color-sample-info {
+      padding: 12px;
+      background: var(--color-surface);
+    }
+
+    .color-sample-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .color-sample-hex {
       font-size: 12px;
-      opacity: 0.6;
+      color: var(--color-text-secondary);
+      font-family: 'Menlo', 'Monaco', monospace;
+      letter-spacing: -0.01em;
+    }
+
+    .color-sample-rgb {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      font-family: 'Menlo', 'Monaco', monospace;
       margin-top: 2px;
     }
 
-    /* ── Token grid ────────────────────────────────────────────────────────── */
-    .token-group {
-      margin-bottom: 40px;
-    }
-
-    .token-group-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--color-text-muted);
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--color-muted);
-    }
-
-    .token-table {
-      width: 100%;
-      border-collapse: collapse;
-      border: 1px solid var(--color-border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .token-table thead th {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-muted);
-      background: var(--color-surface-raised);
-      padding: 10px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .token-table tbody tr {
-      border-bottom: 1px solid var(--color-muted);
-      transition: background 0.1s;
-    }
-
-    .token-table tbody tr:last-child { border-bottom: none; }
-    .token-table tbody tr:hover { background: var(--color-bg-muted); }
-
-    .token-table td {
-      padding: 12px 16px;
-      font-size: 13px;
-      vertical-align: middle;
-    }
-
-    .token-cell {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .swatch {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      flex-shrink: 0;
-      border: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .token-name {
-      font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
-      font-size: 12.5px;
-      color: var(--color-accent-dark);
-      background: rgba(0, 166, 153, 0.08);
-      padding: 2px 7px;
-      border-radius: 4px;
-    }
-
-    .token-hex {
-      font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
-      font-size: 12px;
-      color: var(--color-text-secondary);
-    }
-
-    .token-desc {
-      font-size: 13px;
-      color: var(--color-text-secondary);
-      line-height: 1.5;
-    }
-
-    /* ── Usage examples ────────────────────────────────────────────────────── */
-    .usage-grid {
+    /* ── Detailed color swatches ───────────────────────────────────────── */
+    .color-detail {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 4px;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 32px;
     }
 
-    .usage-card {
+    .color-family {
       border: 1px solid var(--color-border);
       border-radius: 12px;
       overflow: hidden;
-      transition: box-shadow 0.15s;
     }
 
-    .usage-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-
-    .usage-card-preview {
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 20px;
-    }
-
-    .usage-card-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-muted);
-      padding: 10px 14px;
-      border-top: 1px solid var(--color-border);
+    .color-family-header {
+      padding: 16px 18px;
       background: var(--color-surface-raised);
+      border-bottom: 1px solid var(--color-border);
     }
 
-    /* Preview: buttons */
-    .prev-btn-primary {
-      background: var(--color-primary);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 18px;
-      border-radius: 8px;
-      border: none;
-      cursor: default;
-      font-family: inherit;
-    }
-
-    .prev-btn-secondary {
-      background: transparent;
-      color: var(--color-secondary);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 18px;
-      border-radius: 8px;
-      border: 1.5px solid var(--color-secondary);
-      cursor: default;
-      font-family: inherit;
-    }
-
-    /* Preview: text */
-    .prev-text-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
-    .prev-text-h { font-size: 14px; font-weight: 700; color: var(--color-text-primary); }
-    .prev-text-b { font-size: 12px; color: var(--color-text-secondary); }
-    .prev-text-m { font-size: 11px; color: var(--color-text-muted); }
-
-    /* Preview: status */
-    .prev-badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-
-    .prev-badge-success { background: rgba(0,138,5,0.1); color: var(--color-success); }
-    .prev-badge-warning { background: rgba(196,85,8,0.1); color: var(--color-warning); }
-    .prev-badge-error   { background: rgba(193,53,21,0.1); color: var(--color-error); }
-
-    /* Preview: bg */
-    .prev-bg-surface  { width: 38px; height: 38px; border-radius: 8px; background: var(--color-surface); border: 1px solid var(--color-border); }
-    .prev-bg-raised   { width: 38px; height: 38px; border-radius: 8px; background: var(--color-surface-raised); border: 1px solid var(--color-border); }
-    .prev-bg-dark     { width: 38px; height: 38px; border-radius: 8px; background: var(--color-bg-dark); }
-    .prev-bg-muted    { width: 38px; height: 38px; border-radius: 8px; background: var(--color-bg-muted); border: 1px solid var(--color-border); }
-
-    /* Preview: interactive */
-    .prev-interactive { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-    .prev-focus-ring {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1.5px solid var(--color-border-focus);
-      box-shadow: var(--focus-ring);
-      font-family: inherit;
-      outline: none;
-      background: var(--color-surface);
+    .color-family-title {
+      font-size: 16px;
+      font-weight: 700;
       color: var(--color-text-primary);
-      width: 100%;
-    }
-    .prev-ghost-btn {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: none;
-      background: var(--color-ghost-hover-bg);
-      color: var(--color-text-primary);
-      font-family: inherit;
-      cursor: default;
+      letter-spacing: -0.015em;
     }
 
-    /* ── Palette showcase ──────────────────────────────────────────────────── */
-    .palette-row {
+    .color-family-body {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1px;
+      background: var(--color-border);
+      padding: 1px;
+    }
+
+    .color-variant {
       display: flex;
-      gap: 0;
-      border-radius: 12px;
+      flex-direction: column;
       overflow: hidden;
-      border: 1px solid var(--color-border);
-      margin-bottom: 12px;
+      background: var(--color-surface);
     }
 
-    .palette-swatch {
-      flex: 1;
-      height: 72px;
+    .color-variant-preview {
+      height: 80px;
       position: relative;
-      cursor: default;
-      transition: flex 0.2s ease;
     }
 
-    .palette-swatch:hover { flex: 1.6; }
+    .color-variant-info {
+      padding: 10px;
+      font-size: 11px;
+    }
 
-    .palette-swatch-label {
-      position: absolute;
-      bottom: 8px;
-      left: 10px;
-      font-size: 10px;
+    .color-variant-label {
       font-weight: 600;
-      letter-spacing: 0.03em;
-      opacity: 0;
-      transition: opacity 0.15s;
-      white-space: nowrap;
+      color: var(--color-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
     }
 
-    .palette-swatch:hover .palette-swatch-label { opacity: 1; }
+    .color-variant-value {
+      color: var(--color-text-secondary);
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 10px;
+      word-break: break-all;
+    }
 
-    /* ── Accessibility table ───────────────────────────────────────────────── */
-    .a11y-table {
+    /* ── Semantic usage table ──────────────────────────────────────────── */
+    .semantic-table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 24px;
       border: 1px solid var(--color-border);
       border-radius: 10px;
       overflow: hidden;
     }
 
-    .a11y-table thead th {
-      font-size: 11px;
+    .semantic-table thead {
+      background: var(--color-surface-raised);
+    }
+
+    .semantic-table th {
+      padding: 14px;
+      text-align: left;
+      font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-muted);
-      background: var(--color-surface-raised);
-      padding: 10px 16px;
-      text-align: left;
+      letter-spacing: 0.08em;
+      color: var(--color-text-primary);
       border-bottom: 1px solid var(--color-border);
     }
 
-    .a11y-table tbody tr {
+    .semantic-table td {
+      padding: 14px;
+      font-size: 13px;
+      color: var(--color-text-primary);
       border-bottom: 1px solid var(--color-muted);
     }
 
-    .a11y-table tbody tr:last-child { border-bottom: none; }
-
-    .a11y-table td {
-      padding: 13px 16px;
-      font-size: 13px;
-      vertical-align: middle;
+    .semantic-table tr:last-child td {
+      border-bottom: none;
     }
 
-    .a11y-pair {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .semantic-table td:first-child {
+      font-weight: 600;
+      color: var(--color-text-primary);
     }
 
-    .a11y-dot-bg {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .ratio-pass-aaa { color: var(--color-success); font-weight: 700; }
-    .ratio-pass-aa  { color: var(--color-info); font-weight: 700; }
-    .ratio-fail     { color: var(--color-error); font-weight: 700; }
-
-    .ratio-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
+    .semantic-token {
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 12px;
+      color: var(--color-primary);
+      background: rgba(255, 56, 92, 0.08);
       padding: 2px 6px;
       border-radius: 4px;
-      letter-spacing: 0.04em;
+      display: inline-block;
     }
 
-    .ratio-badge-aaa { background: rgba(0,138,5,.1); color: var(--color-success); }
-    .ratio-badge-aa  { background: rgba(0,122,184,.1); color: var(--color-info); }
-    .ratio-badge-fail{ background: rgba(193,53,21,.1); color: var(--color-error); }
-
-    /* ── Do / Don't ────────────────────────────────────────────────────────── */
-    .do-dont-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .do-card, .dont-card {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--color-border);
-    }
-
-    .do-card-header, .dont-card-header {
-      padding: 10px 16px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .do-card-header   { background: rgba(0,138,5,.08); color: var(--color-success); border-bottom: 1px solid rgba(0,138,5,.12); }
-    .dont-card-header { background: rgba(193,53,21,.08); color: var(--color-error); border-bottom: 1px solid rgba(193,53,21,.12); }
-
-    .do-card-body, .dont-card-body {
-      padding: 20px 18px;
-    }
-
-    .do-card-body p, .dont-card-body p {
-      font-size: 13.5px;
-      color: var(--color-text-secondary);
-      line-height: 1.6;
-    }
-
-    .do-example, .dont-example {
-      margin-top: 14px;
-      border-radius: 8px;
-      padding: 14px 16px;
-      font-size: 13px;
-    }
-
-    .do-example   { background: var(--color-bg-muted); }
-    .dont-example { background: var(--color-bg-muted); }
-
-    /* ── Code block ────────────────────────────────────────────────────────── */
+    /* ── Code blocks ───────────────────────────────────────────────────── */
     .code-block {
-      background: #1A1A1A;
-      border-radius: 12px;
-      padding: 24px 28px;
-      margin-top: 4px;
-      overflow-x: auto;
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      margin-top: 16px;
+      overflow: hidden;
     }
 
-    .code-block pre {
-      font-family: "SF Mono", "Fira Code", Menlo, monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #e0e0e0;
-      margin: 0;
-    }
-
-    .code-comment { color: #6e7681; }
-    .code-prop    { color: #79c0ff; }
-    .code-val     { color: #a5d6ff; }
-    .code-string  { color: #a8d8a8; }
-    .code-fn      { color: #d2a8ff; }
-
-    /* ── Copy pill ─────────────────────────────────────────────────────────── */
     .code-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--color-bg-muted);
+      border-bottom: 1px solid var(--color-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.05em;
     }
 
     .code-lang {
-      font-size: 11px;
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #6e7681;
     }
 
     .copy-btn {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
       font-size: 11px;
       font-weight: 600;
-      color: #6e7681;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 4px 10px;
-      border-radius: 6px;
       cursor: pointer;
-      font-family: inherit;
-      transition: background 0.1s, color 0.1s;
+      transition: background 0.15s ease;
     }
 
-    .copy-btn:hover { background: rgba(255,255,255,0.12); color: #e0e0e0; }
+    .copy-btn:hover {
+      background: var(--color-primary-hover);
+    }
 
-    /* ── Tip callout ───────────────────────────────────────────────────────── */
-    .tip {
-      background: var(--color-primary-alpha);
-      border-left: 3px solid var(--color-primary);
-      border-radius: 0 8px 8px 0;
-      padding: 14px 18px;
-      font-size: 13.5px;
-      color: var(--color-text-primary);
+    .code-block pre {
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 12px;
       line-height: 1.6;
-      margin-top: 20px;
+      color: var(--color-text-primary);
+      margin: 0;
     }
 
-    .tip strong { color: var(--color-primary-dark); }
-
-    /* ── Mobile ────────────────────────────────────────────────────────────── */
-    @media (max-width: 1100px) {
-      .shell { grid-template-columns: 240px 1fr; grid-template-areas: "topbar topbar" "left main"; }
-      .sidebar-right { display: none; }
-      .main-content { padding: 40px 36px 60px 36px; }
+    .code-comment {
+      color: var(--color-text-muted);
     }
 
-    @media (max-width: 720px) {
+    .code-fn {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .code-string {
+      color: var(--color-accent);
+    }
+
+    .code-prop {
+      color: var(--color-secondary);
+      font-weight: 600;
+    }
+
+    .code-val {
+      color: var(--color-primary);
+    }
+
+    /* ── Accessibility table ───────────────────────────────────────────── */
+    .a11y-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .a11y-table thead {
+      background: var(--color-surface-raised);
+    }
+
+    .a11y-table th {
+      padding: 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-primary);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .a11y-table td {
+      padding: 14px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      border-bottom: 1px solid var(--color-muted);
+    }
+
+    .a11y-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .a11y-pair {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .a11y-dot-bg {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .token-hex {
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .ratio-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ratio-badge-aaa {
+      background: rgba(0, 138, 5, 0.12);
+      color: var(--color-success);
+    }
+
+    .ratio-badge-aa {
+      background: rgba(0, 138, 5, 0.12);
+      color: var(--color-success);
+    }
+
+    .ratio-badge-fail {
+      background: rgba(193, 53, 21, 0.12);
+      color: var(--color-error);
+    }
+
+    .token-desc {
+      color: var(--color-text-secondary);
+    }
+
+    /* ── Do / Don't cards ──────────────────────────────────────────────── */
+    .do-dont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .do-card,
+    .dont-card {
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .do-card-header,
+    .dont-card-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .do-card-header {
+      background: rgba(0, 138, 5, 0.08);
+      color: var(--color-success);
+    }
+
+    .dont-card-header {
+      background: rgba(193, 53, 21, 0.08);
+      color: var(--color-error);
+    }
+
+    .do-card-body,
+    .dont-card-body {
+      padding: 16px;
+      background: var(--color-surface);
+    }
+
+    .do-card-body p,
+    .dont-card-body p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--color-text-primary);
+    }
+
+    .do-card-body code,
+    .dont-card-body code {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 11px;
+      color: var(--color-primary);
+    }
+
+    .do-example,
+    .dont-example {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    /* ── General ───────────────────────────────────────────────────────── */
+    code {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 12px;
+      color: var(--color-text-primary);
+    }
+
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    /* ── Responsive ────────────────────────────────────────────────────── */
+    @media (max-width: 1280px) {
+      .shell { grid-template-columns: 200px 1fr 180px; }
+      .main-content { padding: 52px 40px 80px 40px; }
+    }
+
+    @media (max-width: 1024px) {
       .shell { grid-template-columns: 1fr; grid-template-areas: "topbar" "main"; }
-      .sidebar-left { display: none; }
-      .usage-grid { grid-template-columns: 1fr 1fr; }
+      .sidebar-left, .sidebar-right { display: none; }
+      .main-content { padding: 52px 32px 80px 32px; max-width: 100%; }
       .do-dont-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
+
 <body>
+
 <div class="shell">
 
-  <!-- ── Top bar ─────────────────────────────────────────────────────────── -->
+  <!-- ── Top bar ────────────────────────────────────────────────────────── -->
   <header class="topbar">
     <a class="topbar-brand" href="/">
       <div class="topbar-logo">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M7 1.5C7 1.5 3 4 3 7.5C3 9.985 4.79 12 7 12C9.21 12 11 9.985 11 7.5C11 4 7 1.5 7 1.5Z" fill="white"/>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8Z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 5V8L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <span class="topbar-wordmark">Holidayseva</span>
@@ -671,457 +692,361 @@ $activePage      = 'colors'; // used by left_sidebar to mark the active link
     <span class="topbar-section">Design Guidelines</span>
   </header>
 
-  <!-- ── Left sidebar ────────────────────────────────────────────────────── -->
-  <?php
-$partials = __DIR__ . '/../../';
-?>
+  <!-- ── Left sidebar ────────────────────────────────────────────────────– -->
+  <aside class="sidebar-left">
+  <?php include $partials . '/left_sidebar.php'; ?>
+  </aside>
 
-<?php include $partials . 'header.php'; ?>
-<?php include $partials . 'drawer_sidebar.php'; ?>
-
-<div class="page-layout">
-
-  <nav class="sidebar-left">
-  <?php include $partials . 'left_sidebar.php'; ?>
-  </nav>
-
-  <!-- ── Main content ────────────────────────────────────────────────────── -->
+  <!-- ── Main content ───────────────────────────────────────────────────── -->
   <main class="main-content">
 
-    <!-- ══ OVERVIEW ══════════════════════════════════════════════════════════ -->
+    <!-- ══ OVERVIEW ════════════════════════════════════════════════════════ -->
     <section id="overview">
-      <p class="page-eyebrow">Foundations</p>
+      <p class="page-eyebrow">Design Tokens</p>
       <h1 class="page-title">Colors</h1>
-      <p class="page-intro">
-        The Holidayseva color system is built on a structured set of design tokens.
-        Every color in the UI is sourced from these tokens — ensuring visual consistency,
-        dark-mode readiness, and WCAG-compliant contrast across all surfaces.
-      </p>
+      <p class="page-intro">Color tokens, semantic usage, and accessibility guidelines for the Holidayseva design system. All colors are managed through <code>colors.css</code> as CSS variables, ensuring consistency across the entire application.</p>
 
-      <!-- Overview banner: 4 hero swatches -->
+      <!-- Primary + Accent banner -->
       <div class="overview-banner">
-        <div class="overview-swatch" style="background:var(--color-primary); color:#fff;">
-          <span class="overview-swatch-name">Primary</span>
-          <span class="overview-swatch-hex">#FF385C</span>
-          <span class="overview-swatch-desc">Brand coral-red. CTAs &amp; highlights.</span>
+        <div class="overview-swatch" style="background: var(--color-primary);">
+          <p class="overview-swatch-name">Primary</p>
+          <p class="overview-swatch-hex">#FF385C</p>
+          <p class="overview-swatch-rgb">rgb(255, 56, 92)</p>
         </div>
-        <div class="overview-swatch" style="background:var(--color-secondary); color:#fff;">
-          <span class="overview-swatch-name">Secondary</span>
-          <span class="overview-swatch-hex">#222222</span>
-          <span class="overview-swatch-desc">Near-black. Headings &amp; body.</span>
-        </div>
-        <div class="overview-swatch" style="background:var(--color-accent); color:#fff;">
-          <span class="overview-swatch-name">Accent</span>
-          <span class="overview-swatch-hex">#00A699</span>
-          <span class="overview-swatch-desc">Teal-green. Links &amp; confirmations.</span>
-        </div>
-        <div class="overview-swatch" style="background:var(--color-surface-raised); color:var(--color-text-primary); border-top:1px solid var(--color-border); border-right:1px solid var(--color-border);">
-          <span class="overview-swatch-name">Surface</span>
-          <span class="overview-swatch-hex">#F7F7F7</span>
-          <span class="overview-swatch-desc">Raised background. Cards &amp; inputs.</span>
+        <div class="overview-swatch" style="background: var(--color-accent);">
+          <p class="overview-swatch-name">Accent</p>
+          <p class="overview-swatch-hex">#00A699</p>
+          <p class="overview-swatch-rgb">rgb(0, 166, 153)</p>
         </div>
       </div>
     </section>
 
-    <!-- ══ ANATOMY (palette) ═════════════════════════════════════════════════ -->
+    <!-- ══ ANATOMY ═════════════════════════════════════════════════════════ -->
     <hr class="page-divider" />
     <section id="anatomy">
-      <h2 class="section-title">Full Palette</h2>
-      <p class="section-subtitle">Hover any swatch to reveal its label. Each bar represents a stop in the ramp.</p>
+      <h2 class="section-title">Token Categories</h2>
+      <p class="section-subtitle">Colors are organized by semantic function, making them easy to remember and apply consistently.</p>
 
-      <!-- Primary ramp -->
-      <div class="palette-row">
-        <div class="palette-swatch" style="background:#FFB3BF;"><span class="palette-swatch-label" style="color:#222">+alpha</span></div>
-        <div class="palette-swatch" style="background:var(--color-primary-light);"><span class="palette-swatch-label" style="color:#fff">light</span></div>
-        <div class="palette-swatch" style="background:var(--color-primary);"><span class="palette-swatch-label" style="color:#fff">primary</span></div>
-        <div class="palette-swatch" style="background:var(--color-primary-hover);"><span class="palette-swatch-label" style="color:#fff">hover</span></div>
-        <div class="palette-swatch" style="background:var(--color-primary-pressed);"><span class="palette-swatch-label" style="color:#fff">pressed</span></div>
-        <div class="palette-swatch" style="background:var(--color-primary-dark);"><span class="palette-swatch-label" style="color:#fff">dark</span></div>
-      </div>
-
-      <!-- Accent ramp -->
-      <div class="palette-row">
-        <div class="palette-swatch" style="background:var(--color-accent-light);"><span class="palette-swatch-label" style="color:#fff">accent-light</span></div>
-        <div class="palette-swatch" style="background:var(--color-accent);"><span class="palette-swatch-label" style="color:#fff">accent</span></div>
-        <div class="palette-swatch" style="background:var(--color-accent-dark);"><span class="palette-swatch-label" style="color:#fff">accent-dark</span></div>
-      </div>
-
-      <!-- Neutral ramp -->
-      <div class="palette-row">
-        <div class="palette-swatch" style="background:#FFFFFF; border:1px solid #eee;"><span class="palette-swatch-label" style="color:#222">surface</span></div>
-        <div class="palette-swatch" style="background:var(--color-surface-raised);"><span class="palette-swatch-label" style="color:#222">raised</span></div>
-        <div class="palette-swatch" style="background:var(--color-muted);"><span class="palette-swatch-label" style="color:#222">muted</span></div>
-        <div class="palette-swatch" style="background:var(--color-muted-dark);"><span class="palette-swatch-label" style="color:#222">muted-dark</span></div>
-        <div class="palette-swatch" style="background:var(--color-text-muted);"><span class="palette-swatch-label" style="color:#fff">text-muted</span></div>
-        <div class="palette-swatch" style="background:var(--color-text-secondary);"><span class="palette-swatch-label" style="color:#fff">text-sec</span></div>
-        <div class="palette-swatch" style="background:var(--color-secondary-muted);"><span class="palette-swatch-label" style="color:#fff">sec-muted</span></div>
-        <div class="palette-swatch" style="background:var(--color-secondary);"><span class="palette-swatch-label" style="color:#fff">secondary</span></div>
-        <div class="palette-swatch" style="background:var(--color-bg-dark);"><span class="palette-swatch-label" style="color:#fff">bg-dark</span></div>
-      </div>
-
-      <!-- Semantic ramp -->
-      <div class="palette-row">
-        <div class="palette-swatch" style="background:var(--color-success);"><span class="palette-swatch-label" style="color:#fff">success</span></div>
-        <div class="palette-swatch" style="background:var(--color-warning);"><span class="palette-swatch-label" style="color:#fff">warning</span></div>
-        <div class="palette-swatch" style="background:var(--color-error);"><span class="palette-swatch-label" style="color:#fff">error</span></div>
-        <div class="palette-swatch" style="background:var(--color-info);"><span class="palette-swatch-label" style="color:#fff">info</span></div>
-      </div>
-    </section>
-
-    <!-- ══ SPECIFICATIONS ════════════════════════════════════════════════════ -->
-    <hr class="page-divider" />
-    <section id="specs">
-      <h2 class="section-title">Token Specifications</h2>
-      <p class="section-subtitle">All tokens are defined as CSS custom properties on <code>:root</code> in <code>colors.css</code>.</p>
-
-      <!-- Brand -->
-      <div class="token-group">
-        <p class="token-group-label">Brand</p>
-        <table class="token-table">
-          <thead>
-            <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#FF385C;"></div><code class="token-name">--color-primary</code></div></td>
-              <td><span class="token-hex">#FF385C</span></td>
-              <td class="token-desc">Primary actions, CTA buttons, active states</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#FF5A76;"></div><code class="token-name">--color-primary-light</code></div></td>
-              <td><span class="token-hex">#FF5A76</span></td>
-              <td class="token-desc">Hover tint on primary surfaces</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#D93B55;"></div><code class="token-name">--color-primary-dark</code></div></td>
-              <td><span class="token-hex">#D93B55</span></td>
-              <td class="token-desc">Pressed / active deep tone</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:rgba(255,56,92,0.12); border:1px dashed #ccc;"></div><code class="token-name">--color-primary-alpha</code></div></td>
-              <td><span class="token-hex">rgba(255,56,92,.12)</span></td>
-              <td class="token-desc">Tinted background chips, callouts</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#E8314F;"></div><code class="token-name">--color-primary-hover</code></div></td>
-              <td><span class="token-hex">#E8314F</span></td>
-              <td class="token-desc">Button hover state</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#CC2B47;"></div><code class="token-name">--color-primary-pressed</code></div></td>
-              <td><span class="token-hex">#CC2B47</span></td>
-              <td class="token-desc">Button pressed / active state</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#222222;"></div><code class="token-name">--color-secondary</code></div></td>
-              <td><span class="token-hex">#222222</span></td>
-              <td class="token-desc">Secondary UI elements, outlined buttons</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#484848;"></div><code class="token-name">--color-secondary-muted</code></div></td>
-              <td><span class="token-hex">#484848</span></td>
-              <td class="token-desc">Subdued secondary labels</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#00A699;"></div><code class="token-name">--color-accent</code></div></td>
-              <td><span class="token-hex">#00A699</span></td>
-              <td class="token-desc">Success accents, link highlights, confirmations</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#00BDB2;"></div><code class="token-name">--color-accent-light</code></div></td>
-              <td><span class="token-hex">#00BDB2</span></td>
-              <td class="token-desc">Accent hover / tint</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#008C81;"></div><code class="token-name">--color-accent-dark</code></div></td>
-              <td><span class="token-hex">#008C81</span></td>
-              <td class="token-desc">Accent pressed / deep</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Text -->
-      <div class="token-group">
-        <p class="token-group-label">Text</p>
-        <table class="token-table">
-          <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#222222;"></div><code class="token-name">--color-text-primary</code></div></td>
-              <td><span class="token-hex">#222222</span></td>
-              <td class="token-desc">Headings, body copy, labels</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#717171;"></div><code class="token-name">--color-text-secondary</code></div></td>
-              <td><span class="token-hex">#717171</span></td>
-              <td class="token-desc">Captions, metadata, placeholder</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#B0B0B0;"></div><code class="token-name">--color-text-muted</code></div></td>
-              <td><span class="token-hex">#B0B0B0</span></td>
-              <td class="token-desc">Disabled labels, decorative text</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#FFFFFF; border:1px solid #ccc;"></div><code class="token-name">--color-text-inverse</code></div></td>
-              <td><span class="token-hex">#FFFFFF</span></td>
-              <td class="token-desc">Text on dark / primary backgrounds</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#222222;"></div><code class="token-name">--color-text-link</code></div></td>
-              <td><span class="token-hex">#222222</span></td>
-              <td class="token-desc">Inline hyperlinks (underlined)</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#B0B0B0;"></div><code class="token-name">--color-text-disabled</code></div></td>
-              <td><span class="token-hex">#B0B0B0</span></td>
-              <td class="token-desc">Disabled form fields &amp; buttons</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Surface & Background -->
-      <div class="token-group">
-        <p class="token-group-label">Surface &amp; Background</p>
-        <table class="token-table">
-          <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#FFFFFF; border:1px solid #eee;"></div><code class="token-name">--color-surface</code></div></td>
-              <td><span class="token-hex">#FFFFFF</span></td>
-              <td class="token-desc">Modal, card, popover surfaces</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#F7F7F7; border:1px solid #eee;"></div><code class="token-name">--color-surface-raised</code></div></td>
-              <td><span class="token-hex">#F7F7F7</span></td>
-              <td class="token-desc">Elevated cards, sidebars</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:rgba(255,255,255,0.95); border:1px dashed #ccc;"></div><code class="token-name">--color-surface-overlay</code></div></td>
-              <td><span class="token-hex">rgba(255,255,255,.95)</span></td>
-              <td class="token-desc">Frosted-glass nav bars</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#FFFFFF; border:1px solid #eee;"></div><code class="token-name">--color-bg</code></div></td>
-              <td><span class="token-hex">#FFFFFF</span></td>
-              <td class="token-desc">Page background</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#F7F7F7; border:1px solid #eee;"></div><code class="token-name">--color-bg-muted</code></div></td>
-              <td><span class="token-hex">#F7F7F7</span></td>
-              <td class="token-desc">Alternate row, subtle section bg</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#1A1A1A;"></div><code class="token-name">--color-bg-dark</code></div></td>
-              <td><span class="token-hex">#1A1A1A</span></td>
-              <td class="token-desc">Dark section, code block bg</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#F5F5F5; border:1px solid #eee;"></div><code class="token-name">--color-surface-disabled</code></div></td>
-              <td><span class="token-hex">#F5F5F5</span></td>
-              <td class="token-desc">Disabled input / button fill</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Border -->
-      <div class="token-group">
-        <p class="token-group-label">Border</p>
-        <table class="token-table">
-          <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#DDDDDD;"></div><code class="token-name">--color-border</code></div></td>
-              <td><span class="token-hex">#DDDDDD</span></td>
-              <td class="token-desc">Default dividers, card outlines</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#B0B0B0;"></div><code class="token-name">--color-border-dark</code></div></td>
-              <td><span class="token-hex">#B0B0B0</span></td>
-              <td class="token-desc">Emphasized borders, input stroke</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#222222;"></div><code class="token-name">--color-border-focus</code></div></td>
-              <td><span class="token-hex">#222222</span></td>
-              <td class="token-desc">Focused input / interactive ring</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#E0E0E0;"></div><code class="token-name">--color-border-disabled</code></div></td>
-              <td><span class="token-hex">#E0E0E0</span></td>
-              <td class="token-desc">Disabled field borders</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#EBEBEB;"></div><code class="token-name">--color-muted</code></div></td>
-              <td><span class="token-hex">#EBEBEB</span></td>
-              <td class="token-desc">Light separators, hairlines</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#DDDDDD;"></div><code class="token-name">--color-muted-dark</code></div></td>
-              <td><span class="token-hex">#DDDDDD</span></td>
-              <td class="token-desc">Medium separators</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Semantic -->
-      <div class="token-group">
-        <p class="token-group-label">Semantic &amp; Feedback</p>
-        <table class="token-table">
-          <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#008A05;"></div><code class="token-name">--color-success</code></div></td>
-              <td><span class="token-hex">#008A05</span></td>
-              <td class="token-desc">Confirmations, success messages</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#C45508;"></div><code class="token-name">--color-warning</code></div></td>
-              <td><span class="token-hex">#C45508</span></td>
-              <td class="token-desc">Warnings, caution alerts</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#C13515;"></div><code class="token-name">--color-error</code></div></td>
-              <td><span class="token-hex">#C13515</span></td>
-              <td class="token-desc">Errors, destructive actions</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#007AB8;"></div><code class="token-name">--color-info</code></div></td>
-              <td><span class="token-hex">#007AB8</span></td>
-              <td class="token-desc">Informational banners, tooltips</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#FF385C;"></div><code class="token-name">--color-star</code></div></td>
-              <td><span class="token-hex">#FF385C</span></td>
-              <td class="token-desc">Ratings, star / review icons</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:#C13515;"></div><code class="token-name">--color-danger</code></div></td>
-              <td><span class="token-hex">#C13515</span></td>
-              <td class="token-desc">Delete, remove, destructive buttons</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Overlay & Ghost -->
-      <div class="token-group">
-        <p class="token-group-label">Overlay, Ghost &amp; Focus</p>
-        <table class="token-table">
-          <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:rgba(0,0,0,0.5);"></div><code class="token-name">--color-overlay</code></div></td>
-              <td><span class="token-hex">rgba(0,0,0,.5)</span></td>
-              <td class="token-desc">Modal backdrop scrim</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:rgba(0,0,0,0.15);"></div><code class="token-name">--color-overlay-light</code></div></td>
-              <td><span class="token-hex">rgba(0,0,0,.15)</span></td>
-              <td class="token-desc">Soft image overlay, card hover</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:rgba(34,34,34,0.06); border:1px solid #eee;"></div><code class="token-name">--color-ghost-hover-bg</code></div></td>
-              <td><span class="token-hex">rgba(34,34,34,.06)</span></td>
-              <td class="token-desc">Ghost button hover fill</td>
-            </tr>
-            <tr>
-              <td><div class="token-cell"><div class="swatch" style="background:rgba(34,34,34,0.10); border:1px solid #eee;"></div><code class="token-name">--color-ghost-pressed-bg</code></div></td>
-              <td><span class="token-hex">rgba(34,34,34,.10)</span></td>
-              <td class="token-desc">Ghost button pressed fill</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </section>
-
-    <!-- ══ HTML USAGE ══════════════════════════════════════════════════════════ -->
-    <hr class="page-divider" />
-    <section id="usage">
-      <h2 class="section-title">Usage in Practice</h2>
-      <p class="section-subtitle">Common patterns showing how color tokens map to real UI components.</p>
-
-      <div class="usage-grid">
-
-        <!-- Buttons -->
-        <div class="usage-card">
-          <div class="usage-card-preview" style="background:var(--color-bg-muted);">
-            <button class="prev-btn-primary">Book Now</button>
-            <button class="prev-btn-secondary">Save</button>
+      <!-- Brand colors -->
+      <div class="color-detail">
+        <div class="color-family">
+          <div class="color-family-header">
+            <h3 class="color-family-title">Primary</h3>
           </div>
-          <p class="usage-card-label">Buttons</p>
-        </div>
-
-        <!-- Typography -->
-        <div class="usage-card">
-          <div class="usage-card-preview" style="background:var(--color-bg-muted);">
-            <div class="prev-text-stack">
-              <span class="prev-text-h">Heading copy</span>
-              <span class="prev-text-b">Body / caption text</span>
-              <span class="prev-text-m">Muted / metadata text</span>
+          <div class="color-family-body">
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-primary);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Base</p>
+                <p class="color-variant-value">#FF385C</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-primary-light);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Light</p>
+                <p class="color-variant-value">#FF5A76</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-primary-dark);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Dark</p>
+                <p class="color-variant-value">#D93B55</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-primary-hover);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Hover</p>
+                <p class="color-variant-value">#E8314F</p>
+              </div>
             </div>
           </div>
-          <p class="usage-card-label">Typography</p>
         </div>
 
-        <!-- Status badges -->
-        <div class="usage-card">
-          <div class="usage-card-preview" style="background:var(--color-bg-muted); flex-wrap:wrap; gap:8px;">
-            <span class="prev-badge prev-badge-success">Confirmed</span>
-            <span class="prev-badge prev-badge-warning">Pending</span>
-            <span class="prev-badge prev-badge-error">Cancelled</span>
+        <div class="color-family">
+          <div class="color-family-header">
+            <h3 class="color-family-title">Accent</h3>
           </div>
-          <p class="usage-card-label">Status Badges</p>
-        </div>
-
-        <!-- Surfaces -->
-        <div class="usage-card">
-          <div class="usage-card-preview" style="background:var(--color-secondary);">
-            <div class="prev-bg-surface"></div>
-            <div class="prev-bg-raised"></div>
-            <div class="prev-bg-muted"></div>
-            <div class="prev-bg-dark"></div>
+          <div class="color-family-body">
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-accent);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Base</p>
+                <p class="color-variant-value">#00A699</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-accent-light);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Light</p>
+                <p class="color-variant-value">#00BDB2</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-accent-dark);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Dark</p>
+                <p class="color-variant-value">#008C81</p>
+              </div>
+            </div>
           </div>
-          <p class="usage-card-label">Surfaces</p>
         </div>
 
-        <!-- Interactive / Focus -->
-        <div class="usage-card">
-          <div class="usage-card-preview" style="background:var(--color-bg-muted); flex-direction:column; width:100%; padding:16px;">
-            <input class="prev-focus-ring" type="text" value="Focused input" readonly />
-            <button class="prev-ghost-btn">Ghost button</button>
+        <div class="color-family">
+          <div class="color-family-header">
+            <h3 class="color-family-title">Status Colors</h3>
           </div>
-          <p class="usage-card-label">Focus &amp; Ghost</p>
-        </div>
-
-        <!-- Accent -->
-        <div class="usage-card">
-          <div class="usage-card-preview" style="background:var(--color-bg-muted); flex-direction:column; gap:8px;">
-            <span style="font-size:13px;color:var(--color-accent);font-weight:600;">✓ 3 nights — great price</span>
-            <span style="font-size:13px;color:var(--color-accent-dark);text-decoration:underline;cursor:default;">See all reviews</span>
+          <div class="color-family-body">
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-success);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Success</p>
+                <p class="color-variant-value">#008A05</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-warning);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Warning</p>
+                <p class="color-variant-value">#C45508</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-error);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Error</p>
+                <p class="color-variant-value">#C13515</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-info);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Info</p>
+                <p class="color-variant-value">#007AB8</p>
+              </div>
+            </div>
           </div>
-          <p class="usage-card-label">Accent</p>
         </div>
 
-      </div>
+        <div class="color-family">
+          <div class="color-family-header">
+            <h3 class="color-family-title">Neutral – Text</h3>
+          </div>
+          <div class="color-family-body">
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-text-primary);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Primary</p>
+                <p class="color-variant-value">#222222</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-text-secondary);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Secondary</p>
+                <p class="color-variant-value">#717171</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-text-muted);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Muted</p>
+                <p class="color-variant-value">#B0B0B0</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-text-inverse);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Inverse</p>
+                <p class="color-variant-value">#FFFFFF</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="tip">
-        <strong>Tip:</strong> Always use design tokens — never hard-code hex values. This ensures your component automatically inherits future theme changes and dark-mode overrides.
+        <div class="color-family">
+          <div class="color-family-header">
+            <h3 class="color-family-title">Neutral – Surfaces</h3>
+          </div>
+          <div class="color-family-body">
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-surface);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Default</p>
+                <p class="color-variant-value">#FFFFFF</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-surface-raised);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Raised</p>
+                <p class="color-variant-value">#F7F7F7</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-bg-muted);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Muted</p>
+                <p class="color-variant-value">#F7F7F7</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="color-family">
+          <div class="color-family-header">
+            <h3 class="color-family-title">Neutral – Borders</h3>
+          </div>
+          <div class="color-family-body">
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-border);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Default</p>
+                <p class="color-variant-value">#DDDDDD</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-border-dark);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Dark</p>
+                <p class="color-variant-value">#B0B0B0</p>
+              </div>
+            </div>
+            <div class="color-variant">
+              <div class="color-variant-preview" style="background: var(--color-border-focus);"></div>
+              <div class="color-variant-info">
+                <p class="color-variant-label">Focus</p>
+                <p class="color-variant-value">#222222</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ══ JAVASCRIPT API ══════════════════════════════════════════════════════ -->
+    <!-- ══ SPECIFICATIONS ═════════════════════════════════════════════════ -->
     <hr class="page-divider" />
-    <section id="javascript">
-      <h2 class="section-title">Using Tokens in JavaScript</h2>
-      <p class="section-subtitle">Read resolved token values at runtime using <code>getComputedStyle</code>. Useful for canvas rendering or charting libraries.</p>
+    <section id="specs">
+      <h2 class="section-title">Specifications</h2>
+      <p class="section-subtitle">CSS custom property names and usage guidelines.</p>
+
+      <table class="semantic-table">
+        <thead>
+          <tr>
+            <th>Token Name</th>
+            <th>Hex Value</th>
+            <th>RGB</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="semantic-token">--color-primary</span></td>
+            <td>#FF385C</td>
+            <td>rgb(255, 56, 92)</td>
+            <td>Primary action buttons, brand highlights</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-accent</span></td>
+            <td>#00A699</td>
+            <td>rgb(0, 166, 153)</td>
+            <td>Secondary accent, confirmations</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-success</span></td>
+            <td>#008A05</td>
+            <td>rgb(0, 138, 5)</td>
+            <td>Success messages and states</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-warning</span></td>
+            <td>#C45508</td>
+            <td>rgb(196, 85, 8)</td>
+            <td>Warning messages and alerts</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-error</span></td>
+            <td>#C13515</td>
+            <td>rgb(193, 53, 21)</td>
+            <td>Error states and danger actions</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-text-primary</span></td>
+            <td>#222222</td>
+            <td>rgb(34, 34, 34)</td>
+            <td>Heading and body text</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-text-secondary</span></td>
+            <td>#717171</td>
+            <td>rgb(113, 113, 113)</td>
+            <td>Secondary text, captions</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-border</span></td>
+            <td>#DDDDDD</td>
+            <td>rgb(221, 221, 221)</td>
+            <td>Dividers, subtle borders</td>
+          </tr>
+          <tr>
+            <td><span class="semantic-token">--color-surface</span></td>
+            <td>#FFFFFF</td>
+            <td>rgb(255, 255, 255)</td>
+            <td>Card backgrounds, default surface</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ══ HTML USAGE ══════════════════════════════════════════════════════ -->
+    <hr class="page-divider" />
+    <section id="usage">
+      <h2 class="section-title">HTML Usage</h2>
+      <p class="section-subtitle">Apply colors to elements using CSS custom properties.</p>
 
       <div class="code-block">
         <div class="code-header">
-          <span class="code-lang">JavaScript</span>
+          <span class="code-lang">CSS — basic usage</span>
+          <button class="copy-btn" onclick="
+            navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText);
+            this.textContent='Copied!';
+            setTimeout(()=>this.textContent='Copy',1600);
+          ">Copy</button>
+        </div>
+        <pre><span class="code-prop">.primary-button</span> {
+  background: <span class="code-val">var(--color-primary)</span>;
+  color: <span class="code-val">var(--color-text-inverse)</span>;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+<span class="code-prop">.primary-button:hover</span> {
+  background: <span class="code-val">var(--color-primary-hover)</span>;
+}
+
+<span class="code-prop">.error-message</span> {
+  background: <span class="code-val">var(--color-danger-alpha)</span>;
+  color: <span class="code-val">var(--color-danger)</span>;
+  padding: 12px;
+  border-radius: 8px;
+}</pre>
+      </div>
+    </section>
+
+    <!-- ══ JAVASCRIPT ═══════════════════════════════════════════════════════ -->
+    <hr class="page-divider" />
+    <section id="javascript">
+      <h2 class="section-title">JavaScript API</h2>
+      <p class="section-subtitle">Read CSS tokens at runtime for dynamic styling.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">JavaScript — read tokens</span>
           <button class="copy-btn" onclick="
             navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText);
             this.textContent='Copied!';
@@ -1222,7 +1147,7 @@ ctx.fillStyle = textPrim;</pre>
           <tr>
             <td>
               <div class="a11y-pair">
-                <div class="a11y-dot-bg" style="background:#FF385C;color:#fff;">Aa</div>
+                <div class="a11y-dot-bg" style="background:var(--color-primary);color:#fff;">Aa</div>
                 <span style="font-size:13px;color:var(--color-text-secondary);">#fff on Primary</span>
               </div>
             </td>
@@ -1234,7 +1159,7 @@ ctx.fillStyle = textPrim;</pre>
           <tr>
             <td>
               <div class="a11y-pair">
-                <div class="a11y-dot-bg" style="background:#222222;color:#fff;">Aa</div>
+                <div class="a11y-dot-bg" style="background:var(--color-secondary);color:#fff;">Aa</div>
                 <span style="font-size:13px;color:var(--color-text-secondary);">#fff on Secondary</span>
               </div>
             </td>
@@ -1246,7 +1171,7 @@ ctx.fillStyle = textPrim;</pre>
           <tr>
             <td>
               <div class="a11y-pair">
-                <div class="a11y-dot-bg" style="background:#fff;color:#222222;border:1px solid #ddd;">Aa</div>
+                <div class="a11y-dot-bg" style="background:var(--color-surface);color:var(--color-text-primary);border:1px solid var(--color-border);">Aa</div>
                 <span style="font-size:13px;color:var(--color-text-secondary);">Primary text on white</span>
               </div>
             </td>
@@ -1258,7 +1183,7 @@ ctx.fillStyle = textPrim;</pre>
           <tr>
             <td>
               <div class="a11y-pair">
-                <div class="a11y-dot-bg" style="background:#fff;color:#717171;border:1px solid #ddd;">Aa</div>
+                <div class="a11y-dot-bg" style="background:var(--color-surface);color:var(--color-text-secondary);border:1px solid var(--color-border);">Aa</div>
                 <span style="font-size:13px;color:var(--color-text-secondary);">Secondary text on white</span>
               </div>
             </td>
@@ -1270,7 +1195,7 @@ ctx.fillStyle = textPrim;</pre>
           <tr>
             <td>
               <div class="a11y-pair">
-                <div class="a11y-dot-bg" style="background:#fff;color:#00A699;border:1px solid #ddd;">Aa</div>
+                <div class="a11y-dot-bg" style="background:var(--color-surface);color:var(--color-accent);border:1px solid var(--color-border);">Aa</div>
                 <span style="font-size:13px;color:var(--color-text-secondary);">Accent on white</span>
               </div>
             </td>
@@ -1282,7 +1207,7 @@ ctx.fillStyle = textPrim;</pre>
           <tr>
             <td>
               <div class="a11y-pair">
-                <div class="a11y-dot-bg" style="background:#fff;color:#B0B0B0;border:1px solid #ddd;">Aa</div>
+                <div class="a11y-dot-bg" style="background:var(--color-surface);color:var(--color-text-muted);border:1px solid var(--color-border);">Aa</div>
                 <span style="font-size:13px;color:var(--color-text-secondary);">Muted text on white</span>
               </div>
             </td>
@@ -1303,7 +1228,7 @@ ctx.fillStyle = textPrim;</pre>
           </div>
           <div class="do-card-body">
             <p>Use <code>--color-text-primary</code> on <code>--color-bg</code> or <code>--color-surface</code> for all readable body text. These pairs meet AAA contrast.</p>
-            <div class="do-example" style="background:#fff; border:1px solid var(--color-border);">
+            <div class="do-example" style="background:var(--color-surface); border:1px solid var(--color-border);">
               <p style="color:var(--color-text-primary); font-size:13px; font-weight:600;">Heading text — #222222</p>
               <p style="color:var(--color-text-secondary); font-size:12px; margin-top:4px;">Caption — #717171 meets AA</p>
             </div>
@@ -1317,7 +1242,7 @@ ctx.fillStyle = textPrim;</pre>
           </div>
           <div class="dont-card-body">
             <p>Don't use <code>--color-text-muted</code> for important content — it only passes at large decorative sizes and will fail for body copy.</p>
-            <div class="dont-example" style="background:#fff; border:1px solid var(--color-border);">
+            <div class="dont-example" style="background:var(--color-surface); border:1px solid var(--color-border);">
               <p style="color:var(--color-text-muted); font-size:13px;">Body text in muted grey — fails AA ✗</p>
               <p style="color:var(--color-text-muted); font-size:12px; margin-top:4px;">Caption in muted — fails AA ✗</p>
             </div>
@@ -1329,7 +1254,7 @@ ctx.fillStyle = textPrim;</pre>
 
   </main>
 
-  <!-- ── Right sidebar ────────────────────────────────────────────────────── -->
+  <!-- ── Right sidebar ────────────────────────────────────────────────────– -->
   <aside class="sidebar-right">
   <?php include $partials . '/right_sidebar.php'; ?>
   </aside>
