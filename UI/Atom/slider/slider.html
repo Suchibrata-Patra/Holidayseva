@@ -1,0 +1,308 @@
+< !DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Slider</title>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #fff;
+                font-family: -apple-system, 'SF Pro Text', sans-serif;
+                padding: 24px;
+            }
+
+            .wrap {
+                width: 100%;
+                max-width: 480px;
+            }
+
+            /* ── VALUES ── */
+            .values-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                margin-bottom: 20px;
+            }
+
+            .val-current {
+                font-size: 38px;
+                font-weight: 600;
+                letter-spacing: -1.5px;
+                color: #1d1d1f;
+                line-height: 1;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .val-meta {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 2px;
+            }
+
+            .val-max {
+                font-size: 13px;
+                color: #aeaeb2;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .val-unit {
+                font-size: 13px;
+                color: #c7c7cc;
+            }
+
+            /* ── TRACK ── */
+            .track {
+                position: relative;
+                cursor: pointer;
+                user-select: none;
+                -webkit-user-select: none;
+                padding: 22px 0;
+                margin: -22px 0;
+            }
+
+            .track-inner {
+                position: relative;
+                height: 5px;
+                border-radius: 3px;
+                background: rgba(0, 0, 0, 0.06);
+            }
+
+            /* ── FILL ── */
+            .fill {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                border-radius: 3px;
+                pointer-events: none;
+                background: rgba(20, 20, 20, 0.88);
+                overflow: hidden;
+            }
+
+            .fill::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 50%;
+                border-radius: 3px 3px 0 0;
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, transparent 100%);
+            }
+
+            /* ── THUMB ── */
+            .thumb {
+                position: absolute;
+                top: 50%;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                cursor: grab;
+                z-index: 2;
+                background: #ffffff;
+
+                /* resting — clean lift, no border */
+                box-shadow:
+                    0 0 0 0.5px rgba(0, 0, 0, 0.09),
+                    0 2px 8px rgba(0, 0, 0, 0.13),
+                    0 5px 18px rgba(0, 0, 0, 0.07),
+                    inset 0 1.5px 0 rgba(255, 255, 255, 1);
+
+                transition: box-shadow 0.2s ease;
+                will-change: left;
+            }
+
+            /* ── PRESSED — just slightly deeper shadow, stays circle ── */
+            .thumb.dragging {
+                cursor: grabbing;
+                box-shadow:
+                    0 0 0 0.5px rgba(0, 0, 0, 0.10),
+                    0 4px 14px rgba(0, 0, 0, 0.18),
+                    0 8px 28px rgba(0, 0, 0, 0.10),
+                    inset 0 1.5px 0 rgba(255, 255, 255, 1);
+            }
+
+            /* ── TICKS ── */
+            .ticks {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 11px;
+                padding: 0 1px;
+            }
+
+            .tick-lbl {
+                font-size: 11px;
+                color: #d1d1d6;
+                font-variant-numeric: tabular-nums;
+                letter-spacing: -0.1px;
+                transition: color 0.25s, font-weight 0.25s;
+            }
+
+            .tick-lbl.near {
+                color: #8e8e93;
+                font-weight: 500;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="wrap">
+            <div class="values-row">
+                <div class="val-current" id="valCurrent">75</div>
+                <div class="val-meta">
+                    <div class="val-max">/ 100</div>
+                    <div class="val-unit">units</div>
+                </div>
+            </div>
+            <div class="track" id="track">
+                <div class="track-inner" id="trackInner">
+                    <div class="fill" id="fill"></div>
+                    <div class="thumb" id="thumb"></div>
+                </div>
+            </div>
+            <div class="ticks" id="ticks"></div>
+        </div>
+        <script>const trackInner = document.getElementById('trackInner');
+            const track = document.getElementById('track');
+            const thumb = document.getElementById('thumb');
+            const fill = document.getElementById('fill');
+            const valCurrent = document.getElementById('valCurrent');
+            const ticksEl = document.getElementById('ticks');
+
+            [0,
+                25,
+                50,
+                75,
+                100].forEach(v => {
+                    const s = document.createElement('span');
+                    s.className = 'tick-lbl';
+                    s.textContent = v;
+                    s.dataset.val = v;
+                    ticksEl.appendChild(s);
+                });
+
+            let value = 75;
+            let dragging = false;
+            let lastHapticV = 75;
+
+            function haptic(strong) {
+                if (navigator.vibrate) navigator.vibrate(strong ? 22 : 9);
+
+                try {
+                    const ac = new (window.AudioContext || window.webkitAudioContext)();
+                    const buf = ac.createBuffer(1, 1, 22050);
+                    const src = ac.createBufferSource();
+                    src.buffer = buf;
+                    src.connect(ac.destination);
+                    src.start(0);
+                    setTimeout(() => ac.close(), 80);
+                }
+
+                catch (_) { }
+            }
+
+            function updateTicks(v) {
+                ticksEl.querySelectorAll('.tick-lbl').forEach(el => {
+                    el.classList.toggle('near', Math.abs(parseInt(el.dataset.val) - v) <= 12);
+                });
+            }
+
+            function set(v, fromDrag) {
+                value = Math.max(0, Math.min(100, v));
+                thumb.style.left = value + '%';
+                fill.style.width = value + '%';
+                valCurrent.textContent = Math.round(value);
+                updateTicks(value);
+
+                if (fromDrag) {
+                    const snap = Math.round(value / 5) * 5;
+                    const last = Math.round(lastHapticV / 5) * 5;
+
+                    if (snap !== last) {
+                        haptic(snap === 0 || snap === 100);
+                        lastHapticV = value;
+                    }
+                }
+            }
+
+            function toVal(clientX) {
+                const r = trackInner.getBoundingClientRect();
+                return ((clientX - r.left) / r.width) * 100;
+            }
+
+            function press() {
+                dragging = true;
+                thumb.classList.remove('pop');
+                thumb.classList.add('dragging');
+                haptic(false);
+            }
+
+            function release() {
+                if (!dragging) return;
+                dragging = false;
+                thumb.classList.remove('dragging');
+                haptic(true);
+            }
+
+            set(value);
+
+            thumb.addEventListener('mousedown', e => {
+                press(); e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', e => {
+                if (dragging) set(toVal(e.clientX), true);
+            });
+            document.addEventListener('mouseup', release);
+
+            track.addEventListener('click', e => {
+                if (e.target === thumb) return;
+                set(toVal(e.clientX));
+                haptic(false);
+            });
+
+            thumb.addEventListener('touchstart', () => press(), {
+                passive: true
+            });
+
+            document.addEventListener('touchmove', e => {
+                if (dragging) set(toVal(e.touches[0].clientX), true);
+            }
+
+                , {
+                    passive: true
+                });
+            document.addEventListener('touchend', release);
+
+            track.setAttribute('tabindex', '0');
+
+            track.addEventListener('keydown', e => {
+                const step = e.shiftKey ? 10 : 1;
+
+                if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                    set(value + step); haptic(false);
+                }
+
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                    set(value - step); haptic(false);
+                }
+            });
+        </script>
+    </body>
+
+    </html>

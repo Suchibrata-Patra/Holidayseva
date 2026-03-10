@@ -29,12 +29,12 @@
             max-width: 480px;
         }
 
-        /* ── VALUES ROW ── */
+        /* ── VALUES ── */
         .values-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .val-current {
@@ -44,7 +44,6 @@
             color: #1d1d1f;
             line-height: 1;
             font-variant-numeric: tabular-nums;
-            transition: color 0.2s;
         }
 
         .val-meta {
@@ -56,17 +55,13 @@
 
         .val-max {
             font-size: 13px;
-            font-weight: 400;
             color: #aeaeb2;
-            letter-spacing: -0.2px;
             font-variant-numeric: tabular-nums;
         }
 
         .val-unit {
             font-size: 13px;
-            font-weight: 400;
             color: #c7c7cc;
-            letter-spacing: -0.1px;
         }
 
         /* ── TRACK ── */
@@ -75,20 +70,18 @@
             cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
-            /* bigger tap zone */
-            padding: 20px 0;
-            margin: -20px 0;
+            padding: 22px 0;
+            margin: -22px 0;
         }
 
         .track-inner {
             position: relative;
-            height: 6px;
+            height: 5px;
             border-radius: 3px;
-            /* whisper-thin, almost invisible at rest */
             background: rgba(0, 0, 0, 0.06);
         }
 
-        /* ── FILL — frosted glass with sheen ── */
+        /* ── FILL ── */
         .fill {
             position: absolute;
             top: 0;
@@ -96,23 +89,10 @@
             bottom: 0;
             border-radius: 3px;
             pointer-events: none;
-
-            background: rgba(20, 20, 20, 0.82);
-            backdrop-filter: blur(6px) saturate(160%);
-            -webkit-backdrop-filter: blur(6px) saturate(160%);
-
-            /* the shiny effect — thin highlight along the top edge */
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.22),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.18),
-                /* faint glow so it lifts off the page */
-                0 1px 4px rgba(0, 0, 0, 0.10);
-
-            /* extra gloss: pseudo overlay via gradient */
+            background: rgba(20, 20, 20, 0.88);
             overflow: hidden;
         }
 
-        /* glossy top stripe on fill */
         .fill::after {
             content: '';
             position: absolute;
@@ -121,167 +101,61 @@
             right: 0;
             height: 50%;
             border-radius: 3px 3px 0 0;
-            background: linear-gradient(180deg,
-                    rgba(255, 255, 255, 0.18) 0%,
-                    rgba(255, 255, 255, 0.00) 100%);
-            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, transparent 100%);
         }
 
         /* ── THUMB ── */
         .thumb {
             position: absolute;
             top: 50%;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             cursor: grab;
-            will-change: left, width, height, border-radius;
             z-index: 2;
+            background: #ffffff;
 
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(14px) saturate(200%);
-            -webkit-backdrop-filter: blur(14px) saturate(200%);
-            border: 0.5px solid rgba(255, 255, 255, 0.95);
-
+            /* resting — clean lift, no border */
             box-shadow:
-                0 0 0 0.5px rgba(0, 0, 0, 0.07),
-                0 2px 8px rgba(0, 0, 0, 0.12),
-                0 5px 16px rgba(0, 0, 0, 0.07),
-                inset 0 1px 0 rgba(255, 255, 255, 1);
+                0 0 0 0.5px rgba(0, 0, 0, 0.09),
+                0 2px 8px rgba(0, 0, 0, 0.13),
+                0 5px 18px rgba(0, 0, 0, 0.07),
+                inset 0 1.5px 0 rgba(255, 255, 255, 1);
 
-            transition:
-                width 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-                height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-                border-radius 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-                background 0.22s ease,
-                box-shadow 0.22s ease;
+            transition: box-shadow 0.2s ease;
+            will-change: left;
         }
 
-        /* gloss dot inside thumb */
-        .thumb::before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 3.5px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.65);
-            filter: blur(1px);
-            pointer-events: none;
-            transition: opacity 0.2s, width 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* ── PRESSED ── */
+        /* ── PRESSED — just slightly deeper shadow, stays circle ── */
         .thumb.dragging {
             cursor: grabbing;
-            width: 40px;
-            height: 22px;
-            border-radius: 11px;
-
-            background: rgba(255, 255, 255, 0.22);
-            backdrop-filter: blur(24px) saturate(240%);
-            -webkit-backdrop-filter: blur(24px) saturate(240%);
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-
             box-shadow:
-                0 0 0 0.5px rgba(0, 0, 0, 0.04),
-                0 4px 20px rgba(0, 0, 0, 0.10),
-                0 8px 36px rgba(0, 0, 0, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.75),
-                inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+                0 0 0 0.5px rgba(0, 0, 0, 0.10),
+                0 4px 14px rgba(0, 0, 0, 0.18),
+                0 8px 28px rgba(0, 0, 0, 0.10),
+                inset 0 1.5px 0 rgba(255, 255, 255, 1);
         }
 
-        .thumb.dragging::before {
-            opacity: 0.35;
-            width: 18px;
-        }
-
-        /* ── RELEASE JELLY ── */
-        @keyframes jellyBack {
-            0% {
-                width: 40px;
-                height: 22px;
-                border-radius: 11px;
-                background: rgba(255, 255, 255, 0.22);
-            }
-
-            22% {
-                width: 18px;
-                height: 30px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.50);
-            }
-
-            44% {
-                width: 30px;
-                height: 22px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.72);
-            }
-
-            62% {
-                width: 22px;
-                height: 28px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.84);
-            }
-
-            78% {
-                width: 28px;
-                height: 24px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.90);
-            }
-
-            90% {
-                width: 24px;
-                height: 26px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.93);
-            }
-
-            100% {
-                width: 26px;
-                height: 26px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.95);
-            }
-        }
-
-        .thumb.pop {
-            animation: jellyBack 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        /* ── TICK LABELS ── */
+        /* ── TICKS ── */
         .ticks {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 11px;
             padding: 0 1px;
         }
 
         .tick-lbl {
             font-size: 11px;
-            color: #c7c7cc;
+            color: #d1d1d6;
             font-variant-numeric: tabular-nums;
             letter-spacing: -0.1px;
-            /* highlight the active one via JS */
-            transition: color 0.2s, font-weight 0.2s;
+            transition: color 0.25s, font-weight 0.25s;
         }
 
         .tick-lbl.near {
-            color: #86868b;
+            color: #8e8e93;
             font-weight: 500;
-        }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 360px) {
-            .val-current {
-                font-size: 30px;
-            }
         }
     </style>
 </head>
@@ -289,7 +163,6 @@
 <body>
 
     <div class="wrap">
-
         <div class="values-row">
             <div class="val-current" id="valCurrent">75</div>
             <div class="val-meta">
@@ -306,7 +179,6 @@
         </div>
 
         <div class="ticks" id="ticks"></div>
-
     </div>
 
     <script>
@@ -317,24 +189,20 @@
         const valCurrent = document.getElementById('valCurrent');
         const ticksEl = document.getElementById('ticks');
 
-        const TICK_VALUES = [0, 25, 50, 75, 100];
-
-        // build ticks
-        TICK_VALUES.forEach(v => {
-            const span = document.createElement('span');
-            span.className = 'tick-lbl';
-            span.textContent = v;
-            span.dataset.val = v;
-            ticksEl.appendChild(span);
+        [0, 25, 50, 75, 100].forEach(v => {
+            const s = document.createElement('span');
+            s.className = 'tick-lbl';
+            s.textContent = v;
+            s.dataset.val = v;
+            ticksEl.appendChild(s);
         });
 
         let value = 75;
         let dragging = false;
         let lastHapticV = 75;
 
-        /* ── haptic ── */
         function haptic(strong) {
-            if (navigator.vibrate) navigator.vibrate(strong ? 20 : 8);
+            if (navigator.vibrate) navigator.vibrate(strong ? 22 : 9);
             try {
                 const ac = new (window.AudioContext || window.webkitAudioContext)();
                 const buf = ac.createBuffer(1, 1, 22050);
@@ -344,15 +212,12 @@
             } catch (_) { }
         }
 
-        /* ── update ticks ── */
         function updateTicks(v) {
             ticksEl.querySelectorAll('.tick-lbl').forEach(el => {
-                const diff = Math.abs(parseInt(el.dataset.val) - v);
-                el.classList.toggle('near', diff <= 12);
+                el.classList.toggle('near', Math.abs(parseInt(el.dataset.val) - v) <= 12);
             });
         }
 
-        /* ── set value ── */
         function set(v, fromDrag) {
             value = Math.max(0, Math.min(100, v));
             thumb.style.left = value + '%';
@@ -386,36 +251,27 @@
             if (!dragging) return;
             dragging = false;
             thumb.classList.remove('dragging');
-            void thumb.offsetWidth;
-            thumb.classList.add('pop');
             haptic(true);
-            setTimeout(() => thumb.classList.remove('pop'), 580);
         }
 
         set(value);
 
-        /* mouse */
         thumb.addEventListener('mousedown', e => { press(); e.preventDefault(); });
         document.addEventListener('mousemove', e => { if (dragging) set(toVal(e.clientX), true); });
         document.addEventListener('mouseup', release);
 
-        /* track click */
         track.addEventListener('click', e => {
             if (e.target === thumb) return;
             set(toVal(e.clientX));
-            thumb.classList.remove('pop');
-            void thumb.offsetWidth;
-            thumb.classList.add('pop');
             haptic(false);
-            setTimeout(() => thumb.classList.remove('pop'), 580);
         });
 
-        /* touch */
         thumb.addEventListener('touchstart', () => press(), { passive: true });
-        document.addEventListener('touchmove', e => { if (dragging) set(toVal(e.touches[0].clientX), true); }, { passive: true });
+        document.addEventListener('touchmove', e => {
+            if (dragging) set(toVal(e.touches[0].clientX), true);
+        }, { passive: true });
         document.addEventListener('touchend', release);
 
-        /* keyboard */
         track.setAttribute('tabindex', '0');
         track.addEventListener('keydown', e => {
             const step = e.shiftKey ? 10 : 1;
