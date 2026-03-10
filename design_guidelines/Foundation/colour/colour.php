@@ -269,7 +269,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
 .full-token-wrap{margin-top:40px;border:1px solid var(--color-border);border-radius:5px;overflow:hidden}
 .full-token-table{width:100%;border-collapse:collapse}
 .full-token-table thead tr{background:var(--color-surface-raised)}
-.full-token-table th{padding:12px 20px;text-align:left;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-secondary);border-bottom:1px solid var(--color-border)}
+.full-token-table th{padding:12px 20px;text-align:left;font-size:17.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-secondary);border-bottom:1px solid var(--color-border)}
 .full-token-table td{padding:10px 20px;font-size:13px;border-bottom:1px solid var(--color-border);vertical-align:middle}
 .full-token-table tbody tr:last-child td{border-bottom:none}
 .full-token-table tbody tr:hover td{background:var(--color-surface-inset)}
