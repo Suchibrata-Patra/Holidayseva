@@ -87,16 +87,31 @@
 </head>
 <body>
 
-<?php include '/design_guidelines/left_sidebar.php'; ?>
+<?php
+/**
+ * button.php is located at:
+ *   design_guidelines/Atom/button/button.php
+ *
+ * Shared partials live two levels up at:
+ *   design_guidelines/header.php
+ *   design_guidelines/left_sidebar.php
+ *   design_guidelines/right_sidebar.php
+ *   design_guidelines/drawer_sidebar.php
+ *   design_guidelines/footer.php
+ */
+$partials = __DIR__ . '/../../';
+?>
 
-<!-- Mobile drawer sidebar (hidden on desktop) -->
-<?php include __DIR__ . '/drawer_sidebar.php'; ?>
+<?php include $partials . 'header.php'; ?>
+
+<!-- Mobile drawer sidebar (hidden on desktop, toggled by hamburger in header) -->
+<?php include $partials . 'drawer_sidebar.php'; ?>
 
 <div class="page-layout">
 
   <!-- ── Left sidebar ──────────────────────── -->
   <aside class="sidebar-left" style="z-index:10000;">
-    <?php include '/design_guidelines/left_sidebar.php'; ?>
+    <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
 
   <!-- ── Main content ──────────────────────── -->
@@ -651,9 +666,9 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>); 
 
     <hr class="rule">
 
-    <!-- ── Integration ───────────────────────── -->
-    <section id="integration">
-      <h2 class="section-title">Integration</h2>
+    <!-- ── HTML Usage ─────────────────────────── -->
+    <section id="usage">
+      <h2 class="section-title">HTML Usage</h2>
       <p class="body-text">
         Import <code>button.css</code> after <code>colors.css</code> in <code>&lt;head&gt;</code>.
         Add <code>button.js</code> before <code>&lt;/body&gt;</code> only when you need loading
@@ -671,6 +686,32 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>); 
 <span class="c">&lt;!-- Before &lt;/body&gt; --&gt;</span>
 <span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"https://holidayseva.com/UI/Atom/button/button.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
       </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ── JavaScript API ─────────────────────── -->
+    <section id="javascript">
+      <h2 class="section-title">JavaScript API</h2>
+      <p class="body-text">
+        <code>button.js</code> boots automatically. It exposes one static helper for loading states
+        and fires a custom event for toggles — everything else is handled internally.
+      </p>
+
+      <div class="spec-table">
+        <div class="spec-row"><span class="spec-key">ButtonSystem.loading(btn, true)</span><span class="spec-val">Enters loading state — spinner injected, button disabled, aria-busy set</span></div>
+        <div class="spec-row"><span class="spec-key">ButtonSystem.loading(btn, false)</span><span class="spec-val">Restores original HTML, removes disabled + aria-busy</span></div>
+        <div class="spec-row"><span class="spec-key">data-loading-on-click</span><span class="spec-val">Attribute — auto-triggers loading on click without JS</span></div>
+        <div class="spec-row"><span class="spec-key">data-loading-text="…"</span><span class="spec-val">Custom loading label shown inside the spinner button</span></div>
+        <div class="spec-row"><span class="spec-key">btn-toggle CustomEvent</span><span class="spec-val">Fires on every toggle with detail.pressed (boolean)</span></div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ── Integration ───────────────────────── -->
+    <section id="integration">
+      <h2 class="section-title">Integration</h2>
 
       <p class="subsection-title">File structure</p>
       <div class="code-block">
@@ -681,13 +722,14 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>); 
 ├── header.php
 ├── left_sidebar.php
 ├── right_sidebar.php
-├── button.php
+├── drawer_sidebar.php
+├── footer.php
 ├── design-system.css
-└── UI/
-    └── Atom/
-        └── button/
-            ├── button.css
-            └── button.js</code></pre>
+└── Atom/
+    └── button/
+        ├── button.php      ← this file
+        ├── button.css
+        └── button.js</code></pre>
       </div>
 
       <p class="subsection-title">Required colors.css additions</p>
@@ -783,10 +825,10 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>); 
 
   <!-- ── Right TOC ──────────────────────────── -->
   <aside class="sidebar-right">
-    <?php include __DIR__ . '/right_sidebar.php'; ?>
+    <?php include $partials . 'right_sidebar.php'; ?>
   </aside>
 
-</div>
+</div><!-- /.page-layout -->
 
 <footer class="footer">
   <span class="footer-text">Holidayseva Design Guidelines · Button</span>
@@ -829,6 +871,6 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>); 
   }
 </script>
 
-<?php include __DIR__ . '/footer.php'; ?>
+<?php include $partials . 'footer.php'; ?>
 </body>
 </html>
