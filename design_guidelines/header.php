@@ -90,7 +90,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   </ul> -->
 
   <div class="section-nav-meta">
-    <span class="section-nav-badge">v1.0</span>
+    <span class="section-nav-badge">βeta Release - 1.1.2</span>
   </div>
 
 </nav>
