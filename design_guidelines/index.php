@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Holidayseva Design Guidelines</title>
+  <title>Design Resources - Holidayseva</title>
   <link rel="stylesheet" href="/design-system.css">
   <style>
     /* ─────────────────────────────────────────────────────────
