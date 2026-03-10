@@ -478,7 +478,6 @@ foreach($a11y as [$bg,$fg,$label,$token,$bgHex,$ratio,$bc,$level,$use]):?>
     </table>
   </div>
   <div class="callout c-warn">
-    <span class="callout-icon">⚠️</span>
     <div class="callout-text"><strong>Never use <code>--color-text-muted</code> for readable content.</strong> At 2.3:1 it fails WCAG AA for both normal and large text. Use it only for decorative elements and disabled placeholders.</div>
   </div>
 </section>
