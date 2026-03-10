@@ -63,10 +63,7 @@ function scanComponentCategory(string $baseDir, string $category): array {
         // Link target — URLs are relative to the web root (developer.holidayseva.com)
         // dedicated page:  Category/item.php          e.g. Components/toggle.php
         // anchor fallback: Category/Category.php#item e.g. Components/Components.php#toggle
-        $phpFile = $fullPath . '/' . $entry . '.php';
-        $page    = file_exists($phpFile)
-                   ? $category . '/' . $entry . '.php'
-                   : $category . '/' . $category . '.php#' . $entry;
+        $page = $category . '/' . $entry . '/' . $entry . '.php';
 
         // Icon web URL — component-specific .ico if it exists
         $icoFile   = $fullPath . '/' . $entry . '.ico';
