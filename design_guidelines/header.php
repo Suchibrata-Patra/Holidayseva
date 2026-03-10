@@ -42,7 +42,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 
   <ul class="global-nav-links" role="list" aria-label="Main navigation">
     <li><a href="index.php"
-        <?= $current === 'index.php' ? 'class="active"' : '' ?>>Import framework and CDN</a></li>
+        <?= $current === 'index.php' ? 'class="active"' : '' ?>>Get Started</a></li>
     <li><a href="foundations.php"
         <?= in_array($current, $foundationPages) ? 'class="active"' : '' ?>>UI/UX</a></li>
     <li><a href="components.php"

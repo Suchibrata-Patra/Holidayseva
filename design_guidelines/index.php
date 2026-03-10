@@ -592,7 +592,7 @@
          GET STARTED / INSTALLATION
     ══════════════════════════════════════════════ -->
     <div class="dg-section" id="installation">
-      <h2 class="dg-section-title">Get Started</h2>
+      <h2 class="dg-section-title">Import Framework</h2>
 
       <div class="install-grid">
 
