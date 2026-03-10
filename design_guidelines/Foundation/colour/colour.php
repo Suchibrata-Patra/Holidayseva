@@ -337,15 +337,13 @@ a{color:var(--color-text-link);text-decoration:none}a:hover{text-decoration:unde
     <a href="#">Foundations</a><span class="breadcrumb-sep">›</span>
     <span>Color</span>
   </nav>
-  <h1 class="page-title">Color</h1>
-  <p class="page-intro"><em>Judicious use of color can enhance communication, evoke your brand, provide visual continuity, communicate status and feedback, and help people understand information.</em> All <?=$total?> tokens live in <code>colors.css</code> and adapt automatically between light and dark appearances.</p>
 </section>
 
 <!-- ALL TOKENS -->
 <hr class="page-rule"/>
 <section id="all-tokens" class="doc-section">
   <p class="section-label">Complete Reference</p>
-  <h2 class="section-title">All tokens</h2>
+  <h2 class="section-title">All Colour Tokens</h2>
   <p class="section-body">Every CSS custom property defined in <code>colors.css</code> — all <?=$total?> tokens with light value, dark value, and semantic usage note.</p>
 
   <div class="full-token-wrap">
