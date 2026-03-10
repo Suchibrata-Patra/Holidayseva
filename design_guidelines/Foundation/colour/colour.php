@@ -84,7 +84,7 @@ $tokenGroups = [
     ['--color-fill-primary',            'rgba(0,0,0,0.055)',       'rgba(255,255,255,0.10)', 'Vibrancy fill — level 1'],
     ['--color-fill-secondary',          'rgba(0,0,0,0.035)',       'rgba(255,255,255,0.065)','Vibrancy fill — level 2'],
     ['--color-fill-tertiary',           'rgba(0,0,0,0.022)',       'rgba(255,255,255,0.04)', 'Vibrancy fill — level 3'],
-    ['--color-fill-quaternary',         'rgba(0,0,0,0.012)',       'rgba(255,255,255,0.022)','Vibrancy fill — level 4'],
+    ['--color-fill-quaternary',         '#00000003',       'rgba(255,255,255,0.022)','Vibrancy fill — level 4'],
   ],
   '07 · Semantic — Borders & Separators' => [
     ['--color-border',            '#D2D2D7',               '#3A3A3C',               'Default border'],
