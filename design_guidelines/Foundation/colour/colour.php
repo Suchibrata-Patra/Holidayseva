@@ -337,8 +337,6 @@ a{color:var(--color-text-link);text-decoration:none}a:hover{text-decoration:unde
     <a href="#">Foundations</a><span class="breadcrumb-sep">›</span>
     <span>Color</span>
   </nav>
-  <h1 class="page-title">Color</h1>
-  <p class="page-intro"><em>Judicious use of color can enhance communication, evoke your brand, provide visual continuity, communicate status and feedback, and help people understand information.</em> All <?=$total?> tokens live in <code>colors.css</code> and adapt automatically between light and dark appearances.</p>
 </section>
 
 <!-- SYSTEM COLORS -->
