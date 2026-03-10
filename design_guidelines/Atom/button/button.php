@@ -5,397 +5,357 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Button | HolidaySeva Design Guidelines</title>
 
-  <!-- Design system shell -->
   <link rel="stylesheet" href="/design-system.css">
-
-  <!-- Button component -->
   <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/button/button.css">
   <script defer src="https://holidayseva.com/UI/Atom/button/button.js"></script>
 
   <style>
-    /* ── Page-scoped doc styles ──────────────────────────── */
-    :root {
-      --doc-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      --doc-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
-      --doc-bg:   #FAFAFA;
-      --doc-card: #FFFFFF;
-    }
+    :root { --mono: "SF Mono", "Fira Code", monospace; }
 
-    /* Preview stage */
-    .demo-stage {
-      background:  var(--doc-card);
-      border:      1px solid #EBEBEB;
-      border-radius: 16px;
-      padding:     48px 32px;
-      display:     flex;
-      flex-wrap:   wrap;
+    /* ── Hero strip ──────────────────────────────── */
+    .btn-hero-strip {
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap:         16px;
-      margin:      24px 0;
+      gap: 12px;
+      padding: 36px 0 4px;
     }
 
-    .demo-stage.dark-bg {
-      background: #1A1A1A;
+    /* ── Section shell ───────────────────────────── */
+    .doc-section { padding: 56px 0 0; }
+    .doc-section + .doc-section {
+      border-top: 1px solid #e5e5ea;
+      margin-top: 56px;
     }
 
-    .demo-stage.muted-bg {
-      background: #F7F7F7;
-    }
-
-    /* Anatomy diagram */
-    .anatomy-wrap {
-      display:     flex;
-      align-items: flex-start;
-      gap:         48px;
-      flex-wrap:   wrap;
-      margin:      32px 0;
-    }
-
-    .anatomy-preview {
-      position:    relative;
-      display:     inline-flex;
-      align-items: center;
-      margin:      32px 48px 32px 16px;
-    }
-
-    .anatomy-btn {
-      /* Rendered via button.css */
-    }
-
-    /* Callout lines */
-    .anat-lines {
-      position: absolute;
-      inset:    0;
-      pointer-events: none;
-    }
-
-    .anat-ann {
-      position:    absolute;
-      display:     flex;
-      align-items: center;
-      gap:         6px;
-      white-space: nowrap;
-      font-size:   12px;
-      font-family: var(--doc-mono);
-      color:       #717171;
-    }
-
-    .anat-ann-dot {
-      width:        6px;
-      height:       6px;
-      border-radius: 50%;
-      background:   #FF385C;
-      flex-shrink:  0;
-    }
-
-    .anat-ann-line {
-      width:        36px;
-      height:       1px;
-      background:   #DDDDDD;
-    }
-
-    /* Spec table */
-    .spec-table {
-      border:        1px solid #EBEBEB;
-      border-radius: 12px;
-      overflow:      hidden;
-      margin:        24px 0;
-    }
-
-    .spec-row {
-      display:         flex;
-      align-items:     center;
-      padding:         12px 20px;
-      border-bottom:   1px solid #F0F0F0;
-      gap:             16px;
-      font-size:       14px;
-    }
-
-    .spec-row:last-child { border-bottom: none; }
-
-    .spec-key {
-      min-width:   160px;
+    /* ── Typography ──────────────────────────────── */
+    .doc-eyebrow {
+      font-size: 11px;
       font-weight: 600;
-      color:       #222222;
-      font-family: var(--doc-font);
-    }
-
-    .spec-val {
-      color:       #484848;
-      font-family: var(--doc-mono);
-      font-size:   13px;
-    }
-
-    .spec-swatch {
-      display:       inline-block;
-      width:         14px;
-      height:        14px;
-      border-radius: 50%;
-      border:        1px solid rgba(0,0,0,0.10);
-      vertical-align: middle;
-      margin-right:  6px;
-    }
-
-    /* Variation grid */
-    .variation-grid {
-      display:               grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap:                   24px;
-      margin:                24px 0;
-    }
-
-    .variation-card {
-      border:        1px solid #EBEBEB;
-      border-radius: 16px;
-      overflow:      hidden;
-      background:    var(--doc-card);
-    }
-
-    .variation-card.dark-card {
-      background: #1A1A1A;
-    }
-
-    .variation-preview {
-      padding:       36px 28px;
-      display:       flex;
-      flex-wrap:     wrap;
-      gap:           12px;
-      align-items:   center;
-      min-height:    100px;
-      border-bottom: 1px solid #F0F0F0;
-    }
-
-    .variation-card.dark-card .variation-preview {
-      border-bottom-color: rgba(255,255,255,0.08);
-    }
-
-    .variation-meta {
-      padding:    18px 22px;
-    }
-
-    .variation-name {
-      font-size:   14px;
-      font-weight: 700;
-      color:       #222222;
-      margin:      0 0 4px 0;
-      font-family: var(--doc-font);
-    }
-
-    .variation-card.dark-card .variation-name {
-      color: #FFFFFF;
-    }
-
-    .variation-desc {
-      font-size:  13px;
-      color:      #717171;
-      margin:     0 0 14px;
-      line-height: 1.5;
-    }
-
-    .variation-card.dark-card .variation-desc {
-      color: #B0B0B0;
-    }
-
-    /* Code blocks */
-    .code-block {
-      border:        1px solid #EBEBEB;
-      border-radius: 12px;
-      overflow:      hidden;
-      margin:        16px 0;
-      background:    #F7F7F7;
-    }
-
-    .code-bar {
-      display:         flex;
-      align-items:     center;
-      justify-content: space-between;
-      padding:         8px 16px;
-      background:      #EFEFEF;
-      border-bottom:   1px solid #E5E5E5;
-    }
-
-    .code-lang-tag {
-      font-size:   11px;
-      font-weight: 700;
-      font-family: var(--doc-mono);
-      color:       #717171;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      color: #aeaeb2;
+      margin: 0 0 10px;
+      -webkit-font-smoothing: antialiased;
     }
-
-    .copy-btn {
-      font-size:     12px;
-      font-weight:   600;
-      font-family:   var(--doc-font);
-      color:         #484848;
-      background:    transparent;
-      border:        1px solid #DDDDDD;
-      border-radius: 6px;
-      padding:       3px 10px;
-      cursor:        pointer;
-      transition:    background 120ms, color 120ms;
+    .doc-h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #1d1d1f;
+      margin: 0 0 14px;
+      line-height: 1.2;
+      -webkit-font-smoothing: antialiased;
     }
-
-    .copy-btn:hover { background: #E0E0E0; }
-    .copy-btn:active { background: #CFCFCF; }
-
-    .code-block pre {
-      margin:  0;
-      padding: 20px;
-      overflow-x: auto;
-      font-family: var(--doc-mono);
-      font-size:   13px;
+    .doc-lead {
+      font-size: 17px;
       line-height: 1.65;
-      color:       #222222;
+      color: #424245;
+      max-width: 620px;
+      margin: 0 0 28px;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .doc-body {
+      font-size: 15px;
+      line-height: 1.72;
+      color: #424245;
+      max-width: 620px;
+      margin: 0 0 20px;
+      letter-spacing: -0.005em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .doc-h3 {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+      margin: 40px 0 10px;
+      -webkit-font-smoothing: antialiased;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.84em;
+      background: #f2f2f7;
+      color: #c0392b;
+      padding: 2px 6px;
+      border-radius: 5px;
     }
 
-    /* Syntax highlighting */
-    .code-block .t { color: #C0392B; }   /* tag */
-    .code-block .a { color: #2980B9; }   /* attribute */
-    .code-block .s { color: #27AE60; }   /* string */
-    .code-block .c { color: #999999; font-style: italic; } /* comment */
-    .code-block .k { color: #8E44AD; }   /* keyword */
-
-    /* States table */
-    .states-grid {
-      display:               grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap:                   16px;
-      margin:                24px 0;
+    /* ── Preview stage ───────────────────────────── */
+    .preview {
+      background: #fafafa;
+      border: 1px solid #e5e5ea;
+      border-radius: 16px;
+      padding: 40px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0 0;
+    }
+    .preview.dark {
+      background: #1d1d1f;
+      border-color: #3a3a3c;
+    }
+    .preview.col {
+      flex-direction: column;
+      align-items: flex-start;
     }
 
-    .state-card {
-      border:        1px solid #EBEBEB;
-      border-radius: 14px;
-      padding:       28px 20px 20px;
-      text-align:    center;
-      background:    var(--doc-card);
+    /* ── Variant table ───────────────────────────── */
+    .variant-list {
+      margin: 32px 0 0;
+      border: 1px solid #e5e5ea;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .variant-row {
+      display: grid;
+      grid-template-columns: 190px 1fr 1fr;
+      align-items: center;
+      padding: 22px 24px;
+      gap: 28px;
+      border-bottom: 1px solid #f2f2f7;
+    }
+    .variant-row:last-child { border-bottom: none; }
+    .variant-row:nth-child(even) { background: #fafafa; }
+    .variant-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d1d1f;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .variant-label span {
+      display: block;
+      font-weight: 400;
+      color: #86868b;
+      font-size: 12px;
+      margin-top: 3px;
+      letter-spacing: 0;
+    }
+    .variant-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .state-label {
-      display:       block;
-      margin-top:    16px;
-      font-size:     12px;
-      font-weight:   600;
-      color:         #717171;
-      font-family:   var(--doc-mono);
+    /* ── Size ruler ──────────────────────────────── */
+    .size-ruler {
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+      padding: 40px 32px;
+      background: #fafafa;
+      border: 1px solid #e5e5ea;
+      border-radius: 16px;
+      flex-wrap: wrap;
+      margin: 24px 0 0;
+    }
+    .size-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .size-tag {
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--mono);
+      color: #aeaeb2;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── States row ──────────────────────────────── */
+    .states-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 36px;
+      padding: 40px 32px;
+      background: #fafafa;
+      border: 1px solid #e5e5ea;
+      border-radius: 16px;
+      margin: 24px 0 0;
+    }
+    .state-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .state-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: #aeaeb2;
+      font-family: var(--mono);
+    }
+
+    /* ── Code block ──────────────────────────────── */
+    .code-block {
+      border: 1px solid #e5e5ea;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 20px 0 0;
+      background: #f9f9fb;
+    }
+    .code-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: #f2f2f7;
+      border-bottom: 1px solid #e5e5ea;
+    }
+    .code-lang {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--mono);
+      color: #aeaeb2;
       text-transform: uppercase;
       letter-spacing: 0.07em;
     }
-
-    /* Best practices */
-    .practices-grid {
-      display:               grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap:                   20px;
-      margin:                24px 0;
+    .copy-btn {
+      font-size: 12px;
+      font-weight: 500;
+      color: #86868b;
+      background: transparent;
+      border: 1px solid #d2d2d7;
+      border-radius: 6px;
+      padding: 3px 10px;
+      cursor: pointer;
+      font-family: -apple-system, sans-serif;
+      transition: background 0.1s;
     }
-
-    .practice-card {
-      border:        1px solid #EBEBEB;
-      border-radius: 14px;
-      padding:       24px;
-      background:    var(--doc-card);
+    .copy-btn:hover { background: #e5e5ea; }
+    .code-block pre {
+      margin: 0;
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: #1d1d1f;
+      overflow-x: auto;
+      -webkit-font-smoothing: antialiased;
     }
+    /* Syntax */
+    .t  { color: #e04e2f; }
+    .a  { color: #2879c0; }
+    .s  { color: #2e9e5b; }
+    .c  { color: #aeaeb2; font-style: italic; }
+    .k  { color: #9b59b6; }
 
-    .practice-card.do  { border-color: rgba(0,138,5,0.25); background: rgba(0,138,5,0.03); }
-    .practice-card.dont{ border-color: rgba(193,53,21,0.20); background: rgba(193,53,21,0.03); }
-
-    .practice-badge {
-      display:       inline-flex;
-      align-items:   center;
-      gap:           5px;
-      font-size:     11px;
-      font-weight:   700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding:       3px 10px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-
-    .practice-card.do   .practice-badge { background: rgba(0,138,5,0.12); color: #008A05; }
-    .practice-card.dont .practice-badge { background: rgba(193,53,21,0.12); color: #C13515; }
-
-    .practice-title {
-      font-size:   14px;
-      font-weight: 700;
-      color:       #222222;
-      margin:      0 0 6px;
-    }
-
-    .practice-desc {
-      font-size:  13px;
-      color:      #717171;
-      line-height: 1.55;
-      margin:     0;
-    }
-
-    /* Notes / callouts */
-    .note {
-      border-left:   3px solid #DDDDDD;
-      background:    #F9F9F9;
-      border-radius: 0 10px 10px 0;
-      padding:       14px 18px;
-      margin:        20px 0;
-      font-size:     14px;
-      color:         #484848;
-      line-height:   1.6;
-    }
-
-    .note.info  { border-color: #007AB8; background: rgba(0,122,184,0.05); }
-    .note.warn  { border-color: #C45508; background: rgba(196,85,8,0.05); }
-    .note.success { border-color: #008A05; background: rgba(0,138,5,0.05); }
-
-    .note p { margin: 0; }
-    .note code {
-      background:    rgba(0,0,0,0.07);
-      padding:       1px 5px;
-      border-radius: 4px;
-      font-family:   var(--doc-mono);
-      font-size:     12px;
-    }
-
-    /* Inline code */
-    code {
-      background:    rgba(0,0,0,0.06);
-      padding:       1px 6px;
-      border-radius: 5px;
-      font-family:   var(--doc-mono);
-      font-size:     0.88em;
-      color:         #C0392B;
-    }
-
-    /* Separator */
-    .rule {
-      border:      none;
-      border-top:  1px solid #EBEBEB;
-      margin:      48px 0;
-    }
-
-    /* Colors additions callout */
-    .colors-additions {
-      background:    #FFFBF0;
-      border:        1px solid rgba(196,85,8,0.20);
-      border-radius: 14px;
-      padding:       24px;
-      margin:        32px 0;
-    }
-
-    .colors-additions h3 {
-      margin: 0 0 12px;
+    /* ── Spec table ──────────────────────────────── */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 0;
       font-size: 14px;
-      font-weight: 700;
-      color: #C45508;
+    }
+    .spec-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aeaeb2;
+      padding: 0 16px 10px 0;
+      border-bottom: 1px solid #e5e5ea;
+    }
+    .spec-table td {
+      padding: 11px 16px 11px 0;
+      border-bottom: 1px solid #f2f2f7;
+      color: #424245;
+      vertical-align: top;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+    }
+    .spec-table td:first-child {
+      font-weight: 600;
+      color: #1d1d1f;
+      white-space: nowrap;
     }
 
-    /* Responsive adjustments for the doc page itself */
+    /* ── Anatomy ─────────────────────────────────── */
+    .anatomy-wrap {
+      padding: 56px 40px;
+      background: #fafafa;
+      border: 1px solid #e5e5ea;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 24px 0 0;
+      position: relative;
+    }
+    .anatomy-btn-wrap { position: relative; display: inline-flex; }
+    .ann {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 11.5px;
+      font-family: var(--mono);
+      color: #86868b;
+      pointer-events: none;
+    }
+    .ann-dot { width: 5px; height: 5px; border-radius: 50%; background: #FF385C; flex-shrink: 0; }
+    .ann-line { height: 1px; background: #d2d2d7; flex-shrink: 0; }
+    .ann-top    { top: -30px; left: 0; }
+    .ann-bottom { bottom: -30px; left: 24px; }
+    .ann-right  { top: 50%; right: -148px; transform: translateY(-50%); flex-direction: row-reverse; }
+    .ann-bottom2 { bottom: -30px; right: 24px; }
+
+    /* ── Notes ───────────────────────────────────── */
+    .note {
+      display: flex;
+      gap: 12px;
+      padding: 14px 18px;
+      background: #f2f2f7;
+      border-radius: 10px;
+      margin: 20px 0 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #424245;
+      -webkit-font-smoothing: antialiased;
+    }
+    .note svg { flex-shrink: 0; margin-top: 1px; }
+    .note.blue   { background: rgba(0,113,227,0.06); }
+    .note.orange { background: rgba(196,85,8,0.07);  }
+
+    /* ── Token callout ───────────────────────────── */
+    .token-callout {
+      border: 1px solid #e5e5ea;
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 24px 0 0;
+    }
+    .token-callout-header {
+      padding: 13px 20px;
+      background: #f2f2f7;
+      border-bottom: 1px solid #e5e5ea;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d1d1f;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .token-callout .code-block { margin: 0; border: none; border-radius: 0; }
+
+    /* ── Responsive ──────────────────────────────── */
+    @media (max-width: 900px) {
+      .variant-row { grid-template-columns: 160px 1fr; }
+      .variant-row .code-block { display: none; }
+    }
     @media (max-width: 600px) {
-      .demo-stage     { padding: 28px 20px; }
-      .variation-grid { grid-template-columns: 1fr; }
-      .states-grid    { grid-template-columns: 1fr 1fr; }
-      .practices-grid { grid-template-columns: 1fr; }
-      .spec-key       { min-width: 130px; }
+      .variant-row { grid-template-columns: 1fr; }
+      .preview, .states-row, .size-ruler, .anatomy-wrap { padding: 28px 20px; }
+      .doc-h2 { font-size: 22px; }
+      .doc-lead { font-size: 15px; }
     }
   </style>
 </head>
@@ -406,457 +366,266 @@
 
 <div class="page-layout">
 
-  <!-- ── Left sidebar ──────────────────────────────────────── -->
+  <!-- Left sidebar -->
   <aside class="sidebar-left">
     <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
 
-  <!-- ── Main content ──────────────────────────────────────── -->
+  <!-- Main content -->
   <main class="page-main">
 
-    <!-- ════════════════════════════════════════
-         HERO / OVERVIEW
-    ════════════════════════════════════════ -->
+
+    <!-- ════════════════════════════════════
+         OVERVIEW
+    ════════════════════════════════════ -->
     <div id="overview">
       <p class="page-eyebrow">Components · Atom</p>
       <h1 class="page-title">Button</h1>
       <p class="page-lead">
-        The foundational interactive element of HolidaySeva. Buttons trigger actions,
-        submit forms, and guide users through booking flows. The system is Apple-inspired
-        in polish and Airbnb-structured in composition — clean, confident, and purposeful.
+        Buttons are the primary way users take action across HolidaySeva — from booking a stay
+        to filtering results. The system covers every context with a consistent set of variants,
+        sizes, and states.
       </p>
-    </div>
-
-    <!-- Live hero demo -->
-    <div class="demo-stage">
-      <button class="btn btn-primary">Book Now</button>
-      <button class="btn btn-secondary">Explore Stays</button>
-      <button class="btn btn-outline">Save to Wishlist</button>
-      <button class="btn btn-ghost">Learn More</button>
-      <button class="btn btn-accent">Contact Host</button>
-    </div>
-
-    <hr class="rule">
-
-
-    <!-- ════════════════════════════════════════
-         INTRODUCTION
-    ════════════════════════════════════════ -->
-    <section id="introduction">
-      <h2 class="section-title">Introduction</h2>
-
-      <p class="body-text">
-        The <strong>Button</strong> is the primary call-to-action element in the HolidaySeva design system.
-        Every button communicates a clear action and has a defined role in the interface — from booking
-        confirmations to secondary navigation. The system provides a complete range of variants, sizes,
-        and states so that any UI need can be met with a single CSS import and a simple HTML class.
-      </p>
-
-      <p class="body-text">
-        <strong>Why it exists:</strong> A unified button system ensures visual consistency, accessibility,
-        and brand coherence across every page and feature of the website. Without it, buttons would drift
-        — different teams ship different padding, colours, and interaction patterns, creating a fragmented
-        experience.
-      </p>
-
-      <p class="body-text">
-        <strong>How to use it:</strong> Import <code>button.css</code> and apply <code>.btn</code> plus
-        one variant class to any <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> element.
-        Optionally include <code>button.js</code> for loading states, ripple effects, and toggle behaviour.
-      </p>
-
-      <div class="code-block">
-        <div class="code-bar">
-          <span class="code-lang-tag">HTML — Quick Start</span>
-          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        </div>
-        <pre><code><span class="c">&lt;!-- 1. Add to &lt;head&gt; --&gt;</span>
-<span class="t">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"https://holidayseva.com/UI/Atom/button/button.css"</span><span class="t">&gt;</span>
-
-<span class="c">&lt;!-- 2. Use the component --&gt;</span>
-<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>Book Now<span class="t">&lt;/button&gt;</span>
-
-<span class="c">&lt;!-- 3. Optional JS (before &lt;/body&gt;) --&gt;</span>
-<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"https://holidayseva.com/UI/Atom/button/button.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
+      <div class="btn-hero-strip">
+        <button class="btn btn-primary">Book Now</button>
+        <button class="btn btn-secondary">Explore Stays</button>
+        <button class="btn btn-outline">Save</button>
+        <button class="btn btn-ghost">Learn More</button>
+        <button class="btn btn-soft">Filters</button>
+        <button class="btn btn-accent">Contact Host</button>
       </div>
-    </section>
-
-    <hr class="rule">
+    </div>
 
 
-    <!-- ════════════════════════════════════════
+    <!-- ════════════════════════════════════
          ANATOMY
-    ════════════════════════════════════════ -->
-    <section id="anatomy">
-      <h2 class="section-title">Button Anatomy</h2>
-      <p class="body-text">
-        A button is composed of a <strong>container</strong>, an optional <strong>leading icon</strong>,
-        a <strong>label</strong>, and an optional <strong>trailing icon or badge</strong>. The container
-        holds all internal spacing and applies the visual style via variant classes.
-      </p>
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="anatomy">
+      <p class="doc-eyebrow">Structure</p>
+      <h2 class="doc-h2">Anatomy</h2>
+      <p class="doc-lead">Every button shares the same four-part structure. The container applies all visual styles via variant classes — icons and badges slot in naturally.</p>
 
-      <!-- Anatomy visual -->
       <div class="anatomy-wrap">
-        <div style="position:relative; display:inline-block; padding: 40px 60px 40px 20px;">
+        <div class="anatomy-btn-wrap">
 
-          <!-- The actual rendered button -->
-          <button class="btn btn-primary" id="anatomyBtn" style="pointer-events:none; user-select:none;">
-            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <button class="btn btn-primary" style="pointer-events:none; padding:0 28px; gap:10px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             Search Stays
           </button>
 
-          <!-- Annotation: container -->
-          <div style="position:absolute;top:-16px;left:20px;font-size:11px;font-family:monospace;color:#717171;display:flex;align-items:center;gap:6px;">
-            <span style="width:6px;height:6px;border-radius:50%;background:#FF385C;display:inline-block;"></span>
-            <span style="width:24px;height:1px;background:#DDDDDD;display:inline-block;"></span>
+          <div class="ann ann-top">
+            <div class="ann-dot"></div>
+            <div class="ann-line" style="width:18px;"></div>
             <span>.btn container</span>
           </div>
 
-          <!-- Annotation: icon -->
-          <div style="position:absolute;top:50%;left:-110px;transform:translateY(-50%);font-size:11px;font-family:monospace;color:#717171;display:flex;align-items:center;gap:6px;">
+          <div class="ann ann-bottom">
+            <div class="ann-dot"></div>
+            <div class="ann-line" style="width:18px;"></div>
             <span>.btn-icon</span>
-            <span style="width:24px;height:1px;background:#DDDDDD;display:inline-block;"></span>
-            <span style="width:6px;height:6px;border-radius:50%;background:#FF385C;display:inline-block;"></span>
           </div>
 
-          <!-- Annotation: label -->
-          <div style="position:absolute;bottom:-24px;right:32px;font-size:11px;font-family:monospace;color:#717171;display:flex;align-items:center;gap:6px;">
-            <span style="width:6px;height:6px;border-radius:50%;background:#FF385C;display:inline-block;"></span>
-            <span style="width:24px;height:1px;background:#DDDDDD;display:inline-block;"></span>
-            <span>label text</span>
+          <div class="ann ann-right">
+            <div class="ann-line" style="width:18px;"></div>
+            <div class="ann-dot"></div>
+            <span>label</span>
           </div>
-        </div>
 
-        <!-- Parts breakdown -->
-        <div style="flex:1; min-width: 240px;">
-          <div class="spec-table">
-            <div class="spec-row">
-              <span class="spec-key">Container</span>
-              <span class="spec-val">.btn + variant class</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-key">Leading icon</span>
-              <span class="spec-val">.btn-icon (optional)</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-key">Label</span>
-              <span class="spec-val">Text node / .btn-label</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-key">Trailing badge</span>
-              <span class="spec-val">.btn-badge (optional)</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-key">Spinner</span>
-              <span class="spec-val">.btn-spinner (loading)</span>
-            </div>
+          <div class="ann ann-bottom2">
+            <div class="ann-dot"></div>
+            <div class="ann-line" style="width:18px;"></div>
+            <span>padding</span>
           </div>
         </div>
       </div>
 
-      <p class="body-text">
-        The container handles all padding, border-radius, colour, and shadow. Icons use
-        <code>currentColor</code> so they automatically inherit the button's text colour.
-        Internal <code>gap</code> keeps consistent spacing between icon, label, and badge.
-      </p>
+      <table class="spec-table" style="margin-top:32px;">
+        <thead>
+          <tr><th>Part</th><th>Class</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Container</td><td><code>.btn</code> + variant</td><td>Handles padding, radius, colour, shadow, and transitions</td></tr>
+          <tr><td>Leading icon</td><td><code>.btn-icon</code></td><td>Optional SVG — inherits <code>currentColor</code> automatically</td></tr>
+          <tr><td>Label</td><td>Text node</td><td>Use <code>.btn-label</code> when hiding text during loading</td></tr>
+          <tr><td>Badge</td><td><code>.btn-badge</code></td><td>Optional trailing count chip (e.g. cart quantity)</td></tr>
+          <tr><td>Spinner</td><td><code>.btn-spinner</code></td><td>Injected by <code>button.js</code> during loading state</td></tr>
+        </tbody>
+      </table>
     </section>
 
-    <hr class="rule">
 
+    <!-- ════════════════════════════════════
+         VARIANTS
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="variations">
+      <p class="doc-eyebrow">Styles</p>
+      <h2 class="doc-h2">Variants</h2>
+      <p class="doc-lead">Each variant has one job. Use them intentionally — the hierarchy between primary, secondary, and ghost tells users what to do first.</p>
 
-    <!-- ════════════════════════════════════════
-         SPECIFICATIONS
-    ════════════════════════════════════════ -->
-    <section id="specs">
-      <h2 class="section-title">Specifications</h2>
-      <p class="body-text">Default medium size. All values come from CSS custom properties in <code>button.css</code>.</p>
+      <div class="variant-list">
 
-      <div class="spec-table">
-        <div class="spec-row"><span class="spec-key">Default height</span><span class="spec-val">44px (Apple-standard touch target)</span></div>
-        <div class="spec-row"><span class="spec-key">Horizontal padding</span><span class="spec-val">20px</span></div>
-        <div class="spec-row"><span class="spec-key">Border radius</span><span class="spec-val">999px (pill)</span></div>
-        <div class="spec-row"><span class="spec-key">Border width</span><span class="spec-val">1.5px</span></div>
-        <div class="spec-row"><span class="spec-key">Font weight</span><span class="spec-val">600</span></div>
-        <div class="spec-row"><span class="spec-key">Font size</span><span class="spec-val">15px</span></div>
-        <div class="spec-row"><span class="spec-key">Letter spacing</span><span class="spec-val">−0.01em</span></div>
-        <div class="spec-row"><span class="spec-key">Icon gap</span><span class="spec-val">8px</span></div>
-        <div class="spec-row"><span class="spec-key">Press transform</span><span class="spec-val">scale(0.97)</span></div>
-        <div class="spec-row"><span class="spec-key">Transition duration</span><span class="spec-val">160ms (color/bg), 200ms (shadow)</span></div>
-        <div class="spec-row">
-          <span class="spec-key">Primary colour</span>
-          <span class="spec-val"><span class="spec-swatch" style="background:#FF385C;"></span>#FF385C</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Secondary colour</span>
-          <span class="spec-val"><span class="spec-swatch" style="background:#222222;"></span>#222222</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Accent colour</span>
-          <span class="spec-val"><span class="spec-swatch" style="background:#00A699;"></span>#00A699</span>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule">
-
-
-    <!-- ════════════════════════════════════════
-         VARIATIONS
-    ════════════════════════════════════════ -->
-    <section id="variations">
-      <h2 class="section-title">Button Variations</h2>
-      <p class="body-text">
-        Each variant is designed for a specific role in the UI. Use only one primary button per
-        view to maintain clear visual hierarchy.
-      </p>
-
-      <div class="variation-grid">
-
-        <!-- Primary -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Primary<span>One per view. The strongest CTA.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-primary">Book Now</button>
+            <button class="btn btn-primary btn-sm">Book Now</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Primary</p>
-            <p class="variation-desc">The strongest CTA. Use for the single most important action on a screen — booking, confirming, or submitting. One per view.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>Book Now<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>Book Now<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Secondary -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Secondary<span>Dark fill. Strong but subordinate.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-secondary">Explore Stays</button>
+            <button class="btn btn-secondary btn-sm">Explore</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Secondary</p>
-            <p class="variation-desc">Strong but subordinate. Paired with a primary button for secondary actions like "Browse All" or "View Details".</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-secondary"</span><span class="t">&gt;</span>Explore<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-secondary"</span><span class="t">&gt;</span>Explore<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Outline -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Outline<span>Bordered, transparent. Cards & forms.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-outline">Save to Wishlist</button>
+            <button class="btn btn-outline btn-sm">Save</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Outline</p>
-            <p class="variation-desc">Bordered, transparent background. Ideal for secondary actions in cards, filters, or alongside a primary.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Save<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Save<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Ghost -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Ghost<span>No border until hover. Toolbars & menus.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-ghost">Learn More</button>
+            <button class="btn btn-ghost btn-sm">More</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Ghost</p>
-            <p class="variation-desc">No border or background until hover. Use for low-emphasis actions in toolbars, lists, or tight spaces.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-ghost"</span><span class="t">&gt;</span>Learn More<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-ghost"</span><span class="t">&gt;</span>Learn More<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Ghost Primary -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Ghost Primary<span>Brand colour, no background.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-ghost-primary">View All Listings</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Ghost Primary</p>
-            <p class="variation-desc">Brand-coloured ghost. Use for "See all →" links inside section cards without competing with the primary CTA.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-ghost-primary"</span><span class="t">&gt;</span>View All<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-ghost-primary"</span><span class="t">&gt;</span>View All<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Soft -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Soft<span>Tinted fill. Filter chips & tags.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-soft">Apply Filters</button>
+            <button class="btn btn-soft btn-sm">Filters</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Soft / Tinted</p>
-            <p class="variation-desc">Light tinted background with brand colour text. Great for filter chips, category selectors, or inline actions that need a bit more presence than ghost.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-soft"</span><span class="t">&gt;</span>Filters<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-soft"</span><span class="t">&gt;</span>Filters<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Accent -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Accent<span>Teal. Messaging & contact flows.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-accent">Contact Host</button>
+            <button class="btn btn-accent btn-sm">Message</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Accent (Teal)</p>
-            <p class="variation-desc">HolidaySeva teal. Use for messaging, support, and communication-related actions that complement the primary rose.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-accent"</span><span class="t">&gt;</span>Contact Host<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-accent"</span><span class="t">&gt;</span>Contact Host<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Danger -->
-        <div class="variation-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">Danger<span>Destructive actions only. Always confirm.</span></div>
+          <div class="variant-preview">
             <button class="btn btn-danger">Cancel Booking</button>
+            <button class="btn btn-danger-outline btn-sm">Remove</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Danger</p>
-            <p class="variation-desc">Destructive actions only — cancellations, deletions, revocations. Always pair with a confirmation dialog.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-danger"</span><span class="t">&gt;</span>Cancel<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-danger"</span><span class="t">&gt;</span>Cancel Booking<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-danger-outline"</span><span class="t">&gt;</span>Remove<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Danger Outline -->
-        <div class="variation-card">
-          <div class="variation-preview">
-            <button class="btn btn-danger-outline">Remove Listing</button>
-          </div>
-          <div class="variation-meta">
-            <p class="variation-name">Danger Outline</p>
-            <p class="variation-desc">Softer destructive affordance. Use when the action is reversible or you want less visual alarm than the filled danger.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-danger-outline"</span><span class="t">&gt;</span>Remove<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- White / Inverse -->
-        <div class="variation-card dark-card">
-          <div class="variation-preview">
+        <div class="variant-row">
+          <div class="variant-label">White<span>For dark or image hero sections.</span></div>
+          <div class="variant-preview" style="background:#1d1d1f; border-radius:10px; padding:16px 20px;">
             <button class="btn btn-white">Explore Destinations</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">White (Inverse)</p>
-            <p class="variation-desc">White button for use on dark or image hero sections. Inverts the surface to stay legible against dark backgrounds.</p>
-            <div class="code-block" style="background:#111; border-color:#333;">
-              <div class="code-bar" style="background:#222; border-color:#333;">
-                <span class="code-lang-tag" style="color:#999;">HTML</span>
-                <button class="copy-btn" style="border-color:#444;color:#999;" onclick="copyCode(this)">Copy</button>
-              </div>
-              <pre style="color:#D4D4D4;"><code><span class="t" style="color:#F1865A;">&lt;button</span> <span class="a" style="color:#9CDCFE;">class</span>=<span class="s" style="color:#CE9178;">"btn btn-white"</span><span class="t" style="color:#F1865A;">&gt;</span>Explore<span class="t" style="color:#F1865A;">&lt;/button&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-white"</span><span class="t">&gt;</span>Explore<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
-        <!-- Link -->
-        <div class="variation-card">
-          <div class="variation-preview">
-            <button class="btn btn-link">View full policy</button>
+        <div class="variant-row">
+          <div class="variant-label">Link<span>Inline text actions. Navigation only.</span></div>
+          <div class="variant-preview">
+            <button class="btn btn-link">View full cancellation policy</button>
           </div>
-          <div class="variation-meta">
-            <p class="variation-name">Link</p>
-            <p class="variation-desc">Looks like a hyperlink. Use inside body copy or help text when navigating away, not triggering an action.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-link"</span><span class="t">&gt;</span>View policy<span class="t">&lt;/button&gt;</span></code></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- Toggle -->
-        <div class="variation-card">
-          <div class="variation-preview">
-            <button class="btn btn-toggle is-selected" aria-pressed="true">Entire Place</button>
-            <button class="btn btn-toggle" aria-pressed="false">Private Room</button>
-            <button class="btn btn-toggle" aria-pressed="false">Shared</button>
-          </div>
-          <div class="variation-meta">
-            <p class="variation-name">Toggle / Segmented</p>
-            <p class="variation-desc">Selectable filter chips or segmented control options. JS auto-handles <code>aria-pressed</code> and <code>.is-selected</code>.</p>
-            <div class="code-block">
-              <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-              <pre><code><span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"btn-group"</span><span class="t">&gt;</span>
-  <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-toggle is-selected"</span>
-          <span class="a">aria-pressed</span>=<span class="s">"true"</span><span class="t">&gt;</span>Entire Place<span class="t">&lt;/button&gt;</span>
-  <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-toggle"</span>
-          <span class="a">aria-pressed</span>=<span class="s">"false"</span><span class="t">&gt;</span>Private Room<span class="t">&lt;/button&gt;</span>
-<span class="t">&lt;/div&gt;</span></code></pre>
-            </div>
+          <div class="code-block">
+            <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-link"</span><span class="t">&gt;</span>View policy<span class="t">&lt;/button&gt;</span></code></pre>
           </div>
         </div>
 
       </div>
     </section>
 
-    <hr class="rule">
 
+    <!-- ════════════════════════════════════
+         ICONS & BADGES
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="icons">
+      <p class="doc-eyebrow">Composition</p>
+      <h2 class="doc-h2">Icons &amp; Badges</h2>
+      <p class="doc-lead">Add a leading icon, trailing icon, or count badge. Icons inherit the button's colour via <code>currentColor</code> — no extra styling needed.</p>
 
-    <!-- ════════════════════════════════════════
-         WITH ICONS
-    ════════════════════════════════════════ -->
-    <section id="icons">
-      <h2 class="section-title">Buttons with Icons</h2>
-      <p class="body-text">
-        Add a leading or trailing <code>.btn-icon</code> element inside the button.
-        Icons use <code>1.2em</code> sizing and inherit <code>currentColor</code> automatically.
-        Use SVG icons at <code>24×24</code> viewBox with <code>stroke-width: 2</code> for crisp results.
-      </p>
-
-      <div class="demo-stage">
-        <!-- Leading icon -->
+      <div class="preview">
         <button class="btn btn-primary">
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Search
         </button>
-
-        <!-- Trailing icon -->
         <button class="btn btn-outline">
           Save to List
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
-
-        <!-- Icon only -->
         <button class="btn btn-outline btn-icon-only" aria-label="Share listing">
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </button>
-
-        <!-- With badge -->
         <button class="btn btn-secondary">
-          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          Cart
-          <span class="btn-badge">3</span>
+          Cart <span class="btn-badge">3</span>
+        </button>
+        <button class="btn btn-ghost btn-icon-only" aria-label="More options">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
         </button>
       </div>
 
       <div class="code-block">
-        <div class="code-bar"><span class="code-lang-tag">HTML — Icon Examples</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
         <pre><code><span class="c">&lt;!-- Leading icon --&gt;</span>
 <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>
-  <span class="t">&lt;svg</span> <span class="a">class</span>=<span class="s">"btn-icon"</span> <span class="a">aria-hidden</span>=<span class="s">"true"</span> <span class="c">...&gt;</span><span class="t">&lt;/svg&gt;</span>
+  <span class="t">&lt;svg</span> <span class="a">class</span>=<span class="s">"btn-icon"</span> <span class="a">aria-hidden</span>=<span class="s">"true"</span><span class="t">&gt;</span>...<span class="t">&lt;/svg&gt;</span>
   Search
 <span class="t">&lt;/button&gt;</span>
 
-<span class="c">&lt;!-- Icon only — always add aria-label --&gt;</span>
+<span class="c">&lt;!-- Icon-only — always include aria-label --&gt;</span>
 <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline btn-icon-only"</span>
         <span class="a">aria-label</span>=<span class="s">"Share listing"</span><span class="t">&gt;</span>
-  <span class="t">&lt;svg</span> <span class="a">class</span>=<span class="s">"btn-icon"</span> <span class="a">aria-hidden</span>=<span class="s">"true"</span> <span class="c">...&gt;</span><span class="t">&lt;/svg&gt;</span>
+  <span class="t">&lt;svg</span> <span class="a">class</span>=<span class="s">"btn-icon"</span> <span class="a">aria-hidden</span>=<span class="s">"true"</span><span class="t">&gt;</span>...<span class="t">&lt;/svg&gt;</span>
 <span class="t">&lt;/button&gt;</span>
 
 <span class="c">&lt;!-- Badge --&gt;</span>
@@ -866,188 +635,161 @@
       </div>
     </section>
 
-    <hr class="rule">
 
+    <!-- ════════════════════════════════════
+         SIZES
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="sizes">
+      <p class="doc-eyebrow">Scale</p>
+      <h2 class="doc-h2">Sizes</h2>
+      <p class="doc-lead">Five sizes. The default (no size class) is <strong>md</strong> at 44px — Apple's minimum touch target. Sizes scale down automatically on mobile.</p>
 
-    <!-- ════════════════════════════════════════
-         SIZES & RESPONSIVENESS
-    ════════════════════════════════════════ -->
-    <section id="sizes">
-      <h2 class="section-title">Sizes &amp; Responsiveness</h2>
-      <p class="body-text">
-        Five sizes are available. The default is <strong>md</strong> — no extra class needed. Sizes scale down
-        automatically on small screens: <code>xl → lg</code> below 480px, and <code>lg → md</code>
-        on the same breakpoint. At 360px, the unsized button steps down to <code>sm</code>.
-      </p>
-
-      <div class="demo-stage" style="flex-direction:column; align-items:flex-start; gap:20px;">
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-          <button class="btn btn-primary btn-xl">xl — Hero CTA</button>
-          <code style="color:#717171;font-size:12px;">h:60px · px:36px · 18px</code>
+      <div class="size-ruler">
+        <div class="size-item">
+          <button class="btn btn-primary btn-xl">Get Started</button>
+          <span class="size-tag">xl · 60px</span>
         </div>
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-          <button class="btn btn-primary btn-lg">lg — Section CTA</button>
-          <code style="color:#717171;font-size:12px;">h:52px · px:28px · 16px</code>
+        <div class="size-item">
+          <button class="btn btn-primary btn-lg">Book a Stay</button>
+          <span class="size-tag">lg · 52px</span>
         </div>
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-          <button class="btn btn-primary">md — Default</button>
-          <code style="color:#717171;font-size:12px;">h:44px · px:20px · 15px</code>
+        <div class="size-item">
+          <button class="btn btn-primary">Book Now</button>
+          <span class="size-tag">md · 44px</span>
         </div>
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-          <button class="btn btn-primary btn-sm">sm — Compact</button>
-          <code style="color:#717171;font-size:12px;">h:36px · px:14px · 13px</code>
+        <div class="size-item">
+          <button class="btn btn-primary btn-sm">Save</button>
+          <span class="size-tag">sm · 36px</span>
         </div>
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-          <button class="btn btn-primary btn-xs">xs — Tag / Chip</button>
-          <code style="color:#717171;font-size:12px;">h:28px · px:10px · 11px</code>
+        <div class="size-item">
+          <button class="btn btn-primary btn-xs">New</button>
+          <span class="size-tag">xs · 28px</span>
         </div>
       </div>
 
       <div class="code-block">
-        <div class="code-bar"><span class="code-lang-tag">HTML — Sizes</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-xl"</span><span class="t">&gt;</span>Hero CTA<span class="t">&lt;/button&gt;</span>
+        <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-xl"</span><span class="t">&gt;</span>XL<span class="t">&lt;/button&gt;</span>
 <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-lg"</span><span class="t">&gt;</span>Large<span class="t">&lt;/button&gt;</span>
-<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>Default (md)<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>Default md<span class="t">&lt;/button&gt;</span>
 <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-sm"</span><span class="t">&gt;</span>Small<span class="t">&lt;/button&gt;</span>
-<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-xs"</span><span class="t">&gt;</span>Extra Small<span class="t">&lt;/button&gt;</span></code></pre>
+<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-xs"</span><span class="t">&gt;</span>XS<span class="t">&lt;/button&gt;</span></code></pre>
       </div>
 
-      <!-- Full width -->
-      <p class="subsection-title" style="margin-top:28px;">Full Width</p>
-      <p class="body-text">Add <code>.btn-block</code> to make any button span its container — useful in mobile modals, checkout flows, and forms.</p>
-      <div class="demo-stage" style="flex-direction:column;">
+      <h3 class="doc-h3">Full width</h3>
+      <p class="doc-body">Add <code>.btn-block</code> to fill the container width. Used in checkout flows and mobile modals.</p>
+
+      <div class="preview col" style="max-width: 380px; gap: 10px;">
         <button class="btn btn-primary btn-block">Confirm &amp; Pay</button>
+        <button class="btn btn-outline btn-block">Save for Later</button>
       </div>
+
       <div class="code-block">
-        <div class="code-bar"><span class="code-lang-tag">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
         <pre><code><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary btn-block"</span><span class="t">&gt;</span>Confirm &amp; Pay<span class="t">&lt;/button&gt;</span></code></pre>
       </div>
     </section>
 
-    <hr class="rule">
 
-
-    <!-- ════════════════════════════════════════
+    <!-- ════════════════════════════════════
          STATES
-    ════════════════════════════════════════ -->
-    <section id="states">
-      <h2 class="section-title">States</h2>
-      <p class="body-text">
-        Every button passes through multiple states. CSS handles hover, focus, and active automatically.
-        Disabled and loading states require the appropriate HTML attribute or <code>button.js</code>.
-      </p>
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="states">
+      <p class="doc-eyebrow">Interaction</p>
+      <h2 class="doc-h2">States</h2>
+      <p class="doc-lead">Hover, focus, active, disabled, and loading states are all handled automatically. Focus rings only appear on keyboard navigation via <code>:focus-visible</code>.</p>
 
-      <div class="states-grid">
-        <div class="state-card">
+      <div class="states-row">
+        <div class="state-item">
           <button class="btn btn-primary" tabindex="-1">Default</button>
-          <span class="state-label">Default</span>
+          <span class="state-tag">default</span>
         </div>
-
-        <div class="state-card">
-          <!-- Simulated hover via inline style for static demo -->
+        <div class="state-item">
           <button class="btn btn-primary" style="background:#E8314F;border-color:#E8314F;box-shadow:0 6px 20px rgba(0,0,0,0.14);" tabindex="-1">Hover</button>
-          <span class="state-label">Hover</span>
+          <span class="state-tag">hover</span>
         </div>
-
-        <div class="state-card">
+        <div class="state-item">
           <button class="btn btn-primary" style="transform:scale(0.97);background:#CC2B47;" tabindex="-1">Active</button>
-          <span class="state-label">Active / Pressed</span>
+          <span class="state-tag">active</span>
         </div>
-
-        <div class="state-card">
+        <div class="state-item">
           <button class="btn btn-primary" style="box-shadow:0 0 0 3px rgba(255,56,92,0.30);" tabindex="-1">Focus</button>
-          <span class="state-label">Focus (keyboard)</span>
+          <span class="state-tag">focus</span>
         </div>
-
-        <div class="state-card">
+        <div class="state-item">
           <button class="btn btn-primary" disabled>Disabled</button>
-          <span class="state-label">Disabled</span>
+          <span class="state-tag">disabled</span>
         </div>
-
-        <div class="state-card">
-          <button class="btn btn-primary" data-loading="true" aria-busy="true" disabled>
+        <div class="state-item">
+          <button class="btn btn-primary" disabled style="opacity:0.82;">
             <span class="btn-spinner" aria-hidden="true"></span>
             Booking…
           </button>
-          <span class="state-label">Loading</span>
-        </div>
-
-        <div class="state-card">
-          <button class="btn btn-toggle is-selected" aria-pressed="true">Selected</button>
-          <span class="state-label">Toggle Selected</span>
-        </div>
-
-        <div class="state-card">
-          <button class="btn btn-toggle" aria-pressed="false">Unselected</button>
-          <span class="state-label">Toggle Default</span>
+          <span class="state-tag">loading</span>
         </div>
       </div>
 
-      <!-- Loading JS demo -->
-      <p class="subsection-title" style="margin-top:32px;">Loading State — Interactive</p>
-      <p class="body-text">
-        The loading state is managed by <code>button.js</code>. Call <code>ButtonSystem.loading(el, true)</code>
-        to activate, and <code>ButtonSystem.loading(el, false)</code> to restore. Or add
-        <code>data-loading-on-click</code> for automatic activation on click.
-      </p>
+      <h3 class="doc-h3">Loading state</h3>
+      <p class="doc-body">Call <code>ButtonSystem.loading(btn, true)</code> the moment an async action starts — it injects a spinner, disables the button, and sets <code>aria-busy</code>. Restore with <code>ButtonSystem.loading(btn, false)</code>.</p>
 
-      <div class="demo-stage">
-        <button class="btn btn-primary" id="loadingDemo" data-loading-text="Booking…">
-          Book Now
-        </button>
-        <button class="btn btn-outline btn-sm" onclick="triggerLoadingDemo()">
-          Simulate loading
-        </button>
+      <div class="preview">
+        <button class="btn btn-primary" id="loadingDemo" data-loading-text="Booking…">Book Now</button>
+        <button class="btn btn-outline btn-sm" onclick="triggerDemo()">Simulate</button>
       </div>
 
       <div class="code-block">
-        <div class="code-bar"><span class="code-lang-tag">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <pre><code><span class="k">const</span> btn = document.<span class="k">querySelector</span>(<span class="s">'#myBtn'</span>);
+        <div class="code-bar"><span class="code-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="k">const</span> btn = document.<span class="k">querySelector</span>(<span class="s">'#bookBtn'</span>);
 
-<span class="c">// Start loading</span>
-ButtonSystem.<span class="k">loading</span>(btn, <span class="k">true</span>);
+ButtonSystem.<span class="k">loading</span>(btn, <span class="k">true</span>);   <span class="c">// start</span>
+ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>);  <span class="c">// stop</span>
 
-<span class="c">// Stop loading (e.g. after API response)</span>
-ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>);
-
-<span class="c">// Or: auto-load on click with custom text</span>
+<span class="c">&lt;!-- Auto-trigger on click --&gt;</span>
 <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span>
         <span class="a">data-loading-on-click</span>
         <span class="a">data-loading-text</span>=<span class="s">"Booking…"</span><span class="t">&gt;</span>Book Now<span class="t">&lt;/button&gt;</span></code></pre>
       </div>
 
-      <!-- Disabled state notes -->
-      <div class="note warn" style="margin-top:24px;">
-        <p>Always use the native <code>disabled</code> attribute on <code>&lt;button&gt;</code> elements.
-        For <code>&lt;a&gt;</code> tags used as buttons, use <code>aria-disabled="true"</code> and
-        <code>tabindex="-1"</code> to prevent keyboard access.</p>
+      <h3 class="doc-h3">Toggle</h3>
+      <p class="doc-body">Add <code>.btn-toggle</code> for selectable filter chips. <code>button.js</code> handles <code>aria-pressed</code> and <code>.is-selected</code> on every click.</p>
+
+      <div class="preview">
+        <div class="btn-group">
+          <button class="btn btn-toggle is-selected" aria-pressed="true">Entire Place</button>
+          <button class="btn btn-toggle" aria-pressed="false">Private Room</button>
+          <button class="btn btn-toggle" aria-pressed="false">Shared Room</button>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"btn-group"</span><span class="t">&gt;</span>
+  <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-toggle is-selected"</span> <span class="a">aria-pressed</span>=<span class="s">"true"</span><span class="t">&gt;</span>Entire Place<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-toggle"</span> <span class="a">aria-pressed</span>=<span class="s">"false"</span><span class="t">&gt;</span>Private Room<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/div&gt;</span></code></pre>
       </div>
     </section>
 
-    <hr class="rule">
 
+    <!-- ════════════════════════════════════
+         GROUPS
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="groups">
+      <p class="doc-eyebrow">Composition</p>
+      <h2 class="doc-h2">Button Groups</h2>
+      <p class="doc-lead">Use <code>.btn-group</code> for spaced sets and <code>.btn-group-attached</code> for joined segmented controls.</p>
 
-    <!-- ════════════════════════════════════════
-         BUTTON GROUPS
-    ════════════════════════════════════════ -->
-    <section id="groups">
-      <h2 class="section-title">Button Groups</h2>
-      <p class="body-text">
-        Use <code>.btn-group</code> for spaced groups (filters, toolbars) and
-        <code>.btn-group-attached</code> for segmented, joined controls.
-      </p>
-
-      <p class="subsection-title">Spaced Group</p>
-      <div class="demo-stage">
+      <h3 class="doc-h3">Spaced</h3>
+      <div class="preview">
         <div class="btn-group">
-          <button class="btn btn-primary">Confirm</button>
+          <button class="btn btn-primary">Confirm Booking</button>
           <button class="btn btn-outline">Save Draft</button>
           <button class="btn btn-ghost">Cancel</button>
         </div>
       </div>
 
-      <p class="subsection-title">Attached / Segmented</p>
-      <div class="demo-stage">
+      <h3 class="doc-h3">Attached</h3>
+      <div class="preview">
         <div class="btn-group-attached">
           <button class="btn btn-outline">Day</button>
           <button class="btn btn-outline">Week</button>
@@ -1056,15 +798,13 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>);
       </div>
 
       <div class="code-block">
-        <div class="code-bar"><span class="code-lang-tag">HTML — Groups</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-        <pre><code><span class="c">&lt;!-- Spaced --&gt;</span>
-<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"btn-group"</span><span class="t">&gt;</span>
+        <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"btn-group"</span><span class="t">&gt;</span>               <span class="c">&lt;!-- spaced --&gt;</span>
   <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>Confirm<span class="t">&lt;/button&gt;</span>
-  <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Save Draft<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Save<span class="t">&lt;/button&gt;</span>
 <span class="t">&lt;/div&gt;</span>
 
-<span class="c">&lt;!-- Attached --&gt;</span>
-<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"btn-group-attached"</span><span class="t">&gt;</span>
+<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"btn-group-attached"</span><span class="t">&gt;</span>        <span class="c">&lt;!-- joined --&gt;</span>
   <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Day<span class="t">&lt;/button&gt;</span>
   <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Week<span class="t">&lt;/button&gt;</span>
   <span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"btn btn-outline"</span><span class="t">&gt;</span>Month<span class="t">&lt;/button&gt;</span>
@@ -1072,178 +812,177 @@ ButtonSystem.<span class="k">loading</span>(btn, <span class="k">false</span>);
       </div>
     </section>
 
-    <hr class="rule">
 
-
-    <!-- ════════════════════════════════════════
+    <!-- ════════════════════════════════════
          ACCESSIBILITY
-    ════════════════════════════════════════ -->
-    <section id="accessibility">
-      <h2 class="section-title">Accessibility</h2>
-      <p class="body-text">
-        The button system is built to meet <strong>WCAG 2.1 AA</strong>. All interactive states have visible
-        focus rings (3px offset with opacity), colours pass contrast requirements, and touch targets
-        meet the 44×44px minimum. Follow these rules to keep every button accessible:
-      </p>
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="accessibility">
+      <p class="doc-eyebrow">Standards</p>
+      <h2 class="doc-h2">Accessibility</h2>
+      <p class="doc-lead">The system meets WCAG 2.1 AA. Focus rings, colour contrast, 44px touch targets, and ARIA attributes are built in.</p>
 
-      <div class="spec-table">
-        <div class="spec-row"><span class="spec-key">Minimum touch target</span><span class="spec-val">44×44px (met by default md size)</span></div>
-        <div class="spec-row"><span class="spec-key">Focus indicator</span><span class="spec-val">3px ring, auto-applied on :focus-visible</span></div>
-        <div class="spec-row"><span class="spec-key">Color contrast</span><span class="spec-val">≥ 4.5:1 for all text on background</span></div>
-        <div class="spec-row"><span class="spec-key">Keyboard</span><span class="spec-val">Space / Enter activates; Tab navigates</span></div>
-        <div class="spec-row"><span class="spec-key">Screen reader</span><span class="spec-val">Use descriptive text or aria-label</span></div>
-        <div class="spec-row"><span class="spec-key">Disabled</span><span class="spec-val">native disabled attr or aria-disabled="true"</span></div>
-        <div class="spec-row"><span class="spec-key">Loading</span><span class="spec-val">aria-busy="true" + visually hidden status</span></div>
-        <div class="spec-row"><span class="spec-key">Toggle</span><span class="spec-val">aria-pressed="true/false" kept in sync by JS</span></div>
-        <div class="spec-row"><span class="spec-key">Icon-only</span><span class="spec-val">Always provide aria-label on the button</span></div>
-      </div>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Requirement</th><th>How it's met</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Touch target</td><td>Default md height is 44px — Apple's recommended minimum</td></tr>
+          <tr><td>Focus ring</td><td>3px offset ring on <code>:focus-visible</code> — keyboard-only, invisible on mouse click</td></tr>
+          <tr><td>Colour contrast</td><td>All variants tested at ≥ 4.5:1 against their backgrounds</td></tr>
+          <tr><td>Disabled</td><td>Use native <code>disabled</code> attribute — no extra ARIA needed</td></tr>
+          <tr><td>Loading</td><td><code>aria-busy="true"</code> set automatically by <code>button.js</code></td></tr>
+          <tr><td>Toggle</td><td><code>aria-pressed</code> kept in sync by <code>button.js</code></td></tr>
+          <tr><td>Icon-only</td><td>Always add <code>aria-label="…"</code> on the button element itself</td></tr>
+        </tbody>
+      </table>
 
-      <div class="note success" style="margin-top:20px;">
-        <p><strong>Tip:</strong> Never rely on colour alone to communicate button state.
-        Always pair colour changes with shape, text, or icon changes so the UI is usable
-        for colour-blind users.</p>
-      </div>
-    </section>
-
-    <hr class="rule">
-
-
-    <!-- ════════════════════════════════════════
-         BEST PRACTICES
-    ════════════════════════════════════════ -->
-    <section id="best-practices">
-      <h2 class="section-title">Best Practices</h2>
-
-      <div class="practices-grid">
-
-        <div class="practice-card do">
-          <span class="practice-badge">✓ Do</span>
-          <p class="practice-title">One primary button per view</p>
-          <p class="practice-desc">Use <code>.btn-primary</code> for the single most important action. A page should have at most one.</p>
-        </div>
-
-        <div class="practice-card dont">
-          <span class="practice-badge">✗ Don't</span>
-          <p class="practice-title">Stack multiple primary buttons</p>
-          <p class="practice-desc">Using <code>.btn-primary</code> for every CTA removes hierarchy and confuses users about what to do next.</p>
-        </div>
-
-        <div class="practice-card do">
-          <span class="practice-badge">✓ Do</span>
-          <p class="practice-title">Use verb-led labels</p>
-          <p class="practice-desc">"Book Now", "Save", "Confirm Stay" — labels should state exactly what happens when clicked.</p>
-        </div>
-
-        <div class="practice-card dont">
-          <span class="practice-badge">✗ Don't</span>
-          <p class="practice-title">Use vague labels</p>
-          <p class="practice-desc">"Click Here", "Submit", "OK" give users no context about the outcome of the action.</p>
-        </div>
-
-        <div class="practice-card do">
-          <span class="practice-badge">✓ Do</span>
-          <p class="practice-title">Use native &lt;button&gt;</p>
-          <p class="practice-desc">Always prefer <code>&lt;button type="button"&gt;</code>. It is keyboard-focusable, activatable, and semantically correct by default.</p>
-        </div>
-
-        <div class="practice-card dont">
-          <span class="practice-badge">✗ Don't</span>
-          <p class="practice-title">Use &lt;div&gt; or &lt;span&gt; as buttons</p>
-          <p class="practice-desc">Non-semantic elements require extensive ARIA and JS to replicate native button behaviour. Avoid unless absolutely necessary.</p>
-        </div>
-
-        <div class="practice-card do">
-          <span class="practice-badge">✓ Do</span>
-          <p class="practice-title">Confirm before destructive actions</p>
-          <p class="practice-desc">Always follow a <code>.btn-danger</code> click with a confirmation dialog before executing irreversible operations.</p>
-        </div>
-
-        <div class="practice-card dont">
-          <span class="practice-badge">✗ Don't</span>
-          <p class="practice-title">Use danger for non-destructive actions</p>
-          <p class="practice-desc">Red is a strong signal. Using it for "Close" or "Skip" trains users to ignore it — and hides real danger when it appears.</p>
-        </div>
-
-        <div class="practice-card do">
-          <span class="practice-badge">✓ Do</span>
-          <p class="practice-title">Show loading state on async actions</p>
-          <p class="practice-desc">Use <code>ButtonSystem.loading(btn, true)</code> immediately when an async action starts. Prevents double-submission.</p>
-        </div>
-
-        <div class="practice-card dont">
-          <span class="practice-badge">✗ Don't</span>
-          <p class="practice-title">Leave buttons interactive during loading</p>
-          <p class="practice-desc">Failing to disable a button while an API call is in-flight can cause duplicate bookings, payments, or form submissions.</p>
-        </div>
-
-        <div class="practice-card do">
-          <span class="practice-badge">✓ Do</span>
-          <p class="practice-title">Label icon-only buttons</p>
-          <p class="practice-desc">Always add <code>aria-label="Share listing"</code> on <code>.btn-icon-only</code> buttons. Screen readers cannot infer meaning from icons.</p>
-        </div>
-
-        <div class="practice-card dont">
-          <span class="practice-badge">✗ Don't</span>
-          <p class="practice-title">Use icons as the sole indicator</p>
-          <p class="practice-desc">On mobile and for users with cognitive disabilities, icon-only buttons can be ambiguous. Add a visible label when space permits.</p>
-        </div>
-
+      <div class="note blue" style="margin-top:24px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="#0071e3" stroke-width="1.3"/><path d="M8 7v4M8 5.5v.5" stroke="#0071e3" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>Always use a native <code>&lt;button&gt;</code> element. Avoid <code>&lt;div&gt;</code> — you'd need extensive ARIA wiring to replicate what the browser gives you for free.</span>
       </div>
     </section>
 
-    <hr class="rule">
+
+    <!-- ════════════════════════════════════
+         USAGE
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="usage">
+      <p class="doc-eyebrow">Guidelines</p>
+      <h2 class="doc-h2">Usage</h2>
+      <p class="doc-lead">A few principles that keep buttons consistent and purposeful across the product.</p>
+
+      <h3 class="doc-h3">One primary button per view</h3>
+      <p class="doc-body">The primary button signals the most important action on the screen. Using more than one dilutes that signal. If two strong actions are needed, make one primary and one outline.</p>
+
+      <h3 class="doc-h3">Label with a verb</h3>
+      <p class="doc-body">"Book Now", "Save to Wishlist", "Contact Host" — not "Submit" or "OK". The label should tell the user exactly what will happen when they tap.</p>
+
+      <h3 class="doc-h3">Confirm before destroying</h3>
+      <p class="doc-body">A <code>btn-danger</code> tap should always be followed by a confirmation dialog before executing. Never delete data on the first tap.</p>
+
+      <h3 class="doc-h3">Show progress on async actions</h3>
+      <p class="doc-body">The moment a button triggers an API call, enter the loading state. This prevents double-submission and reassures the user that something is happening.</p>
+
+      <div class="note orange">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2L14 13H2L8 2z" stroke="#c45508" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.5v3M8 11v.5" stroke="#c45508" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>Never rely on colour alone to communicate state. Disabled buttons must also have reduced opacity. Loading buttons must show a spinner — not just a colour shift.</span>
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════
+         INTEGRATION
+    ════════════════════════════════════ -->
+    <section class="doc-section" id="integration">
+      <p class="doc-eyebrow">Setup</p>
+      <h2 class="doc-h2">Integration</h2>
+      <p class="doc-body">Import <code>button.css</code> in your <code>&lt;head&gt;</code> after <code>colors.css</code>. Add <code>button.js</code> before <code>&lt;/body&gt;</code> only if you need loading states, ripple, or toggle behaviour.</p>
+
+      <div class="code-block">
+        <div class="code-bar"><span class="code-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="c">&lt;!-- In &lt;head&gt; --&gt;</span>
+<span class="t">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"https://holidayseva.com/UI/Atom/button/button.css"</span><span class="t">&gt;</span>
+
+<span class="c">&lt;!-- Before &lt;/body&gt; (optional) --&gt;</span>
+<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"https://holidayseva.com/UI/Atom/button/button.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
+      </div>
+
+      <h3 class="doc-h3">File structure</h3>
+      <div class="code-block">
+        <div class="code-bar"><span class="code-lang">Directory</span></div>
+        <pre><code>holidayseva.com/
+└── UI/
+    └── Atom/
+        └── button/
+            ├── button.css
+            └── button.js</code></pre>
+      </div>
+
+      <h3 class="doc-h3">Required <code>colors.css</code> additions</h3>
+      <p class="doc-body">These tokens are used by <code>button.css</code> but are not yet in your central <code>colors.css</code>. Add them to keep the token system consistent.</p>
+
+      <div class="token-callout">
+        <div class="token-callout-header">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 8h5M4 10.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Add to colors.css
+        </div>
+        <div class="code-block">
+          <div class="code-bar"><span class="code-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="c">/* Primary interaction states */</span>
+--color-primary-hover:    #E8314F;
+--color-primary-pressed:  #CC2B47;
+
+<span class="c">/* Ghost hover backgrounds */</span>
+--color-ghost-hover-bg:   rgba(34, 34, 34, 0.06);
+--color-ghost-pressed-bg: rgba(34, 34, 34, 0.10);
+
+<span class="c">/* Danger interaction states */</span>
+--color-danger-hover:     #A82C10;
+--color-danger-pressed:   #8E240D;
+
+<span class="c">/* Disabled surfaces */</span>
+--color-surface-disabled: #F5F5F5;
+--color-text-disabled:    #B0B0B0;
+--color-border-disabled:  #E0E0E0;</code></pre>
+        </div>
+      </div>
+
+    </section>
 
 
   </main>
 
-  <!-- ── Right TOC ──────────────────────────────────────────── -->
+  <!-- Right TOC sidebar -->
   <aside class="sidebar-right">
-    <?php include __DIR__ . '/right_sidebar.php'; ?>
+    <div class="toc-wrap">
+
+      <div class="toc-platforms">
+        <p class="toc-platforms-label">Supported platforms</p>
+        <div class="toc-platform-icons">
+          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" title="iPhone"><rect x="1" y="1" width="16" height="20" rx="3.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="18" r="1" fill="currentColor"/><path d="M7 3h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" title="iPad"><rect x="1" y="1" width="16" height="20" rx="2.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="18.5" r="1" fill="currentColor"/></svg>
+          <svg width="24" height="22" viewBox="0 0 24 22" fill="none" title="Mac"><rect x="1" y="1" width="22" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1 18h22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 18l1 3h6l1-3" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <svg width="24" height="20" viewBox="0 0 24 20" fill="none" title="TV"><rect x="1" y="1" width="22" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M9 15v4M15 15v4M7 19h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <svg width="14" height="22" viewBox="0 0 14 22" fill="none" title="Watch"><rect x="1" y="5" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a1 1 0 011-1h4a1 1 0 011 1V5M4 17v1.5a1 1 0 001 1h4a1 1 0 001-1V17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <ul class="toc-list" id="tocList">
+        <li><a class="toc-link" href="#overview">Button</a></li>
+        <li><a class="toc-link" href="#anatomy">Anatomy</a></li>
+        <li><a class="toc-link" href="#variations">Variants</a></li>
+        <li><a class="toc-link" href="#icons">Icons &amp; Badges</a></li>
+        <li><a class="toc-link" href="#sizes">Sizes</a></li>
+        <li><a class="toc-link" href="#states">States</a></li>
+        <li><a class="toc-link" href="#groups">Button Groups</a></li>
+        <li><a class="toc-link" href="#accessibility">Accessibility</a></li>
+        <li><a class="toc-link" href="#usage">Usage</a></li>
+        <li><a class="toc-link" href="#integration">Integration</a></li>
+      </ul>
+
+    </div>
   </aside>
 
 </div>
 
-<footer class="footer">
-  <span class="footer-text">HolidaySeva Design Guidelines · Button</span>
-  <span class="footer-text">v1.0</span>
-</footer>
-
+<?php include __DIR__ . '/footer.php'; ?>
 
 <script>
-  /* ── Copy code ─────────────────────────────────────────── */
   function copyCode(btn) {
-    const text = btn.closest('.code-block').querySelector('pre').innerText;
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(
+      btn.closest('.code-block').querySelector('pre').innerText
+    ).then(() => {
       btn.textContent = 'Copied';
       setTimeout(() => btn.textContent = 'Copy', 1800);
     });
   }
 
-  /* ── Loading demo ──────────────────────────────────────── */
-  function triggerLoadingDemo() {
+  function triggerDemo() {
     const btn = document.getElementById('loadingDemo');
     ButtonSystem.loading(btn, true);
     setTimeout(() => ButtonSystem.loading(btn, false), 2400);
   }
-
-  /* ── Scroll spy for TOC ────────────────────────────────── */
-  document.addEventListener('DOMContentLoaded', () => {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const sections = document.querySelectorAll('section[id], div[id]');
-    const spy = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(a => {
-            a.classList.remove('active');
-            if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
-          });
-        }
-      });
-    }, { rootMargin: '-15% 0px -75% 0px' });
-    sections.forEach(s => spy.observe(s));
-  });
 </script>
 
-<?php include __DIR__ . '/footer.php'; ?>
 </body>
 </html>
