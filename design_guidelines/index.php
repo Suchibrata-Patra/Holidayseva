@@ -305,7 +305,7 @@
         <div class="dg-shape dg-shape-6"></div>
       </div>
       <div class="dg-hero-content">
-        <h1 class="dg-hero-title">HIG<br>Human Interface Guidelines</h1>
+        <h1 class="dg-hero-title">{ HIG }<br>Human Interface Guidelines</h1>
         <p class="dg-hero-sub">Components, tokens, patterns, and integration guides for building Holidayseva products.</p>
       </div>
     </div>
