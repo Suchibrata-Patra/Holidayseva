@@ -65,7 +65,7 @@ function scanComponentCategory(string $baseDir, string $category): array {
         // anchor fallback: Category/Category.php#item e.g. Components/Components.php#toggle
         $phpFile = $fullPath . '/' . $entry . '.php';
         $page    = file_exists($phpFile)
-                   ? $category . '/' . $entry . '/' . $entry . '.php'
+                   ? $category . '/' . $entry . '.php'
                    : $category . '/' . $category . '.php#' . $entry;
 
         // Icon web URL — component-specific .ico if it exists
