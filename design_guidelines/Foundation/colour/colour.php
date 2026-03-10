@@ -337,14 +337,113 @@ a{color:var(--color-text-link);text-decoration:none}a:hover{text-decoration:unde
     <a href="#">Foundations</a><span class="breadcrumb-sep">›</span>
     <span>Color</span>
   </nav>
+  <h1 class="page-title">Color</h1>
+  <p class="page-intro"><em>Judicious use of color can enhance communication, evoke your brand, provide visual continuity, communicate status and feedback, and help people understand information.</em> All <?=$total?> tokens live in <code>colors.css</code> and adapt automatically between light and dark appearances.</p>
+  <div class="hero-strip">
+    <div class="hero-swatch" style="background:var(--color-primary)">
+      <p class="h-tag">Primary</p><p class="h-hex">#FF385C</p><p class="h-rgb">R 255 · G 56 · B 92</p>
+    </div>
+    <div class="hero-swatch" style="background:var(--color-accent)">
+      <p class="h-tag">Accent</p><p class="h-hex">#00A699</p><p class="h-rgb">R 0 · G 166 · B 153</p>
+    </div>
+  </div>
 </section>
+
+<!-- SYSTEM COLORS -->
+<hr class="page-rule"/>
+<section id="system-colors" class="doc-section" style="display:none;">
+  <p class="section-label">Palette</p>
+  <h2 class="section-title">System colors</h2>
+  <p class="section-body">Vibrant, semantically named hues calibrated separately for light and dark appearances. Each color also has an increased-contrast variant for accessibility environments.</p>
+
+  <div class="color-table-wrap">
+    <table class="color-table">
+      <colgroup><col style="width:90px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:160px"><col style="width:160px"></colgroup>
+      <thead><tr>
+        <th>Name</th><th>CSS Token</th>
+        <th>Default (light)</th><th>Default (dark)</th>
+        <th>Increased contrast (light)</th><th>Increased contrast (dark)</th>
+      </tr></thead>
+      <tbody>
+<?php
+$sysRows=[
+  ['Red',    '--sys-red',    '#FF3B30','255','59','48',   '#FF453A','255','69','58',   '#D70015','215','0','21',   '#FF6961','255','105','97'],
+  ['Orange', '--sys-orange', '#FF9500','255','149','0',   '#FF9F0A','255','159','10',  '#C93400','201','52','0',   '#FFB340','255','179','64'],
+  ['Yellow', '--sys-yellow', '#FFCC00','255','204','0',   '#FFD60A','255','214','10',  '#946200','148','98','0',   '#FFD426','255','212','38'],
+  ['Green',  '--sys-green',  '#34C759','52','199','89',   '#30D158','48','209','88',   '#248A3D','36','138','61',  '#30DB5B','48','219','91'],
+  ['Mint',   '--sys-mint',   '#00C7BE','0','199','190',   '#63E6E2','99','230','226',  '#0C817B','12','129','123', '#70D7D3','112','215','211'],
+  ['Teal',   '--sys-teal',   '#30B0C7','48','176','199',  '#40CBE0','64','203','224',  '#008299','0','130','153',  '#5BD8FF','91','216','255'],
+  ['Cyan',   '--sys-cyan',   '#32ADE6','50','173','230',  '#64D2FF','100','210','255', '#0071A4','0','113','164',  '#70D7FF','112','215','255'],
+  ['Blue',   '--sys-blue',   '#007AFF','0','122','255',   '#0A84FF','10','132','255',  '#0040DD','0','64','221',   '#409CFF','64','156','255'],
+  ['Indigo', '--sys-indigo', '#5856D6','88','86','214',   '#5E5CE6','94','92','230',   '#3634A3','54','52','163',  '#7D7AFF','125','122','255'],
+  ['Purple', '--sys-purple', '#AF52DE','175','82','222',  '#BF5AF2','191','90','242',  '#8944AB','137','68','171', '#DA8FFF','218','143','255'],
+  ['Pink',   '--sys-pink',   '#FF2D55','255','45','85',   '#FF375F','255','55','95',   '#D30F45','211','15','69',  '#FF6482','255','100','130'],
+  ['Brown',  '--sys-brown',  '#A2845E','162','132','94',  '#AC8E68','172','142','104', '#7F6545','127','101','69', '#B59469','181','148','105'],
+];
+foreach($sysRows as $r):?>
+<tr>
+  <td class="ct-name"><?=$r[0]?></td>
+  <td class="ct-token"><code style="background:none;border:none;color:var(--color-text-link);font-size:11px;padding:0"><?=$r[1]?></code></td>
+  <td class="ct-swatch"><div class="ct-inner"><div class="ct-box" style="background:<?=$r[2]?>"></div><div class="ct-rgb"><span>R <?=$r[3]?></span><span>G <?=$r[4]?></span><span>B <?=$r[5]?></span></div></div></td>
+  <td class="ct-swatch ct-dark"><div class="ct-inner"><div class="ct-box" style="background:<?=$r[6]?>"></div><div class="ct-rgb"><span>R <?=$r[7]?></span><span>G <?=$r[8]?></span><span>B <?=$r[9]?></span></div></div></td>
+  <td class="ct-swatch"><div class="ct-inner"><div class="ct-box" style="background:<?=$r[10]?>"></div><div class="ct-rgb"><span>R <?=$r[11]?></span><span>G <?=$r[12]?></span><span>B <?=$r[13]?></span></div></div></td>
+  <td class="ct-swatch ct-dark"><div class="ct-inner"><div class="ct-box" style="background:<?=$r[14]?>"></div><div class="ct-rgb"><span>R <?=$r[15]?></span><span>G <?=$r[16]?></span><span>B <?=$r[17]?></span></div></div></td>
+</tr>
+<?php endforeach;?>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GRAYS -->
+  <div class="gray-header" style="display:none;">
+    <h3>iOS · macOS system gray colors</h3>
+    <p>Six gray levels spanning dark text to near-white backgrounds. Each level shifts distinctly in dark mode to maintain identical perceptual weight on dark surfaces.</p>
+  </div>
+  <div class="color-table-wrap">
+    <table class="color-table">
+      <colgroup><col style="width:90px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:160px"><col style="width:160px"></colgroup>
+      <thead><tr>
+        <th>Name</th><th>CSS Token</th>
+        <th>Default (light)</th><th>Default (dark)</th>
+        <th>Increased contrast (light)</th><th>Increased contrast (dark)</th>
+      </tr></thead>
+      <tbody>
+<?php
+$grayRows=[
+  ['Gray',   '--sys-gray-1','#8E8E93','142','142','147','#8E8E93','142','142','147','#6C6C70','108','108','112','#AEAEB2','174','174','178'],
+  ['Gray 2', '--sys-gray-2','#AEAEB2','174','174','178','#636366','99','99','102',  '#8E8E93','142','142','147','#7C7C80','124','124','128'],
+  ['Gray 3', '--sys-gray-3','#C7C7CC','199','199','204','#48484A','72','72','74',   '#AEAEB2','174','174','178','#545456','84','84','86'],
+  ['Gray 4', '--sys-gray-4','#D1D1D6','209','209','214','#3A3A3C','58','58','60',   '#BCBCC0','188','188','192','#444446','68','68','70'],
+  ['Gray 5', '--sys-gray-5','#E5E5EA','229','229','234','#2C2C2E','44','44','46',   '#D8D8DC','216','216','220','#363638','54','54','56'],
+  ['Gray 6', '--sys-gray-6','#F2F2F7','242','242','247','#1C1C1E','28','28','30',   '#E9E9EE','233','233','238','#242426','36','36','38'],
+];
+foreach($grayRows as $g):?>
+<tr>
+  <td class="ct-name"><?=$g[0]?></td>
+  <td class="ct-token"><code style="background:none;border:none;color:var(--color-text-link);font-size:11px;padding:0"><?=$g[1]?></code></td>
+  <td class="ct-swatch"><div class="ct-inner"><div class="ct-box" style="background:<?=$g[2]?>;<?=isLight($g[2])?'border-color:#D2D2D7':''?>"></div><div class="ct-rgb"><span>R <?=$g[3]?></span><span>G <?=$g[4]?></span><span>B <?=$g[5]?></span></div></div></td>
+  <td class="ct-swatch ct-dark"><div class="ct-inner"><div class="ct-box" style="background:<?=$g[6]?>"></div><div class="ct-rgb"><span>R <?=$g[7]?></span><span>G <?=$g[8]?></span><span>B <?=$g[9]?></span></div></div></td>
+  <td class="ct-swatch"><div class="ct-inner"><div class="ct-box" style="background:<?=$g[10]?>;<?=isLight($g[10])?'border-color:#D2D2D7':''?>"></div><div class="ct-rgb"><span>R <?=$g[11]?></span><span>G <?=$g[12]?></span><span>B <?=$g[13]?></span></div></div></td>
+  <td class="ct-swatch ct-dark"><div class="ct-inner"><div class="ct-box" style="background:<?=$g[14]?>"></div><div class="ct-rgb"><span>R <?=$g[15]?></span><span>G <?=$g[16]?></span><span>B <?=$g[17]?></span></div></div></td>
+</tr>
+<?php endforeach;?>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 
 <!-- ALL TOKENS -->
 <hr class="page-rule"/>
 <section id="all-tokens" class="doc-section">
   <p class="section-label">Complete Reference</p>
-  <h2 class="section-title">All Colour Tokens</h2>
+  <h2 class="section-title">All tokens</h2>
   <p class="section-body">Every CSS custom property defined in <code>colors.css</code> — all <?=$total?> tokens with light value, dark value, and semantic usage note.</p>
+
+  <div class="callout c-note" style="margin-top:28px">
+    <span class="callout-icon">ℹ️</span>
+    <div class="callout-text"><strong>Token-only rule.</strong> Components must use <code>var(--token-name)</code> exclusively. Dark mode is handled automatically — no extra CSS needed in any component file.</div>
+  </div>
 
   <div class="full-token-wrap">
     <table class="full-token-table">
@@ -478,5 +577,4 @@ foreach($a11y as [$bg,$fg,$label,$token,$bgHex,$ratio,$bc,$level,$use]):?>
   secs.forEach(s=>obs.observe(s));
 })();
 </script>
-<?php include $partials . 'footer.php'; ?>
 </body></html>
