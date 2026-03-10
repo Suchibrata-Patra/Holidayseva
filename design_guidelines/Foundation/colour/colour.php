@@ -199,6 +199,7 @@ $total = array_sum(array_map('count',$tokenGroups));
 <title><?=htmlspecialchars($pageTitle)?> — Design Guidelines · Holidayseva</title>
 <link rel="stylesheet" href="/colors.css"/>
 <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css"/>
+<link rel="stylesheet" href="https://developer.holidayseva.com/design-system.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;scroll-behavior:smooth}
