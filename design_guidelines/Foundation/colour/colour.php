@@ -415,7 +415,6 @@ foreach($grayRows as $g):?>
 
 
 <!-- ALL TOKENS -->
-<hr class="page-rule"/>
 <section id="all-tokens" class="doc-section">
   <p class="section-label">Complete Reference</p>
   <h2 class="section-title">All tokens</h2>
@@ -447,7 +446,6 @@ foreach($grayRows as $g):?>
 </section>
 
 <!-- ACCESSIBILITY -->
-<hr class="page-rule"/>
 <section id="accessibility" class="doc-section">
   <p class="section-label">WCAG 2.1</p>
   <h2 class="section-title">Accessibility &amp; contrast</h2>
@@ -483,7 +481,6 @@ foreach($a11y as [$bg,$fg,$label,$token,$bgHex,$ratio,$bc,$level,$use]):?>
 </section>
 
 <!-- USAGE -->
-<hr class="page-rule"/>
 <section id="usage" class="doc-section">
   <p class="section-label">Implementation</p>
   <h2 class="section-title">Usage</h2>
