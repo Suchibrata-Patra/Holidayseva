@@ -10,11 +10,12 @@
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-// Site web root — all asset URLs are built from this
-define('SITE_WEB_ROOT', 'https://holidayseva.com');
-
-// design_guidelines lives at /design_guidelines/ on the web root
-define('DESIGN_GUIDELINES_WEB', SITE_WEB_ROOT . '/design_guidelines');
+if (!defined('SITE_WEB_ROOT')) {
+  define('SITE_WEB_ROOT', 'https://holidayseva.com');
+}
+if (!defined('DESIGN_GUIDELINES_WEB')) {
+  define('DESIGN_GUIDELINES_WEB', SITE_WEB_ROOT . '/design_guidelines');
+}
 
 /**
  * Convert a filesystem path under public_html into a full https:// URL.
