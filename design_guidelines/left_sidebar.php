@@ -10,22 +10,26 @@
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
+// Site web root — all asset URLs are built from this
+// developer.holidayseva.com IS the design_guidelines web root
 if (!defined('SITE_WEB_ROOT')) {
-  define('SITE_WEB_ROOT', 'https://holidayseva.com');
+    define('SITE_WEB_ROOT', 'https://developer.holidayseva.com');
 }
 if (!defined('DESIGN_GUIDELINES_WEB')) {
-  define('DESIGN_GUIDELINES_WEB', SITE_WEB_ROOT . '/design_guidelines');
+    define('DESIGN_GUIDELINES_WEB', SITE_WEB_ROOT);
 }
 
 /**
  * Convert a filesystem path under public_html into a full https:// URL.
- * e.g. /home/.../public_html/design_guidelines/Atom/button/button.ico
- *   => https://holidayseva.com/design_guidelines/Atom/button/button.ico
+ * e.g. /Users/suchibratapatra/Documents/Holidayseva/design_guidelines/Atom/button/button.ico
+ *   => https://developer.holidayseva.com/Atom/button/button.ico
  */
+if (!function_exists('fsToWebUrl')):
 function fsToWebUrl(string $fsPath): string {
-    // Strip everything up to and including public_html
-    if (preg_match('#public_html(/.+)$#', $fsPath, $m)) {
-        return SITE_WEB_ROOT . $m[1];
+    // Strip the design_guidelines root from the filesystem path
+    $fsRoot = rtrim(__DIR__, '/');
+    if (strpos($fsPath, $fsRoot) === 0) {
+        return SITE_WEB_ROOT . substr($fsPath, strlen($fsRoot));
     }
     // Fallback: strip DOCUMENT_ROOT
     $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/');
@@ -34,6 +38,7 @@ function fsToWebUrl(string $fsPath): string {
     }
     return $fsPath;
 }
+endif;
 
 /**
  * Scan a category directory and return component entries.
@@ -41,12 +46,14 @@ function fsToWebUrl(string $fsPath): string {
  * - Otherwise                         → links to {Category}.php#{name} (anchor)
  * - Checks for {name}.ico in subfolder and records its web URL if found.
  */
+if (!function_exists('scanComponentCategory')):
 function scanComponentCategory(string $baseDir, string $category): array {
     $catPath = rtrim($baseDir, '/') . '/' . $category;
     if (!is_dir($catPath)) return [];
 
     $components = [];
-    $entries    = scandir($catPath);
+    $entries    = @scandir($catPath);
+    if (!$entries) return [];
 
     foreach ($entries as $entry) {
         if ($entry === '.' || $entry === '..') continue;
@@ -74,12 +81,14 @@ function scanComponentCategory(string $baseDir, string $category): array {
     usort($components, fn($a, $b) => strcmp($a['label'], $b['label']));
     return $components;
 }
+endif;
 
 /**
  * Render the icon for a sidebar link.
  * Uses proper https:// web URLs for all <img> sources.
  * Falls back to inline SVGs when no .ico is found.
  */
+if (!function_exists('renderComponentIcon')):
 function renderComponentIcon(?string $iconWebUrl, string $defaultIconWebUrl, string $name): string {
     if ($iconWebUrl) {
         return '<img src="' . htmlspecialchars($iconWebUrl) . '" width="14" height="14" alt="" style="flex-shrink:0;margin-top:1px;opacity:.75;" />';
@@ -138,10 +147,11 @@ function renderComponentIcon(?string $iconWebUrl, string $defaultIconWebUrl, str
     $inner = $svgs[$name] ?? '<circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 5.5v5M8 12v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>';
     return '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:1px;">' . $inner . '</svg>';
 }
+endif;
 
 // ── Configuration ───────────────────────────────────────────────────────────
 
-// Filesystem base — __DIR__ is the design_guidelines folder (used only for scandir)
+// Filesystem base — __DIR__ is the design_guidelines folder; Atom/Components/etc. live directly inside it
 $baseDir        = __DIR__;
 
 // Default icon — served via https, no filesystem path needed in HTML
