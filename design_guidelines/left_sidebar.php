@@ -26,7 +26,8 @@ if (!defined('DESIGN_GUIDELINES_WEB')) {
  */
 if (!function_exists('fsToWebUrl')):
 function fsToWebUrl(string $fsPath): string {
-    // Strip the design_guidelines root from the filesystem path
+    // Strip from design_guidelines root (__DIR__ of this file)
+    // e.g. /…/design_guidelines/UI/Atom/button/button.ico → /UI/Atom/button/button.ico
     $fsRoot = rtrim(__DIR__, '/');
     if (strpos($fsPath, $fsRoot) === 0) {
         return SITE_WEB_ROOT . substr($fsPath, strlen($fsRoot));
@@ -60,13 +61,10 @@ function scanComponentCategory(string $baseDir, string $category): array {
         $fullPath = $catPath . '/' . $entry;
         if (!is_dir($fullPath)) continue;
 
-        // Link target — URLs are relative to the web root (developer.holidayseva.com)
-        // dedicated page:  Category/item.php          e.g. Components/toggle.php
-        // anchor fallback: Category/Category.php#item e.g. Components/Components.php#toggle
-        $phpFile = $fullPath . '/' . $entry . '.php';
-        $page    = file_exists($phpFile)
-                   ? $category . '/' . $entry . '.php'
-                   : $category . '/' . $category . '.php#' . $entry;
+        // All components link as anchors to the category page:
+        // UI/Atom/Atom.php#button, UI/Forms/Forms.php#date-picker, etc.
+        // Individual component .php files don't exist — only .css files live in each subfolder.
+        $page = 'UI/' . $category . '/' . $category . '.php#' . $entry;
 
         // Icon web URL — component-specific .ico if it exists
         $icoFile   = $fullPath . '/' . $entry . '.ico';
@@ -153,18 +151,26 @@ endif;
 
 // ── Configuration ───────────────────────────────────────────────────────────
 
-// Filesystem base — __DIR__ is the design_guidelines folder; Atom/Components/etc. live directly inside it
-$baseDir        = __DIR__;
+// Filesystem base — categories live inside design_guidelines/UI/
+$baseDir        = __DIR__ . '/UI';
 
 // Default icon — served via https, no filesystem path needed in HTML
 $defaultIconUrl = SITE_WEB_ROOT . '/Assets/favicon.ico';
 
-// Categories to show as collapsible sections
+// Categories — must match folder names exactly inside UI/
 $categories = [
     'Atom'        => 'Atom',
-    'Components'  => 'Components',
-    'Composite'   => 'Composite',
+    'Forms'       => 'Forms',
+    'Layout'      => 'Layout',
+    'Navigation'  => 'Navigation',
+    'Interactive' => 'Interactive',
     'DataDisplay' => 'Data Display',
+    'Feedback'    => 'Feedback',
+    'Composite'   => 'Composite',
+    'Media'       => 'Media',
+    'Utilities'   => 'Utilities',
+    'Foundation'  => 'Foundation',
+    'Components'  => 'Components',
 ];
 
 // Detect current page — SCRIPT_FILENAME is reliable even when this file is included
@@ -305,9 +311,17 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
       // Choose category icon
       $catIcons = [
         'Atom'        => '<circle cx="8" cy="8" r="2" fill="currentColor"/><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2"/><ellipse cx="8" cy="8" rx="5.5" ry="2" stroke="currentColor" stroke-width="1.2"/>',
-        'Components'  => '<rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M9 11.5h5M11.5 9v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
-        'Composite'   => '<rect x="1.5" y="3" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="6" y="7" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>',
+        'Forms'       => '<rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
+        'Layout'      => '<rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 6h12M6 6v8" stroke="currentColor" stroke-width="1.2"/>',
+        'Navigation'  => '<path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+        'Interactive' => '<rect x="2" y="4" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 4V2M11 4V2M2 8h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
         'DataDisplay' => '<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 11l2.5-3 2 2 2-4 2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>',
+        'Feedback'    => '<circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+        'Composite'   => '<rect x="1.5" y="3" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="6" y="7" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>',
+        'Media'       => '<rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 6.5l4 2.5-4 2.5V6.5z" fill="currentColor" opacity=".7"/>',
+        'Utilities'   => '<path d="M3 4h10M3 8h6M3 12h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="13" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/>',
+        'Foundation'  => '<rect x="2" y="10" width="12" height="3" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M8 3v7M5 6l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>',
+        'Components'  => '<rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M9 11.5h5M11.5 9v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
       ];
       $catIconInner = $catIcons[$dir] ?? '<rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/>';
     ?>
