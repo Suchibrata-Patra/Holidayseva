@@ -4,7 +4,7 @@
  * Design Guidelines — Color System
  * developer.holidayseva.com
  * 
- * Integrated with left_sidebar.php and right_sidebar.php
+ * Integrated with header.php, left_sidebar.php, and right_sidebar.php
  * All colors managed via colors.css CSS variables only
  */
 
@@ -12,7 +12,7 @@
 $pageTitle       = 'Colors';
 $pageDescription = 'Color tokens, semantic usage, and accessibility guidelines for the Holidayseva design system.';
 $activePage      = 'colors'; // used by left_sidebar to mark the active link
-$partials        = __DIR__; // Directory for sidebar includes
+$partials        = __DIR__ . '/../../'; // Directory for shared partials
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,72 +40,13 @@ $partials        = __DIR__; // Directory for sidebar includes
       min-height: 100vh;
     }
 
-    /* ── Shell layout ──────────────────────────────────────────────────────── */
+    /* ── Shell layout (adjusted for external header) ──────────────────────── */
     .shell {
       display: grid;
       grid-template-columns: 260px 1fr 220px;
-      grid-template-rows: auto 1fr;
-      grid-template-areas:
-        "topbar topbar topbar"
-        "left   main   right";
-      min-height: 100vh;
-    }
-
-    /* ── Top bar ───────────────────────────────────────────────────────────── */
-    .topbar {
-      grid-area: topbar;
-      height: 52px;
-      background: var(--color-surface-overlay);
-      border-bottom: 1px solid var(--color-border);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      gap: 0;
-    }
-
-    .topbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      margin-right: auto;
-    }
-
-    .topbar-logo {
-      width: 26px;
-      height: 26px;
-      background: var(--color-primary);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .topbar-logo svg { color: #fff; }
-
-    .topbar-wordmark {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--color-text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .topbar-sep {
-      width: 1px;
-      height: 18px;
-      background: var(--color-border);
-      margin: 0 14px;
-    }
-
-    .topbar-section {
-      font-size: 13px;
-      color: var(--color-text-secondary);
-      letter-spacing: -0.01em;
+      grid-template-rows: 1fr;
+      grid-template-areas: "left   main   right";
+      min-height: calc(100vh - var(--header-h, 96px));
     }
 
     /* ── Sidebars ──────────────────────────────────────────────────────────── */
@@ -113,8 +54,8 @@ $partials        = __DIR__; // Directory for sidebar includes
       grid-area: left;
       border-right: 1px solid var(--color-border);
       position: sticky;
-      top: 52px;
-      height: calc(100vh - 52px);
+      top: var(--header-h, 96px);
+      height: calc(100vh - var(--header-h, 96px));
       overflow-y: auto;
       padding: 20px 0;
       scrollbar-width: thin;
@@ -125,8 +66,8 @@ $partials        = __DIR__; // Directory for sidebar includes
       grid-area: right;
       border-left: 1px solid var(--color-border);
       position: sticky;
-      top: 52px;
-      height: calc(100vh - 52px);
+      top: var(--header-h, 96px);
+      height: calc(100vh - var(--header-h, 96px));
       overflow-y: auto;
       padding: 0;
       scrollbar-width: thin;
@@ -138,6 +79,7 @@ $partials        = __DIR__; // Directory for sidebar includes
       grid-area: main;
       padding: 52px 60px 80px 60px;
       max-width: 860px;
+      margin-top: 0;
     }
 
     /* ── Section spacing ───────────────────────────────────────────────────── */
@@ -661,40 +603,34 @@ $partials        = __DIR__; // Directory for sidebar includes
     /* ── Responsive ────────────────────────────────────────────────────── */
     @media (max-width: 1280px) {
       .shell { grid-template-columns: 200px 1fr 180px; }
-      .main-content { padding: 52px 40px 80px 40px; }
+      .main-content { padding: 40px 40px 80px 40px; }
     }
 
     @media (max-width: 1024px) {
-      .shell { grid-template-columns: 1fr; grid-template-areas: "topbar" "main"; }
+      .shell { 
+        grid-template-columns: 1fr; 
+        grid-template-areas: "main"; 
+      }
       .sidebar-left, .sidebar-right { display: none; }
-      .main-content { padding: 52px 32px 80px 32px; max-width: 100%; }
+      .main-content { 
+        padding: 40px 32px 80px 32px; 
+        max-width: 100%; 
+      }
       .do-dont-grid { grid-template-columns: 1fr; }
     }
+
   </style>
 </head>
 
 <body>
 
-<div class="shell">
+<?php include $partials . 'header.php'; ?>
 
-  <!-- ── Top bar ────────────────────────────────────────────────────────── -->
-  <header class="topbar">
-    <a class="topbar-brand" href="/">
-      <div class="topbar-logo">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8Z" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M8 5V8L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <span class="topbar-wordmark">Holidayseva</span>
-    </a>
-    <div class="topbar-sep"></div>
-    <span class="topbar-section">Design Guidelines</span>
-  </header>
+<div class="shell">
 
   <!-- ── Left sidebar ────────────────────────────────────────────────────– -->
   <aside class="sidebar-left">
-  <?php include $partials . '/left_sidebar.php'; ?>
+  <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
 
   <!-- ── Main content ───────────────────────────────────────────────────── -->
@@ -1256,7 +1192,7 @@ ctx.fillStyle = textPrim;</pre>
 
   <!-- ── Right sidebar ────────────────────────────────────────────────────– -->
   <aside class="sidebar-right">
-  <?php include $partials . '/right_sidebar.php'; ?>
+  <?php include $partials . 'right_sidebar.php'; ?>
   </aside>
 
 </div><!-- .shell -->
