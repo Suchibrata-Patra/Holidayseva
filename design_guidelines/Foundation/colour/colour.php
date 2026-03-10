@@ -339,14 +339,6 @@ a{color:var(--color-text-link);text-decoration:none}a:hover{text-decoration:unde
   </nav>
   <h1 class="page-title">Color</h1>
   <p class="page-intro"><em>Judicious use of color can enhance communication, evoke your brand, provide visual continuity, communicate status and feedback, and help people understand information.</em> All <?=$total?> tokens live in <code>colors.css</code> and adapt automatically between light and dark appearances.</p>
-  <div class="hero-strip">
-    <div class="hero-swatch" style="background:var(--color-primary)">
-      <p class="h-tag">Primary</p><p class="h-hex">#FF385C</p><p class="h-rgb">R 255 · G 56 · B 92</p>
-    </div>
-    <div class="hero-swatch" style="background:var(--color-accent)">
-      <p class="h-tag">Accent</p><p class="h-hex">#00A699</p><p class="h-rgb">R 0 · G 166 · B 153</p>
-    </div>
-  </div>
 </section>
 
 <!-- SYSTEM COLORS -->
