@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+        }
+
+        .wrap {
+            width: 360px;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 14px;
+        }
+
+        .label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1d1d1f;
+            letter-spacing: -0.2px;
+        }
+
+        .val {
+            font-size: 15px;
+            font-weight: 400;
+            color: #86868b;
+            letter-spacing: -0.2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ── TRACK ── */
+        .track {
+            position: relative;
+            height: 4px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            padding: 18px 0;
+            margin: -18px 0;
+        }
+
+        .track-inner {
+            position: relative;
+            height: 4px;
+            border-radius: 2px;
+            /* no grey — ultra-thin hairline */
+            background: rgba(0, 0, 0, 0.07);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* ── FILL — glass tinted dark ── */
+        .fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            border-radius: 2px;
+            pointer-events: none;
+
+            /* frosted dark glass */
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px) saturate(180%);
+            -webkit-backdrop-filter: blur(8px) saturate(180%);
+
+            /* subtle top sheen */
+            box-shadow:
+                inset 0 0.5px 0 rgba(255, 255, 255, 0.18),
+                inset 0 -0.5px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        /* ── THUMB ── */
+        .thumb {
+            position: absolute;
+            top: 50%;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+            will-change: left, width, height, border-radius, background, backdrop-filter;
+            z-index: 2;
+
+            /* default: crisp white pill */
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px) saturate(200%);
+            -webkit-backdrop-filter: blur(12px) saturate(200%);
+            border: 0.5px solid rgba(255, 255, 255, 0.9);
+            box-shadow:
+                0 0 0 0.5px rgba(0, 0, 0, 0.08),
+                0 2px 6px rgba(0, 0, 0, 0.13),
+                0 4px 14px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+
+            transition:
+                width 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+                height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-radius 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.2s ease,
+                box-shadow 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+        /* inner gloss streak */
+        .thumb::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.7);
+            filter: blur(1.5px);
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        /* ── PRESSED: transparent jelly pill ── */
+        .thumb.dragging {
+            cursor: grabbing;
+            width: 36px;
+            height: 19px;
+            border-radius: 10px;
+
+            /* go transparent — glass jelly */
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(20px) saturate(220%);
+            -webkit-backdrop-filter: blur(20px) saturate(220%);
+            border: 0.5px solid rgba(255, 255, 255, 0.55);
+
+            box-shadow:
+                0 0 0 0.5px rgba(0, 0, 0, 0.04),
+                0 4px 16px rgba(0, 0, 0, 0.12),
+                0 8px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .thumb.dragging::before {
+            opacity: 0.4;
+            width: 16px;
+        }
+
+        /* ── RELEASE JELLY ── */
+        @keyframes jellyBack {
+            0% {
+                width: 36px;
+                height: 19px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.28);
+            }
+
+            22% {
+                width: 16px;
+                height: 26px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.55);
+            }
+
+            44% {
+                width: 26px;
+                height: 19px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.72);
+            }
+
+            62% {
+                width: 19px;
+                height: 24px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.84);
+            }
+
+            78% {
+                width: 24px;
+                height: 21px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.90);
+            }
+
+            90% {
+                width: 21px;
+                height: 22px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.92);
+            }
+
+            100% {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.92);
+            }
+        }
+
+        .thumb.pop {
+            animation: jellyBack 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <div class="top-row">
+            <span class="label">Brightness</span>
+            <span class="val" id="val">75%</span>
+        </div>
+        <div class="track" id="track">
+            <div class="track-inner" id="trackInner">
+                <div class="fill" id="fill"></div>
+                <div class="thumb" id="thumb"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const trackInner = document.getElementById('trackInner');
+        const track = document.getElementById('track');
+        const thumb = document.getElementById('thumb');
+        const fill = document.getElementById('fill');
+        const valEl = document.getElementById('val');
+
+        let value = 75;
+        let dragging = false;
+        let lastHapticV = 75;
+
+        function haptic(strong) {
+            if (navigator.vibrate) navigator.vibrate(strong ? 20 : 8);
+            try {
+                const ac = new (window.AudioContext || window.webkitAudioContext)();
+                const buf = ac.createBuffer(1, 1, 22050);
+                const src = ac.createBufferSource();
+                src.buffer = buf;
+                src.connect(ac.destination);
+                src.start(0);
+                setTimeout(() => ac.close(), 80);
+            } catch (_) { }
+        }
+
+        function set(v, fromDrag) {
+            value = Math.max(0, Math.min(100, v));
+            thumb.style.left = value + '%';
+            fill.style.width = value + '%';
+            valEl.textContent = Math.round(value) + '%';
+
+            if (fromDrag) {
+                const snap = Math.round(value / 5) * 5;
+                const last = Math.round(lastHapticV / 5) * 5;
+                if (snap !== last) {
+                    haptic(snap === 0 || snap === 100);
+                    lastHapticV = value;
+                }
+            }
+        }
+
+        function toVal(clientX) {
+            const r = trackInner.getBoundingClientRect();
+            return ((clientX - r.left) / r.width) * 100;
+        }
+
+        function press() {
+            dragging = true;
+            thumb.classList.remove('pop');
+            thumb.classList.add('dragging');
+            haptic(false);
+        }
+
+        function release() {
+            if (!dragging) return;
+            dragging = false;
+            thumb.classList.remove('dragging');
+            void thumb.offsetWidth;
+            thumb.classList.add('pop');
+            haptic(true);
+            setTimeout(() => thumb.classList.remove('pop'), 580);
+        }
+
+        set(value);
+
+        thumb.addEventListener('mousedown', e => { press(); e.preventDefault(); });
+        document.addEventListener('mousemove', e => { if (dragging) set(toVal(e.clientX), true); });
+        document.addEventListener('mouseup', release);
+
+        track.addEventListener('click', e => {
+            if (e.target === thumb) return;
+            set(toVal(e.clientX));
+            thumb.classList.remove('pop');
+            void thumb.offsetWidth;
+            thumb.classList.add('pop');
+            haptic(false);
+            setTimeout(() => thumb.classList.remove('pop'), 580);
+        });
+
+        thumb.addEventListener('touchstart', () => press(), { passive: true });
+        document.addEventListener('touchmove', e => { if (dragging) set(toVal(e.touches[0].clientX), true); }, { passive: true });
+        document.addEventListener('touchend', release);
+
+        track.setAttribute('tabindex', '0');
+        track.addEventListener('keydown', e => {
+            const step = e.shiftKey ? 10 : 1;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { set(value + step); haptic(false); }
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(value - step); haptic(false); }
+        });
+    </script>
+</body>
+
+</html>
