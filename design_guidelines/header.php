@@ -86,7 +86,6 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
 
   <ul class="section-nav-tabs" role="list">
     <li><a href="#">Overview</a></li>
-    <li><a href="#" class="active">Guidelines</a></li>
     <li><a href="#">Resources</a></li>
   </ul>
 
