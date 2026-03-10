@@ -11,56 +11,87 @@
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 /**
- * Scan a category directory and return an array of component entries:
- *   [ 'name' => 'button', 'page' => 'button.php', 'icon' => 'path/to/icon or null' ]
+ * Convert an absolute filesystem path to a web-root-relative URL.
+ * e.g. /home/u123/domains/holidayseva.com/public_html/design_guidelines/Atom/button/button.ico
+ *   => /design_guidelines/Atom/button/button.ico
+ */
+function fsPathToWebUrl(string $fsPath): string {
+    // Find the document root and strip it
+    $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/');
+    if ($docRoot && strpos($fsPath, $docRoot) === 0) {
+        return str_replace('\\', '/', substr($fsPath, strlen($docRoot)));
+    }
+    // Fallback: walk up until we find public_html, then take everything after it
+    if (preg_match('#public_html(/.*)?$#', $fsPath, $m)) {
+        return $m[1] ?? '/';
+    }
+    return $fsPath; // last resort — return as-is
+}
+
+/**
+ * Scan a category directory and return component entries.
+ * Strategy:
+ *   1. If the sub-folder contains a {name}.php → link to {name}.php (flat URL)
+ *   2. Otherwise, list the folder as a component item linking to
+ *      the category page with a hash anchor (CategoryName.php#{name})
+ *   This handles Atom (has .php per component) AND Composite/DataDisplay
+ *   (only has .css per component, actual page is at category level).
  */
 function scanComponentCategory(string $baseDir, string $category): array {
     $catPath = rtrim($baseDir, '/') . '/' . $category;
     if (!is_dir($catPath)) return [];
 
     $components = [];
-    $entries = scandir($catPath);
+    $entries    = scandir($catPath);
 
     foreach ($entries as $entry) {
         if ($entry === '.' || $entry === '..') continue;
         $fullPath = $catPath . '/' . $entry;
 
-        // Only look at sub-directories (each is a component)
+        // Only sub-directories represent components
         if (!is_dir($fullPath)) continue;
 
-        // Check for a .php page inside the component folder
+        // Determine the link target
         $phpFile = $fullPath . '/' . $entry . '.php';
-        if (!file_exists($phpFile)) continue; // skip folders without a matching .php
+        if (file_exists($phpFile)) {
+            // Component has its own dedicated page (e.g. Atom/button/button.php)
+            $page = $entry . '.php';
+        } else {
+            // No dedicated page — link to category page with anchor
+            // e.g. Composite.php#filters
+            $page = $category . '.php#' . $entry;
+        }
 
-        // Check for component-specific icon
-        $icoFile = $fullPath . '/' . $entry . '.ico';
-        $iconPath = file_exists($icoFile) ? $icoFile : null;
+        // Icon: prefer {name}.ico inside component folder, fallback handled later
+        $icoFile  = $fullPath . '/' . $entry . '.ico';
+        $iconFsPath = file_exists($icoFile) ? $icoFile : null;
 
         $components[] = [
-            'name'    => $entry,
-            'label'   => ucwords(str_replace(['-', '_'], ' ', $entry)),
-            'page'    => $entry . '.php',
-            'icon'    => $iconPath,
+            'name'      => $entry,
+            'label'     => ucwords(str_replace(['-', '_'], ' ', $entry)),
+            'page'      => $page,
+            'iconFsPath'=> $iconFsPath,
         ];
     }
 
-    // Sort alphabetically by label
     usort($components, fn($a, $b) => strcmp($a['label'], $b['label']));
     return $components;
 }
 
 /**
- * Render an SVG icon for a component link.
- * If a .ico path is given, render as <img>; otherwise use a per-name fallback SVG,
- * or the default generic SVG.
+ * Render the icon for a sidebar link.
+ * Uses web URL conversion so <img src=""> actually resolves in the browser.
  */
-function renderComponentIcon(?string $icoPath, string $defaultIcoPath, string $name): string {
-    if ($icoPath && file_exists($icoPath)) {
-        // Use the component's own .ico file
-        return '<img src="' . htmlspecialchars($icoPath) . '" width="14" height="14" alt="" style="flex-shrink:0;margin-top:1px;" />';
+function renderComponentIcon(?string $iconFsPath, string $defaultIcoFsPath, string $name): string {
+    // Component-specific .ico
+    if ($iconFsPath && file_exists($iconFsPath)) {
+        $url = fsPathToWebUrl($iconFsPath);
+        return '<img src="' . htmlspecialchars($url) . '" width="14" height="14" alt="" style="flex-shrink:0;margin-top:1px;opacity:.75;" />';
     }
-    if ($defaultIcoPath && file_exists($defaultIcoPath)) {
-        return '<img src="' . htmlspecialchars($defaultIcoPath) . '" width="14" height="14" alt="" style="flex-shrink:0;margin-top:1px;" />';
+    // Site-wide default .ico
+    if ($defaultIcoFsPath && file_exists($defaultIcoFsPath)) {
+        $url = fsPathToWebUrl($defaultIcoFsPath);
+        return '<img src="' . htmlspecialchars($url) . '" width="14" height="14" alt="" style="flex-shrink:0;margin-top:1px;opacity:.75;" />';
     }
 
     // Inline SVG fallbacks keyed by component name
@@ -93,7 +124,7 @@ function renderComponentIcon(?string $icoPath, string $defaultIcoPath, string $n
         'booking-card' => '<rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 7h12M5 3V5M11 3V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
         'search-bar'   => '<circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.2"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
         'filters'      => '<path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
-        'user-menu'    => '<circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 14c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M12 10l2 1.5-2 1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>',
+        'user-menu'    => '<circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 14c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
         'review-card'  => '<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 6l.8 2.5H11l-2 1.4.8 2.6L8 11l-1.8 1.5.8-2.6-2-1.4h2.2z" fill="currentColor" opacity=".6"/>',
         'price-card'   => '<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 8h4M8 6v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
         'table'        => '<rect x="1.5" y="3" width="13" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 7h13M5.5 7v6" stroke="currentColor" stroke-width="1.2"/>',
@@ -116,9 +147,9 @@ function renderComponentIcon(?string $icoPath, string $defaultIcoPath, string $n
 
 // ── Configuration ───────────────────────────────────────────────────────────
 
-// Base path to design_guidelines directory (adjust to match your deployment)
-$baseDir     = __DIR__;                            // same folder as this sidebar
-$defaultIco  = $baseDir . '/../Assets/default.ico';
+// __DIR__ is the design_guidelines folder (where this sidebar lives)
+$baseDir    = __DIR__;
+$defaultIco = $baseDir . '/../Assets/default.ico';
 
 // Categories to show as collapsible sections
 $categories = [
@@ -128,18 +159,14 @@ $categories = [
     'DataDisplay' => 'Data Display',
 ];
 
-// Detect current page
-$current = basename($_SERVER['PHP_SELF']);
+// Detect current page — use SCRIPT_FILENAME to be reliable even when included
+$current = basename($_SERVER['SCRIPT_FILENAME'] ?? $_SERVER['PHP_SELF']);
 
-// Pre-scan all categories and collect component page names for open-state detection
-$allComponentPages = [];
+// Pre-scan all categories
 $categoryData = [];
 foreach ($categories as $dir => $label) {
     $items = scanComponentCategory($baseDir, $dir);
     $categoryData[$dir] = ['label' => $label, 'items' => $items];
-    foreach ($items as $item) {
-        $allComponentPages[] = $item['page'];
-    }
 }
 
 // Static section page lists
@@ -260,10 +287,15 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
   ══════════════════════════════════════════ -->
   <?php foreach ($categoryData as $dir => $cat): ?>
     <?php
-      $catPages = array_column($cat['items'], 'page');
-      $catOpen  = in_array($current, $catPages);
+      // Active if current page matches any component page in this category
+      // (page may be "button.php" or "Composite.php#filters" — check the base filename)
+      $catActive = false;
+      foreach ($cat['items'] as $item) {
+          $pageBase = strtok($item['page'], '#'); // strip hash anchor
+          if ($pageBase === $current) { $catActive = true; break; }
+      }
 
-      // Choose category icon
+      // Category SVG icons
       $catIcons = [
         'Atom'        => '<circle cx="8" cy="8" r="2" fill="currentColor"/><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2"/><ellipse cx="8" cy="8" rx="5.5" ry="2" stroke="currentColor" stroke-width="1.2"/>',
         'Components'  => '<rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M9 11.5h5M11.5 9v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
@@ -272,7 +304,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
       ];
       $catIconInner = $catIcons[$dir] ?? '<rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/>';
     ?>
-    <div class="sb-group <?= $catOpen ? 'open' : '' ?>" data-category="<?= htmlspecialchars($dir) ?>">
+    <div class="sb-group <?= $catActive ? 'open has-active' : '' ?>" data-category="<?= htmlspecialchars($dir) ?>">
       <button class="sb-group-btn" onclick="toggleGroup(this)">
         <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
           <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -284,15 +316,18 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
         <span class="sb-count"><?= count($cat['items']) ?></span>
       </button>
 
-      <ul class="sb-items" <?= !$catOpen ? 'hidden' : '' ?>>
+      <ul class="sb-items" <?= !$catActive ? 'hidden' : '' ?>>
         <?php if (empty($cat['items'])): ?>
           <li class="sb-empty">No components found</li>
         <?php else: ?>
-          <?php foreach ($cat['items'] as $comp): ?>
+          <?php foreach ($cat['items'] as $comp):
+            $pageBase   = strtok($comp['page'], '#');
+            $isActive   = ($pageBase === $current);
+          ?>
             <li>
               <a href="<?= htmlspecialchars($comp['page']) ?>"
-                 class="sb-link <?= $current === $comp['page'] ? 'active' : '' ?>">
-                <?= renderComponentIcon($comp['icon'], $defaultIco, $comp['name']) ?>
+                 class="sb-link <?= $isActive ? 'active' : '' ?>">
+                <?= renderComponentIcon($comp['iconFsPath'], $defaultIco, $comp['name']) ?>
                 <?= htmlspecialchars($comp['label']) ?>
               </a>
             </li>
@@ -482,7 +517,6 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
         grp.classList.add('open');
         list.removeAttribute('hidden');
       } else {
-        // Only hide groups that have no matches and are not the active group
         if (!grp.classList.contains('has-active')) {
           grp.classList.remove('open');
           list.setAttribute('hidden', '');
