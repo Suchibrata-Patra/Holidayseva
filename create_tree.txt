@@ -1,0 +1,4 @@
+------------ Commands to Create Tree Structure --------------
+cd /Users/suchibratapatra/Documents/Holidayseva
+find . > Holidayseva_tree.txt
+find . | sed -e 's/[^-][^\/]*\//│   /g' -e 's/│   \([^│]\)/├── \1/' > Holidayseva_tree.txt
