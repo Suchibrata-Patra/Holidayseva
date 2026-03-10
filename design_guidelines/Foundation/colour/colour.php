@@ -330,17 +330,8 @@ a{color:var(--color-text-link);text-decoration:none}a:hover{text-decoration:unde
 <aside class="sidebar-left"><?php include $partials . 'left_sidebar.php'; ?></aside>
 <main class="main-content">
 
-<!-- OVERVIEW -->
-<section id="overview">
-  <nav class="breadcrumb">
-    <a href="#">Design Guidelines</a><span class="breadcrumb-sep">›</span>
-    <a href="#">Foundations</a><span class="breadcrumb-sep">›</span>
-    <span>Color</span>
-  </nav>
-</section>
 
 <!-- SYSTEM COLORS -->
-<hr class="page-rule"/>
 <section id="system-colors" class="doc-section" style="display:none;">
   <p class="section-label">Palette</p>
   <h2 class="section-title">System colors</h2>
