@@ -672,8 +672,17 @@ $activePage      = 'colors'; // used by left_sidebar to mark the active link
   </header>
 
   <!-- ── Left sidebar ────────────────────────────────────────────────────── -->
+  <?php
+$partials = __DIR__ . '/../../';
+?>
+
+<?php include $partials . 'header.php'; ?>
+<?php include $partials . 'drawer_sidebar.php'; ?>
+
+<div class="page-layout">
+
   <nav class="sidebar-left">
-    <?php include __DIR__ . '/left_sidebar.php'; ?>
+  <?php include $partials . 'left_sidebar.php'; ?>
   </nav>
 
   <!-- ── Main content ────────────────────────────────────────────────────── -->
@@ -1322,7 +1331,7 @@ ctx.fillStyle = textPrim;</pre>
 
   <!-- ── Right sidebar ────────────────────────────────────────────────────── -->
   <aside class="sidebar-right">
-    <?php include __DIR__ . '/right_sidebar.php'; ?>
+  <?php include $partials . '/right_sidebar.php'; ?>
   </aside>
 
 </div><!-- .shell -->
