@@ -288,7 +288,7 @@
     <?php include __DIR__ . '/left_sidebar.php'; ?>
   </aside>
 
-  <main class="page-main" style="padding-left:0;padding-right:0;padding-top:0;">
+  <main class="page-main" style="padding-top:0;">
 
     <!-- ══════════════════════════════════════════════
          HERO  (Apple Developer Docs style)
