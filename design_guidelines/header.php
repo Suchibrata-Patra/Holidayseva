@@ -84,10 +84,10 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
   <span class="section-nav-title">Design Guidelines</span>
   <span class="section-nav-divider" aria-hidden="true"></span>
 
-  <ul class="section-nav-tabs" role="list">
+  <!-- <ul class="section-nav-tabs" role="list">
     <li><a href="#">Overview</a></li>
     <li><a href="#">Resources</a></li>
-  </ul>
+  </ul> -->
 
   <div class="section-nav-meta">
     <span class="section-nav-badge">v1.0</span>
