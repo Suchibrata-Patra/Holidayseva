@@ -181,6 +181,7 @@ foreach ($categories as $dir => $label) {
 // Static section page lists
 $gettingStartedPages = ['index.php','introduction.php','overview.php','whats-new.php'];
 $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php','layout.php'];
+// Foundation pages now live at /Foundations/{name}/{name}.php — keep basename list for active detection
 ?>
 
 <div class="sb-filter">
@@ -247,7 +248,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
     </button>
     <ul class="sb-items" <?= !$foundationOpen ? 'hidden' : '' ?>>
 
-      <li><a href="/colour.php" class="sb-link <?= $current === 'colour.php' ? 'active' : '' ?>">
+      <li><a href="/Foundations/colour/colour.php" class="sb-link <?= $current === 'colour.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <circle cx="5.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.2"/>
           <circle cx="10.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.2"/>
@@ -256,14 +257,14 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
         Colour
       </a></li>
 
-      <li><a href="/typography.php" class="sb-link <?= $current === 'typography.php' ? 'active' : '' ?>">
+      <li><a href="/Foundations/typography/typography.php" class="sb-link <?= $current === 'typography.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M3 4h10M8 4v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
         Typography
       </a></li>
 
-      <li><a href="/spacing.php" class="sb-link <?= $current === 'spacing.php' ? 'active' : '' ?>">
+      <li><a href="/Foundations/spacing/spacing.php" class="sb-link <?= $current === 'spacing.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
           <path d="M4 5v6M12 5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4"/>
@@ -271,14 +272,14 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
         Spacing
       </a></li>
 
-      <li><a href="/icons.php" class="sb-link <?= $current === 'icons.php' ? 'active' : '' ?>">
+      <li><a href="/Foundations/icons/icons.php" class="sb-link <?= $current === 'icons.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M8 2l1.8 3.6L14 6.2l-3 2.9.7 4.1L8 11.1l-3.7 2.1.7-4.1-3-2.9 4.2-.6L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
         </svg>
         Icons
       </a></li>
 
-      <li><a href="/layout.php" class="sb-link <?= $current === 'layout.php' ? 'active' : '' ?>">
+      <li><a href="/Foundations/layout/layout.php" class="sb-link <?= $current === 'layout.php' ? 'active' : '' ?>">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
           <path d="M2 6h12M6 6v8" stroke="currentColor" stroke-width="1.2"/>
