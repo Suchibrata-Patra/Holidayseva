@@ -1,4 +1,5 @@
 ------------ Commands to Create Tree Structure --------------
-cd /Users/suchibratapatra/Documents/Holidayseva
-find . > Holidayseva_tree.txt
-find . | sed -e 's/[^-][^\/]*\//│   /g' -e 's/│   \([^│]\)/├── \1/' > Holidayseva_tree.txt
+cd /Users/suchibratapatra/Documents/Holidayseva && \
+find . \( -path './.git' -o -name '.DS_Store' \) -prune -o -print0 | \
+xargs -0 stat -f "%N (%z bytes)" | \
+sed -e 's/[^-][^\/]*\//│   /g' -e 's/│   \([^│]\)/├── \1/' > Holidayseva_tree.txt
