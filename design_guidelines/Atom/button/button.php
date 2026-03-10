@@ -87,7 +87,7 @@
 </head>
 <body>
 
-<?php include __DIR__ . '/header.php'; ?>
+<?php include 'left_sidebar.phpheader.php'; ?>
 
 <!-- Mobile drawer sidebar (hidden on desktop) -->
 <?php include __DIR__ . '/drawer_sidebar.php'; ?>
