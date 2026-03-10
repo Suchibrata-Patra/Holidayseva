@@ -279,9 +279,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
 .val-l{font-family:'SF Mono','Menlo',monospace;font-size:11.5px;color:var(--color-text-secondary);white-space:nowrap}
 .val-d{font-family:'SF Mono','Menlo',monospace;font-size:11.5px;color:#636366;white-space:nowrap}
 .sw-inline{display:inline-flex;align-items:center;gap:7px}
-.dot{display:inline-block;width:20px;height:20px;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,.08)}
+.dot{display:inline-block;width:50px;height:50px;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,.08)}
 .dot-dk{border-color:rgba(255,255,255,.12)}
-.nt{font-size:12px;color:var(--color-text-muted)}
+.nt{font-size:12px;color:var(--color-text-secondary)}
 /* CALLOUT */
 .callout{display:flex;gap:14px;padding:16px 18px;border-radius:12px;margin-top:24px;border:1px solid}
 .c-note{background:rgba(0,122,255,.05);border-color:rgba(0,122,255,.16)}
