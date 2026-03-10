@@ -256,7 +256,7 @@
           Get started
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="UI/Atom/Atom.php" class="btn-hero-secondary">
+        <a href="https://holidayseva.comUI/Atom/Atom.php" class="btn-hero-secondary">
           Browse components
         </a>
       </div>
