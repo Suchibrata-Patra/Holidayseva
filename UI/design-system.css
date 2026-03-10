@@ -1,0 +1,1221 @@
+/* ============================================================
+   HOLIDAYSEVA DESIGN GUIDELINES — DESIGN SYSTEM
+   Exact Apple HIG colour system: developer.apple.com
+   Apple iOS/macOS system colours sourced from HIG spec
+   ============================================================ */
+
+/* ── Google Fonts (Inter as SF Pro fallback) ──────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ============================================================
+   APPLE SYSTEM COLOUR PALETTE — exact HIG values
+   ============================================================ */
+:root {
+
+    /* ── Apple iOS system colours (light mode) ────────────── */
+    --apple-blue: rgb(0, 122, 255);
+    /* systemBlue   */
+    --apple-green: rgb(52, 199, 89);
+    /* systemGreen  */
+    --apple-indigo: rgb(88, 86, 214);
+    /* systemIndigo */
+    --apple-orange: rgb(255, 149, 0);
+    /* systemOrange */
+    --apple-pink: rgb(255, 45, 85);
+    /* systemPink   */
+    --apple-purple: rgb(175, 82, 222);
+    /* systemPurple */
+    --apple-red: rgb(255, 59, 48);
+    /* systemRed    */
+    --apple-teal: rgb(90, 200, 250);
+    /* systemTeal   */
+    --apple-yellow: rgb(255, 204, 0);
+    /* systemYellow */
+
+    /* ── Apple system grays ───────────────────────────────── */
+    --apple-gray-1: rgb(142, 142, 147);
+    /* label secondary  */
+    --apple-gray-2: rgb(174, 174, 178);
+    /* label tertiary   */
+    --apple-gray-3: rgb(199, 199, 204);
+    /* label quaternary */
+    --apple-gray-4: rgb(209, 209, 214);
+    /* separator        */
+    --apple-gray-5: rgb(229, 229, 234);
+    /* systemFill       */
+    --apple-gray-6: rgb(242, 242, 247);
+    /* systemBackground */
+
+    /* ── developer.apple.com web UI tokens ───────────────── */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f7;
+    /* apple.com page bg  */
+    --bg-tertiary: #fbfbfd;
+    /* apple.com card bg  */
+    --bg-dark-nav: rgb(22, 22, 23);
+    /* exact dark topbar */
+    --bg-code: #1c1c1e;
+    /* Apple dark gray-6  */
+    --bg-overlay: rgba(255, 255, 255, 0.85);
+
+    /* Text — exact apple.com values */
+    --text-primary: #1d1d1f;
+    /* Apple headline    */
+    --text-secondary: #424245;
+    /* Apple body        */
+    --text-tertiary: #6e6e73;
+    /* Apple meta        */
+    --text-quaternary: #aeaeb2;
+    /* Apple placeholder */
+    --text-on-dark: #f5f5f7;
+    --text-on-dark-dim: rgba(245, 245, 247, 0.72);
+
+    /* Borders */
+    --border: #d2d2d7;
+    /* Apple separator   */
+    --border-light: #e8e8ed;
+    --border-dark: rgba(255, 255, 255, 0.12);
+
+    /* ── Primary accent — Apple Blue ─────────────────────── */
+    --accent: #0071e3;
+    --accent-sys: #007aff;
+    --accent-hover: #0077ed;
+    --accent-pressed: #005bb5;
+    --accent-soft: rgba(0, 113, 227, 0.08);
+    --accent-soft-border: rgba(0, 113, 227, 0.18);
+
+    /* ── Holidayseva brand ────────────────────────────────── */
+    --brand: #ff385c;
+    --brand-hover: #e8304f;
+    --brand-soft: rgba(255, 56, 92, 0.08);
+    --brand-soft-border: rgba(255, 56, 92, 0.20);
+
+    /* ── Semantic colours ─────────────────────────────────── */
+    --color-success: var(--apple-green);
+    --color-warning: var(--apple-orange);
+    --color-danger: var(--apple-red);
+    --color-info: var(--accent);
+
+    /* ── Shadows ─────────────────────────────────────────── */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-nav: 0 1px 0 rgba(0, 0, 0, 0.08);
+
+    /* ── Radii ───────────────────────────────────────────── */
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    /* ── Typography ──────────────────────────────────────── */
+    --font-sans: 'SF Pro Text', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --font-display: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', ui-monospace, 'Cascadia Code', monospace;
+
+    /* ── Layout dimensions ───────────────────────────────── */
+    --topbar-h: 52px;
+    /* premium light global nav          */
+    --subbar-h: 44px;
+    /* section nav                       */
+    --sidebar-w: 240px;
+    --toc-w: 200px;
+    /* Dynamic header offset — updated by JS on scroll */
+    --header-h: calc(var(--topbar-h) + var(--subbar-h));
+
+    /* ── Transitions ─────────────────────────────────────── */
+    --t-fast: 0.12s ease;
+    --t-base: 0.20s ease;
+    --t-slow: 0.35s ease;
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   GLOBAL NAV — ultra-premium light frosted top bar
+   #fafafc base with glass blur, hairline border, depth shadow
+   ============================================================ */
+.global-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    height: var(--topbar-h);
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: saturate(200%) blur(28px);
+    -webkit-backdrop-filter: saturate(200%) blur(28px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    transition: transform 280ms ease;
+}
+
+/* Brand mark */
+.global-nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    flex-shrink: 0;
+}
+
+.global-nav-brand:hover {
+    color: var(--text-primary);
+    opacity: .8;
+}
+
+.global-nav-brand svg {
+    flex-shrink: 0;
+}
+
+/* Brand logo mark — dark pill containing the H image */
+.global-nav-brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--text-primary);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.global-nav-brand-mark img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0) invert(1);
+}
+
+/* Nav links — centred */
+.global-nav-links {
+    display: flex;
+    align-items: stretch;
+    list-style: none;
+    gap: 0;
+    margin: 0 auto;
+    height: var(--topbar-h);
+}
+
+.global-nav-links li {
+    display: flex;
+    align-items: center;
+}
+
+.global-nav-links a {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    padding: 0 14px;
+    height: 100%;
+    letter-spacing: -0.003em;
+    transition: color var(--t-fast);
+    white-space: nowrap;
+}
+
+.global-nav-links a:hover {
+    color: var(--text-primary);
+}
+
+.global-nav-links a.active {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Right: search + account icons */
+.global-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.global-nav-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-sm);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: background var(--t-fast), color var(--t-fast);
+    border: none;
+    background: transparent;
+}
+
+.global-nav-icon:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Nav separator pip between brand and links */
+.global-nav-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border-light);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   SECTION NAV — #fafafc frosted sub-bar
+   Left: section title + divider pip | tabs | right: version badge
+   ============================================================ */
+.section-nav {
+    position: fixed;
+    top: var(--topbar-h);
+    left: 0;
+    right: 0;
+    z-index: 8000;
+    height: var(--subbar-h);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(200%) blur(28px);
+    -webkit-backdrop-filter: saturate(200%) blur(28px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 20px;
+    transition: top 280ms ease;
+}
+
+.section-nav-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.022em;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Vertical pip divider between title and tabs */
+.section-nav-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+.section-nav-tabs {
+    display: flex;
+    align-items: stretch;
+    list-style: none;
+    height: var(--subbar-h);
+    margin-right: auto;
+}
+
+.section-nav-tabs li {
+    display: flex;
+    align-items: stretch;
+}
+
+.section-nav-tabs a {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    padding: 0 13px;
+    height: 100%;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    letter-spacing: -0.003em;
+    transition: color var(--t-fast), border-color var(--t-fast);
+    white-space: nowrap;
+}
+
+.section-nav-tabs a:hover {
+    color: var(--text-primary);
+}
+
+.section-nav-tabs a.active {
+    color: var(--text-primary);
+    font-weight: 500;
+    border-bottom-color: var(--text-primary);
+}
+
+/* Right-side nav actions (version badge etc.) */
+.section-nav-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.section-nav-badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+
+/* ============================================================
+   PAGE LAYOUT — three-column
+   ============================================================ */
+.page-layout {
+    display: flex;
+    padding-top: calc(var(--topbar-h) + var(--subbar-h));
+    min-height: 100vh;
+}
+
+/* ── Left sidebar ─────────────────────────────────────────── */
+.sidebar-left {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+    padding: 24px 0 40px;
+    border-right: 1px solid var(--border-light);
+    background: var(--bg-primary);
+    z-index: 100;
+    transition: top var(--t-slow), height var(--t-slow);
+}
+
+.sidebar-left::-webkit-scrollbar {
+    width: 0;
+}
+
+/* ── Right TOC ────────────────────────────────────────────── */
+.sidebar-right {
+    width: var(--toc-w);
+    flex-shrink: 0;
+    position: fixed;
+    top: var(--header-h);
+    right: 0;
+    height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+    padding: 32px 0;
+    border-left: 1px solid var(--border-light);
+    background: var(--bg-primary);
+    z-index: 100;
+    transition: top var(--t-slow), height var(--t-slow);
+}
+
+/* ── Compensate for fixed sidebars in three-column layout ─── */
+.page-layout {
+    padding-left: var(--sidebar-w);
+    padding-right: var(--toc-w);
+}
+
+.sidebar-right::-webkit-scrollbar {
+    width: 0;
+}
+
+/* ── Main ─────────────────────────────────────────────────── */
+.page-main {
+    flex: 1;
+    min-width: 0;
+    max-width: 800px;
+    padding: 56px 60px 120px 64px;
+}
+
+
+/* ============================================================
+   PAGE TYPOGRAPHY — Apple HIG scale
+   ============================================================ */
+.page-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+    margin-bottom: 10px;
+}
+
+.page-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.06;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.page-lead {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 520px;
+    letter-spacing: -0.003em;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin: 28px 0 8px;
+}
+
+.body-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    letter-spacing: -0.003em;
+    margin-bottom: 14px;
+}
+
+.body-text:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
+   SHARED COMPONENTS
+   ============================================================ */
+
+/* ── Inline code ──────────────────────────────────────────── */
+:not(pre)>code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-xs);
+    padding: 1px 5px;
+    color: var(--text-primary);
+}
+
+/* ── Code block ───────────────────────────────────────────── */
+.code-block {
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 22px 0;
+}
+
+.code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.code-lang-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+    font-family: var(--font-sans);
+}
+
+.copy-btn {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    background: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 3px 10px;
+    border-radius: var(--r-sm);
+    font-family: var(--font-sans);
+    transition: all var(--t-fast);
+    line-height: 1.6;
+}
+
+.copy-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border-color: var(--border);
+}
+
+.code-block pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 0;
+    background: #fafafa;
+}
+
+.code-block code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Syntax highlighting tokens */
+.t {
+    color: #c0185e;
+}
+
+/* HTML tag       */
+.a {
+    color: #c07a00;
+}
+
+/* HTML attribute */
+.s {
+    color: #1a7f45;
+}
+
+/* string value   */
+.k {
+    color: var(--accent);
+}
+
+/* keyword        */
+.c {
+    color: var(--text-quaternary);
+    font-style: italic;
+}
+
+/* comment */
+
+
+/* ── API / data table ─────────────────────────────────────── */
+.api-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 20px 0;
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-md);
+    overflow: hidden;
+}
+
+.api-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+    background: var(--bg-secondary);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.api-table td {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.5;
+}
+
+.api-table tr:first-child td {
+    border-top: none;
+}
+
+.api-table td:first-child {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+
+/* ── Callout / note ───────────────────────────────────────── */
+.note {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    padding: 14px 18px 14px 16px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    margin: 22px 0;
+}
+
+.note p {
+    margin: 0;
+}
+
+.note.warn {
+    border-left-color: var(--brand);
+    background: var(--brand-soft);
+    border-color: var(--brand-soft-border);
+    color: #8b1a30;
+}
+
+
+/* ── Spec table ───────────────────────────────────────────── */
+.spec-table {
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.spec-row {
+    display: flex;
+    align-items: center;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 13px;
+    gap: 16px;
+}
+
+.spec-row:last-child {
+    border-bottom: none;
+}
+
+.spec-row:nth-child(even) {
+    background: rgba(0, 0, 0, .014);
+}
+
+.spec-key {
+    width: 180px;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.spec-val {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.spec-swatch {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    flex-shrink: 0;
+}
+
+
+/* ── Section rule ─────────────────────────────────────────── */
+.rule {
+    border: none;
+    border-top: 1px solid var(--border-light);
+    margin: 52px 0;
+}
+
+
+/* ── Demo stage ───────────────────────────────────────────── */
+.demo-stage {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-xl);
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.demo-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-quaternary);
+}
+
+.demo-state {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-quaternary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 4px 14px;
+    transition: color var(--t-base), border-color var(--t-base), background var(--t-base);
+}
+
+.demo-state.on {
+    color: #b5281c;
+    background: rgba(255, 56, 92, 0.05);
+    border-color: rgba(255, 56, 92, 0.25);
+}
+
+
+/* ── Anatomy diagram ──────────────────────────────────────── */
+.anatomy-stage {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-xl);
+    padding: 64px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+    overflow: visible;
+    position: relative;
+}
+
+.anat-toggle {
+    position: relative;
+    width: 196px;
+    height: 110px;
+    background: #dddddd;
+    border-radius: 55px;
+}
+
+.anat-circle {
+    position: absolute;
+    width: 94px;
+    height: 94px;
+    background: #ffffff;
+    border-radius: 50%;
+    top: 8px;
+    left: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.anat-ann {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+}
+
+.anat-ann-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-quaternary);
+    flex-shrink: 0;
+}
+
+.anat-ann-line {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+}
+
+.anat-ann span {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-quaternary);
+    white-space: nowrap;
+}
+
+.ann-track {
+    top: 50%;
+    right: -148px;
+    transform: translateY(12px);
+}
+
+.ann-thumb {
+    top: 36%;
+    left: -152px;
+    flex-direction: row-reverse;
+}
+
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+    border-top: 1px solid var(--border-light);
+    padding: 28px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-primary);
+}
+
+.footer-text {
+    font-size: 12px;
+    color: var(--text-quaternary);
+}
+
+
+/* ============================================================
+   MOBILE DRAWER — left sidebar as slide-in panel
+   ============================================================ */
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    color: var(--text-tertiary);
+    transition: background var(--t-fast), color var(--t-fast);
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-hamburger:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.nav-hamburger svg {
+    display: block;
+    transition: opacity var(--t-fast), transform var(--t-fast);
+}
+
+.nav-hamburger .icon-close {
+    display: none;
+}
+
+.nav-hamburger.is-open .icon-menu {
+    display: none;
+}
+
+.nav-hamburger.is-open .icon-close {
+    display: block;
+}
+
+/* Drawer backdrop */
+.drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 6999;
+    opacity: 0;
+    transition: opacity 280ms ease;
+}
+
+.drawer-backdrop.is-visible {
+    display: block;
+}
+
+.drawer-backdrop.is-active {
+    opacity: 1;
+}
+
+/* Drawer container — wraps sidebar-left on mobile */
+.drawer-sidebar {
+    display: none;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+    .sidebar-right {
+        display: none;
+    }
+
+    .page-layout {
+        padding-right: 0;
+    }
+
+    .page-main {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .page-main {
+        padding: 48px 36px 80px 40px;
+    }
+
+    /* Tablet: shrink the section nav title so tabs still fit */
+    .section-nav {
+        padding: 0 16px;
+        gap: 8px;
+    }
+
+    .section-nav-title {
+        font-size: 13px;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-nav-tabs a {
+        padding: 0 10px;
+        font-size: 12.5px;
+    }
+
+    .section-nav-badge {
+        display: none;
+    }
+}
+
+@media (max-width: 680px) {
+
+    /* ── Layout adjustments ─────────────────────────────────── */
+    .page-layout {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Hide the fixed desktop left sidebar */
+    .sidebar-left {
+        display: none;
+    }
+
+    /* ── Global nav — compact mobile ───────────────────────── */
+    .global-nav {
+        padding: 0 16px;
+    }
+
+    .global-nav-links {
+        display: none;
+    }
+
+    .global-nav-sep {
+        display: none;
+    }
+
+    /* Show hamburger */
+    .nav-hamburger {
+        display: flex;
+    }
+
+    /* Push actions to right edge */
+    .global-nav-actions {
+        margin-left: auto;
+    }
+
+    /* ── Section nav — mobile ───────────────────────────────── */
+    .section-nav {
+        padding: 0;
+        gap: 0;
+        overflow: visible;
+    }
+
+    /* Hide the "Design Guidelines" label, pip, badge on mobile — tabs need all the room */
+    .section-nav-title,
+    .section-nav-divider,
+    .section-nav-badge,
+    .section-nav-meta {
+        display: none;
+    }
+
+    /* Tabs ul stretches full width and scrolls horizontally */
+    .section-nav-tabs {
+        width: 100%;
+        height: var(--subbar-h);
+        margin-right: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 8px;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: stretch;
+    }
+
+    .section-nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .section-nav-tabs li {
+        flex-shrink: 0;
+    }
+
+    .section-nav-tabs a {
+        padding: 0 14px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    /* ── Main content ───────────────────────────────────────── */
+    .page-main {
+        padding: 32px 20px 100px;
+    }
+
+    .page-title {
+        font-size: 34px;
+    }
+
+    .page-lead {
+        font-size: 15px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .demo-stage {
+        padding: 40px 20px;
+    }
+
+    .anatomy-stage {
+        padding: 48px 20px;
+        overflow-x: auto;
+    }
+
+    .api-table {
+        font-size: 12px;
+    }
+
+    .api-table td,
+    .api-table th {
+        padding: 10px 12px;
+    }
+
+    .spec-key {
+        width: 130px;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+        padding: 24px 20px;
+    }
+
+    /* ── Drawer sidebar ─────────────────────────────────────── */
+    .drawer-sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: min(300px, 82vw);
+        height: 100dvh;
+        background: var(--bg-primary);
+        z-index: 7000;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        border-right: 1px solid var(--border-light);
+        box-shadow: var(--shadow-lg);
+        transform: translateX(-105%);
+        transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+        will-change: transform;
+        padding-bottom: env(safe-area-inset-bottom, 24px);
+    }
+
+    .drawer-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    /* Drawer top bar with close button */
+    .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px 12px;
+        border-bottom: 1px solid var(--border-light);
+        position: sticky;
+        top: 0;
+        background: var(--bg-primary);
+        z-index: 1;
+    }
+
+    .drawer-header-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .drawer-close {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: var(--apple-gray-6);
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--text-tertiary);
+        -webkit-tap-highlight-color: transparent;
+        flex-shrink: 0;
+    }
+
+    .drawer-close:hover {
+        background: var(--apple-gray-5);
+        color: var(--text-primary);
+    }
+
+    /* Drawer sidebar content spacing */
+    .drawer-sidebar .sb-filter {
+        margin: 14px 14px 10px;
+    }
+
+    .drawer-sidebar .sb-nav {
+        padding: 0 6px 24px;
+    }
+
+    .drawer-sidebar .sb-group-btn {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .drawer-sidebar .sb-link {
+        font-size: 14px;
+        padding: 7px 10px 7px 28px;
+        min-height: 38px;
+        /* easier tap target */
+    }
+}

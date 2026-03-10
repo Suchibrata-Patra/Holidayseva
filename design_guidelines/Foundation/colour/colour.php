@@ -23,8 +23,9 @@ $partials        = __DIR__ . '/../../'; // Directory for shared partials
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>" />
   
   <!-- Colors CSS — all color tokens as CSS variables -->
-  <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
-
+  <link rel="stylesheet" href="/design-system.css" />
+  <link rel="stylesheet" href="https://holidayseva.com/design-system.css" />
+<link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
   <!-- SF Pro via Apple CDN (falls back to system-ui) -->
   <style>
     /* ── Reset & base ──────────────────────────────────────────────────────── */
