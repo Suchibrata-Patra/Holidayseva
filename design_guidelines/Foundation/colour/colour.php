@@ -24,6 +24,7 @@ $partials        = __DIR__ . '/../../'; // Directory for shared partials
   
   <!-- Colors CSS — all color tokens as CSS variables -->
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
+  <?php include $partials . 'header.php'; ?>
 
   <!-- SF Pro via Apple CDN (falls back to system-ui) -->
   <style>
@@ -624,7 +625,7 @@ $partials        = __DIR__ . '/../../'; // Directory for shared partials
 
 <body>
 
-<?php include $partials . 'header.php'; ?>
+
 
 <div class="shell">
 
