@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="/design-system.css">
 
   <!-- Toggle component CSS — defines .toggle and .toggle-circle -->
-  <link rel="stylesheet" href="/UI/Components/toggle/toggle.css">
-<script src="/UI/Components/toggle/toggle.js"></script>
+  <link rel="stylesheet" href="../UI/Components/toggle/toggle.css">
+<script type="module" src="../UI/Components/toggle/toggle.js"></script>
 </head>
 <body>
 
