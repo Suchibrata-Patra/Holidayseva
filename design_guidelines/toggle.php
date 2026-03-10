@@ -7,10 +7,8 @@
 
   <!-- Design system: layout, typography, components -->
   <link rel="stylesheet" href="/design-system.css">
-
-  <!-- Toggle component CSS — defines .toggle and .toggle-circle -->
-  <base href="/Holidayseva/">
-  <link rel="stylesheet" href="../UI/Components/toggle/toggle.css">
+<!-- No <base> tag at all -->
+<link rel="stylesheet" href="../UI/Components/toggle/toggle.css">
 <script type="module" src="../UI/Components/toggle/toggle.js"></script>
 </head>
 <body>
