@@ -17,7 +17,7 @@ $activePage      = 'colors'; // used by left_sidebar to mark the active link
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= htmlspecialchars($pageTitle) ?> — Design Guidelines · Holidayseva</title>
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>" />
-  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
 
   <!-- SF Pro via Apple CDN (falls back to system-ui) -->
   <style>
