@@ -157,7 +157,7 @@ endif;
 $baseDir        = __DIR__;
 
 // Default icon — served via https, no filesystem path needed in HTML
-$defaultIconUrl = SITE_WEB_ROOT . '/Assets/favicon.ico';
+$defaultIconUrl = SITE_WEB_ROOT . '/favicon.ico';
 
 // Categories to show as collapsible sections
 $categories = [
