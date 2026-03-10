@@ -519,23 +519,6 @@ foreach($a11y as [$bg,$fg,$label,$token,$bgHex,$ratio,$bc,$level,$use]):?>
 
 </main>
 <aside class="sidebar-right">
-  <nav class="page-nav">
-    <p class="page-nav-title">On this page</p>
-    <a href="#overview" class="active">Overview</a>
-    <a href="#system-colors">System colors</a>
-    <a class="nav-sub" href="#system-colors">Chromatic</a>
-    <a class="nav-sub" href="#system-colors">Grays</a>
-    <a href="#theory">Color theory</a>
-    <a href="#all-tokens">All tokens</a>
-    <a class="nav-sub" href="#all-tokens">Brand</a>
-    <a class="nav-sub" href="#all-tokens">Text</a>
-    <a class="nav-sub" href="#all-tokens">Surfaces</a>
-    <a class="nav-sub" href="#all-tokens">Status</a>
-    <a class="nav-sub" href="#all-tokens">Interactive</a>
-    <a class="nav-sub" href="#all-tokens">Navigation</a>
-    <a href="#accessibility">Accessibility</a>
-    <a href="#usage">Usage</a>
-  </nav>
   <?php include $partials . 'right_sidebar.php'; ?>
 </aside>
 </div>
