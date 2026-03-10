@@ -348,11 +348,6 @@ a{color:var(--color-text-link);text-decoration:none}a:hover{text-decoration:unde
   <h2 class="section-title">All tokens</h2>
   <p class="section-body">Every CSS custom property defined in <code>colors.css</code> — all <?=$total?> tokens with light value, dark value, and semantic usage note.</p>
 
-  <div class="callout c-note" style="margin-top:28px">
-    <span class="callout-icon">ℹ️</span>
-    <div class="callout-text"><strong>Token-only rule.</strong> Components must use <code>var(--token-name)</code> exclusively. Dark mode is handled automatically — no extra CSS needed in any component file.</div>
-  </div>
-
   <div class="full-token-wrap">
     <table class="full-token-table">
       <thead><tr>
@@ -485,4 +480,5 @@ foreach($a11y as [$bg,$fg,$label,$token,$bgHex,$ratio,$bc,$level,$use]):?>
   secs.forEach(s=>obs.observe(s));
 })();
 </script>
+<?php include $partials . 'footer.php'; ?>
 </body></html>
