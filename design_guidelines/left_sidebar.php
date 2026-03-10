@@ -360,7 +360,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
     border: none;
     background: none;
     outline: none;
-    font-size: 14px;
+    font-size: 15px;
     color: #1d1d1f;
     font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
     width: 100%;
@@ -382,8 +382,8 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
     border: none;
     cursor: pointer;
     font-family: var(--font-sans, -apple-system, 'Helvetica Neue', sans-serif);
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
     color: #86868b;
     text-align: left;
     border-radius: 6px;
@@ -396,7 +396,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
   /* Category item count badge */
   .sb-count {
     margin-left: auto;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
     color: #aeaeb2;
     background: #f2f2f7;
@@ -433,7 +433,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
   }
   .sb-items[hidden] { display: none; }
   .sb-empty {
-    font-size: 12px;
+    font-size: 13px;
     color: #aeaeb2;
     padding: 5px 10px 5px 26px;
     font-style: italic;
@@ -445,7 +445,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
     display: flex;
     align-items: flex-start;
     gap: 9px;
-    font-size: 13.5px;
+    font-size: 15px;
     font-weight: 400;
     color: #86868b;
     text-decoration: none;
@@ -470,6 +470,14 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
   .sb-link.active { font-weight: 600; color: #1d1d1f; }
   .sb-link.active svg,
   .sb-link.active img { color: #1d1d1f; opacity: 1; }
+
+  /* Search match — bold black highlight */
+  .sb-link.sb-match {
+    font-weight: 700;
+    color: #1d1d1f;
+  }
+  .sb-link.sb-match svg,
+  .sb-link.sb-match img { color: #1d1d1f; opacity: 1; }
 
   .sb-link.hidden { display: none; }
 </style>
@@ -496,7 +504,10 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
     const nav  = input.closest('.sidebar-left, .drawer-sidebar') || document;
 
     if (!term) {
-      nav.querySelectorAll('.sb-link').forEach(a => a.classList.remove('hidden'));
+      // Clear search state — remove match highlight and hidden flags
+      nav.querySelectorAll('.sb-link').forEach(a => {
+        a.classList.remove('hidden', 'sb-match');
+      });
       nav.querySelectorAll('.sb-group').forEach(grp => {
         const list   = grp.querySelector('.sb-items');
         const isOpen = grp.classList.contains('open');
@@ -513,7 +524,8 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
 
       links.forEach(a => {
         const match = a.textContent.toLowerCase().includes(term);
-        a.classList.toggle('hidden', !match);
+        a.classList.toggle('hidden',   !match);
+        a.classList.toggle('sb-match',  match); // bold+black on match
         if (match) hasMatch = true;
       });
 
@@ -521,7 +533,6 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
         grp.classList.add('open');
         list.removeAttribute('hidden');
       } else {
-        // Only hide groups that have no matches and are not the active group
         if (!grp.classList.contains('has-active')) {
           grp.classList.remove('open');
           list.setAttribute('hidden', '');
