@@ -1,0 +1,647 @@
+/* ============================================================
+   HOLIDAYSEVA — BUTTON SYSTEM
+   Apple-inspired aesthetics · Airbnb-style component structure
+   ============================================================
+   Import after colors.css. All tokens reference CSS variables
+   defined in colors.css. Any additional tokens needed are
+   declared locally under :root below.
+   ============================================================ */
+
+:root {
+    /* Button-specific tokens (mirrors/extends colors.css) */
+    --btn-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    --btn-font-weight: 600;
+    --btn-letter-spacing: -0.01em;
+
+    /* Sizing scale */
+    --btn-h-xs: 28px;
+    --btn-h-sm: 36px;
+    --btn-h-md: 44px;
+    /* default — Apple touch target */
+    --btn-h-lg: 52px;
+    --btn-h-xl: 60px;
+
+    --btn-px-xs: 10px;
+    --btn-px-sm: 14px;
+    --btn-px-md: 20px;
+    --btn-px-lg: 28px;
+    --btn-px-xl: 36px;
+
+    --btn-fs-xs: 11px;
+    --btn-fs-sm: 13px;
+    --btn-fs-md: 15px;
+    --btn-fs-lg: 16px;
+    --btn-fs-xl: 18px;
+
+    /* Radii */
+    --btn-radius-pill: 999px;
+    --btn-radius-md: 12px;
+    --btn-radius-sm: 8px;
+
+    /* Transitions */
+    --btn-transition: background-color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 160ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Focus rings */
+    --btn-focus-primary: 0 0 0 3px rgba(255, 56, 92, 0.30);
+    --btn-focus-dark: 0 0 0 3px rgba(34, 34, 34, 0.22);
+    --btn-focus-danger: 0 0 0 3px rgba(193, 53, 21, 0.28);
+    --btn-focus-accent: 0 0 0 3px rgba(0, 166, 153, 0.28);
+
+    /* Shadows */
+    --btn-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --btn-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --btn-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ============================================================
+     BASE .btn
+     ============================================================ */
+.btn {
+    /* Layout */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: middle;
+
+    /* Default size (md) */
+    height: var(--btn-h-md);
+    padding: 0 var(--btn-px-md);
+
+    /* Typography */
+    font-family: var(--btn-font);
+    font-size: var(--btn-fs-md);
+    font-weight: var(--btn-font-weight);
+    letter-spacing: var(--btn-letter-spacing);
+    line-height: 1;
+
+    /* Shape */
+    border-radius: var(--btn-radius-pill);
+    border: 1.5px solid transparent;
+
+    /* Interaction */
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: var(--btn-transition);
+    position: relative;
+    overflow: hidden;
+
+    /* Defaults (ghost-like neutral) */
+    background: transparent;
+    color: var(--color-text-primary);
+}
+
+/* Remove outline — we use custom focus ring */
+.btn:focus {
+    outline: none;
+}
+
+/* Active press micro-interaction */
+.btn:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.97);
+}
+
+/* Icon inside button */
+.btn .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 1.2em;
+    height: 1.2em;
+}
+
+/* Loading spinner */
+.btn .btn-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.65s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+     VARIANTS
+     ============================================================ */
+
+/* ── Primary (Airbnb coral / rose — main CTA) ──────────────── */
+.btn-primary {
+    background: var(--color-primary, #FF385C);
+    color: #ffffff;
+    border-color: var(--color-primary, #FF385C);
+    box-shadow: var(--btn-shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: #E8314F;
+    border-color: #E8314F;
+    box-shadow: var(--btn-shadow-hover);
+}
+
+.btn-primary:active:not(:disabled):not([aria-disabled="true"]) {
+    background: #CC2B47;
+    border-color: #CC2B47;
+    box-shadow: var(--btn-shadow-sm);
+}
+
+.btn-primary:focus-visible {
+    box-shadow: var(--btn-focus-primary);
+}
+
+
+/* ── Secondary (dark / filled) ──────────────────────────────── */
+.btn-secondary {
+    background: var(--color-secondary, #222222);
+    color: #ffffff;
+    border-color: var(--color-secondary, #222222);
+    box-shadow: var(--btn-shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: #3a3a3a;
+    border-color: #3a3a3a;
+    box-shadow: var(--btn-shadow-hover);
+}
+
+.btn-secondary:active:not(:disabled):not([aria-disabled="true"]) {
+    background: #111111;
+    border-color: #111111;
+}
+
+.btn-secondary:focus-visible {
+    box-shadow: var(--btn-focus-dark);
+}
+
+
+/* ── Outline / Bordered ─────────────────────────────────────── */
+.btn-outline {
+    background: transparent;
+    color: var(--color-text-primary, #222222);
+    border-color: var(--color-border-dark, #B0B0B0);
+}
+
+.btn-outline:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(34, 34, 34, 0.04);
+    border-color: var(--color-secondary, #222222);
+    color: var(--color-secondary, #222222);
+}
+
+.btn-outline:active:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(34, 34, 34, 0.08);
+}
+
+.btn-outline:focus-visible {
+    box-shadow: var(--btn-focus-dark);
+}
+
+
+/* ── Ghost (text-only, no border/bg) ───────────────────────── */
+.btn-ghost {
+    background: transparent;
+    color: var(--color-text-primary, #222222);
+    border-color: transparent;
+}
+
+.btn-ghost:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(34, 34, 34, 0.06);
+}
+
+.btn-ghost:active:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(34, 34, 34, 0.10);
+}
+
+.btn-ghost:focus-visible {
+    box-shadow: var(--btn-focus-dark);
+}
+
+
+/* ── Ghost Primary (rose text, no bg) ──────────────────────── */
+.btn-ghost-primary {
+    background: transparent;
+    color: var(--color-primary, #FF385C);
+    border-color: transparent;
+}
+
+.btn-ghost-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(255, 56, 92, 0.06);
+}
+
+.btn-ghost-primary:active:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(255, 56, 92, 0.12);
+}
+
+.btn-ghost-primary:focus-visible {
+    box-shadow: var(--btn-focus-primary);
+}
+
+
+/* ── Soft / Tinted (light coral fill) ──────────────────────── */
+.btn-soft {
+    background: rgba(255, 56, 92, 0.10);
+    color: var(--color-primary, #FF385C);
+    border-color: transparent;
+}
+
+.btn-soft:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(255, 56, 92, 0.16);
+}
+
+.btn-soft:active:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(255, 56, 92, 0.22);
+}
+
+.btn-soft:focus-visible {
+    box-shadow: var(--btn-focus-primary);
+}
+
+
+/* ── Accent (teal) ──────────────────────────────────────────── */
+.btn-accent {
+    background: var(--color-accent, #00A699);
+    color: #ffffff;
+    border-color: var(--color-accent, #00A699);
+    box-shadow: var(--btn-shadow-sm);
+}
+
+.btn-accent:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: var(--color-accent-dark, #008C81);
+    border-color: var(--color-accent-dark, #008C81);
+    box-shadow: var(--btn-shadow-hover);
+}
+
+.btn-accent:active:not(:disabled):not([aria-disabled="true"]) {
+    background: #007870;
+    border-color: #007870;
+}
+
+.btn-accent:focus-visible {
+    box-shadow: var(--btn-focus-accent);
+}
+
+
+/* ── Danger / Destructive ───────────────────────────────────── */
+.btn-danger {
+    background: var(--color-error, #C13515);
+    color: #ffffff;
+    border-color: var(--color-error, #C13515);
+    box-shadow: var(--btn-shadow-sm);
+}
+
+.btn-danger:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: #A82C10;
+    border-color: #A82C10;
+    box-shadow: var(--btn-shadow-hover);
+}
+
+.btn-danger:active:not(:disabled):not([aria-disabled="true"]) {
+    background: #8E240D;
+    border-color: #8E240D;
+}
+
+.btn-danger:focus-visible {
+    box-shadow: var(--btn-focus-danger);
+}
+
+
+/* ── Danger Outline ─────────────────────────────────────────── */
+.btn-danger-outline {
+    background: transparent;
+    color: var(--color-error, #C13515);
+    border-color: var(--color-error, #C13515);
+}
+
+.btn-danger-outline:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(193, 53, 21, 0.06);
+}
+
+.btn-danger-outline:active:not(:disabled):not([aria-disabled="true"]) {
+    background: rgba(193, 53, 21, 0.12);
+}
+
+.btn-danger-outline:focus-visible {
+    box-shadow: var(--btn-focus-danger);
+}
+
+
+/* ── White / Light surface (for dark hero sections) ─────────── */
+.btn-white {
+    background: #ffffff;
+    color: var(--color-text-primary, #222222);
+    border-color: #ffffff;
+    box-shadow: var(--btn-shadow-md);
+}
+
+.btn-white:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: #f0f0f0;
+    border-color: #f0f0f0;
+    box-shadow: var(--btn-shadow-hover);
+}
+
+.btn-white:active:not(:disabled):not([aria-disabled="true"]) {
+    background: #e4e4e4;
+}
+
+.btn-white:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.50);
+}
+
+
+/* ── Link style ─────────────────────────────────────────────── */
+.btn-link {
+    background: transparent;
+    color: var(--color-text-link, #222222);
+    border-color: transparent;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding-left: 0;
+    padding-right: 0;
+    height: auto;
+}
+
+.btn-link:hover:not(:disabled):not([aria-disabled="true"]) {
+    color: var(--color-primary, #FF385C);
+}
+
+.btn-link:focus-visible {
+    box-shadow: var(--btn-focus-dark);
+    border-radius: 4px;
+}
+
+
+/* ============================================================
+     SIZES
+     ============================================================ */
+.btn-xs {
+    height: var(--btn-h-xs);
+    padding: 0 var(--btn-px-xs);
+    font-size: var(--btn-fs-xs);
+    border-radius: var(--btn-radius-sm);
+    gap: 4px;
+}
+
+.btn-sm {
+    height: var(--btn-h-sm);
+    padding: 0 var(--btn-px-sm);
+    font-size: var(--btn-fs-sm);
+    gap: 6px;
+}
+
+/* md is the default — no extra class needed */
+
+.btn-lg {
+    height: var(--btn-h-lg);
+    padding: 0 var(--btn-px-lg);
+    font-size: var(--btn-fs-lg);
+}
+
+.btn-xl {
+    height: var(--btn-h-xl);
+    padding: 0 var(--btn-px-xl);
+    font-size: var(--btn-fs-xl);
+}
+
+
+/* ============================================================
+     SHAPE MODIFIERS
+     ============================================================ */
+/* Square radius (for card/form contexts) */
+.btn-rounded {
+    border-radius: var(--btn-radius-md);
+}
+
+/* Icon-only square/circle button */
+.btn-icon-only {
+    padding: 0;
+    width: var(--btn-h-md);
+    flex-shrink: 0;
+}
+
+.btn-xs.btn-icon-only {
+    width: var(--btn-h-xs);
+}
+
+.btn-sm.btn-icon-only {
+    width: var(--btn-h-sm);
+}
+
+.btn-lg.btn-icon-only {
+    width: var(--btn-h-lg);
+}
+
+.btn-xl.btn-icon-only {
+    width: var(--btn-h-xl);
+}
+
+/* Full width */
+.btn-block {
+    width: 100%;
+}
+
+
+/* ============================================================
+     STATES
+     ============================================================ */
+
+/* ── Disabled ────────────────────────────────────────────────── */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    background: var(--color-surface-disabled, #F5F5F5);
+    color: var(--color-text-disabled, #B0B0B0);
+    border-color: var(--color-border-disabled, #E0E0E0);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+}
+
+/* Primary disabled — keep brand shape but muted */
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+    background: rgba(255, 56, 92, 0.35);
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.btn-secondary:disabled,
+.btn-secondary[aria-disabled="true"] {
+    background: rgba(34, 34, 34, 0.30);
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.60);
+}
+
+
+/* ── Loading state ──────────────────────────────────────────── */
+.btn[data-loading="true"] {
+    cursor: wait;
+    pointer-events: none;
+    opacity: 0.80;
+}
+
+/* Hide label text when loading (screen-reader text stays) */
+.btn[data-loading="true"] .btn-label {
+    opacity: 0;
+    position: absolute;
+}
+
+
+/* ── Toggle / Selected ──────────────────────────────────────── */
+.btn-toggle {
+    background: transparent;
+    color: var(--color-text-secondary, #717171);
+    border-color: var(--color-border, #DDDDDD);
+}
+
+.btn-toggle:hover:not(:disabled) {
+    border-color: var(--color-border-dark, #B0B0B0);
+    color: var(--color-text-primary, #222222);
+}
+
+.btn-toggle.is-selected,
+.btn-toggle[aria-pressed="true"] {
+    background: var(--color-secondary, #222222);
+    color: #ffffff;
+    border-color: var(--color-secondary, #222222);
+}
+
+.btn-toggle.is-selected:hover,
+.btn-toggle[aria-pressed="true"]:hover {
+    background: #3a3a3a;
+    border-color: #3a3a3a;
+}
+
+.btn-toggle:focus-visible {
+    box-shadow: var(--btn-focus-dark);
+}
+
+
+/* ============================================================
+     BUTTON GROUP
+     ============================================================ */
+.btn-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-group-attached {
+    display: inline-flex;
+    gap: 0;
+    align-items: stretch;
+}
+
+.btn-group-attached .btn {
+    border-radius: 0;
+    border-right-width: 0;
+}
+
+.btn-group-attached .btn:first-child {
+    border-radius: var(--btn-radius-pill) 0 0 var(--btn-radius-pill);
+}
+
+.btn-group-attached .btn:last-child {
+    border-radius: 0 var(--btn-radius-pill) var(--btn-radius-pill) 0;
+    border-right-width: 1.5px;
+}
+
+.btn-group-attached .btn:only-child {
+    border-radius: var(--btn-radius-pill);
+    border-right-width: 1.5px;
+}
+
+
+/* ============================================================
+     BADGE INSIDE BUTTON  (e.g. cart count)
+     ============================================================ */
+.btn-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    background: rgba(0, 0, 0, 0.18);
+    color: inherit;
+}
+
+.btn-primary .btn-badge {
+    background: rgba(0, 0, 0, 0.20);
+    color: #fff;
+}
+
+
+/* ============================================================
+     RESPONSIVE SIZING
+     Automatically scale down on small screens
+     ============================================================ */
+@media (max-width: 480px) {
+
+    /* xl → lg on mobile */
+    .btn-xl {
+        height: var(--btn-h-lg);
+        padding: 0 var(--btn-px-lg);
+        font-size: var(--btn-fs-lg);
+    }
+
+    /* lg → md on mobile */
+    .btn-lg {
+        height: var(--btn-h-md);
+        padding: 0 var(--btn-px-md);
+        font-size: var(--btn-fs-md);
+    }
+
+    /* Reduce gap slightly */
+    .btn {
+        gap: 6px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    /* md → sm on very small phones */
+    .btn:not(.btn-xs):not(.btn-sm):not(.btn-lg):not(.btn-xl) {
+        height: var(--btn-h-sm);
+        padding: 0 var(--btn-px-sm);
+        font-size: var(--btn-fs-sm);
+    }
+}
+
+
+/* ============================================================
+     REDUCED MOTION
+     ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .btn {
+        transition: none;
+    }
+
+    .btn:active:not(:disabled) {
+        transform: none;
+    }
+
+    .btn .btn-spinner {
+        animation: none;
+        opacity: 0.6;
+    }
+}
