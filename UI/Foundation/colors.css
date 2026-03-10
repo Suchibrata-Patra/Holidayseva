@@ -1,56 +1,453 @@
-/* ============================================================
-   COLOR TOKENS
-   ============================================================ */
+/* ================================================================
+   HOLIDAYSEVA — COLOR TOKENS
+   Design System · colors.css
+   
+   All colors managed here as CSS custom properties.
+   Components must never use raw hex values — reference tokens only.
+   
+   Structure:
+   01. Brand — Primary & Accent
+   02. System Colors (Light)
+   03. Semantic Text
+   04. Surfaces & Backgrounds
+   05. Borders & Separators
+   06. Status — Success / Warning / Error / Info
+   07. Interactive States
+   08. Overlays & Glass
+   09. Platform Tokens
+   10. Dark Mode Overrides (@media + .dark class)
+   11. Typography & Motion Tokens
+   ================================================================ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   01. BRAND — PRIMARY & ACCENT
+   ──────────────────────────────────────────────────────────────── */
 :root {
+    /* Primary — Holidayseva coral-red */
     --color-primary: #FF385C;
     --color-primary-light: #FF5A76;
+    --color-primary-lighter: #FF7D94;
     --color-primary-dark: #D93B55;
-    --color-primary-alpha: rgba(255, 56, 92, 0.12);
-    --color-secondary: #222222;
-    --color-secondary-muted: #484848;
-    --color-accent: #00A699;
-    --color-accent-light: #00BDB2;
-    --color-accent-dark: #008C81;
-    --color-surface: #FFFFFF;
-    --color-surface-raised: #F7F7F7;
-    --color-surface-overlay: rgba(255, 255, 255, 0.95);
-    --color-bg: #FFFFFF;
-    --color-bg-muted: #F7F7F7;
-    --color-bg-dark: #1A1A1A;
-    --color-text-primary: #222222;
-    --color-text-secondary: #717171;
-    --color-text-muted: #B0B0B0;
-    --color-text-inverse: #FFFFFF;
-    --color-text-link: #222222;
-    --color-muted: #EBEBEB;
-    --color-muted-dark: #DDDDDD;
-    --color-border: #DDDDDD;
-    --color-border-dark: #B0B0B0;
-    --color-border-focus: #222222;
-    --color-success: #008A05;
-    --color-warning: #C45508;
-    --color-error: #C13515;
-    --color-info: #007AB8;
-    --color-star: #FF385C;
-    --color-star-empty: #DDDDDD;
-    --color-overlay: rgba(0, 0, 0, 0.5);
-    --color-overlay-light: rgba(0, 0, 0, 0.15);
+    --color-primary-darker: #B32340;
     --color-primary-hover: #E8314F;
     --color-primary-pressed: #CC2B47;
-    --color-ghost-hover-bg: rgba(34, 34, 34, 0.06);
-    --color-ghost-pressed-bg: rgba(34, 34, 34, 0.10);
+    --color-primary-alpha: rgba(255, 56, 92, 0.12);
+    --color-primary-alpha-sm: rgba(255, 56, 92, 0.06);
+    --color-primary-border: rgba(255, 56, 92, 0.25);
+
+    /* Secondary — Deep charcoal */
+    --color-secondary: #222222;
+    --color-secondary-muted: #484848;
+    --color-secondary-light: #6E6E6E;
+
+    /* Accent — Teal */
+    --color-accent: #00A699;
+    --color-accent-light: #00BDB2;
+    --color-accent-lighter: #33CEC4;
+    --color-accent-dark: #008C81;
+    --color-accent-darker: #006E65;
+    --color-accent-hover: #009B8F;
+    --color-accent-pressed: #008478;
+    --color-accent-alpha: rgba(0, 166, 153, 0.12);
+
+    /* Star rating */
+    --color-star: #FF385C;
+    --color-star-empty: #DDDDDD;
+
+
+    /* ────────────────────────────────────────────────────────────────
+     02. SYSTEM COLORS (Light mode — sRGB)
+     Mirrors Apple's system palette adapted for Holidayseva.
+     ──────────────────────────────────────────────────────────────── */
+    --sys-red: #FF3B30;
+    --sys-orange: #FF9500;
+    --sys-yellow: #FFCC00;
+    --sys-green: #34C759;
+    --sys-mint: #00C7BE;
+    --sys-teal: #30B0C7;
+    --sys-cyan: #32ADE6;
+    --sys-blue: #007AFF;
+    --sys-indigo: #5856D6;
+    --sys-purple: #AF52DE;
+    --sys-pink: #FF2D55;
+    --sys-brown: #A2845E;
+
+    /* iOS/macOS system grays — light */
+    --sys-gray-1: #8E8E93;
+    --sys-gray-2: #AEAEB2;
+    --sys-gray-3: #C7C7CC;
+    --sys-gray-4: #D1D1D6;
+    --sys-gray-5: #E5E5EA;
+    --sys-gray-6: #F2F2F7;
+
+
+    /* ────────────────────────────────────────────────────────────────
+     03. SEMANTIC TEXT (Light)
+     ──────────────────────────────────────────────────────────────── */
+    --color-text-primary: #1D1D1F;
+    --color-text-secondary: #6E6E73;
+    --color-text-tertiary: #868686;
+    --color-text-muted: #B0B0B0;
+    --color-text-placeholder: #C7C7CC;
+    --color-text-inverse: #FFFFFF;
+    --color-text-link: #007AFF;
+    --color-text-link-hover: #0066D6;
+    --color-text-on-primary: #FFFFFF;
+    --color-text-on-accent: #FFFFFF;
+    --color-text-disabled: #AEAEB2;
+
+
+    /* ────────────────────────────────────────────────────────────────
+     04. SURFACES & BACKGROUNDS (Light)
+     ──────────────────────────────────────────────────────────────── */
+    --color-bg: #FFFFFF;
+    --color-bg-secondary: #F5F5F7;
+    --color-bg-tertiary: #EFEFEF;
+    --color-bg-muted: #F7F7F7;
+    --color-bg-dark: #1D1D1F;
+    --color-bg-grouped: #F2F2F7;
+    --color-bg-grouped-secondary: #FFFFFF;
+
+    --color-surface: #FFFFFF;
+    --color-surface-raised: #F7F7F7;
+    --color-surface-overlay: rgba(255, 255, 255, 0.92);
+    --color-surface-glass: rgba(255, 255, 255, 0.72);
+    --color-surface-inset: rgba(0, 0, 0, 0.04);
+    --color-surface-tinted: rgba(255, 56, 92, 0.04);
+
+    --color-fill-primary: rgba(0, 0, 0, 0.055);
+    --color-fill-secondary: rgba(0, 0, 0, 0.035);
+    --color-fill-tertiary: rgba(0, 0, 0, 0.022);
+    --color-fill-quaternary: rgba(0, 0, 0, 0.012);
+
+
+    /* ────────────────────────────────────────────────────────────────
+     05. BORDERS & SEPARATORS (Light)
+     ──────────────────────────────────────────────────────────────── */
+    --color-border: #D2D2D7;
+    --color-border-light: #E5E5EA;
+    --color-border-lighter: #F0F0F0;
+    --color-border-dark: #AEAEB2;
+    --color-border-focus: #1D1D1F;
+    --color-border-focus-ring: rgba(0, 122, 255, 0.48);
+    --color-border-error: rgba(193, 53, 21, 0.45);
+    --color-separator: rgba(60, 60, 67, 0.18);
+    --color-separator-opaque: #C6C6C8;
+    --color-muted: #EBEBEB;
+    --color-muted-dark: #DDDDDD;
+
+
+    /* ────────────────────────────────────────────────────────────────
+     06. STATUS (Light)
+     ──────────────────────────────────────────────────────────────── */
+    --color-success: #1A9E35;
+    --color-success-light: #34C759;
+    --color-success-bg: rgba(52, 199, 89, 0.10);
+    --color-success-border: rgba(52, 199, 89, 0.30);
+    --color-success-text: #1A7C2B;
+
+    --color-warning: #C45508;
+    --color-warning-light: #FF9500;
+    --color-warning-bg: rgba(255, 149, 0, 0.10);
+    --color-warning-border: rgba(255, 149, 0, 0.30);
+    --color-warning-text: #9A3F00;
+
+    --color-error: #C13515;
+    --color-error-light: #FF3B30;
+    --color-error-bg: rgba(255, 59, 48, 0.10);
+    --color-error-border: rgba(255, 59, 48, 0.25);
+    --color-error-text: #A02810;
+
+    --color-info: #0071D6;
+    --color-info-light: #007AFF;
+    --color-info-bg: rgba(0, 122, 255, 0.10);
+    --color-info-border: rgba(0, 122, 255, 0.25);
+    --color-info-text: #0058A8;
+
     --color-danger: #C13515;
     --color-danger-hover: #A82C10;
     --color-danger-pressed: #8E240D;
     --color-danger-alpha: rgba(193, 53, 21, 0.10);
+
+
+    /* ────────────────────────────────────────────────────────────────
+     07. INTERACTIVE STATES (Light)
+     ──────────────────────────────────────────────────────────────── */
+    --color-ghost-hover-bg: rgba(0, 0, 0, 0.05);
+    --color-ghost-pressed-bg: rgba(0, 0, 0, 0.09);
+    --color-selection-bg: rgba(0, 122, 255, 0.15);
+    --color-highlight-bg: rgba(255, 214, 10, 0.30);
     --color-surface-disabled: #F5F5F5;
-    --color-text-disabled: #B0B0B0;
     --color-border-disabled: #E0E0E0;
-    --font-btn: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+
+
+    /* ────────────────────────────────────────────────────────────────
+     08. OVERLAYS & GLASS (Light)
+     ──────────────────────────────────────────────────────────────── */
+    --color-overlay: rgba(0, 0, 0, 0.48);
+    --color-overlay-light: rgba(0, 0, 0, 0.12);
+    --color-overlay-dark: rgba(0, 0, 0, 0.72);
+    --color-glass-bg: rgba(255, 255, 255, 0.65);
+    --color-glass-border: rgba(255, 255, 255, 0.35);
+    --color-glass-shadow: rgba(0, 0, 0, 0.08);
+    --color-glass-tint: rgba(255, 56, 92, 0.08);
+
+
+    /* ────────────────────────────────────────────────────────────────
+     09. PLATFORM TOKENS
+     ──────────────────────────────────────────────────────────────── */
+    --color-nav-bg: #F5F5F7;
+    --color-nav-text: #1D1D1F;
+    --color-nav-text-active: #FF385C;
+    --color-nav-icon: #6E6E73;
+    --color-nav-icon-active: #FF385C;
+    --color-nav-border: #D2D2D7;
+    --color-nav-hover: rgba(0, 0, 0, 0.05);
+    --color-nav-active-bg: rgba(255, 56, 92, 0.08);
+    --color-header-bg: rgba(255, 255, 255, 0.85);
+    --color-header-border: rgba(0, 0, 0, 0.10);
+    --color-code-bg: #1C1C1E;
+    --color-code-text: #F5F5F7;
+    --color-code-comment: #7F8C8D;
+    --color-code-keyword: #CF9FFF;
+    --color-code-string: #A8FF78;
+    --color-code-number: #FF9F43;
+    --color-code-property: #6BCAFF;
+    --color-code-tag: #FF6B9D;
+    --color-code-attr: #FFD176;
+    --color-badge-primary-bg: rgba(255, 56, 92, 0.10);
+    --color-badge-primary-text: #C13515;
+    --color-badge-success-bg: rgba(52, 199, 89, 0.10);
+    --color-badge-success-text: #1A7C2B;
+    --color-badge-warning-bg: rgba(255, 149, 0, 0.10);
+    --color-badge-warning-text: #9A3F00;
+    --color-badge-error-bg: rgba(255, 59, 48, 0.10);
+    --color-badge-error-text: #A02810;
+    --color-badge-info-bg: rgba(0, 122, 255, 0.10);
+    --color-badge-info-text: #0058A8;
+    --color-badge-neutral-bg: rgba(0, 0, 0, 0.06);
+    --color-badge-neutral-text: #6E6E73;
+
+
+    /* ────────────────────────────────────────────────────────────────
+     11. TYPOGRAPHY & MOTION TOKENS
+     ──────────────────────────────────────────────────────────────── */
+    --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Helvetica Neue", Arial, sans-serif;
+    --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+    --font-btn: var(--font-system);
+
     --transition-btn: 160ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-btn-shadow: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    --focus-ring: 0 0 0 3px rgba(255, 56, 92, 0.30);
-    --focus-ring-dark: 0 0 0 3px rgba(34, 34, 34, 0.20);
+    --transition-fast: 120ms ease;
+    --transition-base: 200ms ease;
+    --transition-slow: 320ms ease;
+    --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
+    --focus-ring: 0 0 0 3px rgba(255, 56, 92, 0.32);
+    --focus-ring-blue: 0 0 0 3px rgba(0, 122, 255, 0.48);
+    --focus-ring-dark: 0 0 0 3px rgba(29, 29, 31, 0.22);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.10), 0 3px 8px rgba(0, 0, 0, 0.06);
+    --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ================================================================
+     10. DARK MODE OVERRIDES
+     All tokens redefined so every component adapts with zero changes.
+     Palette mirrors Apple's dark system colors exactly.
+     ================================================================ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-primary: #FF4D6A;
+        --color-primary-light: #FF6B85;
+        --color-primary-lighter: #FF8DA0;
+        --color-primary-dark: #E8314F;
+        --color-primary-darker: #CC2B47;
+        --color-primary-hover: #FF5C78;
+        --color-primary-pressed: #E83D5C;
+        --color-primary-alpha: rgba(255, 77, 106, 0.18);
+        --color-primary-alpha-sm: rgba(255, 77, 106, 0.10);
+        --color-primary-border: rgba(255, 77, 106, 0.30);
+        --color-secondary: #F5F5F7;
+        --color-secondary-muted: #AEAEB2;
+        --color-secondary-light: #8E8E93;
+        --color-accent: #00C4B7;
+        --color-accent-light: #33D1C5;
+        --color-accent-lighter: #5DDCD2;
+        --color-accent-dark: #00A699;
+        --color-accent-darker: #008C81;
+        --color-accent-hover: #00B8AC;
+        --color-accent-pressed: #009E93;
+        --color-accent-alpha: rgba(0, 196, 183, 0.18);
+        --color-star: #FF4D6A;
+        --color-star-empty: #3A3A3C;
+        --sys-red: #FF453A;
+        --sys-orange: #FF9F0A;
+        --sys-yellow: #FFD60A;
+        --sys-green: #30D158;
+        --sys-mint: #63E6E2;
+        --sys-teal: #40CBE0;
+        --sys-cyan: #64D2FF;
+        --sys-blue: #0A84FF;
+        --sys-indigo: #5E5CE6;
+        --sys-purple: #BF5AF2;
+        --sys-pink: #FF375F;
+        --sys-brown: #AC8E68;
+        --sys-gray-1: #8E8E93;
+        --sys-gray-2: #636366;
+        --sys-gray-3: #48484A;
+        --sys-gray-4: #3A3A3C;
+        --sys-gray-5: #2C2C2E;
+        --sys-gray-6: #1C1C1E;
+        --color-text-primary: #F5F5F7;
+        --color-text-secondary: #98989D;
+        --color-text-tertiary: #6E6E73;
+        --color-text-muted: #48484A;
+        --color-text-placeholder: #48484A;
+        --color-text-inverse: #1D1D1F;
+        --color-text-link: #409CFF;
+        --color-text-link-hover: #60ACFF;
+        --color-text-on-primary: #FFFFFF;
+        --color-text-on-accent: #FFFFFF;
+        --color-text-disabled: #48484A;
+        --color-bg: #000000;
+        --color-bg-secondary: #1C1C1E;
+        --color-bg-tertiary: #2C2C2E;
+        --color-bg-muted: #1C1C1E;
+        --color-bg-dark: #000000;
+        --color-bg-grouped: #000000;
+        --color-bg-grouped-secondary: #1C1C1E;
+        --color-surface: #1C1C1E;
+        --color-surface-raised: #2C2C2E;
+        --color-surface-overlay: rgba(29, 29, 31, 0.92);
+        --color-surface-glass: rgba(29, 29, 31, 0.72);
+        --color-surface-inset: rgba(255, 255, 255, 0.05);
+        --color-surface-tinted: rgba(255, 77, 106, 0.07);
+        --color-fill-primary: rgba(255, 255, 255, 0.10);
+        --color-fill-secondary: rgba(255, 255, 255, 0.065);
+        --color-fill-tertiary: rgba(255, 255, 255, 0.04);
+        --color-fill-quaternary: rgba(255, 255, 255, 0.022);
+        --color-border: #3A3A3C;
+        --color-border-light: #2C2C2E;
+        --color-border-lighter: #242426;
+        --color-border-dark: #4E4E52;
+        --color-border-focus: #F5F5F7;
+        --color-border-focus-ring: rgba(64, 156, 255, 0.55);
+        --color-border-error: rgba(255, 69, 58, 0.45);
+        --color-separator: rgba(255, 255, 255, 0.15);
+        --color-separator-opaque: #38383A;
+        --color-muted: #2C2C2E;
+        --color-muted-dark: #3A3A3C;
+        --color-success: #30D158;
+        --color-success-light: #4DDC6C;
+        --color-success-bg: rgba(48, 209, 88, 0.14);
+        --color-success-border: rgba(48, 209, 88, 0.28);
+        --color-success-text: #30D158;
+        --color-warning: #FF9F0A;
+        --color-warning-light: #FFAF34;
+        --color-warning-bg: rgba(255, 159, 10, 0.14);
+        --color-warning-border: rgba(255, 159, 10, 0.28);
+        --color-warning-text: #FF9F0A;
+        --color-error: #FF453A;
+        --color-error-light: #FF6961;
+        --color-error-bg: rgba(255, 69, 58, 0.14);
+        --color-error-border: rgba(255, 69, 58, 0.25);
+        --color-error-text: #FF453A;
+        --color-info: #409CFF;
+        --color-info-light: #60ACFF;
+        --color-info-bg: rgba(64, 156, 255, 0.14);
+        --color-info-border: rgba(64, 156, 255, 0.25);
+        --color-info-text: #409CFF;
+        --color-danger: #FF453A;
+        --color-danger-hover: #FF6961;
+        --color-danger-pressed: #FF8780;
+        --color-danger-alpha: rgba(255, 69, 58, 0.15);
+        --color-ghost-hover-bg: rgba(255, 255, 255, 0.08);
+        --color-ghost-pressed-bg: rgba(255, 255, 255, 0.14);
+        --color-selection-bg: rgba(64, 156, 255, 0.20);
+        --color-highlight-bg: rgba(255, 214, 10, 0.22);
+        --color-surface-disabled: #2C2C2E;
+        --color-border-disabled: #3A3A3C;
+        --color-overlay: rgba(0, 0, 0, 0.62);
+        --color-overlay-light: rgba(0, 0, 0, 0.28);
+        --color-overlay-dark: rgba(0, 0, 0, 0.82);
+        --color-glass-bg: rgba(28, 28, 30, 0.72);
+        --color-glass-border: rgba(255, 255, 255, 0.12);
+        --color-glass-shadow: rgba(0, 0, 0, 0.36);
+        --color-glass-tint: rgba(255, 77, 106, 0.12);
+        --color-nav-bg: #1C1C1E;
+        --color-nav-text: #F5F5F7;
+        --color-nav-text-active: #FF4D6A;
+        --color-nav-icon: #8E8E93;
+        --color-nav-icon-active: #FF4D6A;
+        --color-nav-border: #3A3A3C;
+        --color-nav-hover: rgba(255, 255, 255, 0.07);
+        --color-nav-active-bg: rgba(255, 77, 106, 0.12);
+        --color-header-bg: rgba(0, 0, 0, 0.82);
+        --color-header-border: rgba(255, 255, 255, 0.10);
+        --color-code-bg: #141414;
+        --color-badge-primary-bg: rgba(255, 77, 106, 0.14);
+        --color-badge-primary-text: #FF4D6A;
+        --color-badge-success-bg: rgba(48, 209, 88, 0.14);
+        --color-badge-success-text: #30D158;
+        --color-badge-warning-bg: rgba(255, 159, 10, 0.14);
+        --color-badge-warning-text: #FF9F0A;
+        --color-badge-error-bg: rgba(255, 69, 58, 0.14);
+        --color-badge-error-text: #FF453A;
+        --color-badge-info-bg: rgba(64, 156, 255, 0.14);
+        --color-badge-info-text: #409CFF;
+        --color-badge-neutral-bg: rgba(255, 255, 255, 0.08);
+        --color-badge-neutral-text: #8E8E93;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.18);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.38), 0 2px 4px rgba(0, 0, 0, 0.22);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.44), 0 3px 8px rgba(0, 0, 0, 0.28);
+        --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.52), 0 8px 16px rgba(0, 0, 0, 0.32);
+    }
+}
+
+/* Manual dark toggle class */
+.dark {
+    --color-primary: #FF4D6A;
+    --color-primary-light: #FF6B85;
+    --color-primary-hover: #FF5C78;
+    --color-primary-pressed: #E83D5C;
+    --color-primary-alpha: rgba(255, 77, 106, 0.18);
+    --color-secondary: #F5F5F7;
+    --color-accent: #00C4B7;
+    --color-text-primary: #F5F5F7;
+    --color-text-secondary: #98989D;
+    --color-text-muted: #48484A;
+    --color-text-inverse: #1D1D1F;
+    --color-bg: #000000;
+    --color-surface: #1C1C1E;
+    --color-surface-raised: #2C2C2E;
+    --color-border: #3A3A3C;
+    --color-border-light: #2C2C2E;
+    --color-muted: #2C2C2E;
+    --color-muted-dark: #3A3A3C;
+    --color-success: #30D158;
+    --color-warning: #FF9F0A;
+    --color-error: #FF453A;
+    --color-info: #409CFF;
+    --color-danger: #FF453A;
+    --color-overlay: rgba(0, 0, 0, 0.62);
+    --color-overlay-light: rgba(0, 0, 0, 0.28);
+    --color-nav-bg: #1C1C1E;
+    --color-nav-text: #F5F5F7;
+    --color-nav-border: #3A3A3C;
+    --color-header-bg: rgba(0, 0, 0, 0.82);
+    --color-separator: rgba(255, 255, 255, 0.15);
+    --color-glass-bg: rgba(28, 28, 30, 0.72);
+    --color-glass-border: rgba(255, 255, 255, 0.12);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.28);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.38);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.44);
+    --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.52);
 }
