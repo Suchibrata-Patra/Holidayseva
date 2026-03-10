@@ -95,8 +95,8 @@
 <div class="page-layout">
 
   <!-- ── Left sidebar ──────────────────────── -->
-  <aside class="sidebar-left">
-    <?php include __DIR__ . '/left_sidebar.php'; ?>
+  <aside class="sidebar-left" style="z-index:10000;">
+    <?php include '/design_guidelines/left_sidebar.php'; ?>
   </aside>
 
   <!-- ── Main content ──────────────────────── -->
