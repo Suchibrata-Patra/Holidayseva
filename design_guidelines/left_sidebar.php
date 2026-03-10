@@ -60,11 +60,13 @@ function scanComponentCategory(string $baseDir, string $category): array {
         $fullPath = $catPath . '/' . $entry;
         if (!is_dir($fullPath)) continue;
 
-        // Link target
+        // Link target — URLs are relative to the web root (developer.holidayseva.com)
+        // dedicated page:  Category/item.php          e.g. Components/toggle.php
+        // anchor fallback: Category/Category.php#item e.g. Components/Components.php#toggle
         $phpFile = $fullPath . '/' . $entry . '.php';
         $page    = file_exists($phpFile)
-                   ? $entry . '.php'
-                   : $category . '.php#' . $entry;
+                   ? $category . '/' . $entry . '.php'
+                   : $category . '/' . $category . '.php#' . $entry;
 
         // Icon web URL — component-specific .ico if it exists
         $icoFile   = $fullPath . '/' . $entry . '.ico';
@@ -298,7 +300,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
   <?php foreach ($categoryData as $dir => $cat): ?>
     <?php
       $catPages = array_column($cat['items'], 'page');
-      $catOpen  = in_array($current, $catPages);
+      $catOpen  = in_array($current, array_map('basename', $catPages));
 
       // Choose category icon
       $catIcons = [
@@ -328,7 +330,7 @@ $foundationPages     = ['colour.php','typography.php','spacing.php','icons.php',
           <?php foreach ($cat['items'] as $comp): ?>
             <li>
               <a href="<?= htmlspecialchars($comp['page']) ?>"
-                 class="sb-link <?= $current === $comp['page'] ? 'active' : '' ?>">
+                 class="sb-link <?= $current === basename($comp['page']) ? 'active' : '' ?>">
                 <?= renderComponentIcon($comp['iconWebUrl'], $defaultIconUrl, $comp['name']) ?>
                 <?= htmlspecialchars($comp['label']) ?>
               </a>
