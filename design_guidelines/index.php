@@ -1,452 +1,600 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toggle | Design Guidelines</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holidayseva Design Guidelines</title>
+  <link rel="stylesheet" href="/design-system.css">
+  <style>
+    /* ─────────────────────────────────────────────────────────
+       LANDING PAGE STYLES — index.php only
+    ───────────────────────────────────────────────────────── */
 
-    <!-- Design system: layout, typography, components -->
-    <link rel="stylesheet" href="/design-system.css">
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      padding: 60px 0 52px;
+      border-bottom: 1px solid #e5e5ea;
+      margin-bottom: 48px;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: #FF385C;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -1.8px;
+      line-height: 1.06;
+      color: #1d1d1f;
+      margin-bottom: 18px;
+    }
+    .hero p {
+      font-size: 17px;
+      color: #424245;
+      line-height: 1.58;
+      max-width: 520px;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #1d1d1f; color: #fff;
+      padding: 10px 20px; border-radius: 980px;
+      font-size: 13.5px; font-weight: 500;
+      text-decoration: none; letter-spacing: -.1px;
+      transition: background .15s, transform .15s;
+    }
+    .btn-hero-primary:hover { background: #000; transform: translateY(-1px); text-decoration: none; }
+    .btn-hero-secondary {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #f2f2f7; color: #1d1d1f; border: 1px solid #e5e5ea;
+      padding: 10px 20px; border-radius: 980px;
+      font-size: 13.5px; font-weight: 500;
+      text-decoration: none; letter-spacing: -.1px;
+      transition: background .15s, transform .15s;
+    }
+    .btn-hero-secondary:hover { background: #e5e5ea; transform: translateY(-1px); text-decoration: none; }
 
-    <!-- Toggle component CSS — defines .toggle and .toggle-circle -->
-    <link rel="stylesheet" href="/Components/toggle.css">
+    /* ── Stats strip ──────────────────────────────────────── */
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border: 1px solid #e5e5ea; border-radius: 14px;
+      overflow: hidden; margin-bottom: 52px;
+    }
+    .stat-cell {
+      padding: 22px 24px; border-right: 1px solid #e5e5ea; background: #fff;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num {
+      font-size: 30px; font-weight: 700; letter-spacing: -1.2px;
+      color: #1d1d1f; line-height: 1;
+    }
+    .stat-num em { color: #FF385C; font-style: normal; }
+    .stat-lbl { font-size: 12px; color: #86868b; margin-top: 4px; }
+
+    /* ── Category sections ────────────────────────────────── */
+    .cat-section { margin-bottom: 52px; }
+    .cat-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid #e5e5ea;
+    }
+    .cat-title {
+      font-size: 11.5px; font-weight: 600; letter-spacing: .07em;
+      text-transform: uppercase; color: #86868b;
+    }
+    .cat-see-all {
+      font-size: 12.5px; color: #0066cc; font-weight: 500;
+      text-decoration: none;
+    }
+    .cat-see-all:hover { text-decoration: underline; }
+
+    /* ── Component card grid ──────────────────────────────── */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1px;
+      background: #e5e5ea;
+      border: 1px solid #e5e5ea;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .comp-card {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 18px 20px;
+      background: #fff;
+      text-decoration: none; color: inherit;
+      transition: background .1s;
+      position: relative;
+    }
+    .comp-card:hover { background: #f9f9fb; text-decoration: none; }
+    .comp-card:hover .comp-card-arrow { opacity: 1; transform: translateX(2px); }
+    .comp-card-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      background: #f2f2f7; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #424245;
+    }
+    .comp-card-body { flex: 1; min-width: 0; }
+    .comp-card-title {
+      font-size: 13.5px; font-weight: 500; color: #1d1d1f;
+      line-height: 1.3; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .comp-card-desc {
+      font-size: 12px; color: #86868b; line-height: 1.5; margin-top: 3px;
+    }
+    .comp-card-arrow {
+      flex-shrink: 0; color: #aeaeb2; margin-top: 2px;
+      opacity: 0; transform: translateX(0);
+      transition: opacity .12s, transform .12s;
+    }
+    .comp-tag {
+      font-size: 9.5px; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; padding: 1.5px 6px; border-radius: 4px;
+      line-height: 1.6;
+    }
+    .comp-tag--stable { background: #e8f5e9; color: #2e7d32; }
+    .comp-tag--beta   { background: #fff3e0; color: #e65100; }
+    .comp-tag--new    { background: #e3f2fd; color: #1565c0; }
+
+    /* ── Featured dark panel ──────────────────────────────── */
+    .featured-panel {
+      background: #1d1d1f;
+      border-radius: 18px; padding: 44px 44px 40px;
+      margin-bottom: 52px; position: relative; overflow: hidden;
+    }
+    .featured-panel::before {
+      content: ''; position: absolute;
+      width: 360px; height: 360px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,56,92,.18) 0%, transparent 70%);
+      top: -100px; right: -80px; pointer-events: none;
+    }
+    .featured-panel-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-bottom: 16px;
+    }
+    .featured-panel h2 {
+      font-size: 28px; font-weight: 680; letter-spacing: -.8px;
+      color: #fff; margin-bottom: 10px; line-height: 1.2;
+      position: relative; z-index: 1;
+    }
+    .featured-panel p {
+      font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.6;
+      max-width: 460px; margin-bottom: 28px; position: relative; z-index: 1;
+    }
+    .featured-links {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; position: relative; z-index: 1;
+    }
+    .featured-link {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: 14px 16px;
+      color: rgba(255,255,255,.8); font-size: 13px; font-weight: 450;
+      text-decoration: none; display: flex; align-items: center; gap: 10px;
+      transition: background .12s;
+    }
+    .featured-link:hover { background: rgba(255,255,255,.12); text-decoration: none; color: #fff; }
+    .featured-link-icon {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: rgba(255,255,255,.1); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+
+    /* ── Quick-start callout ──────────────────────────────── */
+    .qs-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-bottom: 52px;
+    }
+    .qs-card {
+      border: 1px solid #e5e5ea; border-radius: 14px;
+      padding: 28px 28px 24px; text-decoration: none; color: inherit;
+      transition: box-shadow .15s, transform .15s;
+      display: block;
+    }
+    .qs-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08); transform: translateY(-2px); text-decoration: none; }
+    .qs-card-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: #aeaeb2; margin-bottom: 8px;
+    }
+    .qs-card h3 {
+      font-size: 18px; font-weight: 650; letter-spacing: -.4px;
+      color: #1d1d1f; margin-bottom: 8px;
+    }
+    .qs-card p {
+      font-size: 13.5px; color: #86868b; line-height: 1.55; margin: 0;
+    }
+    .qs-card-cta {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 16px; font-size: 13px; font-weight: 500; color: #0066cc;
+    }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .featured-links { grid-template-columns: 1fr 1fr; }
+      .qs-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .featured-links { grid-template-columns: 1fr; }
+      .featured-panel { padding: 28px 20px; }
+    }
+  </style>
 </head>
-
 <body>
 
-    <?php include __DIR__ . '/header.php'; ?>
+<?php include __DIR__ . '/header.php'; ?>
+<?php include __DIR__ . '/drawer_sidebar.php'; ?>
 
-    <!-- Mobile drawer sidebar (hidden on desktop) -->
-    <?php include __DIR__ . '/drawer_sidebar.php'; ?>
+<div class="page-layout">
 
-    <div class="page-layout">
+  <!-- ── Left sidebar (yours, untouched) ──────────── -->
+  <aside class="sidebar-left">
+    <?php include __DIR__ . '/left_sidebar.php'; ?>
+  </aside>
 
-        <!-- ── Left sidebar ──────────────────────── -->
-        <aside class="sidebar-left">
-            <?php include __DIR__ . '/left_sidebar.php'; ?>
-        </aside>
+  <!-- ── Main content ─────────────────────────────── -->
+  <main class="page-main" id="top">
 
-        <!-- ── Main content ──────────────────────── -->
-        <main class="page-main">
-
-            <!-- Hero -->
-            <div id="overview">
-                <p class="page-eyebrow">Components · Form Controls</p>
-                <h1 class="page-title">Toggle</h1>
-                <p class="page-lead">A binary switch for enabling or disabling a single option. Communicates state
-                    instantly through colour and position.</p>
-            </div>
-
-            <hr class="rule">
-
-            <!-- ── Live demo ─────────────────────────
-         .toggle and .toggle-circle are styled
-         entirely by toggle.css — no inline CSS
-    ──────────────────────────────────────── -->
-            <div class="demo-stage">
-                <span class="demo-label">Interactive demo — click to toggle</span>
-
-                <div class="toggle active" id="demoToggle" role="switch" aria-checked="true" tabindex="0"
-                    aria-label="Demo toggle switch">
-                    <div class="toggle-circle"></div>
-                </div>
-
-                <span class="demo-state on" id="demoState">state: on</span>
-            </div>
-
-            <!-- ── Anatomy ────────────────────────── -->
-            <section id="anatomy">
-                <h2 class="section-title">Anatomy</h2>
-                <p class="body-text">
-                    The component has two elements. The <strong>track</strong> (<code>.toggle</code>) is the
-                    pill-shaped container whose background colour reflects state. The <strong>thumb</strong>
-                    (<code>.toggle-circle</code>) is the white circle that slides inside the track.
-                </p>
-
-                <div class="anatomy-stage">
-                    <div class="anat-toggle">
-                        <div class="anat-circle"></div>
-                        <!-- Annotation: track -->
-                        <div class="anat-ann ann-track">
-                            <div class="anat-ann-dot"></div>
-                            <div class="anat-ann-line"></div>
-                            <span>.toggle</span>
-                        </div>
-                        <!-- Annotation: thumb -->
-                        <div class="anat-ann ann-thumb">
-                            <div class="anat-ann-dot"></div>
-                            <div class="anat-ann-line"></div>
-                            <span>.toggle-circle</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <hr class="rule">
-
-            <!-- ── Specifications ────────────────── -->
-            <section id="specs">
-                <h2 class="section-title">Specifications</h2>
-                <p class="body-text">
-                    Default (desktop) dimensions as defined in <code>toggle.css</code>.
-                    A responsive breakpoint at 480 px scales the component proportionally.
-                </p>
-
-                <div class="spec-table">
-                    <div class="spec-row">
-                        <span class="spec-key">Width</span>
-                        <span class="spec-val">280px</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Height</span>
-                        <span class="spec-val">160px</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Border radius</span>
-                        <span class="spec-val">80px</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Thumb diameter</span>
-                        <span class="spec-val">140px</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Thumb inset</span>
-                        <span class="spec-val">10px (all sides)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Thumb travel</span>
-                        <span class="spec-val">left: 10px → left: 130px</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Easing</span>
-                        <span class="spec-val">cubic-bezier(0.4, 0, 0.2, 1) — 0.4s</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Off colour</span>
-                        <span class="spec-val">
-                            <span class="spec-swatch" style="background:#DDDDDD"></span>#DDDDDD
-                        </span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Active colour</span>
-                        <span class="spec-val">
-                            <span class="spec-swatch" style="background:#FF385C"></span>#FF385C
-                        </span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-key">Thumb colour</span>
-                        <span class="spec-val">
-                            <span class="spec-swatch" style="background:#fff;border-color:#ccc"></span>#ffffff
-                        </span>
-                    </div>
-                </div>
-            </section>
-
-            <hr class="rule">
-
-            <!-- ── HTML Usage ─────────────────────── -->
-            <section id="usage">
-                <h2 class="section-title">HTML Usage</h2>
-                <p class="body-text">
-                    Link <code>toggle.css</code> in <code>&lt;head&gt;</code> and place the two-element
-                    markup anywhere in your template. <code>toggle.js</code> auto-initialises every
-                    <code>.toggle</code> on <code>DOMContentLoaded</code> — no manual wiring needed.
-                </p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">HTML</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code><span class="c">&lt;!-- In &lt;head&gt; --&gt;</span>
-<span class="t">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"/Components/toggle.css"</span><span class="t">&gt;</span>
-
-<span class="c">&lt;!-- Component markup --&gt;</span>
-<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle"</span>
-     <span class="a">role</span>=<span class="s">"switch"</span>
-     <span class="a">aria-checked</span>=<span class="s">"false"</span>
-     <span class="a">tabindex</span>=<span class="s">"0"</span>
-     <span class="a">aria-label</span>=<span class="s">"Enable notifications"</span><span class="t">&gt;</span>
-  <span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle-circle"</span><span class="t">&gt;&lt;/div&gt;</span>
-<span class="t">&lt;/div&gt;</span>
-
-<span class="c">&lt;!-- Before &lt;/body&gt; --&gt;</span>
-<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
-                </div>
-
-                <p class="subsection-title">Pre-active state</p>
-                <p class="body-text">
-                    Add the <code>active</code> class in markup to render the toggle in the on state on
-                    first paint. Pair it with <code>aria-checked="true"</code>.
-                </p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">HTML</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code><span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle active"</span>
-     <span class="a">role</span>=<span class="s">"switch"</span>
-     <span class="a">aria-checked</span>=<span class="s">"true"</span>
-     <span class="a">tabindex</span>=<span class="s">"0"</span>
-     <span class="a">aria-label</span>=<span class="s">"Notifications enabled"</span><span class="t">&gt;</span>
-  <span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle-circle"</span><span class="t">&gt;&lt;/div&gt;</span>
-<span class="t">&lt;/div&gt;</span></code></pre>
-                </div>
-
-                <div class="note warn">
-                    <p>Always include <code>role="switch"</code>, <code>aria-checked</code>,
-                        <code>tabindex="0"</code>, and a descriptive <code>aria-label</code>.
-                        <code>toggle.js</code> keeps <code>aria-checked</code> in sync automatically
-                        on every state change.
-                    </p>
-                </div>
-            </section>
-
-            <hr class="rule">
-
-            <!-- ── JavaScript API ─────────────────── -->
-            <section id="javascript">
-                <h2 class="section-title">JavaScript API</h2>
-                <p class="body-text">
-                    <code>ToggleSwitch</code> is defined in <code>toggle.js</code> and auto-instantiated
-                    on page load via the <code>'.toggle'</code> selector. Construct a new instance for
-                    programmatic control.
-                </p>
-
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Arguments</th>
-                            <th>Returns</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>getState(el)</td>
-                            <td>HTMLElement</td>
-                            <td><code>"on"</code> | <code>"off"</code></td>
-                            <td>Reads the current state from the element's <code>data-state</code> attribute.</td>
-                        </tr>
-                        <tr>
-                            <td>setState(el, state)</td>
-                            <td>HTMLElement, <code>"on"</code> | <code>"off"</code></td>
-                            <td>—</td>
-                            <td>Sets state silently — does not fire <code>toggle-change</code>.</td>
-                        </tr>
-                        <tr>
-                            <td>toggle(el)</td>
-                            <td>HTMLElement</td>
-                            <td>—</td>
-                            <td>Flips the current state silently.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p class="subsection-title">Listening for state changes</p>
-                <p class="body-text">
-                    Every user click dispatches a <code>toggle-change</code> CustomEvent on the element.
-                    The <code>detail</code> object exposes a string state and a boolean.
-                </p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">JavaScript</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code><span class="k">const</span> el = document.<span class="k">querySelector</span>(<span class="s">'.toggle'</span>);
-
-el.<span class="k">addEventListener</span>(<span class="s">'toggle-change'</span>, (e) => {
-  console.<span class="k">log</span>(e.detail.state);    <span class="c">// "on" | "off"</span>
-  console.<span class="k">log</span>(e.detail.isActive); <span class="c">// true | false</span>
-});</code></pre>
-                </div>
-
-                <p class="subsection-title">Programmatic control</p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">JavaScript</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code><span class="k">const</span> sw = <span class="k">new</span> ToggleSwitch(<span class="s">'.toggle'</span>);
-<span class="k">const</span> el = document.<span class="k">querySelector</span>(<span class="s">'#myToggle'</span>);
-
-sw.<span class="k">setState</span>(el, <span class="s">'on'</span>);   <span class="c">// force on  — no event</span>
-sw.<span class="k">setState</span>(el, <span class="s">'off'</span>);  <span class="c">// force off — no event</span>
-sw.<span class="k">toggle</span>(el);            <span class="c">// flip      — no event</span>
-sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "off"</span></code></pre>
-                </div>
-
-                <div class="note">
-                    <p><code>setState()</code> and <code>toggle()</code> do not fire <code>toggle-change</code>.
-                        Only user-initiated clicks dispatch the custom event.</p>
-                </div>
-            </section>
-
-            <hr class="rule">
-
-            <!-- ── Integration ────────────────────── -->
-            <section id="integration">
-                <h2 class="section-title">Integration</h2>
-                <p class="body-text">
-                    Include <code>toggle.js</code> once before <code>&lt;/body&gt;</code>. It auto-initialises
-                    all <code>.toggle</code> elements present at load time. Elements added dynamically after
-                    load require a fresh <code>new ToggleSwitch(selector)</code> call.
-                </p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">HTML</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code><span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
-                </div>
-
-                <p class="subsection-title">File structure</p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">Directory</span>
-                    </div>
-                    <pre><code>design_guidelines/
-├── header.php
-├── left_sidebar.php
-├── right_sidebar.php
-├── toggle.php
-├── design-system.css
-├── Components/
-│   └── toggle.css
-└── JS/
-    └── toggle.js</code></pre>
-                </div>
-            </section>
-
-            <hr class="rule">
-
-            <!-- ── Accessibility ──────────────────── -->
-            <section id="accessibility">
-                <h2 class="section-title">Accessibility</h2>
-                <p class="body-text">
-                    The toggle is a custom control — ARIA attributes must be set explicitly in markup.
-                    <code>toggle.js</code> keeps <code>aria-checked</code> synchronised on every state
-                    transition. The element is keyboard-operable via Space or Enter when focused.
-                </p>
-
-                <table class="api-table">
-                    <thead>
-                        <tr>
-                            <th>Attribute</th>
-                            <th>Value</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>role</td>
-                            <td><code>"switch"</code></td>
-                            <td>Identifies the element as a binary switch to screen readers.</td>
-                        </tr>
-                        <tr>
-                            <td>aria-checked</td>
-                            <td><code>"true"</code> / <code>"false"</code></td>
-                            <td>Kept in sync by <code>toggle.js</code>. Set the initial value in markup.</td>
-                        </tr>
-                        <tr>
-                            <td>tabindex</td>
-                            <td><code>"0"</code></td>
-                            <td>Places the element in the natural tab order.</td>
-                        </tr>
-                        <tr>
-                            <td>aria-label</td>
-                            <td>Descriptive string</td>
-                            <td>Describes what is toggled, e.g. <code>"Enable dark mode"</code>.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p class="subsection-title">Keyboard activation</p>
-
-                <div class="code-block">
-                    <div class="code-bar">
-                        <span class="code-lang-tag">JavaScript</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code>document.<span class="k">querySelectorAll</span>(<span class="s">'.toggle'</span>).<span class="k">forEach</span>(el => {
-  el.<span class="k">addEventListener</span>(<span class="s">'keydown'</span>, e => {
-    <span class="k">if</span> (e.key === <span class="s">' '</span> || e.key === <span class="s">'Enter'</span>) {
-      e.<span class="k">preventDefault</span>(); el.<span class="k">click</span>();
-    }
-  });
-});</code></pre>
-                </div>
-            </section>
-
-        </main>
-
-        <!-- ── Right TOC ──────────────────────── -->
-        <aside class="sidebar-right">
-            <?php include __DIR__ . '/right_sidebar.php'; ?>
-        </aside>
-
+    <!-- Hero ─────────────────────────────────────── -->
+    <div class="hero" id="overview">
+      <p class="hero-eyebrow">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+          <circle cx="5" cy="5" r="4" fill="#FF385C" opacity=".25"/>
+          <circle cx="5" cy="5" r="2.5" fill="#FF385C"/>
+        </svg>
+        Holidayseva · Design System
+      </p>
+      <h1>Design<br>Guidelines</h1>
+      <p>A single source of truth for building Holidayseva products — design tokens, accessible components, and interaction patterns crafted for clarity and delight.</p>
+      <div class="hero-actions">
+        <a href="UI/Foundation/Foundation.php" class="btn-hero-primary">
+          Get started
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="UI/Atom/Atom.php" class="btn-hero-secondary">
+          Browse components
+        </a>
+      </div>
     </div>
 
-    <footer class="footer">
-        <span class="footer-text">Holidayseva Design Guidelines · Toggle</span>
-        <span class="footer-text">v1.0</span>
-    </footer>
+    <!-- Stats strip ───────────────────────────────── -->
+    <div class="stats-strip" id="stats">
+      <div class="stat-cell">
+        <div class="stat-num">70<em>+</em></div>
+        <div class="stat-lbl">Components</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">9</div>
+        <div class="stat-lbl">Categories</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">100<em>%</em></div>
+        <div class="stat-lbl">WCAG 2.1 AA</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">v1<em>.</em>0</div>
+        <div class="stat-lbl">Current version</div>
+      </div>
+    </div>
 
-    <!-- Toggle component JS — from toggle.js — auto-inits .toggle on DOMContentLoaded -->
-    <script src="/JS/toggle.js"></script>
+    <!-- Featured: Foundation ──────────────────────── -->
+    <div class="featured-panel" id="foundation">
+      <p class="featured-panel-tag">Start here</p>
+      <h2>Design Foundations</h2>
+      <p>Every pixel in the Holidayseva product is rooted in a set of decisions. Explore the tokens that underpin every component.</p>
+      <div class="featured-links">
+        <a href="UI/Foundation/colors.php" class="featured-link">
+          <div class="featured-link-icon">🎨</div>
+          Colour
+        </a>
+        <a href="UI/Foundation/typography.php" class="featured-link">
+          <div class="featured-link-icon">Aa</div>
+          Typography
+        </a>
+        <a href="UI/Foundation/spacing.php" class="featured-link">
+          <div class="featured-link-icon">⊞</div>
+          Spacing
+        </a>
+        <a href="UI/Foundation/grid.php" class="featured-link">
+          <div class="featured-link-icon">▦</div>
+          Grid
+        </a>
+        <a href="UI/Foundation/motion.php" class="featured-link">
+          <div class="featured-link-icon">▶</div>
+          Motion
+        </a>
+        <a href="UI/Foundation/shadows.php" class="featured-link">
+          <div class="featured-link-icon">◫</div>
+          Shadows
+        </a>
+      </div>
+    </div>
 
-    <script>
-        /* Wire demo state badge to the toggle-change event from toggle.js */
-        document.getElementById('demoToggle').addEventListener('toggle-change', (e) => {
-            const el = document.getElementById('demoState');
-            el.textContent = 'state: ' + e.detail.state;
-            el.className = 'demo-state' + (e.detail.isActive ? ' on' : '');
-            /* Keep aria-checked in sync */
-            document.getElementById('demoToggle').setAttribute('aria-checked', e.detail.isActive);
+    <!-- Atoms ─────────────────────────────────────── -->
+    <?php
+    $atomsPreview = [
+      ['slug'=>'button',   'label'=>'Button',   'desc'=>'All variants, sizes, and states.',          'icon'=>'<rect x="1.5" y="5" width="13" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'input',    'label'=>'Input',    'desc'=>'With label, helper text, and validation.',  'icon'=>'<rect x="1.5" y="4" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 8h6M5 10.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+      ['slug'=>'toggle',   'label'=>'Toggle',   'desc'=>'Binary switch with animated transition.',   'icon'=>'<rect x="1" y="5" width="14" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="11.5" cy="8" r="2" fill="currentColor"/>'],
+      ['slug'=>'badge',    'label'=>'Badge',    'desc'=>'Status and count indicators.',              'icon'=>'<rect x="3" y="5" width="10" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'avatar',   'label'=>'Avatar',   'desc'=>'Image with fallback and status dot.',       'icon'=>'<circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 14c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+      ['slug'=>'spinner',  'label'=>'Spinner',  'desc'=>'Animated loading indicator.',              'icon'=>'<circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3" stroke-dasharray="16 18" stroke-linecap="round"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="atoms">
+      <div class="cat-header">
+        <span class="cat-title">Atoms</span>
+        <a href="UI/Atom/Atom.php" class="cat-see-all">See all 19 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($atomsPreview as $a): ?>
+        <a href="UI/Atom/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Forms ─────────────────────────────────────── -->
+    <?php
+    $formsPreview = [
+      ['slug'=>'calendar',     'label'=>'Calendar',      'desc'=>'Month-view with date selection.',       'icon'=>'<rect x="1.5" y="3" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 1.5V4M11 1.5V4M1.5 6.5h13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+      ['slug'=>'date-picker',  'label'=>'Date Picker',   'desc'=>'Input + calendar popover.',             'icon'=>'<rect x="1.5" y="3" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 6.5h13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="10" r="1.2" fill="currentColor"/>'],
+      ['slug'=>'autocomplete', 'label'=>'Autocomplete',  'desc'=>'Live suggestions with keyboard nav.',   'icon'=>'<rect x="1.5" y="4" width="13" height="4" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 11h12M2 13.5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".35"/>'],
+      ['slug'=>'file-upload',  'label'=>'File Upload',   'desc'=>'Drag-and-drop zone with progress.',    'icon'=>'<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 10V6M6 8l2-2 2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="forms">
+      <div class="cat-header">
+        <span class="cat-title">Forms</span>
+        <a href="UI/Forms/Forms.php" class="cat-see-all">See all 9 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($formsPreview as $a): ?>
+        <a href="UI/Forms/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Layout ────────────────────────────────────── -->
+    <?php
+    $layoutPreview = [
+      ['slug'=>'grid',        'label'=>'Grid',         'desc'=>'12-column responsive CSS Grid.',    'icon'=>'<rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'sidebar',     'label'=>'Sidebar',      'desc'=>'Fixed-width panel with scroll.',    'icon'=>'<rect x="1.5" y="2" width="13" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 2v12" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'stack',       'label'=>'Stack',        'desc'=>'Vertical flex with uniform gap.',   'icon'=>'<rect x="2" y="2" width="12" height="3" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="6.5" width="12" height="3" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="11" width="12" height="3" rx="1" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'breadcrumbs', 'label'=>'Breadcrumbs',  'desc'=>'Hierarchical path indicator.',     'icon'=>'<path d="M2 8h3M5 8l2-3 2 6 2-3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="layout">
+      <div class="cat-header">
+        <span class="cat-title">Layout</span>
+        <a href="UI/Layout/Layout.php" class="cat-see-all">See all 13 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($layoutPreview as $a): ?>
+        <a href="UI/Layout/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Interactive ────────────────────────────────── -->
+    <?php
+    $interactivePreview = [
+      ['slug'=>'tabs',      'label'=>'Tabs',      'desc'=>'Horizontal panel switcher.',            'icon'=>'<path d="M2 10V5.5A1.5 1.5 0 013.5 4H7l1.5 2H14v4a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 10z" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'dropdown',  'label'=>'Dropdown',  'desc'=>'Button-triggered action menu.',         'icon'=>'<rect x="1.5" y="4" width="13" height="5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 11h12M2 13.5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".35"/>'],
+      ['slug'=>'accordion', 'label'=>'Accordion', 'desc'=>'Expand/collapse content sections.',    'icon'=>'<rect x="1.5" y="3" width="13" height="3.5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="8" width="13" height="3.5" rx="1" stroke="currentColor" stroke-width="1.2" opacity=".4"/><rect x="1.5" y="12.5" width="13" height="1" rx=".5" stroke="currentColor" stroke-width="1" opacity=".2"/>'],
+      ['slug'=>'tooltip',   'label'=>'Tooltip',   'desc'=>'Brief label on hover or focus.',       'icon'=>'<rect x="2" y="2" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 10.5l1.5 2.5 1.5-2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 5.5h6M5 7.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="interactive">
+      <div class="cat-header">
+        <span class="cat-title">Interactive</span>
+        <a href="UI/Interactive/Interactive.php" class="cat-see-all">See all 11 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($interactivePreview as $a): ?>
+        <a href="UI/Interactive/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Data Display ──────────────────────────────── -->
+    <?php
+    $ddPreview = [
+      ['slug'=>'card',         'label'=>'Card',          'desc'=>'Contained surface for a single topic.',         'icon'=>'<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5h5M4 9h8M4 11h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+      ['slug'=>'table',        'label'=>'Table',         'desc'=>'Sortable data table with sticky header.',       'icon'=>'<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 6.5h13M6.5 3v10" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'stats-card',   'label'=>'Stats Card',    'desc'=>'KPI tile with metric and trend.',              'icon'=>'<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 10l2.5-3 2 2 3-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>'],
+      ['slug'=>'timeline',     'label'=>'Timeline',      'desc'=>'Vertical chronological list.',                 'icon'=>'<circle cx="6" cy="5" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="11" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 6.5V9.5M9 5h3M9 11h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="data-display">
+      <div class="cat-header">
+        <span class="cat-title">Data Display</span>
+        <a href="UI/DataDisplay/DataDisplay.php" class="cat-see-all">See all 12 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($ddPreview as $a): ?>
+        <a href="UI/DataDisplay/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Feedback ──────────────────────────────────── -->
+    <?php
+    $feedbackPreview = [
+      ['slug'=>'alert',           'label'=>'Alert',            'desc'=>'Info, success, warning, and error.',     'icon'=>'<rect x="1.5" y="4" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 8h2M4 10h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="3.5" cy="8" r=".5" fill="currentColor"/>'],
+      ['slug'=>'toast',           'label'=>'Toast',            'desc'=>'Transient auto-dismiss notification.',   'icon'=>'<rect x="2" y="5" width="12" height="7" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 8.5h6M5 10.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+      ['slug'=>'skeleton-loader', 'label'=>'Skeleton Loader',  'desc'=>'Animated placeholder shapes.',          'icon'=>'<rect x="2" y="3" width="12" height="4" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".4"/><rect x="2" y="9" width="8" height="2" rx="1" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="2" y="12.5" width="5" height="1.5" rx=".75" stroke="currentColor" stroke-width="1.2" opacity=".2"/>'],
+      ['slug'=>'empty-state',     'label'=>'Empty State',      'desc'=>'Illustration + copy + CTA.',            'icon'=>'<circle cx="8" cy="7" r="4" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/><path d="M5 13h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="feedback">
+      <div class="cat-header">
+        <span class="cat-title">Feedback</span>
+        <a href="UI/Feedback/Feedback.php" class="cat-see-all">See all 8 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($feedbackPreview as $a): ?>
+        <a href="UI/Feedback/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Composite ─────────────────────────────────── -->
+    <?php
+    $compositePreview = [
+      ['slug'=>'booking-card',    'label'=>'Booking Card',    'desc'=>'Holidayseva date/guest/CTA widget.', 'icon'=>'<rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5h3.5M4 9h5M10 9.5v2M11.5 10.5h-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>'],
+      ['slug'=>'search-bar',      'label'=>'Search Bar',      'desc'=>'Input + live suggestions.',          'icon'=>'<circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.2"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>'],
+      ['slug'=>'profile-card',    'label'=>'Profile Card',    'desc'=>'Avatar, name, role, and actions.',   'icon'=>'<circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9.5" width="12" height="4" rx="1.5" stroke="currentColor" stroke-width="1.2"/>'],
+      ['slug'=>'notification-dropdown','label'=>'Notification Dropdown','desc'=>'Bell icon + notification list.','icon'=>'<path d="M8 2a4 4 0 014 4v3l1.5 2h-11L4 9V6a4 4 0 014-4z" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 11a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.2"/>'],
+    ];
+    ?>
+    <div class="cat-section" id="composite">
+      <div class="cat-header">
+        <span class="cat-title">Composite</span>
+        <a href="UI/Composite/Composite.php" class="cat-see-all">See all 10 →</a>
+      </div>
+      <div class="comp-grid">
+        <?php foreach ($compositePreview as $a): ?>
+        <a href="UI/Composite/<?= $a['slug'] ?>/<?= $a['slug'] ?>.php" class="comp-card">
+          <div class="comp-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><?= $a['icon'] ?></svg>
+          </div>
+          <div class="comp-card-body">
+            <div class="comp-card-title"><?= $a['label'] ?></div>
+            <div class="comp-card-desc"><?= $a['desc'] ?></div>
+          </div>
+          <svg class="comp-card-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- Quick-start pair ──────────────────────────── -->
+    <div class="qs-row" id="resources">
+      <a href="UI/Foundation/Foundation.php" class="qs-card">
+        <p class="qs-card-label">For designers</p>
+        <h3>Figma Kit</h3>
+        <p>Components, tokens, and spacing guides — ready to drag into your frames.</p>
+        <span class="qs-card-cta">
+          Open Figma
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </a>
+      <a href="#" class="qs-card">
+        <p class="qs-card-label">For developers</p>
+        <h3>GitHub Repository</h3>
+        <p>CSS, PHP components, and the full design-system.css — open source and versioned.</p>
+        <span class="qs-card-cta">
+          View on GitHub
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ── Right sidebar (yours, untouched) ─────────── -->
+  <aside class="sidebar-right">
+    <?php include __DIR__ . '/right_sidebar.php'; ?>
+  </aside>
+
+</div>
+
+<?php include __DIR__ . '/footer.php'; ?>
+
+<script>
+/* TOC scroll-spy — works with existing right_sidebar.php script */
+document.addEventListener('DOMContentLoaded', () => {
+  const links    = document.querySelectorAll('.toc-link');
+  const sections = document.querySelectorAll('[id]');
+  if (!links.length) return;
+
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => {
+          a.classList.remove('active');
+          if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
         });
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
 
-        /* Keyboard support for all toggles */
-        document.querySelectorAll('.toggle').forEach(el => {
-            el.addEventListener('keydown', e => {
-                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); el.click(); }
-            });
-        });
+  sections.forEach(s => spy.observe(s));
+});
+</script>
 
-        /* TOC scroll-spy */
-        document.addEventListener('DOMContentLoaded', () => {
-            const tocLinks = document.querySelectorAll('.toc-link');
-            const sections = document.querySelectorAll('section[id], div[id]');
-            const spy = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        tocLinks.forEach(a => {
-                            a.classList.remove('active');
-                            if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
-                        });
-                    }
-                });
-            }, { rootMargin: '-15% 0px -75% 0px' });
-            sections.forEach(s => spy.observe(s));
-        });
-
-        /* Copy code buttons */
-        function copyCode(btn) {
-            navigator.clipboard.writeText(
-                btn.closest('.code-block').querySelector('pre').innerText
-            ).then(() => {
-                btn.textContent = 'Copied';
-                setTimeout(() => btn.textContent = 'Copy', 1800);
-            });
-        }
-    </script>
-    <?php include __DIR__ . '/footer.php'; ?>
 </body>
-
 </html>
