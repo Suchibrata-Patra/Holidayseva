@@ -1,1304 +1,448 @@
-<?php
-/**
- * input.php — Airframe UI · Input Fields
- * Atom layer · /Atom/input/input.php
- */
-
-$pageTitle  = 'Input Fields';
-$activePage = 'input';
-$partials   = __DIR__ . '/../../';
-
-if (!defined('SITE_WEB_ROOT'))          define('SITE_WEB_ROOT',          'https://developer.holidayseva.com');
-if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WEB_ROOT);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?= htmlspecialchars($pageTitle) ?> — Airframe UI · Holidayseva</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle | Design Guidelines</title>
 
-  <!-- ① Token layer — MUST come before input.css -->
-  <link rel="stylesheet" href="/colors.css" />
-  <!-- ② Component stylesheet — ALL form styles live here, zero hex inside -->
-  <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/input/input.css" />
-  <!-- ③ Design system shell (global-nav, page-layout, sidebars, etc.) -->
-  <link rel="stylesheet" href="/design-system.css" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <style>
-  /* ================================================================
-     PAGE-LEVEL STYLES — input.php
-     SCOPE: Layout chrome, page typography, demo card shell,
-            spec grid, prop table, a11y list, scroll-to-top, TOC.
-     ---------------------------------------------------------------
-     HARD RULE: No form-component CSS here whatsoever.
-     .input / .field / .field-label / .field-helper / .otp-input /
-     .input-glass / .textarea / .select-native / .checkbox-wrap /
-     .radio-wrap / .glass-panel / .float-field / .tag-input-wrap /
-     .phone-wrap / .number-wrap / .input-group / .range-wrap / etc.
-     ALL live exclusively in /Atom/input/input.css
-  ================================================================ */
-
-  /* ── Reset & base ─────────────────────────────────────────── */
-  *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-  body {
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-    background: #ffffff;
-    color: var(--color-text-primary, #1d1d1f);
-    line-height: 1.6;
-  }
-
-  /* ── Main content column ──────────────────────────────────── */
-  .main-content {
-    flex: 1;
-    min-width: 0;
-    max-width: 860px;
-    padding: 56px 72px 160px;
-    background: transparent;
-  }
-  @media (max-width: 700px) { .main-content { padding: 32px 20px 80px; } }
-
-  /* ── Breadcrumb ───────────────────────────────────────────── */
-  .breadcrumb {
-    display: flex; align-items: center; gap: 6px;
-    margin-bottom: 28px; font-size: 12.5px;
-    color: var(--color-text-muted, #aeaeb2);
-  }
-  .breadcrumb a {
-    color: var(--color-text-link, #0066cc); text-decoration: none;
-  }
-  .breadcrumb a:hover { text-decoration: underline; }
-  .breadcrumb-sep { color: var(--color-border, #d1d1d6); }
-
-  /* ── Page header ──────────────────────────────────────────── */
-  .page-eyebrow {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 11px; font-weight: 700; letter-spacing: .12em;
-    text-transform: uppercase; color: var(--color-primary, #FF385C); margin-bottom: 10px;
-  }
-  .page-eyebrow::before {
-    content: ''; width: 24px; height: 2px;
-    background: var(--color-primary, #FF385C); border-radius: 1px; flex-shrink: 0;
-  }
-
-  .page-title {
-    font-size: 52px; font-weight: 700; letter-spacing: -.038em;
-    line-height: 1.04; color: var(--color-text-primary, #1d1d1f); margin-bottom: 18px;
-  }
-
-  .page-intro {
-    font-size: 17px; line-height: 1.72; color: var(--color-text-secondary, #6e6e73);
-    max-width: 640px; margin-bottom: 36px; letter-spacing: -.01em;
-  }
-
-  .page-rule {
-    border: none; border-top: 1px solid var(--color-border-light, #e5e5ea); margin: 64px 0;
-  }
-
-  /* ── Section headings ─────────────────────────────────────── */
-  .section-eyebrow {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
-  }
-  .section-num {
-    font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
-    text-transform: uppercase; color: var(--color-text-muted, #aeaeb2);
-    background: var(--color-surface-raised, #f5f5f7);
-    border: 1px solid var(--color-border, #d1d1d6);
-    padding: 2px 9px; border-radius: 999px;
-  }
-  .section-label {
-    font-size: 11px; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--color-primary, #FF385C);
-  }
-
-  .section-title {
-    font-size: 34px; font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
-    color: var(--color-text-primary, #1d1d1f); margin-bottom: 12px;
-    scroll-margin-top: calc(var(--header-h, 56px) + 20px);
-  }
-
-  .section-body {
-    font-size: 15px; line-height: 1.75; color: var(--color-text-secondary, #6e6e73);
-    max-width: 640px; margin-bottom: 32px;
-  }
-
-  .section-h3 {
-    font-size: 18px; font-weight: 600; letter-spacing: -.016em;
-    color: var(--color-text-primary, #1d1d1f); margin: 44px 0 12px;
-    scroll-margin-top: calc(var(--header-h, 56px) + 20px);
-  }
-
-  /* Inline code */
-  code {
-    font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace; font-size: 12px;
-    background: var(--color-primary-alpha-sm, rgba(255,56,92,0.06));
-    color: var(--color-primary, #FF385C); padding: 2px 6px; border-radius: 5px;
-    border: 1px solid var(--color-primary-border, rgba(255,56,92,0.2));
-  }
-
-  /* ── Callouts ─────────────────────────────────────────────── */
-  .callout {
-    display: flex; gap: 14px; align-items: flex-start;
-    padding: 16px 20px; border-radius: 14px; margin-bottom: 32px;
-    font-size: 13.5px; line-height: 1.65;
-  }
-  .callout-info  { background: var(--color-info-bg, #EFF6FF);    border: 1px solid var(--color-info-border, #BFDBFE);    color: var(--color-info-text, #1E40AF); }
-  .callout-warn  { background: var(--color-warning-bg, #FFFBEB); border: 1px solid var(--color-warning-border, #FDE68A); color: var(--color-warning-text, #92400E); }
-  .callout-icon  { font-size: 16px; flex-shrink: 0; line-height: 1.65; }
-
-  /* ── Demo card shell ──────────────────────────────────────────
-     Only the outer container, tab bar, and code block.
-     Form elements inside .demo-preview are styled by input.css.
-  ──────────────────────────────────────────────────────────── */
-  .demo-card {
-    border: 1px solid var(--color-border, #d1d1d6);
-    border-radius: 20px; overflow: hidden; margin-bottom: 28px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
-    background: var(--color-surface, #fff);
-  }
-
-  .demo-bar {
-    display: flex; align-items: center;
-    background: var(--color-surface-raised, #f5f5f7);
-    border-bottom: 1px solid var(--color-border-light, #e5e5ea);
-    padding: 0 4px;
-  }
-
-  .demo-tab {
-    font-size: 12.5px; font-weight: 500; font-family: inherit;
-    color: var(--color-text-muted, #aeaeb2); padding: 10px 16px;
-    cursor: pointer; border: none; background: none;
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    transition: color .12s, border-color .12s; letter-spacing: -.01em;
-  }
-  .demo-tab.active {
-    color: var(--color-text-primary, #1d1d1f);
-    border-bottom-color: var(--color-primary, #FF385C);
-  }
-
-  .demo-preview {
-    padding: 36px 32px;
-    background: var(--color-surface, #fff);
-    border-bottom: 1px solid var(--color-border-light, #e5e5ea);
-    display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;
-  }
-  .demo-preview.col    { flex-direction: column; }
-  .demo-preview.center { flex-direction: column; justify-content: center; align-items: center; }
-
-  .demo-code {
-    font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
-    font-size: 12px; line-height: 1.85; tab-size: 2;
-    padding: 24px 28px; margin: 0; color: #c9d1d9; background: #0d1117;
-    overflow-x: auto; white-space: pre;
-  }
-
-  /* Glass stage backdrop (for glassmorphism section previews only) */
-  .glass-stage {
-    position: relative; padding: 56px 36px;
-    background:
-      radial-gradient(ellipse 70% 70% at 15% 50%,  rgba(255, 56, 92, 0.15) 0%, transparent 65%),
-      radial-gradient(ellipse 60% 60% at 85% 30%,  rgba(0, 166, 153, 0.12) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 50% at 50% 90%,  rgba(0, 122, 255, 0.10) 0%, transparent 65%),
-      linear-gradient(135deg, #dde1ff 0%, #fce4ec 50%, #d0f2ee 100%);
-    border-bottom: 1px solid var(--color-border, #d1d1d6);
-    display: flex; flex-direction: column; align-items: center; gap: 32px;
-  }
-
-  /* ── Spec grid ────────────────────────────────────────────── */
-  .spec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 32px; }
-  @media (max-width: 800px) { .spec-grid { grid-template-columns: repeat(2,1fr); } }
-
-  .spec-item {
-    padding: 16px 18px; border-radius: 14px;
-    background: var(--color-surface, #fff);
-    border: 1px solid var(--color-border, #d1d1d6);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-    transition: box-shadow .14s, transform .14s;
-  }
-  .spec-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); transform: translateY(-1px); }
-  .spec-lbl {
-    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--color-text-muted, #aeaeb2); margin-bottom: 6px;
-  }
-  .spec-val { font-size: 14px; font-weight: 600; color: var(--color-text-primary, #1d1d1f); }
-
-  /* ── Prop table ───────────────────────────────────────────── */
-  .prop-table {
-    width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 36px;
-    border-radius: 14px; overflow: hidden; border: 1px solid var(--color-border, #d1d1d6);
-  }
-  .prop-table th {
-    font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--color-text-muted, #aeaeb2); padding: 11px 16px; text-align: left;
-    background: var(--color-surface-raised, #f5f5f7);
-    border-bottom: 1px solid var(--color-border, #d1d1d6);
-  }
-  .prop-table td {
-    padding: 12px 16px; vertical-align: top;
-    color: var(--color-text-secondary, #6e6e73);
-    border-bottom: 1px solid var(--color-border-light, #e5e5ea);
-  }
-  .prop-table tr:last-child td { border-bottom: none; }
-  .prop-table tr:hover td { background: rgba(0,0,0,0.012); }
-
-  /* ── A11y list ────────────────────────────────────────────── */
-  .a11y-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-  .a11y-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    font-size: 14px; color: var(--color-text-secondary, #6e6e73); line-height: 1.65;
-  }
-  .a11y-check {
-    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
-    background: var(--color-success-bg, #F0FDF4);
-    border: 1.5px solid var(--color-success-border, #86EFAC);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--color-success, #34C759);
-  }
-
-  /* ── Scroll-to-top ────────────────────────────────────────── */
-  .scroll-top {
-    position: fixed; bottom: 32px; right: 32px; z-index: 500;
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--color-surface, #fff); border: 1px solid var(--color-border, #d1d1d6);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    color: var(--color-text-secondary, #6e6e73);
-    opacity: 0; transform: translateY(12px);
-    transition: opacity .22s, transform .22s, box-shadow .14s;
-  }
-  .scroll-top.show { opacity: 1; transform: translateY(0); }
-  .scroll-top:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.16); color: var(--color-text-primary, #1d1d1f); }
-
-  /* ── TOC right sidebar ────────────────────────────────────── */
-  .toc-link            { color: var(--color-text-secondary, #6e6e73) !important; }
-  .toc-link:hover      { color: var(--color-text-primary, #1d1d1f) !important; }
-  .toc-link.active     { color: var(--color-primary, #FF385C) !important; border-left-color: var(--color-primary, #FF385C) !important; }
-  .toc-list            { border-left-color: var(--color-border-light, #e5e5ea) !important; }
-  </style>
+  <!-- Design system: layout, typography, components -->
+  <link rel="stylesheet" href="/design-system.css">
+<!-- No <base> tag at all -->
+<link rel="stylesheet" href="https://holidayseva.com/UI/Components/toggle/toggle.css">
+<script type="module" src="https://holidayseva.com/UI/Components/toggle/toggle.js"></script>
 </head>
 <body>
+
+<?php
+$partials = __DIR__ . '/../../';
+?>
 
 <?php include $partials . 'header.php'; ?>
 <?php include $partials . 'drawer_sidebar.php'; ?>
 
 <div class="page-layout">
 
-  <!-- ── Left sidebar ── -->
-  <aside class="sidebar-left">
+  <!-- ── Left sidebar (untouched) ── -->
+  <aside class="sidebar-left" style="z-index:10000;">
     <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
 
-  <!-- ── Main content ── -->
-  <main class="main-content" id="top">
 
-    <!-- ─────────────────────────────────────────────
-         PAGE HEADER
-    ───────────────────────────────────────────── -->
-    <nav class="breadcrumb">
-      <a href="/index.php">Home</a>
-      <span class="breadcrumb-sep">›</span>
-      <a href="/Atom">Atom</a>
-      <span class="breadcrumb-sep">›</span>
-      <span>Input Fields</span>
-    </nav>
+  <!-- ── Main content ──────────────────────── -->
+  <main class="page-main">
 
-    <p class="page-eyebrow">Atom · Input</p>
-    <h1 class="page-title">Input Fields</h1>
-    <p class="page-intro">
-      A complete set of Apple-inspired form primitives — standard, glassmorphism,
-      floating-label, OTP/PIN, compound, and more. All colours resolve from
-      <code>colors.css</code> tokens. Zero hex literals in <code>input.css</code>.
-    </p>
-
-    <div class="callout callout-info">
-      <span class="callout-icon">ℹ</span>
-      <span>All form styles live in <code>/Atom/input/input.css</code>.
-        To change any colour, edit <code>colors.css</code> only — every component
-        adapts automatically including dark mode.</span>
+    <!-- Hero -->
+    <div id="overview">
+      <p class="page-eyebrow">Components · Form Controls</p>
+      <h1 class="page-title">Toggle</h1>
+      <p class="page-lead">A binary switch for enabling or disabling a single option. Communicates state instantly through colour and position.</p>
     </div>
 
-    <hr class="page-rule" />
+    <hr class="rule">
 
-    <!-- ═══════════════════════════════════════════════
-         01 · STANDARD INPUTS
-    ═══════════════════════════════════════════════ -->
-    <section id="standard">
-      <div class="section-eyebrow">
-        <span class="section-num">01</span>
-        <span class="section-label">Standard Inputs</span>
+    <!-- ── Live demo ─────────────────────────
+         .toggle and .toggle-circle are styled
+         entirely by toggle.css — no inline CSS
+    ──────────────────────────────────────── -->
+    <div class="demo-stage">
+      <span class="demo-label">Interactive demo — click to toggle</span>
+
+      <div class="toggle active"
+           id="demoToggle"
+           role="switch"
+           aria-checked="true"
+           tabindex="0"
+           aria-label="Demo toggle switch">
+        <div class="toggle-circle"></div>
       </div>
-      <h2 class="section-title">Standard Inputs</h2>
-      <p class="section-body">
-        The base <code>.input</code> class covers every native input type.
-        Add <code>.input-sm</code> or <code>.input-lg</code> for size variants.
-        All inputs sit on a tinted <code>--color-bg-grouped</code> stage so the
-        white surface is clearly visible.
+
+      <span class="demo-state on" id="demoState">state: on</span>
+    </div>
+
+    <!-- ── Anatomy ────────────────────────── -->
+    <section id="anatomy">
+      <h2 class="section-title">Anatomy</h2>
+      <p class="body-text">
+        The component has two elements. The <strong>track</strong> (<code>.toggle</code>) is the
+        pill-shaped container whose background colour reflects state. The <strong>thumb</strong>
+        (<code>.toggle-circle</code>) is the white circle that slides inside the track.
       </p>
 
-      <!-- Text / Email -->
-      <h3 class="section-h3" id="text-email">Text &amp; Email</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview col">
-          <div class="field" style="max-width:420px">
-            <label class="field-label" for="t1">
-              Full name <span style="color:var(--color-primary)">*</span>
-            </label>
-            <input class="input" id="t1" type="text" placeholder="e.g. Rahul Verma" />
-            <span class="field-helper">As it appears on your government-issued ID.</span>
+      <div class="anatomy-stage">
+        <div class="anat-toggle">
+          <div class="anat-circle"></div>
+          <!-- Annotation: track -->
+          <div class="anat-ann ann-track">
+            <div class="anat-ann-dot"></div>
+            <div class="anat-ann-line"></div>
+            <span>.toggle</span>
           </div>
-          <div class="field" style="max-width:420px">
-            <label class="field-label" for="t2">Email address</label>
-            <input class="input" id="t2" type="email" placeholder="you@email.com" />
-          </div>
-          <div class="field" style="max-width:280px">
-            <label class="field-label" for="t3">PIN code</label>
-            <input class="input" id="t3" type="text" placeholder="400001" maxlength="6" />
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="field"&gt;
-  &lt;label class="field-label" for="name"&gt;Full name&lt;/label&gt;
-  &lt;input class="input" id="name" type="text" placeholder="e.g. Rahul Verma" /&gt;
-  &lt;span class="field-helper"&gt;As it appears on your ID.&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Sizes -->
-      <h3 class="section-h3" id="sizes">Sizes</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview col">
-          <div class="field" style="max-width:460px">
-            <label class="field-label">Small · <code>.input-sm</code> · 34 px</label>
-            <input class="input input-sm" type="text" placeholder="Small input" />
-          </div>
-          <div class="field" style="max-width:460px">
-            <label class="field-label">Medium · <code>.input</code> · 42 px (default)</label>
-            <input class="input" type="text" placeholder="Medium input" />
-          </div>
-          <div class="field" style="max-width:460px">
-            <label class="field-label">Large · <code>.input-lg</code> · 52 px</label>
-            <input class="input input-lg" type="text" placeholder="Large input" />
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;input class="input input-sm" type="text" placeholder="Small" /&gt;
-&lt;input class="input"          type="text" placeholder="Medium (default)" /&gt;
-&lt;input class="input input-lg" type="text" placeholder="Large" /&gt;</pre>
-      </div>
-
-      <!-- States -->
-      <h3 class="section-h3" id="states">States</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview col">
-          <div class="field" style="max-width:420px">
-            <label class="field-label" for="s1">Default</label>
-            <input class="input" id="s1" type="text" placeholder="Normal input" />
-          </div>
-          <div class="field" style="max-width:420px">
-            <label class="field-label" for="s2">Error</label>
-            <input class="input is-error" id="s2" type="email"
-                   value="bad@@email" aria-invalid="true" aria-describedby="s2err" />
-            <span class="field-helper is-error" id="s2err">Please enter a valid email address.</span>
-          </div>
-          <div class="field" style="max-width:420px">
-            <label class="field-label" for="s3">Success</label>
-            <input class="input is-success" id="s3" type="email" value="rahul@holidayseva.com" />
-            <span class="field-helper is-success">Looks good!</span>
-          </div>
-          <div class="field" style="max-width:420px">
-            <label class="field-label" for="s4">Disabled</label>
-            <input class="input" id="s4" type="text" placeholder="Cannot edit" disabled />
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;input class="input is-error"   type="email" aria-invalid="true" aria-describedby="err" /&gt;
-&lt;span  class="field-helper is-error" id="err"&gt;Please enter a valid email.&lt;/span&gt;
-
-&lt;input class="input is-success" type="email" value="ok@email.com" /&gt;
-
-&lt;input class="input" type="text" disabled /&gt;</pre>
-      </div>
-
-      <!-- Icon slots -->
-      <h3 class="section-h3" id="icons">With Icons</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview col">
-          <div class="field" style="max-width:420px">
-            <label class="field-label">Search — leading icon + pill</label>
-            <div class="input-wrap">
-              <span class="input-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              </span>
-              <input class="input input-search" type="search" placeholder="Search destinations…" />
-            </div>
-          </div>
-          <div class="field" style="max-width:420px">
-            <label class="field-label">Email — trailing icon</label>
-            <div class="input-wrap icon-right">
-              <input class="input" type="email" placeholder="your@email.com" />
-              <span class="input-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 5.5l6.5 4 6.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="field" style="max-width:420px">
-            <label class="field-label">Location — both icons</label>
-            <div class="input-wrap icon-both">
-              <span class="input-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a5 5 0 015 5c0 3.5-5 9-5 9S3 9.5 3 6a5 5 0 015-5z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
-              </span>
-              <input class="input" type="text" placeholder="City or destination" />
-              <span class="input-icon input-icon-right" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;!-- Leading --&gt;
-&lt;div class="input-wrap"&gt;
-  &lt;span class="input-icon" aria-hidden="true"&gt;…svg…&lt;/span&gt;
-  &lt;input class="input input-search" type="search" /&gt;
-&lt;/div&gt;
-
-&lt;!-- Trailing --&gt;
-&lt;div class="input-wrap icon-right"&gt;
-  &lt;input class="input" type="email" /&gt;
-  &lt;span class="input-icon" aria-hidden="true"&gt;…svg…&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;!-- Both --&gt;
-&lt;div class="input-wrap icon-both"&gt;
-  &lt;span class="input-icon"&gt;…&lt;/span&gt;
-  &lt;input class="input" /&gt;
-  &lt;span class="input-icon input-icon-right"&gt;…&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Password -->
-      <h3 class="section-h3" id="password">Password</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview">
-          <div class="field" style="max-width:420px;width:100%">
-            <label class="field-label" for="pw1">Password</label>
-            <div class="input-wrap icon-right">
-              <input class="input" id="pw1" type="password" placeholder="Min. 8 characters" />
-              <button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'pw1')">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                  <path d="M1 9C1 9 4 3.5 9 3.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4"/>
-                  <circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/>
-                </svg>
-              </button>
-            </div>
-            <span class="field-helper">Use letters, numbers and symbols.</span>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="input-wrap icon-right"&gt;
-  &lt;input class="input" id="pw" type="password" /&gt;
-  &lt;button class="pw-toggle" type="button"
-          aria-label="Show password"
-          onclick="togglePw(this,'pw')"&gt;…eye svg…&lt;/button&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Number -->
-      <h3 class="section-h3" id="number">Number Stepper</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview" style="gap:24px;flex-wrap:wrap">
-          <div class="field" style="max-width:200px">
-            <label class="field-label" for="ng">Guests</label>
-            <div class="number-wrap">
-              <input class="input" id="ng" type="number" value="2" min="1" max="16" />
-              <div class="number-stepper">
-                <button class="stepper-btn" type="button" onclick="step('ng',1)" aria-label="Increase guests">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 9V3M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button class="stepper-btn" type="button" onclick="step('ng',-1)" aria-label="Decrease guests">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="field" style="max-width:200px">
-            <label class="field-label" for="nn">Nights</label>
-            <div class="number-wrap">
-              <input class="input" id="nn" type="number" value="3" min="1" max="30" />
-              <div class="number-stepper">
-                <button class="stepper-btn" type="button" onclick="step('nn',1)" aria-label="Increase nights">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 9V3M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button class="stepper-btn" type="button" onclick="step('nn',-1)" aria-label="Decrease nights">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="number-wrap"&gt;
-  &lt;input class="input" id="guests" type="number" value="2" min="1" max="16" /&gt;
-  &lt;div class="number-stepper"&gt;
-    &lt;button class="stepper-btn" onclick="step('guests', 1)"  aria-label="Increase"&gt;▲&lt;/button&gt;
-    &lt;button class="stepper-btn" onclick="step('guests', -1)" aria-label="Decrease"&gt;▼&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Phone -->
-      <h3 class="section-h3" id="phone">Phone Number</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview">
-          <div class="field" style="max-width:460px;width:100%">
-            <label class="field-label" for="ph1">Phone number</label>
-            <div class="phone-wrap">
-              <select class="country-select" aria-label="Country code">
-                <option value="+91">🇮🇳 +91</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+971">🇦🇪 +971</option>
-                <option value="+65">🇸🇬 +65</option>
-                <option value="+61">🇦🇺 +61</option>
-              </select>
-              <input class="input" id="ph1" type="tel" placeholder="98765 43210" />
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="phone-wrap"&gt;
-  &lt;select class="country-select" aria-label="Country code"&gt;
-    &lt;option value="+91"&gt;🇮🇳 +91&lt;/option&gt;
-  &lt;/select&gt;
-  &lt;input class="input" type="tel" placeholder="98765 43210" /&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Select -->
-      <h3 class="section-h3" id="select">Select / Dropdown</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview" style="flex-wrap:wrap;gap:20px">
-          <div class="field" style="flex:1;min-width:200px;max-width:300px">
-            <label class="field-label" for="sel1">Property type</label>
-            <div class="select-wrap">
-              <select class="select-native" id="sel1">
-                <option value="">Select a type…</option>
-                <option>Apartment</option><option>Villa</option>
-                <option>Cottage</option><option>Treehouse</option><option>Houseboat</option>
-              </select>
-              <span class="select-caret" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="field" style="flex:1;min-width:200px;max-width:300px">
-            <label class="field-label" for="sel2">Sort by</label>
-            <div class="select-wrap">
-              <select class="select-native" id="sel2">
-                <option>Recommended</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Top rated</option>
-              </select>
-              <span class="select-caret" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="select-wrap"&gt;
-  &lt;select class="select-native" id="type"&gt;
-    &lt;option value=""&gt;Select a type…&lt;/option&gt;
-    &lt;option&gt;Apartment&lt;/option&gt;
-  &lt;/select&gt;
-  &lt;span class="select-caret" aria-hidden="true"&gt;…chevron svg…&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Date & Time -->
-      <h3 class="section-h3" id="datetime">Date &amp; Time</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview" style="flex-wrap:wrap;gap:16px">
-          <div class="field" style="flex:1;min-width:175px"><label class="field-label" for="dt1">Check-in</label><input class="input" id="dt1" type="date" /></div>
-          <div class="field" style="flex:1;min-width:175px"><label class="field-label" for="dt2">Check-out</label><input class="input" id="dt2" type="date" /></div>
-          <div class="field" style="flex:1;min-width:165px"><label class="field-label" for="dt3">Arrival time</label><input class="input" id="dt3" type="time" value="14:00" /></div>
-          <div class="field" style="flex:1;min-width:215px"><label class="field-label" for="dt4">Event datetime</label><input class="input" id="dt4" type="datetime-local" /></div>
-        </div>
-        <pre class="demo-code" hidden>&lt;input class="input" type="date" /&gt;
-&lt;input class="input" type="time"           value="14:00" /&gt;
-&lt;input class="input" type="datetime-local" /&gt;</pre>
-      </div>
-
-      <!-- Textarea -->
-      <h3 class="section-h3" id="textarea">Textarea</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview">
-          <div class="field" style="max-width:520px;width:100%">
-            <label class="field-label" for="ta1">Bio</label>
-            <textarea class="textarea" id="ta1" maxlength="300" rows="4"
-                      placeholder="Tell guests a little about yourself…"
-                      oninput="countChars(this,'tc1',300)"></textarea>
-            <div class="textarea-footer">
-              <span class="field-helper">Shown on your public host profile.</span>
-              <span class="textarea-count" id="tc1">0 / 300</span>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;textarea class="textarea" maxlength="300" rows="4"
-          oninput="countChars(this,'count-id',300)"&gt;&lt;/textarea&gt;
-&lt;div class="textarea-footer"&gt;
-  &lt;span class="field-helper"&gt;Helper text&lt;/span&gt;
-  &lt;span class="textarea-count" id="count-id"&gt;0 / 300&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Range -->
-      <h3 class="section-h3" id="range">Range Slider</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview col">
-          <div class="field" style="max-width:520px;width:100%">
-            <label class="field-label">Price per night</label>
-            <div class="range-wrap">
-              <input type="range" id="rng1" min="0" max="20000" value="5000"
-                     step="500" style="--pct:25%" oninput="syncRange(this,'rv1','₹')" />
-              <span class="range-val" id="rv1">₹5,000</span>
-            </div>
-          </div>
-          <div class="field" style="max-width:520px;width:100%">
-            <label class="field-label">Minimum rating</label>
-            <div class="range-wrap">
-              <input type="range" id="rng2" min="1" max="5" value="3"
-                     step="0.5" style="--pct:50%" oninput="syncRange(this,'rv2','','★')" />
-              <span class="range-val" id="rv2">3★</span>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="range-wrap"&gt;
-  &lt;input type="range" id="price"
-         min="0" max="20000" value="5000" step="500"
-         style="--pct:25%"
-         oninput="syncRange(this,'rv','₹')" /&gt;
-  &lt;span class="range-val" id="rv"&gt;₹5,000&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Checkbox & Radio -->
-      <h3 class="section-h3" id="checkradio">Checkbox &amp; Radio</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview" style="flex-wrap:wrap;gap:32px">
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <label class="checkbox-wrap">
-              <input type="checkbox" checked />
-              <span class="checkbox-label">Entire home<span class="checkbox-sub">You'll have the place to yourself.</span></span>
-            </label>
-            <label class="checkbox-wrap">
-              <input type="checkbox" />
-              <span class="checkbox-label">Private room</span>
-            </label>
-            <label class="checkbox-wrap">
-              <input type="checkbox" disabled />
-              <span class="checkbox-label" style="opacity:.5">Shared room (unavailable)</span>
-            </label>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <label class="radio-wrap"><input type="radio" name="sort" checked /><span class="checkbox-label">Recommended</span></label>
-            <label class="radio-wrap"><input type="radio" name="sort" /><span class="checkbox-label">Price: Low to High</span></label>
-            <label class="radio-wrap"><input type="radio" name="sort" /><span class="checkbox-label">Top rated</span></label>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;label class="checkbox-wrap"&gt;
-  &lt;input type="checkbox" checked /&gt;
-  &lt;span class="checkbox-label"&gt;
-    Entire home
-    &lt;span class="checkbox-sub"&gt;You'll have the place to yourself.&lt;/span&gt;
-  &lt;/span&gt;
-&lt;/label&gt;
-
-&lt;label class="radio-wrap"&gt;
-  &lt;input type="radio" name="sort" checked /&gt;
-  &lt;span class="checkbox-label"&gt;Recommended&lt;/span&gt;
-&lt;/label&gt;</pre>
-      </div>
-
-      <!-- Compound row -->
-      <h3 class="section-h3" id="compound">Compound / Row Layout</h3>
-      <div class="demo-card">
-        <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
-        <div class="demo-preview col">
-          <div class="field-row" style="max-width:580px">
-            <div class="field"><label class="field-label" for="c1">First name</label><input class="input" id="c1" type="text" placeholder="Rahul" /></div>
-            <div class="field"><label class="field-label" for="c2">Last name</label><input class="input" id="c2" type="text" placeholder="Verma" /></div>
-          </div>
-          <div class="field-row" style="max-width:580px">
-            <div class="field" style="flex:2"><label class="field-label" for="c3">Street address</label><input class="input" id="c3" type="text" placeholder="12 Marine Drive" /></div>
-            <div class="field" style="flex:1"><label class="field-label" for="c4">PIN code</label><input class="input" id="c4" type="text" placeholder="400001" maxlength="6" /></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Input group -->
-      <h3 class="section-h3" id="inputgroup">Input Groups</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview col">
-          <div class="field" style="max-width:440px">
-            <label class="field-label">Website</label>
-            <div class="input-group">
-              <span class="input-addon">https://</span>
-              <input class="input" type="text" placeholder="yourdomain.com" />
-            </div>
-          </div>
-          <div class="field" style="max-width:380px">
-            <label class="field-label">Price per night</label>
-            <div class="input-group">
-              <span class="input-addon">₹</span>
-              <input class="input" type="number" placeholder="0" />
-              <span class="input-addon">/ night</span>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="input-group"&gt;
-  &lt;span class="input-addon"&gt;https://&lt;/span&gt;
-  &lt;input class="input" type="text" placeholder="yourdomain.com" /&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Floating label -->
-      <h3 class="section-h3" id="floating">Floating Label</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview" style="flex-wrap:wrap;gap:20px">
-          <div class="float-field" style="max-width:270px;flex:1;min-width:200px">
-            <input class="float-input" id="fl1" type="text" placeholder=" " />
-            <label class="float-label" for="fl1">Full name</label>
-          </div>
-          <div class="float-field" style="max-width:270px;flex:1;min-width:200px">
-            <input class="float-input" id="fl2" type="email" placeholder=" " />
-            <label class="float-label" for="fl2">Email address</label>
-          </div>
-          <div class="float-field" style="max-width:270px;flex:1;min-width:200px">
-            <input class="float-input" id="fl3" type="text" placeholder=" " value="Mumbai" />
-            <label class="float-label" for="fl3">City (pre-filled)</label>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="float-field"&gt;
-  &lt;!-- placeholder=" " (single space) is required --&gt;
-  &lt;input class="float-input" id="name" type="text" placeholder=" " /&gt;
-  &lt;label class="float-label" for="name"&gt;Full name&lt;/label&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Tag input -->
-      <h3 class="section-h3" id="tags">Tag Input</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview">
-          <div class="field" style="max-width:520px;width:100%">
-            <label class="field-label">Amenities</label>
-            <div class="tag-input-wrap" onclick="document.getElementById('ti').focus()">
-              <span class="tag-pill">WiFi <button class="tag-pill-remove" onclick="removeTag(this)" aria-label="Remove WiFi">×</button></span>
-              <span class="tag-pill">Pool <button class="tag-pill-remove" onclick="removeTag(this)" aria-label="Remove Pool">×</button></span>
-              <span class="tag-pill">Parking <button class="tag-pill-remove" onclick="removeTag(this)" aria-label="Remove Parking">×</button></span>
-              <input class="tag-input-inner" id="ti" type="text"
-                     placeholder="Add amenity…" onkeydown="handleTag(event)" />
-            </div>
-            <span class="field-helper">Press Enter to add · × to remove.</span>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="tag-input-wrap"&gt;
-  &lt;span class="tag-pill"&gt;
-    WiFi &lt;button class="tag-pill-remove" aria-label="Remove WiFi"&gt;×&lt;/button&gt;
-  &lt;/span&gt;
-  &lt;input class="tag-input-inner" type="text"
-         placeholder="Add amenity…"
-         onkeydown="handleTag(event)" /&gt;
-&lt;/div&gt;</pre>
-      </div>
-    </section>
-
-    <hr class="page-rule" />
-
-    <!-- ═══════════════════════════════════════════════
-         02 · OTP / PIN
-    ═══════════════════════════════════════════════ -->
-    <section id="otp">
-      <div class="section-eyebrow">
-        <span class="section-num">02</span>
-        <span class="section-label">OTP / PIN</span>
-      </div>
-      <h2 class="section-title">OTP / PIN</h2>
-      <p class="section-body">
-        Squared single-character cells. Auto-advances on input, backtracks on delete,
-        supports clipboard paste and arrow-key navigation. Classes:
-        <code>.otp-input</code> · <code>.otp-input-lg</code> · <code>.otp-input-sm</code>
-      </p>
-
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="demo-preview center" style="gap:44px;padding:48px 32px">
-
-          <div style="text-align:center">
-            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--color-text-muted);margin-bottom:18px">Standard · 6-digit OTP</p>
-            <div class="otp-wrap" id="otp6" role="group" aria-label="One-time passcode">
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 1" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 2" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 3" />
-              <span class="otp-sep" aria-hidden="true">–</span>
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 5" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 6" />
-            </div>
-          </div>
-
-          <div style="text-align:center">
-            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--color-text-muted);margin-bottom:18px">Large · 4-digit PIN</p>
-            <div class="otp-wrap" id="otp4" role="group" aria-label="PIN code">
-              <input class="otp-input otp-input-lg" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 1" />
-              <input class="otp-input otp-input-lg" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 2" />
-              <input class="otp-input otp-input-lg" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 3" />
-              <input class="otp-input otp-input-lg" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4" />
-            </div>
-          </div>
-
-          <div style="text-align:center">
-            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--color-error-text);margin-bottom:18px">Error state</p>
-            <div class="otp-wrap" role="group" aria-label="Invalid code">
-              <input class="otp-input is-error" type="text" maxlength="1" value="5" aria-label="Digit 1" />
-              <input class="otp-input is-error" type="text" maxlength="1" value="3" aria-label="Digit 2" />
-              <input class="otp-input is-error" type="text" maxlength="1" value="9" aria-label="Digit 3" />
-              <input class="otp-input is-error" type="text" maxlength="1" value="1" aria-label="Digit 4" />
-            </div>
-            <p style="font-size:12px;color:var(--color-error-text);margin-top:12px;font-weight:500">Incorrect code. Please try again.</p>
-          </div>
-
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="otp-wrap" id="otp6" role="group" aria-label="One-time passcode"&gt;
-  &lt;input class="otp-input" type="text" inputmode="numeric"
-         maxlength="1" pattern="[0-9]" aria-label="Digit 1" /&gt;
-  &lt;!-- × 5 more --&gt;
-&lt;/div&gt;
-
-&lt;!-- Large PIN --&gt;
-&lt;div class="otp-wrap" id="otp4" role="group" aria-label="PIN code"&gt;
-  &lt;input class="otp-input otp-input-lg" type="text" inputmode="numeric"
-         maxlength="1" pattern="[0-9]" aria-label="Digit 1" /&gt;
-  &lt;!-- × 3 more --&gt;
-&lt;/div&gt;
-
-&lt;script&gt;initOTP('otp6'); initOTP('otp4');&lt;/script&gt;</pre>
-      </div>
-    </section>
-
-    <hr class="page-rule" />
-
-    <!-- ═══════════════════════════════════════════════
-         03 · GLASSMORPHISM INPUTS
-    ═══════════════════════════════════════════════ -->
-    <section id="glass">
-      <div class="section-eyebrow">
-        <span class="section-num">03</span>
-        <span class="section-label">Glassmorphism Set</span>
-      </div>
-      <h2 class="section-title">Glassmorphism Set</h2>
-      <p class="section-body">
-        Apple liquid-glass aesthetic — frosted backdrop blur, luminous border, layered depth shadow.
-        Wrap in <code>.glass-panel</code> over a coloured / blurred background stage.
-        Classes: <code>.input-glass</code> · <code>.textarea-glass</code> · <code>.select-glass</code> · <code>.input-glass-search</code>
-      </p>
-
-      <!-- Sign-in card -->
-      <h3 class="section-h3" id="glass-card">Glass Sign-in Card</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <div class="glass-stage">
-          <div class="glass-panel glass-panel-sm" style="width:100%;max-width:480px">
-            <div style="margin-bottom:24px">
-              <p style="font-size:24px;font-weight:700;letter-spacing:-.022em;color:var(--color-text-primary);margin-bottom:4px">Welcome back</p>
-              <p style="font-size:14px;color:var(--color-text-secondary)">Sign in to Holidayseva</p>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:16px">
-              <div class="glass-field">
-                <label class="glass-label" for="g1">Email address</label>
-                <div class="input-wrap">
-                  <span class="input-icon" aria-hidden="true">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 5.5l6.5 4 6.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                  </span>
-                  <input class="input-glass" id="g1" type="email" placeholder="you@email.com"
-                         style="padding-left:40px;height:var(--input-h-md);font-size:var(--input-fs-md);border-radius:var(--radius-md)" />
-                </div>
-              </div>
-              <div class="glass-field">
-                <label class="glass-label" for="g2">Password</label>
-                <div class="input-wrap icon-right">
-                  <input class="input-glass" id="g2" type="password" placeholder="Min. 8 characters"
-                         style="height:var(--input-h-md);font-size:var(--input-fs-md);border-radius:var(--radius-md)" />
-                  <button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'g2')">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M1 9C1 9 4 3.5 9 3.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg>
-                  </button>
-                </div>
-              </div>
-              <button type="button"
-                style="height:44px;border-radius:var(--radius-md);background:var(--color-primary);color:var(--color-text-inverse);font-size:15px;font-weight:600;font-family:inherit;border:none;cursor:pointer;transition:background .14s;letter-spacing:-.01em;margin-top:4px"
-                onmouseover="this.style.background='var(--color-primary-hover)'"
-                onmouseout="this.style.background='var(--color-primary)'">
-                Continue with email
-              </button>
-              <p style="font-size:13px;text-align:center;color:var(--color-text-muted)">By continuing you agree to our <a href="#" style="color:var(--color-primary);text-decoration:none">Terms</a></p>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="glass-panel"&gt;
-  &lt;div class="glass-field"&gt;
-    &lt;label class="glass-label" for="email"&gt;Email address&lt;/label&gt;
-    &lt;input class="input-glass" id="email" type="email" /&gt;
-  &lt;/div&gt;
-  &lt;div class="glass-field"&gt;
-    &lt;label class="glass-label" for="pw"&gt;Password&lt;/label&gt;
-    &lt;input class="input-glass" id="pw" type="password" /&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Glass search -->
-      <h3 class="section-h3" id="glass-search">Glass Search Bar</h3>
-      <div class="demo-card">
-        <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
-        <div class="glass-stage" style="padding:56px 36px">
-          <div class="input-wrap" style="max-width:560px;width:100%">
-            <span class="input-icon" aria-hidden="true" style="left:18px">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M12.5 12.5l3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-            </span>
-            <input class="input-glass-search" type="search" placeholder="Where do you want to go?"
-                   style="padding-left:52px;width:100%;font-size:16px" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Glass OTP -->
-      <h3 class="section-h3" id="glass-otp">Glass OTP Verification</h3>
-      <div class="demo-card">
-        <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
-        <div class="glass-stage" style="padding:56px 36px">
-          <div class="glass-panel glass-panel-sm" style="display:flex;flex-direction:column;align-items:center;gap:24px;min-width:340px">
-            <div style="text-align:center">
-              <p style="font-size:20px;font-weight:700;color:var(--color-text-primary);margin-bottom:6px">Verify your number</p>
-              <p style="font-size:13px;color:var(--color-text-secondary)">6-digit code sent to +91 98765 43210</p>
-            </div>
-            <div class="otp-wrap otp-glass" id="gotp" role="group" aria-label="Verification code">
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 1" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 2" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 3" />
-              <span class="otp-sep" aria-hidden="true">–</span>
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 5" />
-              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 6" />
-            </div>
-            <button type="button"
-              style="height:40px;padding:0 32px;border-radius:var(--radius-pill);background:var(--color-primary);color:var(--color-text-inverse);font-size:14px;font-weight:600;font-family:inherit;border:none;cursor:pointer">
-              Verify Code
-            </button>
-            <p style="font-size:12px;color:var(--color-text-muted)">Didn't receive? <a href="#" style="color:var(--color-primary);text-decoration:none">Resend</a></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Glass textarea + select -->
-      <h3 class="section-h3" id="glass-forms">Glass Textarea &amp; Select</h3>
-      <div class="demo-card">
-        <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
-        <div class="glass-stage">
-          <div class="glass-panel glass-panel-sm" style="width:100%;max-width:500px;display:flex;flex-direction:column;gap:18px">
-            <div class="glass-field">
-              <label class="glass-label" for="gta">Property description</label>
-              <textarea class="textarea-glass" id="gta" rows="3" placeholder="Describe your space…"></textarea>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label" for="gsel">Category</label>
-              <div class="select-wrap">
-                <select class="select-glass" id="gsel">
-                  <option>Select a category…</option>
-                  <option>Beachfront</option>
-                  <option>Mountain retreat</option>
-                  <option>City centre</option>
-                  <option>Countryside</option>
-                </select>
-                <span class="select-caret" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-              </div>
-            </div>
+          <!-- Annotation: thumb -->
+          <div class="anat-ann ann-thumb">
+            <div class="anat-ann-dot"></div>
+            <div class="anat-ann-line"></div>
+            <span>.toggle-circle</span>
           </div>
         </div>
       </div>
     </section>
 
-    <hr class="page-rule" />
+    <hr class="rule">
 
-    <!-- ═══════════════════════════════════════════════
-         04 · SPECIFICATIONS
-    ═══════════════════════════════════════════════ -->
+    <!-- ── Specifications ────────────────── -->
     <section id="specs">
-      <div class="section-eyebrow">
-        <span class="section-num">04</span>
-        <span class="section-label">Specifications</span>
-      </div>
       <h2 class="section-title">Specifications</h2>
-      <div class="spec-grid">
-        <div class="spec-item"><div class="spec-lbl">Height SM</div><div class="spec-val">34 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">Height MD (default)</div><div class="spec-val">42 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">Height LG</div><div class="spec-val">52 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">OTP cell standard</div><div class="spec-val">48 × 56 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">OTP cell large</div><div class="spec-val">62 × 70 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">Border radius MD</div><div class="spec-val">10 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">Border default</div><div class="spec-val"><code>--color-border</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Border focus</div><div class="spec-val"><code>--color-border-focus</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Focus ring (standard)</div><div class="spec-val"><code>--focus-ring-blue</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Focus ring (OTP/glass)</div><div class="spec-val"><code>--focus-ring</code> coral</div></div>
-        <div class="spec-item"><div class="spec-lbl">Surface</div><div class="spec-val"><code>--color-surface</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Glass bg</div><div class="spec-val"><code>--color-glass-bg</code></div></div>
+      <p class="body-text">
+        Default (desktop) dimensions as defined in <code>toggle.css</code>.
+        A responsive breakpoint at 480 px scales the component proportionally.
+      </p>
+
+      <div class="spec-table">
+        <div class="spec-row">
+          <span class="spec-key">Width</span>
+          <span class="spec-val">280px</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Height</span>
+          <span class="spec-val">160px</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Border radius</span>
+          <span class="spec-val">80px</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Thumb diameter</span>
+          <span class="spec-val">140px</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Thumb inset</span>
+          <span class="spec-val">10px (all sides)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Thumb travel</span>
+          <span class="spec-val">left: 10px → left: 130px</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Easing</span>
+          <span class="spec-val">cubic-bezier(0.4, 0, 0.2, 1) — 0.4s</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Off colour</span>
+          <span class="spec-val">
+            <span class="spec-swatch" style="background:#DDDDDD"></span>#DDDDDD
+          </span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Active colour</span>
+          <span class="spec-val">
+            <span class="spec-swatch" style="background:#FF385C"></span>#FF385C
+          </span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Thumb colour</span>
+          <span class="spec-val">
+            <span class="spec-swatch" style="background:#fff;border-color:#ccc"></span>#ffffff
+          </span>
+        </div>
       </div>
     </section>
 
-    <hr class="page-rule" />
+    <hr class="rule">
 
-    <!-- ═══════════════════════════════════════════════
-         05 · JS API
-    ═══════════════════════════════════════════════ -->
-    <section id="javascript">
-      <div class="section-eyebrow">
-        <span class="section-num">05</span>
-        <span class="section-label">JavaScript API</span>
+    <!-- ── HTML Usage ─────────────────────── -->
+    <section id="usage">
+      <h2 class="section-title">HTML Usage</h2>
+      <p class="body-text">
+        Link <code>toggle.css</code> in <code>&lt;head&gt;</code> and place the two-element
+        markup anywhere in your template. <code>toggle.js</code> auto-initialises every
+        <code>.toggle</code> on <code>DOMContentLoaded</code> — no manual wiring needed.
+      </p>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="c">&lt;!-- In &lt;head&gt; --&gt;</span>
+<span class="t">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"/Components/toggle.css"</span><span class="t">&gt;</span>
+
+<span class="c">&lt;!-- Component markup --&gt;</span>
+<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle"</span>
+     <span class="a">role</span>=<span class="s">"switch"</span>
+     <span class="a">aria-checked</span>=<span class="s">"false"</span>
+     <span class="a">tabindex</span>=<span class="s">"0"</span>
+     <span class="a">aria-label</span>=<span class="s">"Enable notifications"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle-circle"</span><span class="t">&gt;&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- Before &lt;/body&gt; --&gt;</span>
+<span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
       </div>
+
+      <p class="subsection-title">Pre-active state</p>
+      <p class="body-text">
+        Add the <code>active</code> class in markup to render the toggle in the on state on
+        first paint. Pair it with <code>aria-checked="true"</code>.
+      </p>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle active"</span>
+     <span class="a">role</span>=<span class="s">"switch"</span>
+     <span class="a">aria-checked</span>=<span class="s">"true"</span>
+     <span class="a">tabindex</span>=<span class="s">"0"</span>
+     <span class="a">aria-label</span>=<span class="s">"Notifications enabled"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"toggle-circle"</span><span class="t">&gt;&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span></code></pre>
+      </div>
+
+      <div class="note warn">
+        <p>Always include <code>role="switch"</code>, <code>aria-checked</code>,
+        <code>tabindex="0"</code>, and a descriptive <code>aria-label</code>.
+        <code>toggle.js</code> keeps <code>aria-checked</code> in sync automatically
+        on every state change.</p>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ── JavaScript API ─────────────────── -->
+    <section id="javascript">
       <h2 class="section-title">JavaScript API</h2>
-      <p class="section-body">Lightweight helpers in <code>input.js</code> — no framework required.</p>
-      <table class="prop-table">
+      <p class="body-text">
+        <code>ToggleSwitch</code> is defined in <code>toggle.js</code> and auto-instantiated
+        on page load via the <code>'.toggle'</code> selector. Construct a new instance for
+        programmatic control.
+      </p>
+
+      <table class="api-table">
         <thead>
           <tr>
-            <th style="width:220px">Function</th>
-            <th style="width:200px">Signature</th>
+            <th>Method</th>
+            <th>Arguments</th>
+            <th>Returns</th>
             <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          <?php
-          $api = [
-            ['togglePw(btn, id)',      '(El, string)',           'Toggles password visibility; updates aria-label and eye icon.'],
-            ['step(id, delta)',         '(string, number)',       'Increments / decrements number input, respects min/max.'],
-            ['countChars(el, id, max)', '(El, string, number)',  'Updates textarea character counter; adds .is-near / .is-max.'],
-            ['syncRange(el, id, …)',    '(El, string, str?, str?)', 'Syncs CSS --pct track fill and value label for range inputs.'],
-            ['initOTP(groupId)',        '(string)',               'Wires auto-advance, backspace, paste and arrow keys for an OTP group.'],
-            ['handleTag(event)',        '(KeyboardEvent)',        'Creates a tag pill on Enter inside .tag-input-inner.'],
-            ['removeTag(btn)',          '(El)',                   'Removes the closest .tag-pill from the tag input wrap.'],
-          ];
-          foreach ($api as [$fn, $sig, $desc]): ?>
           <tr>
-            <td><code><?= htmlspecialchars($fn) ?></code></td>
-            <td><code><?= htmlspecialchars($sig) ?></code></td>
-            <td><?= $desc ?></td>
+            <td>getState(el)</td>
+            <td>HTMLElement</td>
+            <td><code>"on"</code> | <code>"off"</code></td>
+            <td>Reads the current state from the element's <code>data-state</code> attribute.</td>
           </tr>
-          <?php endforeach; ?>
+          <tr>
+            <td>setState(el, state)</td>
+            <td>HTMLElement, <code>"on"</code> | <code>"off"</code></td>
+            <td>—</td>
+            <td>Sets state silently — does not fire <code>toggle-change</code>.</td>
+          </tr>
+          <tr>
+            <td>toggle(el)</td>
+            <td>HTMLElement</td>
+            <td>—</td>
+            <td>Flips the current state silently.</td>
+          </tr>
         </tbody>
       </table>
+
+      <p class="subsection-title">Listening for state changes</p>
+      <p class="body-text">
+        Every user click dispatches a <code>toggle-change</code> CustomEvent on the element.
+        The <code>detail</code> object exposes a string state and a boolean.
+      </p>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">JavaScript</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="k">const</span> el = document.<span class="k">querySelector</span>(<span class="s">'.toggle'</span>);
+
+el.<span class="k">addEventListener</span>(<span class="s">'toggle-change'</span>, (e) => {
+  console.<span class="k">log</span>(e.detail.state);    <span class="c">// "on" | "off"</span>
+  console.<span class="k">log</span>(e.detail.isActive); <span class="c">// true | false</span>
+});</code></pre>
+      </div>
+
+      <p class="subsection-title">Programmatic control</p>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">JavaScript</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="k">const</span> sw = <span class="k">new</span> ToggleSwitch(<span class="s">'.toggle'</span>);
+<span class="k">const</span> el = document.<span class="k">querySelector</span>(<span class="s">'#myToggle'</span>);
+
+sw.<span class="k">setState</span>(el, <span class="s">'on'</span>);   <span class="c">// force on  — no event</span>
+sw.<span class="k">setState</span>(el, <span class="s">'off'</span>);  <span class="c">// force off — no event</span>
+sw.<span class="k">toggle</span>(el);            <span class="c">// flip      — no event</span>
+sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "off"</span></code></pre>
+      </div>
+
+      <div class="note">
+        <p><code>setState()</code> and <code>toggle()</code> do not fire <code>toggle-change</code>.
+        Only user-initiated clicks dispatch the custom event.</p>
+      </div>
     </section>
 
-    <hr class="page-rule" />
+    <hr class="rule">
 
-    <!-- ═══════════════════════════════════════════════
-         06 · INTEGRATION
-    ═══════════════════════════════════════════════ -->
+    <!-- ── Integration ────────────────────── -->
     <section id="integration">
-      <div class="section-eyebrow">
-        <span class="section-num">06</span>
-        <span class="section-label">Integration</span>
-      </div>
       <h2 class="section-title">Integration</h2>
-      <p class="section-body">Three file includes — tokens first, then component CSS, then JS.</p>
-      <div class="demo-card">
-        <pre class="demo-code">&lt;!-- ① Token layer — always first --&gt;
-&lt;link rel="stylesheet" href="/colors.css" /&gt;
+      <p class="body-text">
+        Include <code>toggle.js</code> once before <code>&lt;/body&gt;</code>. It auto-initialises
+        all <code>.toggle</code> elements present at load time. Elements added dynamically after
+        load require a fresh <code>new ToggleSwitch(selector)</code> call.
+      </p>
 
-&lt;!-- ② Component CSS — zero hex literals inside --&gt;
-&lt;link rel="stylesheet" href="/Atom/input/input.css" /&gt;
-
-&lt;!-- ③ Helper JS (OTP, password, range, stepper, tags) --&gt;
-&lt;script src="/Atom/input/input.js" defer&gt;&lt;/script&gt;
-
-&lt;?php
-$partials = __DIR__ . '/../../';
-?&gt;
-&lt;?php include $partials . 'header.php'; ?&gt;
-&lt;?php include $partials . 'drawer_sidebar.php'; ?&gt;
-
-&lt;div class="page-layout"&gt;
-  &lt;aside class="sidebar-left"&gt;
-    &lt;?php include $partials . 'left_sidebar.php'; ?&gt;
-  &lt;/aside&gt;
-  &lt;main class="main-content"&gt;
-    &lt;!-- content --&gt;
-  &lt;/main&gt;
-  &lt;aside class="sidebar-right"&gt;
-    &lt;?php include $partials . 'right_sidebar.php'; ?&gt;
-  &lt;/aside&gt;
-&lt;/div&gt;</pre>
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="t">&lt;script</span> <span class="a">src</span>=<span class="s">"/JS/toggle.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
       </div>
-      <div class="callout callout-warn">
-        <span class="callout-icon">⚠</span>
-        <span>Never write hex, <code>rgba()</code>, or <code>hsl()</code> literals in <code>input.css</code>.
-          All colour decisions live exclusively in <code>colors.css</code>.</span>
+
+      <p class="subsection-title">File structure</p>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">Directory</span>
+        </div>
+        <pre><code>design_guidelines/
+├── header.php
+├── left_sidebar.php
+├── right_sidebar.php
+├── toggle.php
+├── design-system.css
+├── Components/
+│   └── toggle.css
+└── JS/
+    └── toggle.js</code></pre>
       </div>
     </section>
 
-    <hr class="page-rule" />
+    <hr class="rule">
 
-    <!-- ═══════════════════════════════════════════════
-         07 · ACCESSIBILITY
-    ═══════════════════════════════════════════════ -->
+    <!-- ── Accessibility ──────────────────── -->
     <section id="accessibility">
-      <div class="section-eyebrow">
-        <span class="section-num">07</span>
-        <span class="section-label">Accessibility</span>
-      </div>
       <h2 class="section-title">Accessibility</h2>
-      <ul class="a11y-list">
-        <?php
-        $checks = [
-          'Every <code>&lt;input&gt;</code> must have an associated <code>&lt;label&gt;</code> via matching <code>for</code>/<code>id</code>. Never use <code>placeholder</code> as the only label.',
-          'Error states: set <code>aria-invalid="true"</code> on the input and <code>aria-describedby</code> pointing to the error message.',
-          'OTP groups: <code>role="group"</code> + <code>aria-label</code> on the wrapper; individual <code>aria-label="Digit N"</code> on each cell.',
-          'Focus rings must never be suppressed without a custom high-contrast replacement. Tokens <code>--focus-ring</code> and <code>--focus-ring-blue</code> meet 3:1 contrast.',
-          'Password toggle: <code>aria-label</code> must reflect current action — "Show password" or "Hide password" — not a static label.',
-          'Range sliders: expose the current value via <code>aria-valuenow</code>, <code>aria-valuemin</code>, and <code>aria-valuemax</code>.',
-          'Tag input wrap: add <code>role="group"</code> + <code>aria-label</code>; each pill remove button needs a descriptive <code>aria-label</code>.',
-          'All decorative SVGs must carry <code>aria-hidden="true"</code>.',
-        ];
-        foreach ($checks as $c): ?>
-        <li class="a11y-item">
-          <span class="a11y-check" aria-hidden="true">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span><?= $c ?></span>
-        </li>
-        <?php endforeach; ?>
-      </ul>
+      <p class="body-text">
+        The toggle is a custom control — ARIA attributes must be set explicitly in markup.
+        <code>toggle.js</code> keeps <code>aria-checked</code> synchronised on every state
+        transition. The element is keyboard-operable via Space or Enter when focused.
+      </p>
+
+      <table class="api-table">
+        <thead>
+          <tr><th>Attribute</th><th>Value</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>role</td>
+            <td><code>"switch"</code></td>
+            <td>Identifies the element as a binary switch to screen readers.</td>
+          </tr>
+          <tr>
+            <td>aria-checked</td>
+            <td><code>"true"</code> / <code>"false"</code></td>
+            <td>Kept in sync by <code>toggle.js</code>. Set the initial value in markup.</td>
+          </tr>
+          <tr>
+            <td>tabindex</td>
+            <td><code>"0"</code></td>
+            <td>Places the element in the natural tab order.</td>
+          </tr>
+          <tr>
+            <td>aria-label</td>
+            <td>Descriptive string</td>
+            <td>Describes what is toggled, e.g. <code>"Enable dark mode"</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="subsection-title">Keyboard activation</p>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang-tag">JavaScript</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>document.<span class="k">querySelectorAll</span>(<span class="s">'.toggle'</span>).<span class="k">forEach</span>(el => {
+  el.<span class="k">addEventListener</span>(<span class="s">'keydown'</span>, e => {
+    <span class="k">if</span> (e.key === <span class="s">' '</span> || e.key === <span class="s">'Enter'</span>) {
+      e.<span class="k">preventDefault</span>(); el.<span class="k">click</span>();
+    }
+  });
+});</code></pre>
+      </div>
     </section>
 
-    <div style="height:80px"></div>
   </main>
 
-  <!-- ── Right sidebar ── -->
+  <!-- ── Right TOC ──────────────────────── -->
   <aside class="sidebar-right">
-    <?php include $partials . 'right_sidebar.php'; ?>
+  <?php include $partials . '/right_sidebar.php'; ?>
   </aside>
 
-</div><!-- /.page-layout -->
+</div>
 
-<!-- Scroll to top -->
-<button class="scroll-top" id="scrollTop"
-        onclick="window.scrollTo({top:0,behavior:'smooth'})"
-        aria-label="Back to top">
-  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <path d="M8 12V4M4 7l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</button>
+<footer class="footer">
+  <span class="footer-text">Holidayseva Design Guidelines · Toggle</span>
+  <span class="footer-text">v1.0</span>
+</footer>
 
-<!-- Form helpers live in input.js; only page-chrome JS here -->
-<script src="/Atom/input/input.js" defer></script>
+
 <script>
-/* ── Tab switcher (page chrome only) ──────────────────────── */
-function switchTab(btn) {
-  const card    = btn.closest('.demo-card');
-  const tabs    = card.querySelectorAll('.demo-tab');
-  const preview = card.querySelector('.demo-preview, .glass-stage');
-  const code    = card.querySelector('.demo-code');
-  const show    = btn.textContent.trim() === 'Preview';
-  tabs.forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  if (preview) preview.hidden = !show;
-  if (code)    code.hidden    =  show;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  /* Scroll-to-top */
-  const scrollBtn = document.getElementById('scrollTop');
-  window.addEventListener('scroll', () => {
-    scrollBtn?.classList.toggle('show', scrollY > 400);
+  /* Wire demo state badge to the toggle-change event from toggle.js */
+  document.getElementById('demoToggle').addEventListener('toggle-change', (e) => {
+    const el = document.getElementById('demoState');
+    el.textContent = 'state: ' + e.detail.state;
+    el.className   = 'demo-state' + (e.detail.isActive ? ' on' : '');
+    /* Keep aria-checked in sync */
+    document.getElementById('demoToggle').setAttribute('aria-checked', e.detail.isActive);
   });
 
-  /* TOC scroll spy */
-  const tocLinks = document.querySelectorAll('.toc-link');
-  if (tocLinks.length) {
+  /* Keyboard support for all toggles */
+  document.querySelectorAll('.toggle').forEach(el => {
+    el.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); el.click(); }
+    });
+  });
+
+  /* TOC scroll-spy */
+  document.addEventListener('DOMContentLoaded', () => {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('section[id], div[id]');
     const spy = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        tocLinks.forEach(a => a.classList.remove('active'));
-        document.querySelector(`.toc-link[href="#${e.target.id}"]`)?.classList.add('active');
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(a => {
+            a.classList.remove('active');
+            if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
+          });
+        }
       });
-    }, { rootMargin: '-8% 0px -78% 0px' });
-    document.querySelectorAll('section[id], h3[id]').forEach(t => spy.observe(t));
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    sections.forEach(s => spy.observe(s));
+  });
+
+  /* Copy code buttons */
+  function copyCode(btn) {
+    navigator.clipboard.writeText(
+      btn.closest('.code-block').querySelector('pre').innerText
+    ).then(() => {
+      btn.textContent = 'Copied';
+      setTimeout(() => btn.textContent = 'Copy', 1800);
+    });
   }
-});
 </script>
+<?php include __DIR__ . '/footer.php'; ?>
 </body>
 </html>
