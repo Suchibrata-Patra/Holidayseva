@@ -2,104 +2,35 @@
    AIRFRAME UI — INPUT COMPONENT SYSTEM
    input.css · Atom layer
 
-   Design: Apple Ultra-modern + Glassmorphism + Airbnb coral-red
+   Design: Airbnb UI Clone — exact vibe, spacing, radii, interactions
    ----------------------------------------------------------------
-   HARD RULE: Zero hex, rgba(), or hsl() literals outside the :root token block.
-   Every colour reference in component rules resolves through var(--color-*) tokens.
-   Fallback token values are defined directly in this file's :root block so the
-   component renders correctly even when colors.css is unavailable (e.g. local dev).
-   When colors.css IS loaded it overrides these fallbacks cleanly.
+   HARD RULE: Zero hex, rgba(), or hsl() literals in this file.
+   Every colour reference resolves through var(--color-*) tokens
+   defined in colors.css. colors.css MUST be loaded before this file.
    ================================================================ */
 
 
 /* ════════════════════════════════════════════════════════════════
    00. COMPONENT TOKENS
    Local custom properties that map system tokens → component roles.
-   Override these per-component without touching global tokens.
 ════════════════════════════════════════════════════════════════ */
 :root {
-    /* ── COLOUR TOKENS (fallbacks — overridden by colors.css if loaded) ── */
-    /* Primary — Airbnb coral-red */
-    --color-primary: #FF385C;
-    --color-primary-border: rgba(255, 56, 92, 0.30);
-    --color-primary-alpha: rgba(255, 56, 92, 0.10);
-    --color-primary-alpha-sm: rgba(255, 56, 92, 0.06);
-
-    /* Surfaces */
-    --color-surface: #ffffff;
-    --color-surface-inset: #f5f5f7;
-    --color-bg-secondary: #f5f5f7;
-
-    /* Borders */
-    --color-border: #d1d1d6;
-    --color-border-dark: #aeaeb2;
-    --color-border-focus: #007aff;
-    --color-border-light: #e5e5ea;
-
-    /* Text */
-    --color-text-primary: #1d1d1f;
-    --color-text-secondary: #6e6e73;
-    --color-text-muted: #aeaeb2;
-    --color-text-placeholder: #aeaeb2;
-    --color-text-disabled: #c7c7cc;
-    --color-text-inverse: #ffffff;
-
-    /* Semantic */
-    --color-error: #ff3b30;
-    --color-error-bg: rgba(255, 59, 48, 0.12);
-    --color-error-text: #d70015;
-    --color-success: #34c759;
-    --color-success-bg: rgba(52, 199, 89, 0.12);
-    --color-success-text: #1a7f37;
-    --color-warning-text: #bf5f00;
-    --color-info-bg: #eff6ff;
-    --color-info-border: #bfdbfe;
-    --color-info-text: #1e40af;
-    --color-warning-bg: #fffbeb;
-    --color-warning-border: #fde68a;
-
-    /* Fill */
-    --color-fill-primary: rgba(255, 255, 255, 0.55);
-
-    /* Separator */
-    --color-separator: rgba(60, 60, 67, 0.29);
-
-    /* Ghost */
-    --color-ghost-hover-bg: rgba(0, 0, 0, 0.055);
-    --color-ghost-pressed-bg: rgba(0, 0, 0, 0.10);
-
-    /* Glass */
-    --color-glass-bg: rgba(255, 255, 255, 0.72);
-    --color-glass-border: rgba(255, 255, 255, 0.60);
-    --color-glass-tint: rgba(255, 56, 92, 0.06);
-    --color-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-
-    /* Code */
-    --color-code-text: #abb2bf;
-    --color-code-bg: #1c1c1e;
-
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.07);
-    --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.14), 0 8px 16px rgba(0, 0, 0, 0.08);
-
-    /* Focus rings */
-    --focus-ring-blue: 0 0 0 3px rgba(0, 122, 255, 0.28);
-    --focus-ring: 0 0 0 3px rgba(255, 56, 92, 0.28);
-
-    /* ── COMPONENT TOKENS ───────────────────────────────────────────── */
-    /* Field */
+    /* Field surface */
     --input-bg: var(--color-surface);
     --input-bg-glass: var(--color-glass-bg);
-    --input-border: var(--color-border);
-    --input-border-hover: var(--color-border-dark);
-    --input-border-focus: var(--color-border-focus);
     --input-text: var(--color-text-primary);
     --input-placeholder: var(--color-text-placeholder);
-    --input-disabled-bg: var(--color-surface-inset);
+
+    /* Borders — Airbnb uses near-black on focus, not blue */
+    --input-border: var(--color-border);
+    --input-border-hover: var(--color-secondary);
+    --input-border-focus: var(--color-border-focus);
+    /* #1D1D1F — Airbnb trademark */
+
+    /* Disabled */
+    --input-disabled-bg: var(--color-surface-disabled);
     --input-disabled-text: var(--color-text-disabled);
-    --input-disabled-border: var(--color-border-light);
+    --input-disabled-border: var(--color-border-disabled);
 
     /* States */
     --input-error-border: var(--color-error);
@@ -107,8 +38,8 @@
     --input-success-border: var(--color-success);
     --input-success-ring: var(--color-success-bg);
 
-    /* Focus ring */
-    --input-focus-ring: var(--focus-ring-blue);
+    /* Focus rings — Airbnb uses dark ring for standard fields */
+    --input-focus-ring: var(--focus-ring-dark);
     --input-focus-ring-red: var(--focus-ring);
 
     /* OTP accent */
@@ -119,47 +50,57 @@
     /* Shadows */
     --input-shadow: var(--shadow-sm);
     --input-shadow-focus: var(--shadow-md);
-    --input-glass-shadow: var(--color-glass-shadow);
 
-    /* Radii */
+    /* ── AIRBNB GEOMETRY ── */
+    /* Airbnb uses large, very rounded corners throughout */
+    --radius-xs: 6px;
     --radius-sm: 8px;
-    --radius-md: 10px;
-    --radius-lg: 12px;
-    --radius-xl: 14px;
+    --radius-md: 12px;
+    /* base input — rounder than generic */
+    --radius-lg: 16px;
+    /* cards, panels */
+    --radius-xl: 20px;
+    /* modals, large cards */
     --radius-pill: 999px;
 
-    /* Sizing */
-    --input-h-sm: 34px;
-    --input-h-md: 42px;
-    --input-h-lg: 52px;
+    /* Sizing — Airbnb fields are taller/more generous */
+    --input-h-sm: 40px;
+    --input-h-md: 48px;
+    /* Airbnb's standard field height */
+    --input-h-lg: 58px;
 
-    /* Spacing */
-    --input-px-sm: 10px;
-    --input-px-md: 14px;
-    --input-px-lg: 18px;
+    /* Horizontal padding */
+    --input-px-sm: 12px;
+    --input-px-md: 16px;
+    --input-px-lg: 20px;
 
     /* Typography */
     --input-fs-sm: 13px;
     --input-fs-md: 15px;
     --input-fs-lg: 16px;
 
+    /* Airbnb border width — 1px default, 2px on focus/active (signature trait) */
+    --input-bw: 1px;
+    --input-bw-focus: 2px;
+
     /* Motion */
     --input-transition:
-        border-color 140ms ease,
-        box-shadow 140ms ease,
-        background 140ms ease,
-        opacity 140ms ease;
+        border-color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-width 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        background 160ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     01. FIELD WRAPPER
-     .field — vertical stack: label → control → helper
-  ════════════════════════════════════════════════════════════════ */
+   01. FIELD WRAPPER
+   .field — vertical stack: label → control → helper
+════════════════════════════════════════════════════════════════ */
 .field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
 }
 
@@ -172,24 +113,25 @@
 
 .field-row .field {
     flex: 1;
-    min-width: 180px;
+    min-width: 200px;
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     02. LABEL
-  ════════════════════════════════════════════════════════════════ */
+   02. LABEL
+   Airbnb: medium weight, slightly larger, generous spacing
+════════════════════════════════════════════════════════════════ */
 .field-label {
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: -.008em;
+    letter-spacing: -.01em;
+    line-height: 1.4;
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
     user-select: none;
 }
 
-/* Optional required marker */
 .field-label .required {
     color: var(--color-primary);
     margin-left: 3px;
@@ -197,10 +139,10 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     03. HELPER / ERROR / SUCCESS TEXT
-  ════════════════════════════════════════════════════════════════ */
+   03. HELPER / ERROR / SUCCESS TEXT
+════════════════════════════════════════════════════════════════ */
 .field-helper {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     color: var(--color-text-secondary);
 }
@@ -219,17 +161,16 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     04. BASE INPUT — .input
-     Foundation class inherited by all variants.
-  ════════════════════════════════════════════════════════════════ */
+   04. BASE INPUT — .input
+   Airbnb signature: tall, generous padding, large radius,
+   near-black 2px border on focus, no blue focus ring.
+════════════════════════════════════════════════════════════════ */
 .input {
-    /* Box */
     display: block;
     width: 100%;
     height: var(--input-h-md);
     padding: 0 var(--input-px-md);
 
-    /* Typography */
     font-size: var(--input-fs-md);
     font-family: inherit;
     font-weight: 400;
@@ -238,16 +179,13 @@
     color: var(--input-text);
     -webkit-font-smoothing: antialiased;
 
-    /* Surface */
     background: var(--input-bg);
-    border: 1px solid var(--input-border);
+    border: var(--input-bw) solid var(--input-border);
     border-radius: var(--radius-md);
     outline: none;
+    box-shadow: var(--shadow-sm);
 
-    /* Motion */
     transition: var(--input-transition);
-
-    /* Misc */
     -webkit-appearance: none;
     appearance: none;
 }
@@ -258,15 +196,17 @@
     opacity: 1;
 }
 
-/* Hover */
+/* Hover — border darkens noticeably */
 .input:hover:not(:disabled):not(.is-error):not(.is-success) {
     border-color: var(--input-border-hover);
+    box-shadow: var(--shadow-md);
 }
 
-/* Focus */
+/* Focus — 2px near-black border, Airbnb's signature */
 .input:focus:not(.is-error):not(.is-success) {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
+    box-shadow: var(--shadow-md);
     background: var(--color-surface);
 }
 
@@ -275,12 +215,14 @@
     background: var(--input-disabled-bg);
     color: var(--input-disabled-text);
     border-color: var(--input-disabled-border);
+    box-shadow: none;
     cursor: not-allowed;
-    opacity: .55;
+    opacity: .6;
 }
 
-/* Error state */
+/* Error */
 .input.is-error {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-error-border);
     box-shadow: 0 0 0 3px var(--input-error-ring);
 }
@@ -290,13 +232,14 @@
     box-shadow: 0 0 0 3px var(--input-error-ring);
 }
 
-/* Success state */
+/* Success */
 .input.is-success {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-success-border);
     box-shadow: 0 0 0 3px var(--input-success-ring);
 }
 
-/* Remove browser number spinners */
+/* Remove browser spinners */
 .input[type="number"]::-webkit-inner-spin-button,
 .input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -306,7 +249,7 @@
     -moz-appearance: textfield;
 }
 
-/* Date / time colour-scheme */
+/* Date / time */
 .input[type="date"],
 .input[type="time"],
 .input[type="datetime-local"],
@@ -317,8 +260,8 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     05. SIZE MODIFIERS
-  ════════════════════════════════════════════════════════════════ */
+   05. SIZE MODIFIERS
+════════════════════════════════════════════════════════════════ */
 .input-sm {
     height: var(--input-h-sm);
     padding: 0 var(--input-px-sm);
@@ -337,9 +280,8 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     06. ICON WRAP — .input-wrap
-     Adds leading / trailing icon slots inside the input box.
-  ════════════════════════════════════════════════════════════════ */
+   06. ICON WRAP — .input-wrap
+════════════════════════════════════════════════════════════════ */
 .input-wrap {
     position: relative;
     display: flex;
@@ -347,35 +289,31 @@
     width: 100%;
 }
 
-/* Leading icon → shift input text right */
 .input-wrap .input {
-    padding-left: 40px;
+    padding-left: 44px;
 }
 
 .input-wrap.icon-sm .input {
-    padding-left: 34px;
+    padding-left: 36px;
 }
 
 .input-wrap.icon-lg .input {
-    padding-left: 48px;
+    padding-left: 52px;
 }
 
-/* Trailing icon → shift input text left */
 .input-wrap.icon-right .input {
     padding-left: var(--input-px-md);
-    padding-right: 40px;
+    padding-right: 44px;
 }
 
-/* Both icons */
 .input-wrap.icon-both .input {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 44px;
+    padding-right: 44px;
 }
 
-/* Icon element */
 .input-icon {
     position: absolute;
-    left: 12px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--color-text-muted);
@@ -383,55 +321,58 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 140ms ease;
+    transition: color 160ms ease;
 }
 
 .input-wrap.icon-right .input-icon,
 .input-wrap .input-icon-right {
     left: auto;
-    right: 12px;
+    right: 14px;
 }
 
-/* Icon colour follows focus */
 .input-wrap:focus-within .input-icon {
     color: var(--color-text-secondary);
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     07. SEARCH INPUT — pill shape + subtle bg
-  ════════════════════════════════════════════════════════════════ */
+   07. SEARCH INPUT
+   Airbnb search: pill, strong shadow, prominent on hover
+════════════════════════════════════════════════════════════════ */
 .input-search {
     border-radius: var(--radius-pill);
-    padding-left: 40px;
-    background: var(--color-bg-secondary);
-    border-color: transparent;
+    padding-left: 44px;
+    height: var(--input-h-md);
+    background: var(--color-surface);
+    border: var(--input-bw) solid var(--color-border);
+    box-shadow: var(--shadow-md);
 }
 
 .input-search:hover {
-    border-color: var(--input-border);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-border-dark);
 }
 
 .input-search:focus {
-    background: var(--color-surface);
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
+    box-shadow: var(--shadow-lg);
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     08. PASSWORD TOGGLE BUTTON — .pw-toggle
-  ════════════════════════════════════════════════════════════════ */
+   08. PASSWORD TOGGLE — .pw-toggle
+════════════════════════════════════════════════════════════════ */
 .pw-toggle {
     position: absolute;
-    right: 10px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: var(--radius-sm);
     background: none;
     border: none;
@@ -452,13 +393,13 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     09. TEXTAREA — .textarea
-  ════════════════════════════════════════════════════════════════ */
+   09. TEXTAREA — .textarea
+════════════════════════════════════════════════════════════════ */
 .textarea {
     display: block;
     width: 100%;
-    min-height: 104px;
-    padding: 12px var(--input-px-md);
+    min-height: 120px;
+    padding: 14px var(--input-px-md);
     font-size: var(--input-fs-md);
     font-family: inherit;
     font-weight: 400;
@@ -466,10 +407,11 @@
     letter-spacing: -.01em;
     color: var(--input-text);
     background: var(--input-bg);
-    border: 1px solid var(--input-border);
+    border: var(--input-bw) solid var(--input-border);
     border-radius: var(--radius-md);
     outline: none;
     resize: vertical;
+    box-shadow: var(--shadow-sm);
     -webkit-font-smoothing: antialiased;
     transition: var(--input-transition);
 }
@@ -481,33 +423,37 @@
 
 .textarea:hover:not(:disabled) {
     border-color: var(--input-border-hover);
+    box-shadow: var(--shadow-md);
 }
 
 .textarea:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
+    box-shadow: var(--shadow-md);
 }
 
 .textarea:disabled {
     background: var(--input-disabled-bg);
     color: var(--input-disabled-text);
     border-color: var(--input-disabled-border);
+    box-shadow: none;
     cursor: not-allowed;
-    opacity: .55;
+    opacity: .6;
     resize: none;
 }
 
 .textarea.is-error {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-error-border);
     box-shadow: 0 0 0 3px var(--input-error-ring);
 }
 
 .textarea.is-success {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-success-border);
     box-shadow: 0 0 0 3px var(--input-success-ring);
 }
 
-/* Character counter below textarea */
 .textarea-footer {
     display: flex;
     justify-content: space-between;
@@ -516,7 +462,7 @@
 }
 
 .textarea-count {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--color-text-muted);
     text-align: right;
     flex-shrink: 0;
@@ -533,8 +479,8 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     10. NUMBER STEPPER — .number-wrap + .number-stepper
-  ════════════════════════════════════════════════════════════════ */
+   10. NUMBER STEPPER — .number-wrap
+════════════════════════════════════════════════════════════════ */
 .number-wrap {
     position: relative;
     display: flex;
@@ -543,7 +489,7 @@
 }
 
 .number-wrap .input {
-    padding-right: 46px;
+    padding-right: 50px;
 }
 
 .number-stepper {
@@ -560,7 +506,7 @@
 
 .stepper-btn {
     flex: 1;
-    width: 38px;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -586,8 +532,8 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     11. PHONE COMPOUND — .phone-wrap + .country-select
-  ════════════════════════════════════════════════════════════════ */
+   11. PHONE COMPOUND — .phone-wrap + .country-select
+════════════════════════════════════════════════════════════════ */
 .phone-wrap {
     display: flex;
     width: 100%;
@@ -595,32 +541,35 @@
 
 .country-select {
     height: var(--input-h-md);
-    padding: 0 10px 0 12px;
+    padding: 0 28px 0 16px;
     font-size: 14px;
     font-family: inherit;
+    font-weight: 500;
     color: var(--input-text);
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--input-border);
+    background-color: var(--color-bg-secondary);
+    border: var(--input-bw) solid var(--input-border);
     border-right: none;
     border-radius: var(--radius-md) 0 0 var(--radius-md);
     outline: none;
     cursor: pointer;
     white-space: nowrap;
+    flex-shrink: 0;
     -webkit-appearance: none;
     appearance: none;
-    padding-right: 28px;
-    transition: var(--input-transition);
-
-    /* Inline chevron using a gradient mask */
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236E6E73' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236E6E73' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 10px 6px;
+    transition: var(--input-transition);
+}
+
+.country-select:hover {
+    border-color: var(--input-border-hover);
 }
 
 .country-select:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
     z-index: 1;
 }
 
@@ -630,8 +579,8 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     12. SELECT — .select-wrap + .select-native
-  ════════════════════════════════════════════════════════════════ */
+   12. SELECT — .select-wrap + .select-native
+════════════════════════════════════════════════════════════════ */
 .select-wrap {
     position: relative;
     width: 100%;
@@ -639,46 +588,50 @@
 
 .select-native {
     height: var(--input-h-md);
-    padding: 0 40px 0 var(--input-px-md);
+    padding: 0 44px 0 var(--input-px-md);
     font-size: var(--input-fs-md);
     font-family: inherit;
     font-weight: 400;
     color: var(--input-text);
     background: var(--input-bg);
-    border: 1px solid var(--input-border);
+    border: var(--input-bw) solid var(--input-border);
     border-radius: var(--radius-md);
     outline: none;
     width: 100%;
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
+    box-shadow: var(--shadow-sm);
     transition: var(--input-transition);
 }
 
 .select-native:hover:not(:disabled) {
     border-color: var(--input-border-hover);
+    box-shadow: var(--shadow-md);
 }
 
 .select-native:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
+    box-shadow: var(--shadow-md);
 }
 
 .select-native:disabled {
-    opacity: .55;
+    opacity: .6;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .select-caret {
     position: absolute;
-    right: 12px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
     color: var(--color-text-muted);
     display: flex;
     align-items: center;
-    transition: transform 200ms ease;
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .select-wrap:focus-within .select-caret {
@@ -687,8 +640,9 @@
 
 
 /* ════════════════════════════════════════════════════════════════
-     13. RANGE SLIDER — input[type=range]
-  ════════════════════════════════════════════════════════════════ */
+   13. RANGE SLIDER
+   Airbnb: coral fill, white thumb with coral border
+════════════════════════════════════════════════════════════════ */
 .range-wrap {
     display: flex;
     align-items: center;
@@ -697,10 +651,10 @@
 }
 
 .range-val {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--color-text-primary);
-    min-width: 52px;
+    min-width: 56px;
     text-align: right;
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
@@ -723,29 +677,29 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: var(--color-surface);
     border: 2px solid var(--color-primary);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
     cursor: grab;
-    transition: transform 100ms ease, box-shadow 100ms ease;
+    transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:active {
     cursor: grabbing;
-    transform: scale(1.2);
-    box-shadow: var(--shadow-md);
+    transform: scale(1.15);
+    box-shadow: var(--shadow-lg);
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: var(--color-surface);
     border: 2px solid var(--color-primary);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
     cursor: grab;
 }
 
@@ -755,11 +709,11 @@ input[type="range"]:focus {
 
 
 /* ════════════════════════════════════════════════════════════════
-     14. OTP / PIN — .otp-wrap + .otp-input
-  ════════════════════════════════════════════════════════════════ */
+   14. OTP / PIN — .otp-wrap + .otp-input
+════════════════════════════════════════════════════════════════ */
 .otp-wrap {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
 }
 
@@ -772,72 +726,74 @@ input[type="range"]:focus {
     user-select: none;
 }
 
-/* Standard OTP cell */
 .otp-input {
-    width: 48px;
-    height: 56px;
-    font-size: 22px;
+    width: 52px;
+    height: 60px;
+    font-size: 24px;
     font-weight: 700;
     font-family: inherit;
     text-align: center;
     letter-spacing: 0;
     color: var(--color-text-primary);
     background: var(--color-surface);
-    border: 1.5px solid var(--color-border);
+    border: var(--input-bw) solid var(--color-border);
     border-radius: var(--radius-md);
     outline: none;
     caret-color: var(--otp-caret);
+    box-shadow: var(--shadow-sm);
     -webkit-font-smoothing: antialiased;
     transition:
-        border-color 140ms ease,
-        box-shadow 140ms ease,
-        transform 100ms ease,
-        background 140ms ease;
+        border-color 160ms ease,
+        border-width 160ms ease,
+        box-shadow 160ms ease,
+        transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        background 160ms ease;
 }
 
 .otp-input:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--otp-active-border);
-    box-shadow: var(--input-focus-ring-red);
-    transform: scale(1.06);
+    box-shadow: var(--shadow-md);
+    transform: scale(1.07);
     background: var(--otp-active-bg);
 }
 
 .otp-input.is-filled {
+    border-width: var(--input-bw-focus);
     border-color: var(--otp-active-border);
     background: var(--otp-active-bg);
     color: var(--color-primary);
 }
 
 .otp-input.is-error {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-error-border);
     box-shadow: 0 0 0 3px var(--input-error-ring);
 }
 
-/* Large PIN variant */
 .otp-input-lg {
-    width: 62px;
-    height: 70px;
-    font-size: 28px;
+    width: 64px;
+    height: 72px;
+    font-size: 30px;
     border-radius: var(--radius-lg);
 }
 
-/* Compact PIN (4-digit tight) */
 .otp-input-sm {
-    width: 40px;
-    height: 48px;
-    font-size: 18px;
+    width: 44px;
+    height: 52px;
+    font-size: 20px;
     border-radius: var(--radius-sm);
-    gap: 6px;
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     15. CHECKBOX — .checkbox-wrap
-  ════════════════════════════════════════════════════════════════ */
+   15. CHECKBOX — .checkbox-wrap
+   Airbnb: coral checked state, smooth animation
+════════════════════════════════════════════════════════════════ */
 .checkbox-wrap {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
     user-select: none;
 }
@@ -845,20 +801,22 @@ input[type="range"]:focus {
 .checkbox-wrap input[type="checkbox"] {
     -webkit-appearance: none;
     appearance: none;
-    width: 18px;
-    height: 18px;
-    min-width: 18px;
-    border: 1.5px solid var(--input-border);
-    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: var(--input-bw) solid var(--input-border);
+    border-radius: 6px;
     background: var(--input-bg);
     cursor: pointer;
     position: relative;
-    margin-top: 2px;
-    transition: border-color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+    margin-top: 1px;
+    transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
     outline: none;
+    box-shadow: var(--shadow-sm);
 }
 
 .checkbox-wrap input[type="checkbox"]:hover {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
 }
 
@@ -869,15 +827,16 @@ input[type="range"]:focus {
 .checkbox-wrap input[type="checkbox"]:checked {
     background: var(--color-primary);
     border-color: var(--color-primary);
+    box-shadow: none;
 }
 
 .checkbox-wrap input[type="checkbox"]:checked::after {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 5px;
+    top: 3px;
+    left: 6px;
     width: 5px;
-    height: 9px;
+    height: 10px;
     border: 2px solid var(--color-text-inverse);
     border-top: none;
     border-left: none;
@@ -887,14 +846,15 @@ input[type="range"]:focus {
 .checkbox-wrap input[type="checkbox"]:indeterminate {
     background: var(--color-primary);
     border-color: var(--color-primary);
+    box-shadow: none;
 }
 
 .checkbox-wrap input[type="checkbox"]:indeterminate::after {
     content: '';
     position: absolute;
     top: 50%;
-    left: 3px;
-    right: 3px;
+    left: 4px;
+    right: 4px;
     height: 2px;
     background: var(--color-text-inverse);
     transform: translateY(-50%);
@@ -902,26 +862,27 @@ input[type="range"]:focus {
 }
 
 .checkbox-label {
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 400;
     color: var(--color-text-primary);
     line-height: 1.5;
 }
 
 .checkbox-sub {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--color-text-secondary);
     margin-top: 2px;
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     16. RADIO — .radio-wrap
-  ════════════════════════════════════════════════════════════════ */
+   16. RADIO — .radio-wrap
+════════════════════════════════════════════════════════════════ */
 .radio-wrap {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
     user-select: none;
 }
@@ -929,20 +890,22 @@ input[type="range"]:focus {
 .radio-wrap input[type="radio"] {
     -webkit-appearance: none;
     appearance: none;
-    width: 18px;
-    height: 18px;
-    min-width: 18px;
-    border: 1.5px solid var(--input-border);
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: var(--input-bw) solid var(--input-border);
     border-radius: 50%;
     background: var(--input-bg);
     cursor: pointer;
     position: relative;
-    margin-top: 2px;
+    margin-top: 1px;
     outline: none;
-    transition: border-color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 
 .radio-wrap input[type="radio"]:hover {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
 }
 
@@ -951,8 +914,10 @@ input[type="range"]:focus {
 }
 
 .radio-wrap input[type="radio"]:checked {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
     background: var(--color-surface);
+    box-shadow: none;
 }
 
 .radio-wrap input[type="radio"]:checked::after {
@@ -966,34 +931,42 @@ input[type="range"]:focus {
     background: var(--color-primary);
 }
 
+.radio-label {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+.radio-sub {
+    display: block;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+}
+
 
 /* ════════════════════════════════════════════════════════════════
-     17. GLASSMORPHISM INPUT SET — .glass-* variants
-     Apple liquid-glass aesthetic: frosted background, luminous
-     border, layered depth, blurred backdrop.
-  ════════════════════════════════════════════════════════════════ */
-
-/* Glass field wrapper */
+   17. GLASSMORPHISM SET — .glass-* variants
+════════════════════════════════════════════════════════════════ */
 .glass-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
 }
 
-/* Glass label — slightly lighter to float on dark/blurred bg */
 .glass-label {
     display: block;
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .02em;
+    font-weight: 700;
+    letter-spacing: .06em;
     text-transform: uppercase;
     color: var(--color-text-secondary);
     -webkit-font-smoothing: antialiased;
     user-select: none;
 }
 
-/* Core glass input */
 .input-glass {
     display: block;
     width: 100%;
@@ -1004,27 +977,20 @@ input[type="range"]:focus {
     font-weight: 400;
     letter-spacing: -.01em;
     color: var(--color-text-primary);
-
-    /* Glassmorphism surface */
     background: var(--color-glass-bg);
-    border: 1px solid var(--color-glass-border);
-    border-radius: var(--radius-xl);
+    border: var(--input-bw) solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
     outline: none;
-
-    /* Depth + blur */
     backdrop-filter: saturate(180%) blur(24px);
     -webkit-backdrop-filter: saturate(180%) blur(24px);
     box-shadow:
         0 1px 0 var(--color-glass-border) inset,
         0 0 0 1px var(--color-glass-border),
         var(--shadow-lg);
-
     transition:
         border-color 180ms ease,
         box-shadow 180ms ease,
-        background 180ms ease,
-        backdrop-filter 180ms ease;
-
+        background 180ms ease;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -1042,8 +1008,8 @@ input[type="range"]:focus {
 }
 
 .input-glass:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
-    background: var(--color-glass-bg);
     box-shadow:
         0 1px 0 var(--color-glass-border) inset,
         0 0 0 1px var(--color-primary),
@@ -1056,11 +1022,10 @@ input[type="range"]:focus {
     cursor: not-allowed;
 }
 
-/* Glass textarea */
 .textarea-glass {
     display: block;
     width: 100%;
-    min-height: 112px;
+    min-height: 120px;
     padding: 16px var(--input-px-lg);
     font-size: var(--input-fs-md);
     font-family: inherit;
@@ -1068,8 +1033,8 @@ input[type="range"]:focus {
     letter-spacing: -.01em;
     color: var(--color-text-primary);
     background: var(--color-glass-bg);
-    border: 1px solid var(--color-glass-border);
-    border-radius: var(--radius-xl);
+    border: var(--input-bw) solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
     outline: none;
     resize: vertical;
     backdrop-filter: saturate(180%) blur(24px);
@@ -1087,6 +1052,7 @@ input[type="range"]:focus {
 }
 
 .textarea-glass:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
     box-shadow:
         0 1px 0 var(--color-glass-border) inset,
@@ -1095,16 +1061,15 @@ input[type="range"]:focus {
         var(--shadow-lg);
 }
 
-/* Glass select */
 .select-glass {
     height: var(--input-h-lg);
-    padding: 0 40px 0 var(--input-px-lg);
+    padding: 0 44px 0 var(--input-px-lg);
     font-size: var(--input-fs-md);
     font-family: inherit;
     color: var(--color-text-primary);
     background: var(--color-glass-bg);
-    border: 1px solid var(--color-glass-border);
-    border-radius: var(--radius-xl);
+    border: var(--input-bw) solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
     outline: none;
     width: 100%;
     cursor: pointer;
@@ -1117,6 +1082,7 @@ input[type="range"]:focus {
 }
 
 .select-glass:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
     box-shadow:
         0 0 0 1px var(--color-primary),
@@ -1124,7 +1090,6 @@ input[type="range"]:focus {
         var(--shadow-lg);
 }
 
-/* Glass OTP */
 .otp-glass .otp-input {
     background: var(--color-glass-bg);
     border-color: var(--color-glass-border);
@@ -1135,6 +1100,7 @@ input[type="range"]:focus {
 
 .otp-glass .otp-input:focus {
     background: var(--color-glass-tint);
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
     box-shadow:
         0 0 0 1px var(--color-primary),
@@ -1144,23 +1110,24 @@ input[type="range"]:focus {
 
 .otp-glass .otp-input.is-filled {
     background: var(--color-glass-tint);
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
 }
 
-/* Glass search pill */
 .input-glass-search {
     border-radius: var(--radius-pill);
-    padding-left: 44px;
+    padding-left: 48px;
     height: var(--input-h-md);
     font-size: var(--input-fs-md);
     background: var(--color-glass-bg);
-    border: 1px solid var(--color-glass-border);
+    border: var(--input-bw) solid var(--color-glass-border);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
 }
 
 .input-glass-search:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
     box-shadow:
         0 0 0 1px var(--color-primary),
@@ -1168,7 +1135,6 @@ input[type="range"]:focus {
         var(--shadow-md);
 }
 
-/* Tinted glass — brand coral highlight */
 .input-glass-tinted {
     background: var(--color-glass-tint);
     border-color: var(--color-primary-border);
@@ -1176,6 +1142,7 @@ input[type="range"]:focus {
 
 .input-glass-tinted:focus {
     background: var(--color-glass-tint);
+    border-width: var(--input-bw-focus);
     border-color: var(--color-primary);
     box-shadow:
         0 0 0 1px var(--color-primary),
@@ -1183,12 +1150,11 @@ input[type="range"]:focus {
         var(--shadow-lg);
 }
 
-/* Glass panel — wrap glass inputs in a frosted card */
 .glass-panel {
     background: var(--color-glass-bg);
     border: 1px solid var(--color-glass-border);
-    border-radius: 20px;
-    padding: 32px;
+    border-radius: var(--radius-xl);
+    padding: 36px;
     backdrop-filter: saturate(180%) blur(32px);
     -webkit-backdrop-filter: saturate(180%) blur(32px);
     box-shadow:
@@ -1197,31 +1163,35 @@ input[type="range"]:focus {
 }
 
 .glass-panel-sm {
-    padding: 20px 24px;
-    border-radius: var(--radius-xl);
+    padding: 24px 28px;
+    border-radius: var(--radius-lg);
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     18. FLOATING LABEL — .float-field
-     Apple's contextual label pattern — label floats up on focus/fill.
-  ════════════════════════════════════════════════════════════════ */
+   18. FLOATING LABEL — .float-field
+   Airbnb's signature pattern: label lifts up inside the tall field.
+   Coral label colour on focus is the Airbnb trademark.
+════════════════════════════════════════════════════════════════ */
 .float-field {
     position: relative;
     width: 100%;
 }
 
 .float-input {
-    height: 56px;
-    padding: 20px var(--input-px-md) 8px;
+    height: 64px;
+    /* Airbnb float fields are extra tall */
+    padding: 24px var(--input-px-md) 10px;
     font-size: var(--input-fs-md);
     font-family: inherit;
+    font-weight: 400;
     color: var(--input-text);
     background: var(--input-bg);
-    border: 1px solid var(--input-border);
+    border: var(--input-bw) solid var(--input-border);
     border-radius: var(--radius-md);
     outline: none;
     width: 100%;
+    box-shadow: var(--shadow-sm);
     transition: var(--input-transition);
     -webkit-font-smoothing: antialiased;
 }
@@ -1232,11 +1202,13 @@ input[type="range"]:focus {
 
 .float-input:hover:not(:disabled) {
     border-color: var(--input-border-hover);
+    box-shadow: var(--shadow-md);
 }
 
 .float-input:focus {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
+    box-shadow: var(--shadow-md);
 }
 
 .float-label {
@@ -1249,28 +1221,35 @@ input[type="range"]:focus {
     color: var(--input-placeholder);
     pointer-events: none;
     transform-origin: left top;
-    transition: transform 150ms ease, font-size 150ms ease, color 150ms ease, top 150ms ease;
+    transition:
+        top 180ms cubic-bezier(0.4, 0, 0.2, 1),
+        transform 180ms cubic-bezier(0.4, 0, 0.2, 1),
+        font-size 180ms cubic-bezier(0.4, 0, 0.2, 1),
+        color 180ms cubic-bezier(0.4, 0, 0.2, 1),
+        font-weight 180ms cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-font-smoothing: antialiased;
 }
 
-/* Floated state — triggered by :focus or .has-value */
+/* Floated state */
 .float-input:focus~.float-label,
 .float-input:not(:placeholder-shown)~.float-label {
-    top: 10px;
-    transform: translateY(0) scale(0.78);
+    top: 14px;
+    transform: translateY(0) scale(0.75);
     font-size: var(--input-fs-md);
+    font-weight: 700;
     color: var(--color-text-secondary);
-    font-weight: 600;
+    letter-spacing: .01em;
 }
 
+/* Coral on focus — Airbnb's most recognisable input detail */
 .float-input:focus~.float-label {
     color: var(--color-primary);
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     19. INPUT GROUP — prefix / suffix addons
-  ════════════════════════════════════════════════════════════════ */
+   19. INPUT GROUP — prefix / suffix addons
+════════════════════════════════════════════════════════════════ */
 .input-group {
     display: flex;
     width: 100%;
@@ -1280,12 +1259,12 @@ input[type="range"]:focus {
 .input-addon {
     display: flex;
     align-items: center;
-    padding: 0 14px;
+    padding: 0 16px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-text-secondary);
     background: var(--color-bg-secondary);
-    border: 1px solid var(--input-border);
+    border: var(--input-bw) solid var(--input-border);
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -1315,39 +1294,41 @@ input[type="range"]:focus {
 }
 
 .input-group .input+.input-addon:last-child {
-    border-radius: 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
 
 /* ════════════════════════════════════════════════════════════════
-     20. TAG INPUT — .tag-input-wrap
-  ════════════════════════════════════════════════════════════════ */
+   20. TAG INPUT — .tag-input-wrap
+════════════════════════════════════════════════════════════════ */
 .tag-input-wrap {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
     min-height: var(--input-h-md);
-    padding: 6px 10px;
+    padding: 8px 12px;
     background: var(--input-bg);
-    border: 1px solid var(--input-border);
+    border: var(--input-bw) solid var(--input-border);
     border-radius: var(--radius-md);
     cursor: text;
+    box-shadow: var(--shadow-sm);
     transition: var(--input-transition);
 }
 
 .tag-input-wrap:focus-within {
+    border-width: var(--input-bw-focus);
     border-color: var(--input-border-focus);
-    box-shadow: var(--input-focus-ring);
+    box-shadow: var(--shadow-md);
 }
 
 .tag-pill {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
+    gap: 6px;
+    padding: 4px 12px;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-primary);
     background: var(--color-primary-alpha);
     border: 1px solid var(--color-primary-border);
@@ -1388,8 +1369,8 @@ input[type="range"]:focus {
 
 
 /* ════════════════════════════════════════════════════════════════
-     21. UTILITY — input loading state shimmer
-  ════════════════════════════════════════════════════════════════ */
+   21. LOADING SHIMMER
+════════════════════════════════════════════════════════════════ */
 .input-loading {
     position: relative;
     overflow: hidden;
@@ -1419,19 +1400,19 @@ input[type="range"]:focus {
 
 
 /* ════════════════════════════════════════════════════════════════
-     22. RESPONSIVE
-  ════════════════════════════════════════════════════════════════ */
+   22. RESPONSIVE
+════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     .otp-input {
-        width: 40px;
-        height: 48px;
-        font-size: 18px;
+        width: 44px;
+        height: 52px;
+        font-size: 20px;
     }
 
     .otp-input-lg {
-        width: 50px;
-        height: 58px;
-        font-size: 22px;
+        width: 54px;
+        height: 62px;
+        font-size: 24px;
     }
 
     .field-row {
