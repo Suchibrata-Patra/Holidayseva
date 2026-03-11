@@ -95,15 +95,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
     scrollbar-color: var(--color-muted-dark) transparent;
   }
 
-  @media (max-width: 1100px) {
-    .page-layout { grid-template-columns: 240px 1fr; }
-    .sidebar-right { display: none; }
-  }
-  @media (max-width: 700px) {
-    .page-layout { grid-template-columns: 1fr; }
-    .sidebar-left { display: none; }
-    .main-content { padding: 28px 20px 60px; }
-  }
+
 
   /* ── Content typography ──────────────────────────── */
   .page-eyebrow {
