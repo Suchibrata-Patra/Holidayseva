@@ -78,7 +78,6 @@ function scanComponentCategory(string $baseDir, string $category): array {
             'iconWebUrl' => $iconWebUrl,
         ];
     }
-
     usort($components, fn($a, $b) => strcmp($a['label'], $b['label']));
     return $components;
 }
