@@ -57,7 +57,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   /* ── Page layout shell ─────────────────────────── */
   .page-layout {
     display: grid;
-    grid-template-columns: 260px 1fr 220px;
+    /* grid-template-columns: 260px 1fr 220px; */
     min-height: calc(100vh - var(--header-h, 96px));
     /* max-width: 1440px; */
     margin: 0 auto;
