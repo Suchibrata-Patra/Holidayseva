@@ -7,12 +7,9 @@
  *
  * Include: <?php include __DIR__ . '/left_sidebar.php'; ?>
  */
-// Define the Helper function
-// func helper()=>{
-  // rendercompoisiton( ?string webiconurl, ?string defualtwebiconurl){
-    //  This is the model of the things to be developed by the thigs to be dveloepd by the thigs
-  // }
-}
+
+
+//  This is the function of the things
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 // Site web root — all asset URLs are built from this
