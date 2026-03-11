@@ -1,0 +1,1383 @@
+/* ================================================================
+   AIRFRAME UI — INPUT COMPONENT SYSTEM
+   input.css · Atom layer
+
+   Design: Apple Ultra-modern + Glassmorphism + Airbnb coral-red
+   ----------------------------------------------------------------
+   HARD RULE: Zero hex, rgba(), or hsl() literals in this file.
+   Every colour reference resolves through var(--color-*) tokens
+   defined in colors.css. Changing colors.css is the only way
+   to change colours here.
+   ================================================================ */
+
+
+/* ════════════════════════════════════════════════════════════════
+   00. COMPONENT TOKENS
+   Local custom properties that map system tokens → component roles.
+   Override these per-component without touching global tokens.
+════════════════════════════════════════════════════════════════ */
+:root {
+    /* Field */
+    --input-bg: var(--color-surface);
+    --input-bg-glass: var(--color-glass-bg);
+    --input-border: var(--color-border);
+    --input-border-hover: var(--color-border-dark);
+    --input-border-focus: var(--color-border-focus);
+    --input-text: var(--color-text-primary);
+    --input-placeholder: var(--color-text-placeholder);
+    --input-disabled-bg: var(--color-surface-inset);
+    --input-disabled-text: var(--color-text-disabled);
+    --input-disabled-border: var(--color-border-light);
+
+    /* States */
+    --input-error-border: var(--color-error);
+    --input-error-ring: var(--color-error-bg);
+    --input-success-border: var(--color-success);
+    --input-success-ring: var(--color-success-bg);
+
+    /* Focus ring */
+    --input-focus-ring: var(--focus-ring-blue);
+    --input-focus-ring-red: var(--focus-ring);
+
+    /* OTP accent */
+    --otp-active-border: var(--color-primary);
+    --otp-active-bg: var(--color-primary-alpha-sm);
+    --otp-caret: var(--color-primary);
+
+    /* Shadows */
+    --input-shadow: var(--shadow-sm);
+    --input-shadow-focus: var(--shadow-md);
+    --input-glass-shadow: var(--color-glass-shadow);
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 12px;
+    --radius-xl: 14px;
+    --radius-pill: 999px;
+
+    /* Sizing */
+    --input-h-sm: 34px;
+    --input-h-md: 42px;
+    --input-h-lg: 52px;
+
+    /* Spacing */
+    --input-px-sm: 10px;
+    --input-px-md: 14px;
+    --input-px-lg: 18px;
+
+    /* Typography */
+    --input-fs-sm: 13px;
+    --input-fs-md: 15px;
+    --input-fs-lg: 16px;
+
+    /* Motion */
+    --input-transition:
+        border-color 140ms ease,
+        box-shadow 140ms ease,
+        background 140ms ease,
+        opacity 140ms ease;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     01. FIELD WRAPPER
+     .field — vertical stack: label → control → helper
+  ════════════════════════════════════════════════════════════════ */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+/* Side-by-side layout */
+.field-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.field-row .field {
+    flex: 1;
+    min-width: 180px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     02. LABEL
+  ════════════════════════════════════════════════════════════════ */
+.field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -.008em;
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+}
+
+/* Optional required marker */
+.field-label .required {
+    color: var(--color-primary);
+    margin-left: 3px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     03. HELPER / ERROR / SUCCESS TEXT
+  ════════════════════════════════════════════════════════════════ */
+.field-helper {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+}
+
+.field-helper.is-error {
+    color: var(--color-error-text);
+}
+
+.field-helper.is-success {
+    color: var(--color-success-text);
+}
+
+.field-helper.is-warn {
+    color: var(--color-warning-text);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     04. BASE INPUT — .input
+     Foundation class inherited by all variants.
+  ════════════════════════════════════════════════════════════════ */
+.input {
+    /* Box */
+    display: block;
+    width: 100%;
+    height: var(--input-h-md);
+    padding: 0 var(--input-px-md);
+
+    /* Typography */
+    font-size: var(--input-fs-md);
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -.01em;
+    color: var(--input-text);
+    -webkit-font-smoothing: antialiased;
+
+    /* Surface */
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    outline: none;
+
+    /* Motion */
+    transition: var(--input-transition);
+
+    /* Misc */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.input::placeholder {
+    color: var(--input-placeholder);
+    font-weight: 400;
+    opacity: 1;
+}
+
+/* Hover */
+.input:hover:not(:disabled):not(.is-error):not(.is-success) {
+    border-color: var(--input-border-hover);
+}
+
+/* Focus */
+.input:focus:not(.is-error):not(.is-success) {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+    background: var(--color-surface);
+}
+
+/* Disabled */
+.input:disabled {
+    background: var(--input-disabled-bg);
+    color: var(--input-disabled-text);
+    border-color: var(--input-disabled-border);
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+/* Error state */
+.input.is-error {
+    border-color: var(--input-error-border);
+    box-shadow: 0 0 0 3px var(--input-error-ring);
+}
+
+.input.is-error:focus {
+    border-color: var(--input-error-border);
+    box-shadow: 0 0 0 3px var(--input-error-ring);
+}
+
+/* Success state */
+.input.is-success {
+    border-color: var(--input-success-border);
+    box-shadow: 0 0 0 3px var(--input-success-ring);
+}
+
+/* Remove browser number spinners */
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Date / time colour-scheme */
+.input[type="date"],
+.input[type="time"],
+.input[type="datetime-local"],
+.input[type="month"],
+.input[type="week"] {
+    color-scheme: light dark;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     05. SIZE MODIFIERS
+  ════════════════════════════════════════════════════════════════ */
+.input-sm {
+    height: var(--input-h-sm);
+    padding: 0 var(--input-px-sm);
+    font-size: var(--input-fs-sm);
+    border-radius: var(--radius-sm);
+}
+
+/* .input = md (default) */
+
+.input-lg {
+    height: var(--input-h-lg);
+    padding: 0 var(--input-px-lg);
+    font-size: var(--input-fs-lg);
+    border-radius: var(--radius-lg);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     06. ICON WRAP — .input-wrap
+     Adds leading / trailing icon slots inside the input box.
+  ════════════════════════════════════════════════════════════════ */
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Leading icon → shift input text right */
+.input-wrap .input {
+    padding-left: 40px;
+}
+
+.input-wrap.icon-sm .input {
+    padding-left: 34px;
+}
+
+.input-wrap.icon-lg .input {
+    padding-left: 48px;
+}
+
+/* Trailing icon → shift input text left */
+.input-wrap.icon-right .input {
+    padding-left: var(--input-px-md);
+    padding-right: 40px;
+}
+
+/* Both icons */
+.input-wrap.icon-both .input {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* Icon element */
+.input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 140ms ease;
+}
+
+.input-wrap.icon-right .input-icon,
+.input-wrap .input-icon-right {
+    left: auto;
+    right: 12px;
+}
+
+/* Icon colour follows focus */
+.input-wrap:focus-within .input-icon {
+    color: var(--color-text-secondary);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     07. SEARCH INPUT — pill shape + subtle bg
+  ════════════════════════════════════════════════════════════════ */
+.input-search {
+    border-radius: var(--radius-pill);
+    padding-left: 40px;
+    background: var(--color-bg-secondary);
+    border-color: transparent;
+}
+
+.input-search:hover {
+    border-color: var(--input-border);
+}
+
+.input-search:focus {
+    background: var(--color-surface);
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     08. PASSWORD TOGGLE BUTTON — .pw-toggle
+  ════════════════════════════════════════════════════════════════ */
+.pw-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background 120ms ease, color 120ms ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pw-toggle:hover {
+    background: var(--color-ghost-hover-bg);
+    color: var(--color-text-primary);
+}
+
+.pw-toggle:active {
+    background: var(--color-ghost-pressed-bg);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     09. TEXTAREA — .textarea
+  ════════════════════════════════════════════════════════════════ */
+.textarea {
+    display: block;
+    width: 100%;
+    min-height: 104px;
+    padding: 12px var(--input-px-md);
+    font-size: var(--input-fs-md);
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: -.01em;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    resize: vertical;
+    -webkit-font-smoothing: antialiased;
+    transition: var(--input-transition);
+}
+
+.textarea::placeholder {
+    color: var(--input-placeholder);
+    opacity: 1;
+}
+
+.textarea:hover:not(:disabled) {
+    border-color: var(--input-border-hover);
+}
+
+.textarea:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+}
+
+.textarea:disabled {
+    background: var(--input-disabled-bg);
+    color: var(--input-disabled-text);
+    border-color: var(--input-disabled-border);
+    cursor: not-allowed;
+    opacity: .55;
+    resize: none;
+}
+
+.textarea.is-error {
+    border-color: var(--input-error-border);
+    box-shadow: 0 0 0 3px var(--input-error-ring);
+}
+
+.textarea.is-success {
+    border-color: var(--input-success-border);
+    box-shadow: 0 0 0 3px var(--input-success-ring);
+}
+
+/* Character counter below textarea */
+.textarea-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.textarea-count {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-align: right;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.textarea-count.is-near {
+    color: var(--color-warning-text);
+}
+
+.textarea-count.is-max {
+    color: var(--color-error-text);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     10. NUMBER STEPPER — .number-wrap + .number-stepper
+  ════════════════════════════════════════════════════════════════ */
+.number-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.number-wrap .input {
+    padding-right: 46px;
+}
+
+.number-stepper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--color-border-light);
+    overflow: hidden;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.stepper-btn {
+    flex: 1;
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: background 100ms ease, color 100ms ease;
+}
+
+.stepper-btn:first-child {
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.stepper-btn:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.stepper-btn:active {
+    background: var(--color-surface-inset);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     11. PHONE COMPOUND — .phone-wrap + .country-select
+  ════════════════════════════════════════════════════════════════ */
+.phone-wrap {
+    display: flex;
+    width: 100%;
+}
+
+.country-select {
+    height: var(--input-h-md);
+    padding: 0 10px 0 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--input-text);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--input-border);
+    border-right: none;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    outline: none;
+    cursor: pointer;
+    white-space: nowrap;
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 28px;
+    transition: var(--input-transition);
+
+    /* Inline chevron using a gradient mask */
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236E6E73' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 6px;
+}
+
+.country-select:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+    z-index: 1;
+}
+
+.phone-wrap .input {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     12. SELECT — .select-wrap + .select-native
+  ════════════════════════════════════════════════════════════════ */
+.select-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.select-native {
+    height: var(--input-h-md);
+    padding: 0 40px 0 var(--input-px-md);
+    font-size: var(--input-fs-md);
+    font-family: inherit;
+    font-weight: 400;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: var(--input-transition);
+}
+
+.select-native:hover:not(:disabled) {
+    border-color: var(--input-border-hover);
+}
+
+.select-native:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+}
+
+.select-native:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.select-caret {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    transition: transform 200ms ease;
+}
+
+.select-wrap:focus-within .select-caret {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     13. RANGE SLIDER — input[type=range]
+  ════════════════════════════════════════════════════════════════ */
+.range-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.range-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    min-width: 52px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+}
+
+input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(to right,
+            var(--color-primary) 0%,
+            var(--color-primary) var(--pct, 0%),
+            var(--color-border) var(--pct, 0%),
+            var(--color-border) 100%);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    cursor: grab;
+    transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.2);
+    box-shadow: var(--shadow-md);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    cursor: grab;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     14. OTP / PIN — .otp-wrap + .otp-input
+  ════════════════════════════════════════════════════════════════ */
+.otp-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.otp-sep {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    padding: 0 4px;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Standard OTP cell */
+.otp-input {
+    width: 48px;
+    height: 56px;
+    font-size: 22px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    letter-spacing: 0;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    caret-color: var(--otp-caret);
+    -webkit-font-smoothing: antialiased;
+    transition:
+        border-color 140ms ease,
+        box-shadow 140ms ease,
+        transform 100ms ease,
+        background 140ms ease;
+}
+
+.otp-input:focus {
+    border-color: var(--otp-active-border);
+    box-shadow: var(--input-focus-ring-red);
+    transform: scale(1.06);
+    background: var(--otp-active-bg);
+}
+
+.otp-input.is-filled {
+    border-color: var(--otp-active-border);
+    background: var(--otp-active-bg);
+    color: var(--color-primary);
+}
+
+.otp-input.is-error {
+    border-color: var(--input-error-border);
+    box-shadow: 0 0 0 3px var(--input-error-ring);
+}
+
+/* Large PIN variant */
+.otp-input-lg {
+    width: 62px;
+    height: 70px;
+    font-size: 28px;
+    border-radius: var(--radius-lg);
+}
+
+/* Compact PIN (4-digit tight) */
+.otp-input-sm {
+    width: 40px;
+    height: 48px;
+    font-size: 18px;
+    border-radius: var(--radius-sm);
+    gap: 6px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     15. CHECKBOX — .checkbox-wrap
+  ════════════════════════════════════════════════════════════════ */
+.checkbox-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-wrap input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 5px;
+    background: var(--input-bg);
+    cursor: pointer;
+    position: relative;
+    margin-top: 2px;
+    transition: border-color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+    outline: none;
+}
+
+.checkbox-wrap input[type="checkbox"]:hover {
+    border-color: var(--color-primary);
+}
+
+.checkbox-wrap input[type="checkbox"]:focus-visible {
+    box-shadow: var(--input-focus-ring-red);
+}
+
+.checkbox-wrap input[type="checkbox"]:checked {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.checkbox-wrap input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--color-text-inverse);
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+.checkbox-wrap input[type="checkbox"]:indeterminate {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.checkbox-wrap input[type="checkbox"]:indeterminate::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    right: 3px;
+    height: 2px;
+    background: var(--color-text-inverse);
+    transform: translateY(-50%);
+    border: none;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+.checkbox-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     16. RADIO — .radio-wrap
+  ════════════════════════════════════════════════════════════════ */
+.radio-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.radio-wrap input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 50%;
+    background: var(--input-bg);
+    cursor: pointer;
+    position: relative;
+    margin-top: 2px;
+    outline: none;
+    transition: border-color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+}
+
+.radio-wrap input[type="radio"]:hover {
+    border-color: var(--color-primary);
+}
+
+.radio-wrap input[type="radio"]:focus-visible {
+    box-shadow: var(--input-focus-ring-red);
+}
+
+.radio-wrap input[type="radio"]:checked {
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+}
+
+.radio-wrap input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border-radius: 50%;
+    background: var(--color-primary);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     17. GLASSMORPHISM INPUT SET — .glass-* variants
+     Apple liquid-glass aesthetic: frosted background, luminous
+     border, layered depth, blurred backdrop.
+  ════════════════════════════════════════════════════════════════ */
+
+/* Glass field wrapper */
+.glass-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+/* Glass label — slightly lighter to float on dark/blurred bg */
+.glass-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+}
+
+/* Core glass input */
+.input-glass {
+    display: block;
+    width: 100%;
+    height: var(--input-h-lg);
+    padding: 0 var(--input-px-lg);
+    font-size: var(--input-fs-lg);
+    font-family: inherit;
+    font-weight: 400;
+    letter-spacing: -.01em;
+    color: var(--color-text-primary);
+
+    /* Glassmorphism surface */
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-xl);
+    outline: none;
+
+    /* Depth + blur */
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    box-shadow:
+        0 1px 0 var(--color-glass-border) inset,
+        0 0 0 1px var(--color-glass-border),
+        var(--shadow-lg);
+
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease,
+        backdrop-filter 180ms ease;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+.input-glass::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+}
+
+.input-glass:hover:not(:disabled) {
+    border-color: var(--color-separator);
+    box-shadow:
+        0 1px 0 var(--color-glass-border) inset,
+        0 0 0 1px var(--color-separator),
+        var(--shadow-lg);
+}
+
+.input-glass:focus {
+    border-color: var(--color-primary);
+    background: var(--color-glass-bg);
+    box-shadow:
+        0 1px 0 var(--color-glass-border) inset,
+        0 0 0 1px var(--color-primary),
+        var(--focus-ring),
+        var(--shadow-lg);
+}
+
+.input-glass:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+/* Glass textarea */
+.textarea-glass {
+    display: block;
+    width: 100%;
+    min-height: 112px;
+    padding: 16px var(--input-px-lg);
+    font-size: var(--input-fs-md);
+    font-family: inherit;
+    line-height: 1.65;
+    letter-spacing: -.01em;
+    color: var(--color-text-primary);
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-xl);
+    outline: none;
+    resize: vertical;
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    box-shadow:
+        0 1px 0 var(--color-glass-border) inset,
+        var(--shadow-md);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.textarea-glass::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+}
+
+.textarea-glass:focus {
+    border-color: var(--color-primary);
+    box-shadow:
+        0 1px 0 var(--color-glass-border) inset,
+        0 0 0 1px var(--color-primary),
+        var(--focus-ring),
+        var(--shadow-lg);
+}
+
+/* Glass select */
+.select-glass {
+    height: var(--input-h-lg);
+    padding: 0 40px 0 var(--input-px-lg);
+    font-size: var(--input-fs-md);
+    font-family: inherit;
+    color: var(--color-text-primary);
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-xl);
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: var(--shadow-md);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.select-glass:focus {
+    border-color: var(--color-primary);
+    box-shadow:
+        0 0 0 1px var(--color-primary),
+        var(--focus-ring),
+        var(--shadow-lg);
+}
+
+/* Glass OTP */
+.otp-glass .otp-input {
+    background: var(--color-glass-bg);
+    border-color: var(--color-glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-md);
+}
+
+.otp-glass .otp-input:focus {
+    background: var(--color-glass-tint);
+    border-color: var(--color-primary);
+    box-shadow:
+        0 0 0 1px var(--color-primary),
+        var(--focus-ring),
+        var(--shadow-lg);
+}
+
+.otp-glass .otp-input.is-filled {
+    background: var(--color-glass-tint);
+    border-color: var(--color-primary);
+}
+
+/* Glass search pill */
+.input-glass-search {
+    border-radius: var(--radius-pill);
+    padding-left: 44px;
+    height: var(--input-h-md);
+    font-size: var(--input-fs-md);
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-sm);
+}
+
+.input-glass-search:focus {
+    border-color: var(--color-primary);
+    box-shadow:
+        0 0 0 1px var(--color-primary),
+        var(--focus-ring),
+        var(--shadow-md);
+}
+
+/* Tinted glass — brand coral highlight */
+.input-glass-tinted {
+    background: var(--color-glass-tint);
+    border-color: var(--color-primary-border);
+}
+
+.input-glass-tinted:focus {
+    background: var(--color-glass-tint);
+    border-color: var(--color-primary);
+    box-shadow:
+        0 0 0 1px var(--color-primary),
+        var(--focus-ring),
+        var(--shadow-lg);
+}
+
+/* Glass panel — wrap glass inputs in a frosted card */
+.glass-panel {
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 20px;
+    padding: 32px;
+    backdrop-filter: saturate(180%) blur(32px);
+    -webkit-backdrop-filter: saturate(180%) blur(32px);
+    box-shadow:
+        0 2px 0 var(--color-glass-border) inset,
+        var(--shadow-xl);
+}
+
+.glass-panel-sm {
+    padding: 20px 24px;
+    border-radius: var(--radius-xl);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     18. FLOATING LABEL — .float-field
+     Apple's contextual label pattern — label floats up on focus/fill.
+  ════════════════════════════════════════════════════════════════ */
+.float-field {
+    position: relative;
+    width: 100%;
+}
+
+.float-input {
+    height: 56px;
+    padding: 20px var(--input-px-md) 8px;
+    font-size: var(--input-fs-md);
+    font-family: inherit;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    width: 100%;
+    transition: var(--input-transition);
+    -webkit-font-smoothing: antialiased;
+}
+
+.float-input::placeholder {
+    opacity: 0;
+}
+
+.float-input:hover:not(:disabled) {
+    border-color: var(--input-border-hover);
+}
+
+.float-input:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+}
+
+.float-label {
+    position: absolute;
+    left: var(--input-px-md);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--input-fs-md);
+    font-weight: 400;
+    color: var(--input-placeholder);
+    pointer-events: none;
+    transform-origin: left top;
+    transition: transform 150ms ease, font-size 150ms ease, color 150ms ease, top 150ms ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Floated state — triggered by :focus or .has-value */
+.float-input:focus~.float-label,
+.float-input:not(:placeholder-shown)~.float-label {
+    top: 10px;
+    transform: translateY(0) scale(0.78);
+    font-size: var(--input-fs-md);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+}
+
+.float-input:focus~.float-label {
+    color: var(--color-primary);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     19. INPUT GROUP — prefix / suffix addons
+  ════════════════════════════════════════════════════════════════ */
+.input-group {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+.input-addon {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--input-border);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.input-addon:first-child {
+    border-right: none;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.input-addon:last-child {
+    border-left: none;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.input-group .input {
+    border-radius: 0;
+    flex: 1;
+}
+
+.input-group .input:focus {
+    position: relative;
+    z-index: 1;
+}
+
+.input-group .input-addon:first-child+.input {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.input-group .input+.input-addon:last-child {
+    border-radius: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     20. TAG INPUT — .tag-input-wrap
+  ════════════════════════════════════════════════════════════════ */
+.tag-input-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    min-height: var(--input-h-md);
+    padding: 6px 10px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    cursor: text;
+    transition: var(--input-transition);
+}
+
+.tag-input-wrap:focus-within {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-focus-ring);
+}
+
+.tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-primary);
+    background: var(--color-primary-alpha);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-pill);
+}
+
+.tag-pill-remove {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-primary);
+    padding: 0;
+    line-height: 1;
+    opacity: .7;
+    transition: opacity 100ms ease;
+}
+
+.tag-pill-remove:hover {
+    opacity: 1;
+}
+
+.tag-input-inner {
+    flex: 1;
+    min-width: 80px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--input-text);
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.tag-input-inner::placeholder {
+    color: var(--input-placeholder);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     21. UTILITY — input loading state shimmer
+  ════════════════════════════════════════════════════════════════ */
+.input-loading {
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.input-loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--color-fill-primary) 50%,
+            transparent 100%);
+    animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+     22. RESPONSIVE
+  ════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .otp-input {
+        width: 40px;
+        height: 48px;
+        font-size: 18px;
+    }
+
+    .otp-input-lg {
+        width: 50px;
+        height: 58px;
+        font-size: 22px;
+    }
+
+    .field-row {
+        flex-direction: column;
+    }
+
+    .phone-wrap {
+        flex-direction: column;
+    }
+
+    .phone-wrap .country-select {
+        border-right: 1px solid var(--input-border);
+        border-bottom: none;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        width: 100%;
+    }
+
+    .phone-wrap .input {
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+}
