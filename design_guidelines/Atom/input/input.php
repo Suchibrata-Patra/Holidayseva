@@ -45,11 +45,14 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
 
   /* ── Page gradient background ────────────────────────────────── */
   body {
-    background:
+    /* background:
       radial-gradient(ellipse 80% 40% at 10% 0%,   rgba(255, 56, 92, 0.055) 0%, transparent 60%),
       radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(0, 166, 153, 0.045) 0%, transparent 60%),
       radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0, 122, 255, 0.035) 0%, transparent 60%),
       #fafafa;
+  } */
+  background{
+    background-color:grey;
   }
 
   /* ── Main content column ─────────────────────────────────────────
