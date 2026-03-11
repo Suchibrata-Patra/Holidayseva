@@ -148,7 +148,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   /* ── Demo preview — single flat tint, no gradients ── */
 .demo-preview {
   padding: 40px 36px;
-  background: #F5F5F7;
+  background: white;
   border-bottom: 1px solid var(--color-border, #d1d1d6);
   display: flex;
   flex-wrap: wrap;
