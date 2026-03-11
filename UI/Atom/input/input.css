@@ -4,10 +4,11 @@
 
    Design: Apple Ultra-modern + Glassmorphism + Airbnb coral-red
    ----------------------------------------------------------------
-   HARD RULE: Zero hex, rgba(), or hsl() literals in this file.
-   Every colour reference resolves through var(--color-*) tokens
-   defined in colors.css. Changing colors.css is the only way
-   to change colours here.
+   HARD RULE: Zero hex, rgba(), or hsl() literals outside the :root token block.
+   Every colour reference in component rules resolves through var(--color-*) tokens.
+   Fallback token values are defined directly in this file's :root block so the
+   component renders correctly even when colors.css is unavailable (e.g. local dev).
+   When colors.css IS loaded it overrides these fallbacks cleanly.
    ================================================================ */
 
 
@@ -17,6 +18,77 @@
    Override these per-component without touching global tokens.
 ════════════════════════════════════════════════════════════════ */
 :root {
+    /* ── COLOUR TOKENS (fallbacks — overridden by colors.css if loaded) ── */
+    /* Primary — Airbnb coral-red */
+    --color-primary: #FF385C;
+    --color-primary-border: rgba(255, 56, 92, 0.30);
+    --color-primary-alpha: rgba(255, 56, 92, 0.10);
+    --color-primary-alpha-sm: rgba(255, 56, 92, 0.06);
+
+    /* Surfaces */
+    --color-surface: #ffffff;
+    --color-surface-inset: #f5f5f7;
+    --color-bg-secondary: #f5f5f7;
+
+    /* Borders */
+    --color-border: #d1d1d6;
+    --color-border-dark: #aeaeb2;
+    --color-border-focus: #007aff;
+    --color-border-light: #e5e5ea;
+
+    /* Text */
+    --color-text-primary: #1d1d1f;
+    --color-text-secondary: #6e6e73;
+    --color-text-muted: #aeaeb2;
+    --color-text-placeholder: #aeaeb2;
+    --color-text-disabled: #c7c7cc;
+    --color-text-inverse: #ffffff;
+
+    /* Semantic */
+    --color-error: #ff3b30;
+    --color-error-bg: rgba(255, 59, 48, 0.12);
+    --color-error-text: #d70015;
+    --color-success: #34c759;
+    --color-success-bg: rgba(52, 199, 89, 0.12);
+    --color-success-text: #1a7f37;
+    --color-warning-text: #bf5f00;
+    --color-info-bg: #eff6ff;
+    --color-info-border: #bfdbfe;
+    --color-info-text: #1e40af;
+    --color-warning-bg: #fffbeb;
+    --color-warning-border: #fde68a;
+
+    /* Fill */
+    --color-fill-primary: rgba(255, 255, 255, 0.55);
+
+    /* Separator */
+    --color-separator: rgba(60, 60, 67, 0.29);
+
+    /* Ghost */
+    --color-ghost-hover-bg: rgba(0, 0, 0, 0.055);
+    --color-ghost-pressed-bg: rgba(0, 0, 0, 0.10);
+
+    /* Glass */
+    --color-glass-bg: rgba(255, 255, 255, 0.72);
+    --color-glass-border: rgba(255, 255, 255, 0.60);
+    --color-glass-tint: rgba(255, 56, 92, 0.06);
+    --color-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+    /* Code */
+    --color-code-text: #abb2bf;
+    --color-code-bg: #1c1c1e;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.07);
+    --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.14), 0 8px 16px rgba(0, 0, 0, 0.08);
+
+    /* Focus rings */
+    --focus-ring-blue: 0 0 0 3px rgba(0, 122, 255, 0.28);
+    --focus-ring: 0 0 0 3px rgba(255, 56, 92, 0.28);
+
+    /* ── COMPONENT TOKENS ───────────────────────────────────────────── */
     /* Field */
     --input-bg: var(--color-surface);
     --input-bg-glass: var(--color-glass-bg);
