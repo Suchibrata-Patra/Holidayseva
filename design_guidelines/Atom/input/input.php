@@ -19,10 +19,10 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   <title><?= htmlspecialchars($pageTitle) ?> — Airframe UI · Holidayseva</title>
 
   <!-- ① Token layer — MUST come before input.css -->
-  <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css/colors.css" />
+  <link rel="stylesheet" href="/colors.css" />
   <!-- ② Component stylesheet — zero hex inside -->
   <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css" />
-  <!-- <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/input/input.css" /> -->
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/input/input.css" />
   <!-- ③ Design system shell (global-nav, section-nav, page-layout, sidebar-left etc.) -->
   <link rel="stylesheet" href="/design-system.css" />
 
@@ -33,101 +33,72 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   <style>
   /* ================================================================
      PAGE-LEVEL STYLES — input.php
-     HARD RULE: Zero hex / rgba / hsl literals.
-     Every colour resolves through var(--color-*) or var(--shadow-*)
-     tokens defined in colors.css.
+     LAYOUT & PAGE CHROME ONLY.
+     Form field styles (.input, .field, .field-label, .otp-input,
+     .input-glass, etc.) live exclusively in /Atom/input/input.css
+     DO NOT add form CSS here — the page must degrade without input.css.
+
+     Layout: works WITH design-system.css which uses display:flex +
+     position:fixed sidebars. We must NOT redefine .sidebar-left /
+     .sidebar-right / .page-layout here — let design-system.css own them.
   ================================================================ */
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
+  /* ── Page gradient background ────────────────────────────────── */
   body {
-    font-family: 'DM Sans', -apple-system, 'Helvetica Neue', sans-serif;
-    /* Subtle page-level gradient wash — makes the white canvas feel designed */
     background:
-      radial-gradient(ellipse 80% 40% at 10% 0%,   rgba(255, 56, 92, 0.055)  0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(0, 166, 153, 0.045)  0%, transparent 60%),
-      radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0, 122, 255, 0.035)  0%, transparent 60%),
+      radial-gradient(ellipse 80% 40% at 10% 0%,   rgba(255, 56, 92, 0.055) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(0, 166, 153, 0.045) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0, 122, 255, 0.035) 0%, transparent 60%),
       #fafafa;
-    color: var(--color-text-primary, #1D1D1F);
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
   }
 
-  /* ── Page layout shell ─────────────────────────── */
-  .page-layout {
-    display: grid;
-    grid-template-columns: 260px 1fr 220px;
-    min-height: calc(100vh - var(--header-h, 96px));
-    max-width: 1440px;
-    margin: 0 auto;
-    background: transparent;
-  }
-
-  .sidebar-left {
-    position: sticky;
-    top: var(--header-h, 96px);
-    height: calc(100vh - var(--header-h, 96px));
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-right: 1px solid var(--color-border, #e5e5ea);
-    background: var(--color-nav-bg, #ffffff);
-    padding: 20px 0 40px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-muted-dark, #c7c7cc) transparent;
-    z-index: 10;
-  }
-
+  /* ── Main content column ─────────────────────────────────────────
+     design-system.css owns .page-layout (flex row) and positions
+     sidebars as position:fixed. .main-content just needs to be the
+     flex child that fills the centre.
+  ──────────────────────────────────────────────────────────────── */
   .main-content {
-    padding: 56px 72px 120px;
+    flex: 1;
     min-width: 0;
-    max-width: 960px;
+    max-width: 860px;
+    padding: 56px 72px 120px;
     background: transparent;
   }
-
-  .sidebar-right {
-    position: sticky;
-    top: var(--header-h, 96px);
-    height: calc(100vh - var(--header-h, 96px));
-    overflow-y: auto;
-    border-left: 1px solid var(--color-border);
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-muted-dark) transparent;
+  @media (max-width: 700px) {
+    .main-content { padding: 28px 20px 60px; }
   }
 
-
-
-  /* ── Content typography ──────────────────────────── */
+  /* ── Content typography ──────────────────────────────────────── */
   .page-eyebrow {
     font-size: 11px; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--color-primary); margin-bottom: 12px;
+    text-transform: uppercase; color: var(--color-primary, #FF385C); margin-bottom: 12px;
   }
   .page-title {
     font-size: 48px; font-weight: 700; letter-spacing: -.034em;
-    line-height: 1.05; color: var(--color-text-primary); margin-bottom: 20px;
+    line-height: 1.05; color: var(--color-text-primary, #1d1d1f); margin-bottom: 20px;
   }
   .page-intro {
-    font-size: 18px; line-height: 1.7; color: var(--color-text-secondary);
+    font-size: 18px; line-height: 1.7; color: var(--color-text-secondary, #6e6e73);
     max-width: 640px; margin-bottom: 40px; letter-spacing: -.01em;
   }
-  .page-rule { border: none; border-top: 1px solid var(--color-border); margin: 56px 0; }
+  .page-rule { border: none; border-top: 1px solid var(--color-border, #d1d1d6); margin: 56px 0; }
 
   .section-label {
     font-size: 11px; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--color-primary); margin-bottom: 8px;
+    text-transform: uppercase; color: var(--color-primary, #FF385C); margin-bottom: 8px;
   }
   .section-title {
     font-size: 32px; font-weight: 700; letter-spacing: -.028em;
-    line-height: 1.1; color: var(--color-text-primary);
+    line-height: 1.1; color: var(--color-text-primary, #1d1d1f);
     margin-bottom: 12px; scroll-margin-top: calc(var(--header-h, 96px) + 16px);
   }
   .section-body {
-    font-size: 15px; line-height: 1.72; color: var(--color-text-secondary);
+    font-size: 15px; line-height: 1.72; color: var(--color-text-secondary, #6e6e73);
     max-width: 640px; margin-bottom: 32px;
   }
   .section-h3 {
     font-size: 20px; font-weight: 700; letter-spacing: -.016em;
-    color: var(--color-text-primary); margin: 40px 0 10px;
+    color: var(--color-text-primary, #1d1d1f); margin: 40px 0 10px;
     scroll-margin-top: calc(var(--header-h, 96px) + 16px);
   }
 
@@ -135,23 +106,23 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   code {
     font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
     font-size: 12.5px;
-    background: var(--color-primary-alpha-sm);
-    color: var(--color-primary);
+    background: var(--color-primary-alpha-sm, rgba(255,56,92,0.06));
+    color: var(--color-primary, #FF385C);
     padding: 2px 6px; border-radius: 5px;
-    border: 1px solid var(--color-primary-border);
+    border: 1px solid var(--color-primary-border, rgba(255,56,92,0.25));
   }
 
-  /* ── Callout ─────────────────────────────────────── */
+  /* ── Callout ─────────────────────────────────────────────────── */
   .callout {
     display: flex; gap: 14px; align-items: flex-start;
     padding: 16px 20px; border-radius: 12px; margin-bottom: 32px;
     font-size: 14px; line-height: 1.65;
   }
-  .callout-info  { background: var(--color-info-bg);    border: 1px solid var(--color-info-border);    color: var(--color-info-text); }
-  .callout-warn  { background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); color: var(--color-warning-text); }
+  .callout-info  { background: var(--color-info-bg, #EFF6FF);    border: 1px solid var(--color-info-border, #BFDBFE);    color: var(--color-info-text, #1E40AF); }
+  .callout-warn  { background: var(--color-warning-bg, #FFFBEB); border: 1px solid var(--color-warning-border, #FDE68A); color: var(--color-warning-text, #92400E); }
   .callout-icon  { font-size: 17px; flex-shrink: 0; line-height: 1.65; }
 
-  /* ── Demo card ───────────────────────────────────── */
+  /* ── Demo card ───────────────────────────────────────────────── */
   .demo-card {
     border: 1px solid var(--color-border, #d1d1d6);
     border-radius: 16px; overflow: hidden;
@@ -161,7 +132,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   }
   .demo-bar {
     display: flex; align-items: center;
-    background: rgba(247, 247, 247, 0.9);
+    background: rgba(247,247,247,0.9);
     border-bottom: 1px solid var(--color-border, #d1d1d6);
   }
   .demo-tab {
@@ -176,17 +147,13 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
     border-bottom-color: var(--color-primary, #FF385C);
   }
 
-  /*
-    Demo preview backgrounds — gradient wash makes white inputs clearly pop.
-    Multiple subtle colour stops give each preview a unique atmosphere.
-  */
+  /* Demo preview gradient stage — makes white inputs pop against bg */
   .demo-preview {
     padding: 40px 36px;
-    /* Light gradient stage: warm off-white with very subtle rose + teal tints */
     background:
-      radial-gradient(ellipse 55% 80% at 0% 50%,   rgba(255, 56, 92, 0.06)  0%, transparent 70%),
-      radial-gradient(ellipse 45% 60% at 100% 0%,  rgba(0, 166, 153, 0.05)  0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 122, 255, 0.04)  0%, transparent 70%),
+      radial-gradient(ellipse 55% 80% at 0% 50%,   rgba(255, 56, 92, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 45% 60% at 100% 0%,  rgba(0, 166, 153, 0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 122, 255, 0.04) 0%, transparent 70%),
       #F4F4F8;
     border-bottom: 1px solid var(--color-border, #d1d1d6);
     display: flex; flex-wrap: wrap;
@@ -195,378 +162,84 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   .demo-preview.col    { flex-direction: column; }
   .demo-preview.center { flex-direction: column; justify-content: center; align-items: center; }
 
-  /* Make inputs inside previews clearly white with a crisp border */
-  .demo-preview .input,
-  .demo-preview input[class*="input"],
-  .demo-preview select,
-  .demo-preview textarea {
-    background: #ffffff !important;
-    border: 1px solid #d1d1d6 !important;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06) !important;
-  }
-  .demo-preview .input:focus,
-  .demo-preview input:focus,
-  .demo-preview select:focus,
-  .demo-preview textarea:focus {
-    border-color: var(--color-primary, #FF385C) !important;
-    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.12), 0 1px 2px rgba(0,0,0,0.06) !important;
-    outline: none !important;
-  }
-
   .demo-code {
     font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
     font-size: 12.5px; line-height: 1.8; tab-size: 2;
     padding: 24px 28px; margin: 0;
-    color: var(--color-code-text);
-    background: var(--color-code-bg);
+    color: var(--color-code-text, #abb2bf);
+    background: var(--color-code-bg, #1c1c1e);
     overflow-x: auto; white-space: pre;
   }
-  /* Code syntax colours */
-  .demo-code .c-tag   { color: var(--color-code-tag); }
-  .demo-code .c-attr  { color: var(--color-code-attr); }
-  .demo-code .c-str   { color: var(--color-code-string); }
-  .demo-code .c-cmt   { color: var(--color-code-comment); font-style: italic; }
 
-  /* ── Spec grid ───────────────────────────────────── */
-  .spec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
+  /* ── Spec grid ───────────────────────────────────────────────── */
+  .spec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 32px; }
   @media (max-width: 800px) { .spec-grid { grid-template-columns: 1fr 1fr; } }
   .spec-item {
     padding: 16px 18px; border-radius: 12px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #d1d1d6);
+    box-shadow: var(--shadow-sm, 0 1px 4px rgba(0,0,0,0.08));
   }
-  .spec-lbl {
-    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .07em; color: var(--color-text-muted); margin-bottom: 6px;
-  }
-  .spec-val { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+  .spec-lbl { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-muted, #aeaeb2); margin-bottom: 6px; }
+  .spec-val  { font-size: 14px; font-weight: 600; color: var(--color-text-primary, #1d1d1f); }
 
-  /* ── Prop table ──────────────────────────────────── */
+  /* ── Prop table ──────────────────────────────────────────────── */
   .prop-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 36px; }
   .prop-table th {
     font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-    color: var(--color-text-muted); padding: 10px 14px; text-align: left;
-    background: var(--color-surface-raised);
-    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted, #aeaeb2); padding: 10px 14px; text-align: left;
+    background: var(--color-surface-raised, #f7f7f7);
+    border-bottom: 1px solid var(--color-border, #d1d1d6);
   }
   .prop-table td {
-    padding: 11px 14px; vertical-align: top; color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border-light);
+    padding: 11px 14px; vertical-align: top; color: var(--color-text-secondary, #6e6e73);
+    border-bottom: 1px solid var(--color-border-light, #e5e5ea);
   }
   .prop-table tr:last-child td { border-bottom: none; }
 
-  /* ── A11y list ───────────────────────────────────── */
+  /* ── A11y list ───────────────────────────────────────────────── */
   .a11y-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-  .a11y-item { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .a11y-item { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--color-text-secondary, #6e6e73); line-height: 1.6; }
   .a11y-check {
     width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
-    background: var(--color-success-bg); border: 1.5px solid var(--color-success-border);
+    background: var(--color-success-bg, #F0FDF4); border: 1.5px solid var(--color-success-border, #86EFAC);
     display: flex; align-items: center; justify-content: center;
-    color: var(--color-success);
+    color: var(--color-success, #34C759);
   }
 
-  /* ── Scroll-to-top ───────────────────────────────── */
+  /* ── Scroll-to-top ───────────────────────────────────────────── */
   .scroll-top {
     position: fixed; bottom: 32px; right: 32px; z-index: 500;
     width: 42px; height: 42px; border-radius: 50%;
-    background: var(--color-surface); border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-lg); cursor: pointer;
+    background: var(--color-surface, #fff); border: 1px solid var(--color-border, #d1d1d6);
+    box-shadow: var(--shadow-lg, 0 12px 40px rgba(0,0,0,0.14)); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    color: var(--color-text-secondary);
+    color: var(--color-text-secondary, #6e6e73);
     opacity: 0; transform: translateY(10px);
     transition: opacity .22s, transform .22s;
   }
-  .scroll-top.show { opacity: 1; transform: translateY(0); }
-  .scroll-top:hover { color: var(--color-text-primary); background: var(--color-surface-raised); }
+  .scroll-top.show  { opacity: 1; transform: translateY(0); }
+  .scroll-top:hover { color: var(--color-text-primary, #1d1d1f); background: var(--color-surface-raised, #f7f7f7); }
 
-  /* ════════════════════════════════════════════════════
-     GLASS DEMO BACKDROP
-     A gradient wash so frosted inputs have depth to blur.
-  ════════════════════════════════════════════════════ */
+  /* ── Glass stage backdrop ────────────────────────────────────── */
   .glass-stage {
-    position: relative;
-    padding: 48px 36px;
+    position: relative; padding: 48px 36px;
     background:
-      radial-gradient(ellipse 70% 70% at 15% 50%,  rgba(255, 56, 92, 0.15)  0%, transparent 65%),
-      radial-gradient(ellipse 60% 60% at 85% 30%,  rgba(0, 166, 153, 0.12)  0%, transparent 65%),
-      radial-gradient(ellipse 50% 50% at 50% 90%,  rgba(0, 122, 255, 0.10)  0%, transparent 65%),
+      radial-gradient(ellipse 70% 70% at 15% 50%,  rgba(255, 56, 92, 0.15) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 60% at 85% 30%,  rgba(0, 166, 153, 0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 50% 90%,  rgba(0, 122, 255, 0.10) 0%, transparent 65%),
       linear-gradient(135deg, #e8eaf6 0%, #fce4ec 50%, #e0f2f1 100%);
     border-bottom: 1px solid var(--color-border, #d1d1d6);
     display: flex; flex-direction: column; align-items: center; gap: 32px;
   }
 
-  /* ════════════════════════════════════════════════════
-     TOC RIGHT SIDEBAR override — use token colours
-  ════════════════════════════════════════════════════ */
+  /* ── TOC right sidebar token overrides ───────────────────────── */
   .toc-platforms-label { color: var(--color-text-primary, #1d1d1f) !important; }
   .toc-platform-icons  { color: var(--color-text-primary, #1d1d1f) !important; }
   .toc-link            { color: var(--color-text-secondary, #6e6e73) !important; }
   .toc-link:hover      { color: var(--color-text-primary, #1d1d1f) !important; }
   .toc-link.active     { color: var(--color-text-primary, #1d1d1f) !important; border-left-color: var(--color-primary, #FF385C) !important; }
   .toc-list            { border-left-color: var(--color-border, #d1d1d6) !important; }
-
-  /* ════════════════════════════════════════════════════
-     HARDENED FIELD FALLBACKS
-     Ensures form fields render correctly even if external
-     input.css doesn't load (e.g. dev/localhost).
-  ════════════════════════════════════════════════════ */
-
-  /* Field wrapper */
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-  }
-
-  /* Label */
-  .field-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-text-primary, #1d1d1f);
-    letter-spacing: -0.008em;
-  }
-
-  /* Helper / hint text */
-  .field-helper {
-    font-size: 12px;
-    color: var(--color-text-muted, #aeaeb2);
-    line-height: 1.5;
-    margin-top: 2px;
-  }
-
-  /* Error message */
-  .field-error {
-    font-size: 12px;
-    color: var(--color-error, #FF3B30);
-    line-height: 1.5;
-    margin-top: 2px;
-  }
-
-  /* Base input — clean Apple-style */
-  .input {
-    width: 100%;
-    height: 40px;
-    padding: 0 12px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--color-text-primary, #1d1d1f);
-    background: #ffffff;
-    border: 1px solid #d1d1d6;
-    border-radius: 10px;
-    outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .input::placeholder { color: #c7c7cc; }
-  .input:focus {
-    border-color: var(--color-primary, #FF385C);
-    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.14);
-  }
-  .input.is-error {
-    border-color: #FF3B30;
-    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.12);
-  }
-  .input.is-success {
-    border-color: #34C759;
-    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.12);
-  }
-  .input-sm { height: 32px; font-size: 13px; padding: 0 10px; border-radius: 8px; }
-  .input-lg { height: 50px; font-size: 17px; padding: 0 16px; border-radius: 12px; }
-
-  /* Input with icon wrapper */
-  .input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-  .input-wrap .input-icon {
-    position: absolute;
-    left: 12px;
-    display: flex;
-    align-items: center;
-    color: #8e8e93;
-    pointer-events: none;
-  }
-  .input-wrap .input-icon-right {
-    left: auto;
-    right: 12px;
-  }
-  .input-wrap .input { padding-left: 36px; }
-  .input-wrap.icon-right .input { padding-right: 36px; padding-left: 12px; }
-  .input-wrap.icon-both .input { padding-left: 36px; padding-right: 36px; }
-
-  /* Password toggle button */
-  .pw-toggle {
-    position: absolute; right: 10px;
-    background: none; border: none; cursor: pointer;
-    color: #8e8e93; padding: 4px;
-    display: flex; align-items: center;
-    transition: color 0.12s;
-  }
-  .pw-toggle:hover { color: #1d1d1f; }
-
-  /* Textarea */
-  textarea.input {
-    height: auto;
-    padding: 10px 12px;
-    resize: vertical;
-    line-height: 1.6;
-  }
-
-  /* Number stepper */
-  .number-wrap { position: relative; display: flex; align-items: center; }
-  .number-stepper {
-    position: absolute; right: 4px;
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .stepper-btn {
-    background: #f2f2f7; border: 1px solid #d1d1d6;
-    border-radius: 5px; width: 22px; height: 16px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    color: #6e6e73; transition: background 0.1s;
-  }
-  .stepper-btn:hover { background: #e5e5ea; }
-
-  /* Phone input */
-  .phone-wrap { display: flex; align-items: stretch; gap: 0; width: 100%; }
-  .country-select {
-    flex-shrink: 0; height: 40px; padding: 0 8px;
-    border: 1px solid #d1d1d6; border-right: none;
-    border-radius: 10px 0 0 10px;
-    background: #f7f7f7; font-family: inherit; font-size: 14px;
-    color: #1d1d1f; cursor: pointer; outline: none;
-  }
-  .country-select:focus { border-color: var(--color-primary, #FF385C); z-index: 1; }
-  .phone-wrap .input { border-radius: 0 10px 10px 0; border-left: none; }
-  .phone-wrap .input:focus { border-color: var(--color-primary, #FF385C); z-index: 1; }
-
-  /* Floating label */
-  .float-wrap { position: relative; width: 100%; }
-  .float-wrap .input { padding-top: 18px; padding-bottom: 4px; height: 52px; }
-  .float-label {
-    position: absolute; left: 12px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 15px; color: #8e8e93;
-    pointer-events: none;
-    transition: all 0.15s ease;
-    transform-origin: left center;
-  }
-  .float-wrap .input:focus ~ .float-label,
-  .float-wrap .input:not(:placeholder-shown) ~ .float-label {
-    top: 10px; transform: translateY(0) scale(0.78);
-    color: var(--color-primary, #FF385C);
-    font-weight: 600;
-  }
-
-  /* OTP */
-  .otp-group { display: flex; gap: 10px; }
-  .otp-input {
-    width: 44px; height: 52px; text-align: center;
-    font-size: 22px; font-weight: 600;
-    border: 1px solid #d1d1d6; border-radius: 10px;
-    background: #fff; outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .otp-input:focus {
-    border-color: var(--color-primary, #FF385C);
-    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.14);
-  }
-  .otp-input.is-filled {
-    border-color: var(--color-primary, #FF385C);
-    background: rgba(255, 56, 92, 0.04);
-  }
-
-  /* Tag input */
-  .tag-wrap {
-    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-    min-height: 44px; padding: 6px 10px;
-    border: 1px solid #d1d1d6; border-radius: 10px; background: #fff;
-    cursor: text; transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .tag-wrap:focus-within {
-    border-color: var(--color-primary, #FF385C);
-    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.14);
-  }
-  .tag-wrap input {
-    border: none; outline: none; background: none;
-    font-family: inherit; font-size: 14px; min-width: 120px; flex: 1;
-  }
-  .tag-pill {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: rgba(255, 56, 92, 0.08);
-    border: 1px solid rgba(255, 56, 92, 0.2);
-    color: var(--color-primary, #FF385C);
-    font-size: 13px; font-weight: 500;
-    padding: 2px 8px 2px 10px; border-radius: 20px;
-  }
-  .tag-pill-remove {
-    background: none; border: none; cursor: pointer;
-    color: inherit; font-size: 16px; padding: 0; line-height: 1;
-    opacity: 0.6; transition: opacity 0.1s;
-  }
-  .tag-pill-remove:hover { opacity: 1; }
-
-  /* Range slider */
-  .range-wrap { width: 100%; }
-  input[type="range"].input {
-    height: 6px; padding: 0; border: none !important;
-    box-shadow: none !important;
-    background: linear-gradient(
-      to right,
-      var(--color-primary, #FF385C) var(--pct, 50%),
-      #e5e5ea var(--pct, 50%)
-    );
-    border-radius: 99px; cursor: pointer; appearance: none;
-  }
-  input[type="range"].input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: #fff;
-    border: 2px solid var(--color-primary, #FF385C);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-    cursor: pointer;
-  }
-  .range-value {
-    font-size: 13px; font-weight: 600;
-    color: var(--color-primary, #FF385C);
-    margin-top: 8px; display: block;
-  }
-
-  /* Glass input style */
-  .input-glass {
-    background: rgba(255,255,255,0.55) !important;
-    backdrop-filter: blur(16px) saturate(1.6);
-    -webkit-backdrop-filter: blur(16px) saturate(1.6);
-    border: 1px solid rgba(255,255,255,0.6) !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-  }
-  .input-glass:focus {
-    background: rgba(255,255,255,0.72) !important;
-    border-color: rgba(255,56,92,0.5) !important;
-    box-shadow: 0 0 0 3px rgba(255,56,92,0.12), 0 2px 12px rgba(0,0,0,0.08) !important;
-  }
-
-  /* Char counter */
-  .char-counter {
-    font-size: 11.5px; color: #aeaeb2; text-align: right; margin-top: 4px;
-  }
-  .char-counter.is-near { color: var(--sys-orange, #FF9500); }
-  .char-counter.is-max  { color: var(--sys-red, #FF3B30); font-weight: 600; }
-
-  /* Disabled state */
-  .input:disabled, .input[disabled] {
-    background: #f2f2f7 !important;
-    border-color: #e5e5ea !important;
-    color: #aeaeb2 !important;
-    cursor: not-allowed;
-    box-shadow: none !important;
-  }
   </style>
 </head>
 <body>
@@ -1436,7 +1109,51 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
 
     <hr class="page-rule" />
 
-    
+    <!-- ═══════════════════════════════════════════════
+         06 · INTEGRATION
+    ═══════════════════════════════════════════════ -->
+    <section id="integration">
+      <p class="section-label">06</p>
+      <h2 class="section-title">Integration</h2>
+      <p class="section-body">Three file includes — tokens first, then component CSS, then JS.</p>
+      <div class="demo-card">
+        <pre class="demo-code">&lt;!-- ① Token layer — always first --&gt;
+&lt;link rel="stylesheet" href="/colors.css" /&gt;
+
+&lt;!-- ② Component CSS — zero hex literals inside --&gt;
+&lt;link rel="stylesheet" href="/Atom/input/input.css" /&gt;
+
+&lt;!-- ③ Helper JS (OTP, password, range, stepper, tags) --&gt;
+&lt;script src="/Atom/input/input.js" defer&gt;&lt;/script&gt;
+
+&lt;?php
+$partials = __DIR__ . '/../../';
+?&gt;
+&lt;?php include $partials . 'header.php'; ?&gt;
+&lt;?php include $partials . 'drawer_sidebar.php'; ?&gt;
+
+&lt;div class="page-layout"&gt;
+  &lt;aside class="sidebar-left" style="z-index:10000;"&gt;
+    &lt;?php include $partials . 'left_sidebar.php'; ?&gt;
+  &lt;/aside&gt;
+
+  &lt;main class="main-content"&gt;
+    &lt;!-- content --&gt;
+  &lt;/main&gt;
+
+  &lt;aside class="sidebar-right"&gt;
+    &lt;?php include $partials . 'right_sidebar.php'; ?&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;</pre>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠</span>
+        <span>Never write hex, <code>rgba()</code>, or <code>hsl()</code> literals in <code>input.css</code>.
+          All colour decisions live exclusively in <code>colors.css</code>.</span>
+      </div>
+    </section>
+
+    <hr class="page-rule" />
 
     <!-- ═══════════════════════════════════════════════
          07 · ACCESSIBILITY
