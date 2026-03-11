@@ -22,7 +22,7 @@ if (!defined('SITE_WEB_ROOT')) define('SITE_WEB_ROOT', 'https://developer.holida
   <link rel="stylesheet" href="/colors.css" />
 
   <!-- ② COMPONENT STYLESHEET — input.css (no hex inside) -->
-  <link rel="stylesheet" href="/Atom/input/input.css" />
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/input/input.css" />
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
