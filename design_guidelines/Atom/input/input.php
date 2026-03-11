@@ -1436,50 +1436,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
 
     <hr class="page-rule" />
 
-    <!-- ═══════════════════════════════════════════════
-         06 · INTEGRATION
-    ═══════════════════════════════════════════════ -->
-    <section id="integration">
-      <p class="section-label">06</p>
-      <h2 class="section-title">Integration</h2>
-      <p class="section-body">Three file includes — tokens first, then component CSS, then JS.</p>
-      <div class="demo-card">
-        <pre class="demo-code">&lt;!-- ① Token layer — always first --&gt;
-&lt;link rel="stylesheet" href="/colors.css" /&gt;
-
-&lt;!-- ② Component CSS — zero hex literals inside --&gt;
-&lt;link rel="stylesheet" href="/Atom/input/input.css" /&gt;
-
-&lt;!-- ③ Helper JS (OTP, password, range, stepper, tags) --&gt;
-&lt;script src="/Atom/input/input.js" defer&gt;&lt;/script&gt;
-
-&lt;?php
-$partials = __DIR__ . '/../../';
-?&gt;
-&lt;?php include $partials . 'header.php'; ?&gt;
-&lt;?php include $partials . 'drawer_sidebar.php'; ?&gt;
-
-&lt;div class="page-layout"&gt;
-  &lt;aside class="sidebar-left" style="z-index:10000;"&gt;
-    &lt;?php include $partials . 'left_sidebar.php'; ?&gt;
-  &lt;/aside&gt;
-
-  &lt;main class="main-content"&gt;
-    &lt;!-- content --&gt;
-  &lt;/main&gt;
-
-  &lt;aside class="sidebar-right"&gt;
-  &lt;/aside&gt;
-&lt;/div&gt;</pre>
-      </div>
-      <div class="callout callout-warn">
-        <span class="callout-icon">⚠</span>
-        <span>Never write hex, <code>rgba()</code>, or <code>hsl()</code> literals in <code>input.css</code>.
-          All colour decisions live exclusively in <code>colors.css</code>.</span>
-      </div>
-    </section>
-
-    <hr class="page-rule" />
+    
 
     <!-- ═══════════════════════════════════════════════
          07 · ACCESSIBILITY
