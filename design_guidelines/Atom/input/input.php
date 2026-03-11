@@ -33,101 +33,72 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   <style>
   /* ================================================================
      PAGE-LEVEL STYLES — input.php
-     HARD RULE: Zero hex / rgba / hsl literals.
-     Every colour resolves through var(--color-*) or var(--shadow-*)
-     tokens defined in colors.css.
+     LAYOUT & PAGE CHROME ONLY.
+     Form field styles (.input, .field, .field-label, .otp-input,
+     .input-glass, etc.) live exclusively in /Atom/input/input.css
+     DO NOT add form CSS here — the page must degrade without input.css.
+
+     Layout: works WITH design-system.css which uses display:flex +
+     position:fixed sidebars. We must NOT redefine .sidebar-left /
+     .sidebar-right / .page-layout here — let design-system.css own them.
   ================================================================ */
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
+  /* ── Page gradient background ────────────────────────────────── */
   body {
-    font-family: 'DM Sans', -apple-system, 'Helvetica Neue', sans-serif;
-    background: var(--color-bg);
-    color: var(--color-text-primary);
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 80% 40% at 10% 0%,   rgba(255, 56, 92, 0.055) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(0, 166, 153, 0.045) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0, 122, 255, 0.035) 0%, transparent 60%),
+      #fafafa;
   }
 
-  /* ── Page layout shell ─────────────────────────── */
-  .page-layout {
-    display: grid;
-    grid-template-columns: 260px 1fr 220px;
-    min-height: calc(100vh - var(--header-h, 96px));
-    max-width: 1440px;
-    margin: 0 auto;
-  }
-
-  .sidebar-left {
-    position: sticky;
-    top: var(--header-h, 96px);
-    height: calc(100vh - var(--header-h, 96px));
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-right: 1px solid var(--color-border);
-    background: var(--color-nav-bg);
-    padding: 20px 0 40px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-muted-dark) transparent;
-  }
-
+  /* ── Main content column ─────────────────────────────────────────
+     design-system.css owns .page-layout (flex row) and positions
+     sidebars as position:fixed. .main-content just needs to be the
+     flex child that fills the centre.
+  ──────────────────────────────────────────────────────────────── */
   .main-content {
-    padding: 56px 72px 120px;
+    flex: 1;
     min-width: 0;
-    max-width: 960px;
-  }
-
-  .sidebar-right {
-    position: sticky;
-    top: var(--header-h, 96px);
-    height: calc(100vh - var(--header-h, 96px));
-    overflow-y: auto;
-    border-left: 1px solid var(--color-border);
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-muted-dark) transparent;
-  }
-
-  @media (max-width: 1100px) {
-    .page-layout { grid-template-columns: 240px 1fr; }
-    .sidebar-right { display: none; }
+    max-width: 860px;
+    padding: 56px 72px 120px;
+    background: transparent;
   }
   @media (max-width: 700px) {
-    .page-layout { grid-template-columns: 1fr; }
-    .sidebar-left { display: none; }
     .main-content { padding: 28px 20px 60px; }
   }
 
-  /* ── Content typography ──────────────────────────── */
+  /* ── Content typography ──────────────────────────────────────── */
   .page-eyebrow {
     font-size: 11px; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--color-primary); margin-bottom: 12px;
+    text-transform: uppercase; color: var(--color-primary, #FF385C); margin-bottom: 12px;
   }
   .page-title {
     font-size: 48px; font-weight: 700; letter-spacing: -.034em;
-    line-height: 1.05; color: var(--color-text-primary); margin-bottom: 20px;
+    line-height: 1.05; color: var(--color-text-primary, #1d1d1f); margin-bottom: 20px;
   }
   .page-intro {
-    font-size: 18px; line-height: 1.7; color: var(--color-text-secondary);
+    font-size: 18px; line-height: 1.7; color: var(--color-text-secondary, #6e6e73);
     max-width: 640px; margin-bottom: 40px; letter-spacing: -.01em;
   }
-  .page-rule { border: none; border-top: 1px solid var(--color-border); margin: 56px 0; }
+  .page-rule { border: none; border-top: 1px solid var(--color-border, #d1d1d6); margin: 56px 0; }
 
   .section-label {
     font-size: 11px; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--color-primary); margin-bottom: 8px;
+    text-transform: uppercase; color: var(--color-primary, #FF385C); margin-bottom: 8px;
   }
   .section-title {
     font-size: 32px; font-weight: 700; letter-spacing: -.028em;
-    line-height: 1.1; color: var(--color-text-primary);
+    line-height: 1.1; color: var(--color-text-primary, #1d1d1f);
     margin-bottom: 12px; scroll-margin-top: calc(var(--header-h, 96px) + 16px);
   }
   .section-body {
-    font-size: 15px; line-height: 1.72; color: var(--color-text-secondary);
+    font-size: 15px; line-height: 1.72; color: var(--color-text-secondary, #6e6e73);
     max-width: 640px; margin-bottom: 32px;
   }
   .section-h3 {
     font-size: 20px; font-weight: 700; letter-spacing: -.016em;
-    color: var(--color-text-primary); margin: 40px 0 10px;
+    color: var(--color-text-primary, #1d1d1f); margin: 40px 0 10px;
     scroll-margin-top: calc(var(--header-h, 96px) + 16px);
   }
 
@@ -135,54 +106,56 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   code {
     font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
     font-size: 12.5px;
-    background: var(--color-primary-alpha-sm);
-    color: var(--color-primary);
+    background: var(--color-primary-alpha-sm, rgba(255,56,92,0.06));
+    color: var(--color-primary, #FF385C);
     padding: 2px 6px; border-radius: 5px;
-    border: 1px solid var(--color-primary-border);
+    border: 1px solid var(--color-primary-border, rgba(255,56,92,0.25));
   }
 
-  /* ── Callout ─────────────────────────────────────── */
+  /* ── Callout ─────────────────────────────────────────────────── */
   .callout {
     display: flex; gap: 14px; align-items: flex-start;
     padding: 16px 20px; border-radius: 12px; margin-bottom: 32px;
     font-size: 14px; line-height: 1.65;
   }
-  .callout-info  { background: var(--color-info-bg);    border: 1px solid var(--color-info-border);    color: var(--color-info-text); }
-  .callout-warn  { background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); color: var(--color-warning-text); }
+  .callout-info  { background: var(--color-info-bg, #EFF6FF);    border: 1px solid var(--color-info-border, #BFDBFE);    color: var(--color-info-text, #1E40AF); }
+  .callout-warn  { background: var(--color-warning-bg, #FFFBEB); border: 1px solid var(--color-warning-border, #FDE68A); color: var(--color-warning-text, #92400E); }
   .callout-icon  { font-size: 17px; flex-shrink: 0; line-height: 1.65; }
 
-  /* ── Demo card ───────────────────────────────────── */
+  /* ── Demo card ───────────────────────────────────────────────── */
   .demo-card {
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border, #d1d1d6);
     border-radius: 16px; overflow: hidden;
     margin-bottom: 32px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+    background: #ffffff;
   }
   .demo-bar {
     display: flex; align-items: center;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    background: rgba(247,247,247,0.9);
+    border-bottom: 1px solid var(--color-border, #d1d1d6);
   }
   .demo-tab {
     font-size: 13px; font-weight: 500; font-family: inherit;
-    color: var(--color-text-muted); padding: 11px 20px;
+    color: var(--color-text-muted, #aeaeb2); padding: 11px 20px;
     cursor: pointer; border: none; background: none;
     border-bottom: 2px solid transparent; margin-bottom: -1px;
     transition: color .12s, border-color .12s;
   }
   .demo-tab.active {
-    color: var(--color-text-primary);
-    border-bottom-color: var(--color-primary);
+    color: var(--color-text-primary, #1d1d1f);
+    border-bottom-color: var(--color-primary, #FF385C);
   }
 
-  /*
-    Demo preview backgrounds — this is the key fix:
-    We use a slightly tinted surface so white inputs are clearly visible.
-  */
+  /* Demo preview gradient stage — makes white inputs pop against bg */
   .demo-preview {
     padding: 40px 36px;
-    background: var(--color-bg-grouped);       /* #F2F2F7 light / #000 dark */
-    border-bottom: 1px solid var(--color-border);
+    background:
+      radial-gradient(ellipse 55% 80% at 0% 50%,   rgba(255, 56, 92, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 45% 60% at 100% 0%,  rgba(0, 166, 153, 0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 122, 255, 0.04) 0%, transparent 70%),
+      #F4F4F8;
+    border-bottom: 1px solid var(--color-border, #d1d1d6);
     display: flex; flex-wrap: wrap;
     gap: 24px; align-items: flex-start;
   }
@@ -193,386 +166,80 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
     font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
     font-size: 12.5px; line-height: 1.8; tab-size: 2;
     padding: 24px 28px; margin: 0;
-    color: var(--color-code-text);
-    background: var(--color-code-bg);
+    color: var(--color-code-text, #abb2bf);
+    background: var(--color-code-bg, #1c1c1e);
     overflow-x: auto; white-space: pre;
   }
-  /* Code syntax colours */
-  .demo-code .c-tag   { color: var(--color-code-tag); }
-  .demo-code .c-attr  { color: var(--color-code-attr); }
-  .demo-code .c-str   { color: var(--color-code-string); }
-  .demo-code .c-cmt   { color: var(--color-code-comment); font-style: italic; }
 
-  /* ── Spec grid ───────────────────────────────────── */
-  .spec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
+  /* ── Spec grid ───────────────────────────────────────────────── */
+  .spec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 32px; }
   @media (max-width: 800px) { .spec-grid { grid-template-columns: 1fr 1fr; } }
   .spec-item {
     padding: 16px 18px; border-radius: 12px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #d1d1d6);
+    box-shadow: var(--shadow-sm, 0 1px 4px rgba(0,0,0,0.08));
   }
-  .spec-lbl {
-    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .07em; color: var(--color-text-muted); margin-bottom: 6px;
-  }
-  .spec-val { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+  .spec-lbl { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-muted, #aeaeb2); margin-bottom: 6px; }
+  .spec-val  { font-size: 14px; font-weight: 600; color: var(--color-text-primary, #1d1d1f); }
 
-  /* ── Prop table ──────────────────────────────────── */
+  /* ── Prop table ──────────────────────────────────────────────── */
   .prop-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 36px; }
   .prop-table th {
     font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-    color: var(--color-text-muted); padding: 10px 14px; text-align: left;
-    background: var(--color-surface-raised);
-    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted, #aeaeb2); padding: 10px 14px; text-align: left;
+    background: var(--color-surface-raised, #f7f7f7);
+    border-bottom: 1px solid var(--color-border, #d1d1d6);
   }
   .prop-table td {
-    padding: 11px 14px; vertical-align: top; color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border-light);
+    padding: 11px 14px; vertical-align: top; color: var(--color-text-secondary, #6e6e73);
+    border-bottom: 1px solid var(--color-border-light, #e5e5ea);
   }
   .prop-table tr:last-child td { border-bottom: none; }
 
-  /* ── A11y list ───────────────────────────────────── */
+  /* ── A11y list ───────────────────────────────────────────────── */
   .a11y-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-  .a11y-item { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .a11y-item { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--color-text-secondary, #6e6e73); line-height: 1.6; }
   .a11y-check {
     width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
-    background: var(--color-success-bg); border: 1.5px solid var(--color-success-border);
+    background: var(--color-success-bg, #F0FDF4); border: 1.5px solid var(--color-success-border, #86EFAC);
     display: flex; align-items: center; justify-content: center;
-    color: var(--color-success);
+    color: var(--color-success, #34C759);
   }
 
-  /* ── Scroll-to-top ───────────────────────────────── */
+  /* ── Scroll-to-top ───────────────────────────────────────────── */
   .scroll-top {
     position: fixed; bottom: 32px; right: 32px; z-index: 500;
     width: 42px; height: 42px; border-radius: 50%;
-    background: var(--color-surface); border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-lg); cursor: pointer;
+    background: var(--color-surface, #fff); border: 1px solid var(--color-border, #d1d1d6);
+    box-shadow: var(--shadow-lg, 0 12px 40px rgba(0,0,0,0.14)); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    color: var(--color-text-secondary);
+    color: var(--color-text-secondary, #6e6e73);
     opacity: 0; transform: translateY(10px);
     transition: opacity .22s, transform .22s;
   }
-  .scroll-top.show { opacity: 1; transform: translateY(0); }
-  .scroll-top:hover { color: var(--color-text-primary); background: var(--color-surface-raised); }
+  .scroll-top.show  { opacity: 1; transform: translateY(0); }
+  .scroll-top:hover { color: var(--color-text-primary, #1d1d1f); background: var(--color-surface-raised, #f7f7f7); }
 
-  /* ════════════════════════════════════════════════════
-     GLASS DEMO BACKDROP
-     A gradient wash so frosted inputs have depth to blur.
-  ════════════════════════════════════════════════════ */
+  /* ── Glass stage backdrop ────────────────────────────────────── */
   .glass-stage {
-    position: relative;
-    padding: 48px 36px;
+    position: relative; padding: 48px 36px;
     background:
-      radial-gradient(ellipse 70% 70% at 15% 50%,  var(--color-primary-alpha) 0%, transparent 65%),
-      radial-gradient(ellipse 60% 60% at 85% 30%,  var(--color-accent-alpha)  0%, transparent 65%),
-      radial-gradient(ellipse 50% 50% at 50% 90%,  var(--color-info-bg)       0%, transparent 65%),
-      var(--color-bg-grouped);
-    border-bottom: 1px solid var(--color-border);
+      radial-gradient(ellipse 70% 70% at 15% 50%,  rgba(255, 56, 92, 0.15) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 60% at 85% 30%,  rgba(0, 166, 153, 0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 50% 90%,  rgba(0, 122, 255, 0.10) 0%, transparent 65%),
+      linear-gradient(135deg, #e8eaf6 0%, #fce4ec 50%, #e0f2f1 100%);
+    border-bottom: 1px solid var(--color-border, #d1d1d6);
     display: flex; flex-direction: column; align-items: center; gap: 32px;
   }
 
-  /* ════════════════════════════════════════════════════
-     TOC RIGHT SIDEBAR override — use token colours
-  ════════════════════════════════════════════════════ */
-  .toc-platforms-label { color: var(--color-text-primary) !important; }
-  .toc-platform-icons  { color: var(--color-text-primary) !important; }
-  .toc-link            { color: var(--color-text-secondary) !important; }
-  .toc-link:hover      { color: var(--color-text-primary) !important; }
-  .toc-link.active     { color: var(--color-text-primary) !important; border-left-color: var(--color-primary) !important; }
-  .toc-list            { border-left-color: var(--color-border-light) !important; }
-
-  /* ════════════════════════════════════════════════════
-     GLASS STAGE — nature photo background container
-     The real photo creates depth for backdrop-filter blur
-  ════════════════════════════════════════════════════ */
-  .glass-stage {
-    position: relative;
-    min-height: 240px;
-    padding: 48px 36px;
-    background-size: cover;
-    background-position: center;
-    border-bottom: 1px solid var(--color-border, #d1d1d6);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    overflow: hidden;
-  }
-  /* Dark overlay to improve contrast of glass panels */
-  .glass-stage::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.28);
-    pointer-events: none;
-  }
-  .glass-stage > * { position: relative; z-index: 1; }
-
-  /* Glass panel — the frosted card container */
-  .glass-panel {
-    background: rgba(255,255,255,0.14);
-    backdrop-filter: blur(24px) saturate(1.8);
-    -webkit-backdrop-filter: blur(24px) saturate(1.8);
-    border: 1px solid rgba(255,255,255,0.28);
-    border-radius: 20px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3);
-    padding: 28px 28px;
-  }
-  .glass-panel-sm { padding: 28px 28px; max-width: 440px; }
-
-  /* Glass field wrapper */
-  .glass-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-  }
-
-  /* Glass label — uppercase micro, white on dark bg */
-  .glass-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.65);
-    -webkit-font-smoothing: antialiased;
-    user-select: none;
-  }
-
-  /* ── Glass input ─────────────────────────────────
-     Core frosted input: semi-transparent bg, luminous
-     border, heavy backdrop blur
-  ──────────────────────────────────────────────── */
-  .input-glass {
-    display: block;
-    width: 100%;
-    height: var(--input-h-md, 42px);
-    padding: 0 14px;
-    font-size: 15px;
-    font-family: inherit;
-    font-weight: 400;
-    letter-spacing: -.01em;
-    color: rgba(255,255,255,0.95);
-
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    border: 1px solid rgba(255,255,255,0.32);
-    border-radius: var(--radius-md, 10px);
-    outline: none;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.25);
-    transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .input-glass::placeholder { color: rgba(255,255,255,0.45); }
-  .input-glass:hover:not(:disabled) {
-    background: rgba(255,255,255,0.24);
-    border-color: rgba(255,255,255,0.45);
-  }
-  .input-glass:focus {
-    background: rgba(255,255,255,0.28);
-    border-color: rgba(255,255,255,0.6);
-    box-shadow: 0 0 0 3px rgba(255,56,92,0.28), 0 2px 12px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.3);
-  }
-  .input-glass:disabled {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.35);
-    cursor: not-allowed;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .input-glass.is-error {
-    border-color: rgba(255,80,80,0.7);
-    box-shadow: 0 0 0 3px rgba(255,59,48,0.25);
-  }
-  .input-glass.is-success {
-    border-color: rgba(80,220,100,0.7);
-    box-shadow: 0 0 0 3px rgba(52,199,89,0.22);
-  }
-
-  /* Size modifiers */
-  .input-glass-sm {
-    height: var(--input-h-sm, 34px);
-    font-size: 13px;
-    padding: 0 10px;
-    border-radius: var(--radius-sm, 8px);
-  }
-  .input-glass-lg {
-    height: var(--input-h-lg, 52px);
-    font-size: 16px;
-    padding: 0 18px;
-    border-radius: var(--radius-lg, 12px);
-  }
-
-  /* ── Glass search bar ──────────────────────────── */
-  .input-glass-search {
-    display: block;
-    height: 56px;
-    padding: 0 20px;
-    font-size: 16px;
-    font-family: inherit;
-    font-weight: 400;
-    color: rgba(255,255,255,0.95);
-    background: rgba(255,255,255,0.16);
-    backdrop-filter: blur(28px) saturate(2);
-    -webkit-backdrop-filter: blur(28px) saturate(2);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 999px;
-    outline: none;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
-    transition: all 150ms ease;
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-  }
-  .input-glass-search::placeholder { color: rgba(255,255,255,0.5); }
-  .input-glass-search:focus {
-    background: rgba(255,255,255,0.24);
-    border-color: rgba(255,255,255,0.55);
-    box-shadow: 0 0 0 3px rgba(255,56,92,0.25), 0 4px 32px rgba(0,0,0,0.2);
-  }
-
-  /* ── Glass textarea ────────────────────────────── */
-  .textarea-glass {
-    display: block;
-    width: 100%;
-    min-height: 96px;
-    padding: 12px 14px;
-    font-size: 15px;
-    font-family: inherit;
-    font-weight: 400;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.95);
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    border: 1px solid rgba(255,255,255,0.32);
-    border-radius: var(--radius-md, 10px);
-    outline: none;
-    resize: vertical;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.2);
-    transition: all 150ms ease;
-  }
-  .textarea-glass::placeholder { color: rgba(255,255,255,0.4); }
-  .textarea-glass:focus {
-    background: rgba(255,255,255,0.26);
-    border-color: rgba(255,255,255,0.55);
-    box-shadow: 0 0 0 3px rgba(255,56,92,0.25), 0 2px 12px rgba(0,0,0,0.12);
-  }
-
-  /* ── Glass select ──────────────────────────────── */
-  .select-glass {
-    height: var(--input-h-md, 42px);
-    padding: 0 40px 0 14px;
-    font-size: 15px;
-    font-family: inherit;
-    font-weight: 400;
-    color: rgba(255,255,255,0.95);
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    border: 1px solid rgba(255,255,255,0.32);
-    border-radius: var(--radius-md, 10px);
-    outline: none;
-    width: 100%;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-    transition: all 150ms ease;
-  }
-  .select-glass option { background: #1c1c2e; color: #ffffff; }
-  .select-glass:focus {
-    border-color: rgba(255,255,255,0.55);
-    box-shadow: 0 0 0 3px rgba(255,56,92,0.25);
-  }
-
-  /* ── Glass country select (phone) ─────────────── */
-  .country-select-glass {
-    flex-shrink: 0;
-    height: var(--input-h-md, 42px);
-    padding: 0 10px;
-    font-size: 14px;
-    font-family: inherit;
-    color: rgba(255,255,255,0.9);
-    background: rgba(255,255,255,0.14);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-right: none;
-    border-radius: var(--radius-md, 10px) 0 0 var(--radius-md, 10px);
-    outline: none;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .country-select-glass option { background: #1c1c2e; }
-
-  /* ── Glass OTP cells ───────────────────────────── */
-  .otp-glass-cell {
-    background: rgba(255,255,255,0.18) !important;
-    backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    border: 1.5px solid rgba(255,255,255,0.32) !important;
-    color: rgba(255,255,255,0.95) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
-  }
-  .otp-glass-cell:focus {
-    background: rgba(255,255,255,0.28) !important;
-    border-color: rgba(255,255,255,0.6) !important;
-    box-shadow: 0 0 0 3px rgba(255,56,92,0.3), 0 2px 8px rgba(0,0,0,0.2) !important;
-  }
-  .otp-glass-cell.is-filled {
-    border-color: rgba(255,56,92,0.7) !important;
-    background: rgba(255,56,92,0.2) !important;
-  }
-
-  /* ── Glass stepper btn ─────────────────────────── */
-  .stepper-btn-glass {
-    flex: 1;
-    width: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.1);
-    border: none;
-    cursor: pointer;
-    color: rgba(255,255,255,0.7);
-    transition: background 100ms ease;
-  }
-  .stepper-btn-glass:first-child {
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    border-radius: 0 var(--radius-md, 10px) 0 0;
-  }
-  .stepper-btn-glass:last-child { border-radius: 0 0 var(--radius-md, 10px) 0; }
-  .stepper-btn-glass:hover {
-    background: rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.95);
-  }
-
-  /* ── Primary CTA button (glass context) ────────── */
-  .btn-glass-primary {
-    height: 44px;
-    padding: 0 28px;
-    border-radius: var(--radius-md, 10px);
-    background: var(--color-primary, #FF385C);
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: inherit;
-    border: none;
-    cursor: pointer;
-    letter-spacing: -.01em;
-    transition: filter 140ms ease, transform 80ms ease;
-    width: 100%;
-    box-shadow: 0 4px 20px rgba(255,56,92,0.4);
-  }
-  .btn-glass-primary:hover { filter: brightness(1.08); }
-  .btn-glass-primary:active { transform: scale(0.98); }
+  /* ── TOC right sidebar token overrides ───────────────────────── */
+  .toc-platforms-label { color: var(--color-text-primary, #1d1d1f) !important; }
+  .toc-platform-icons  { color: var(--color-text-primary, #1d1d1f) !important; }
+  .toc-link            { color: var(--color-text-secondary, #6e6e73) !important; }
+  .toc-link:hover      { color: var(--color-text-primary, #1d1d1f) !important; }
+  .toc-link.active     { color: var(--color-text-primary, #1d1d1f) !important; border-left-color: var(--color-primary, #FF385C) !important; }
+  .toc-list            { border-left-color: var(--color-border, #d1d1d6) !important; }
   </style>
 </head>
 <body>
@@ -604,33 +271,34 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
     <p class="page-eyebrow">Atom · Input</p>
     <h1 class="page-title">Input Fields</h1>
     <p class="page-intro">
-      Two complete component suites — <strong>Solid</strong> (Apple HIG / Airbnb ultra-premium)
-      and <strong>Glass</strong> (liquid-glass morphism). Every colour token lives in
-      <code>colors.css</code>. All form styles live in <code>input.css</code> only.
+      A complete set of Apple-inspired form primitives — standard, glassmorphism,
+      floating-label, OTP/PIN, compound, and more. All colours resolve from
+      <code>colors.css</code> tokens. Zero hex literals in <code>input.css</code>.
     </p>
 
     <div class="callout callout-info">
       <span class="callout-icon">ℹ</span>
       <span>All styles live in <code>/Atom/input/input.css</code>.
-        To change any colour, edit <code>colors.css</code> only — every component adapts automatically.</span>
+        To change any colour, edit <code>colors.css</code> only — every component adapts automatically including dark mode.</span>
     </div>
 
     <hr class="page-rule" />
 
-    <!-- ═══════════════════════════════════════════════════════════
-         SUITE 01 — SOLID / APPLE-AIRBNB STYLE
+    <!-- ═══════════════════════════════════════════════
+         01 · STANDARD INPUTS
     ═══════════════════════════════════════════════ -->
     <section id="standard">
-      <p class="section-label">Suite 01</p>
-      <h2 class="section-title">Solid — Apple HIG × Airbnb</h2>
+      <p class="section-label">01</p>
+      <h2 class="section-title">Standard Inputs</h2>
       <p class="section-body">
-        Clean white surfaces, precise radii, coral-red focus rings.
-        The <code>.input</code> base class works across every native input type.
-        Size with <code>.input-sm</code> / <code>.input-lg</code>.
+        The base <code>.input</code> class covers every native input type.
+        Add <code>.input-sm</code> or <code>.input-lg</code> for size variants.
+        All inputs sit on a tinted <code>--color-bg-grouped</code> stage so the
+        white surface is clearly visible.
       </p>
 
-      <!-- Text / Email / PIN -->
-      <h3 class="section-h3" id="text-email">Text, Email &amp; PIN</h3>
+      <!-- Text / Email -->
+      <h3 class="section-h3" id="text-email">Text &amp; Email</h3>
       <div class="demo-card">
         <div class="demo-bar">
           <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
@@ -638,7 +306,9 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         </div>
         <div class="demo-preview col">
           <div class="field" style="max-width:420px">
-            <label class="field-label" for="t1">Full name <span class="required">*</span></label>
+            <label class="field-label" for="t1">
+              Full name <span style="color:var(--color-primary)">*</span>
+            </label>
             <input class="input" id="t1" type="text" placeholder="e.g. Rahul Verma" />
             <span class="field-helper">As it appears on your government-issued ID.</span>
           </div>
@@ -646,13 +316,13 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
             <label class="field-label" for="t2">Email address</label>
             <input class="input" id="t2" type="email" placeholder="you@email.com" />
           </div>
-          <div class="field" style="max-width:220px">
+          <div class="field" style="max-width:280px">
             <label class="field-label" for="t3">PIN code</label>
             <input class="input" id="t3" type="text" placeholder="400001" maxlength="6" />
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;div class="field"&gt;
-  &lt;label class="field-label" for="name"&gt;Full name &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;
+  &lt;label class="field-label" for="name"&gt;Full name&lt;/label&gt;
   &lt;input class="input" id="name" type="text" placeholder="e.g. Rahul Verma" /&gt;
   &lt;span class="field-helper"&gt;As it appears on your ID.&lt;/span&gt;
 &lt;/div&gt;</pre>
@@ -698,7 +368,8 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           </div>
           <div class="field" style="max-width:420px">
             <label class="field-label" for="s2">Error</label>
-            <input class="input is-error" id="s2" type="email" value="bad@@email" aria-invalid="true" aria-describedby="s2err" />
+            <input class="input is-error" id="s2" type="email"
+                   value="bad@@email" aria-invalid="true" aria-describedby="s2err" />
             <span class="field-helper is-error" id="s2err">Please enter a valid email address.</span>
           </div>
           <div class="field" style="max-width:420px">
@@ -711,14 +382,15 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
             <input class="input" id="s4" type="text" placeholder="Cannot edit" disabled />
           </div>
         </div>
-        <pre class="demo-code" hidden>&lt;input class="input is-error" type="email" aria-invalid="true" aria-describedby="err" /&gt;
-&lt;span class="field-helper is-error" id="err"&gt;Please enter a valid email.&lt;/span&gt;
+        <pre class="demo-code" hidden>&lt;input class="input is-error"   type="email" aria-invalid="true" aria-describedby="err" /&gt;
+&lt;span  class="field-helper is-error" id="err"&gt;Please enter a valid email.&lt;/span&gt;
 
 &lt;input class="input is-success" type="email" value="ok@email.com" /&gt;
+
 &lt;input class="input" type="text" disabled /&gt;</pre>
       </div>
 
-      <!-- Icons -->
+      <!-- Icon slots -->
       <h3 class="section-h3" id="icons">With Icons</h3>
       <div class="demo-card">
         <div class="demo-bar">
@@ -727,7 +399,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         </div>
         <div class="demo-preview col">
           <div class="field" style="max-width:420px">
-            <label class="field-label">Search — leading icon</label>
+            <label class="field-label">Search — leading icon + pill</label>
             <div class="input-wrap">
               <span class="input-icon" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -739,7 +411,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
             <label class="field-label">Email — trailing icon</label>
             <div class="input-wrap icon-right">
               <input class="input" type="email" placeholder="your@email.com" />
-              <span class="input-icon input-icon-right" aria-hidden="true">
+              <span class="input-icon" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 5.5l6.5 4 6.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
               </span>
             </div>
@@ -757,13 +429,23 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
             </div>
           </div>
         </div>
-        <pre class="demo-code" hidden>&lt;div class="input-wrap"&gt;
+        <pre class="demo-code" hidden>&lt;!-- Leading --&gt;
+&lt;div class="input-wrap"&gt;
   &lt;span class="input-icon" aria-hidden="true"&gt;…svg…&lt;/span&gt;
   &lt;input class="input input-search" type="search" /&gt;
 &lt;/div&gt;
+
+&lt;!-- Trailing --&gt;
 &lt;div class="input-wrap icon-right"&gt;
   &lt;input class="input" type="email" /&gt;
-  &lt;span class="input-icon input-icon-right" aria-hidden="true"&gt;…svg…&lt;/span&gt;
+  &lt;span class="input-icon" aria-hidden="true"&gt;…svg…&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Both --&gt;
+&lt;div class="input-wrap icon-both"&gt;
+  &lt;span class="input-icon"&gt;…&lt;/span&gt;
+  &lt;input class="input" /&gt;
+  &lt;span class="input-icon input-icon-right"&gt;…&lt;/span&gt;
 &lt;/div&gt;</pre>
       </div>
 
@@ -780,19 +462,24 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
             <div class="input-wrap icon-right">
               <input class="input" id="pw1" type="password" placeholder="Min. 8 characters" />
               <button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'pw1')">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M1 9C1 9 4 3.5 9 3.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M1 9C1 9 4 3.5 9 3.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4"/>
+                  <circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+                </svg>
               </button>
             </div>
             <span class="field-helper">Use letters, numbers and symbols.</span>
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;div class="input-wrap icon-right"&gt;
-  &lt;input class="input" id="pw" type="password" /&gt;
-  &lt;button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'pw')"&gt;…eye svg…&lt;/button&gt;
+  &lt;input class="input" id="pw" type="password" placeholder="Min. 8 characters" /&gt;
+  &lt;button class="pw-toggle" type="button"
+          aria-label="Show password"
+          onclick="togglePw(this,'pw')"&gt;…eye svg…&lt;/button&gt;
 &lt;/div&gt;</pre>
       </div>
 
-      <!-- Number stepper -->
+      <!-- Number -->
       <h3 class="section-h3" id="number">Number Stepper</h3>
       <div class="demo-card">
         <div class="demo-bar">
@@ -832,8 +519,8 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         <pre class="demo-code" hidden>&lt;div class="number-wrap"&gt;
   &lt;input class="input" id="guests" type="number" value="2" min="1" max="16" /&gt;
   &lt;div class="number-stepper"&gt;
-    &lt;button class="stepper-btn" onclick="step('guests',1)"  aria-label="Increase"&gt;▲&lt;/button&gt;
-    &lt;button class="stepper-btn" onclick="step('guests',-1)" aria-label="Decrease"&gt;▼&lt;/button&gt;
+    &lt;button class="stepper-btn" onclick="step('guests', 1)"  aria-label="Increase"&gt;…▲…&lt;/button&gt;
+    &lt;button class="stepper-btn" onclick="step('guests', -1)" aria-label="Decrease"&gt;…▼…&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</pre>
       </div>
@@ -877,7 +564,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           <button class="demo-tab" onclick="switchTab(this)">HTML</button>
         </div>
         <div class="demo-preview" style="flex-wrap:wrap;gap:20px">
-          <div class="field" style="flex:1;min-width:200px;max-width:280px">
+          <div class="field" style="flex:1;min-width:200px;max-width:300px">
             <label class="field-label" for="sel1">Property type</label>
             <div class="select-wrap">
               <select class="select-native" id="sel1">
@@ -890,7 +577,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
               </span>
             </div>
           </div>
-          <div class="field" style="flex:1;min-width:200px;max-width:280px">
+          <div class="field" style="flex:1;min-width:200px;max-width:300px">
             <label class="field-label" for="sel2">Sort by</label>
             <div class="select-wrap">
               <select class="select-native" id="sel2">
@@ -906,11 +593,11 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;div class="select-wrap"&gt;
-  &lt;select class="select-native"&gt;
+  &lt;select class="select-native" id="type"&gt;
     &lt;option value=""&gt;Select a type…&lt;/option&gt;
     &lt;option&gt;Apartment&lt;/option&gt;
   &lt;/select&gt;
-  &lt;span class="select-caret" aria-hidden="true"&gt;…chevron…&lt;/span&gt;
+  &lt;span class="select-caret" aria-hidden="true"&gt;…chevron svg…&lt;/span&gt;
 &lt;/div&gt;</pre>
       </div>
 
@@ -922,12 +609,14 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           <button class="demo-tab" onclick="switchTab(this)">HTML</button>
         </div>
         <div class="demo-preview" style="flex-wrap:wrap;gap:20px">
-          <div class="field" style="flex:1;min-width:160px"><label class="field-label" for="dt1">Check-in</label><input class="input" id="dt1" type="date" /></div>
-          <div class="field" style="flex:1;min-width:160px"><label class="field-label" for="dt2">Check-out</label><input class="input" id="dt2" type="date" /></div>
-          <div class="field" style="flex:1;min-width:160px"><label class="field-label" for="dt3">Arrival time</label><input class="input" id="dt3" type="time" value="14:00" /></div>
+          <div class="field" style="flex:1;min-width:180px"><label class="field-label" for="dt1">Check-in</label><input class="input" id="dt1" type="date" /></div>
+          <div class="field" style="flex:1;min-width:180px"><label class="field-label" for="dt2">Check-out</label><input class="input" id="dt2" type="date" /></div>
+          <div class="field" style="flex:1;min-width:180px"><label class="field-label" for="dt3">Arrival time</label><input class="input" id="dt3" type="time" value="14:00" /></div>
+          <div class="field" style="flex:1;min-width:220px"><label class="field-label" for="dt4">Event datetime</label><input class="input" id="dt4" type="datetime-local" /></div>
         </div>
         <pre class="demo-code" hidden>&lt;input class="input" type="date" /&gt;
-&lt;input class="input" type="time" value="14:00" /&gt;</pre>
+&lt;input class="input" type="time"           value="14:00" /&gt;
+&lt;input class="input" type="datetime-local" /&gt;</pre>
       </div>
 
       <!-- Textarea -->
@@ -950,10 +639,10 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;textarea class="textarea" maxlength="300" rows="4"
-          oninput="countChars(this,'count',300)"&gt;&lt;/textarea&gt;
+          oninput="countChars(this,'count-id',300)"&gt;&lt;/textarea&gt;
 &lt;div class="textarea-footer"&gt;
   &lt;span class="field-helper"&gt;Helper text&lt;/span&gt;
-  &lt;span class="textarea-count" id="count"&gt;0 / 300&lt;/span&gt;
+  &lt;span class="textarea-count" id="count-id"&gt;0 / 300&lt;/span&gt;
 &lt;/div&gt;</pre>
       </div>
 
@@ -968,21 +657,25 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           <div class="field" style="max-width:520px;width:100%">
             <label class="field-label">Price per night</label>
             <div class="range-wrap">
-              <input type="range" id="rng1" min="0" max="20000" value="5000" step="500" style="--pct:25%" oninput="syncRange(this,'rv1','₹')" />
+              <input type="range" id="rng1" min="0" max="20000" value="5000"
+                     step="500" style="--pct:25%" oninput="syncRange(this,'rv1','₹')" />
               <span class="range-val" id="rv1">₹5,000</span>
             </div>
           </div>
           <div class="field" style="max-width:520px;width:100%">
             <label class="field-label">Minimum rating</label>
             <div class="range-wrap">
-              <input type="range" id="rng2" min="1" max="5" value="3" step="0.5" style="--pct:50%" oninput="syncRange(this,'rv2','','★')" />
+              <input type="range" id="rng2" min="1" max="5" value="3"
+                     step="0.5" style="--pct:50%" oninput="syncRange(this,'rv2','','★')" />
               <span class="range-val" id="rv2">3★</span>
             </div>
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;div class="range-wrap"&gt;
-  &lt;input type="range" id="price" min="0" max="20000" value="5000" step="500"
-         style="--pct:25%" oninput="syncRange(this,'rv','₹')" /&gt;
+  &lt;input type="range" id="price"
+         min="0" max="20000" value="5000" step="500"
+         style="--pct:25%"
+         oninput="syncRange(this,'rv','₹')" /&gt;
   &lt;span class="range-val" id="rv"&gt;₹5,000&lt;/span&gt;
 &lt;/div&gt;</pre>
       </div>
@@ -996,9 +689,18 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         </div>
         <div class="demo-preview" style="flex-wrap:wrap;gap:32px">
           <div style="display:flex;flex-direction:column;gap:14px">
-            <label class="checkbox-wrap"><input type="checkbox" checked /><span class="checkbox-label">Entire home<span class="checkbox-sub">You'll have the place to yourself.</span></span></label>
-            <label class="checkbox-wrap"><input type="checkbox" /><span class="checkbox-label">Private room</span></label>
-            <label class="checkbox-wrap"><input type="checkbox" disabled /><span class="checkbox-label" style="opacity:.5">Shared room (unavailable)</span></label>
+            <label class="checkbox-wrap">
+              <input type="checkbox" checked />
+              <span class="checkbox-label">Entire home<span class="checkbox-sub">You'll have the place to yourself.</span></span>
+            </label>
+            <label class="checkbox-wrap">
+              <input type="checkbox" />
+              <span class="checkbox-label">Private room</span>
+            </label>
+            <label class="checkbox-wrap">
+              <input type="checkbox" disabled />
+              <span class="checkbox-label" style="opacity:.5">Shared room (unavailable)</span>
+            </label>
           </div>
           <div style="display:flex;flex-direction:column;gap:14px">
             <label class="radio-wrap"><input type="radio" name="sort" checked /><span class="checkbox-label">Recommended</span></label>
@@ -1008,17 +710,19 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         </div>
         <pre class="demo-code" hidden>&lt;label class="checkbox-wrap"&gt;
   &lt;input type="checkbox" checked /&gt;
-  &lt;span class="checkbox-label"&gt;Entire home
+  &lt;span class="checkbox-label"&gt;
+    Entire home
     &lt;span class="checkbox-sub"&gt;You'll have the place to yourself.&lt;/span&gt;
   &lt;/span&gt;
 &lt;/label&gt;
+
 &lt;label class="radio-wrap"&gt;
   &lt;input type="radio" name="sort" checked /&gt;
   &lt;span class="checkbox-label"&gt;Recommended&lt;/span&gt;
 &lt;/label&gt;</pre>
       </div>
 
-      <!-- Compound -->
+      <!-- Compound row -->
       <h3 class="section-h3" id="compound">Compound / Row Layout</h3>
       <div class="demo-card">
         <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
@@ -1034,6 +738,36 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         </div>
       </div>
 
+      <!-- Input group -->
+      <h3 class="section-h3" id="inputgroup">Input Groups</h3>
+      <div class="demo-card">
+        <div class="demo-bar">
+          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
+          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
+        </div>
+        <div class="demo-preview col">
+          <div class="field" style="max-width:440px">
+            <label class="field-label">Website</label>
+            <div class="input-group">
+              <span class="input-addon">https://</span>
+              <input class="input" type="text" placeholder="yourdomain.com" />
+            </div>
+          </div>
+          <div class="field" style="max-width:380px">
+            <label class="field-label">Price per night</label>
+            <div class="input-group">
+              <span class="input-addon">₹</span>
+              <input class="input" type="number" placeholder="0" />
+              <span class="input-addon">/ night</span>
+            </div>
+          </div>
+        </div>
+        <pre class="demo-code" hidden>&lt;div class="input-group"&gt;
+  &lt;span class="input-addon"&gt;https://&lt;/span&gt;
+  &lt;input class="input" type="text" placeholder="yourdomain.com" /&gt;
+&lt;/div&gt;</pre>
+      </div>
+
       <!-- Floating label -->
       <h3 class="section-h3" id="floating">Floating Label</h3>
       <div class="demo-card">
@@ -1042,20 +776,21 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           <button class="demo-tab" onclick="switchTab(this)">HTML</button>
         </div>
         <div class="demo-preview" style="flex-wrap:wrap;gap:20px">
-          <div class="float-field" style="max-width:260px;flex:1;min-width:180px">
+          <div class="float-field" style="max-width:280px;flex:1;min-width:200px">
             <input class="float-input" id="fl1" type="text" placeholder=" " />
             <label class="float-label" for="fl1">Full name</label>
           </div>
-          <div class="float-field" style="max-width:260px;flex:1;min-width:180px">
+          <div class="float-field" style="max-width:280px;flex:1;min-width:200px">
             <input class="float-input" id="fl2" type="email" placeholder=" " />
             <label class="float-label" for="fl2">Email address</label>
           </div>
-          <div class="float-field" style="max-width:260px;flex:1;min-width:180px">
+          <div class="float-field" style="max-width:280px;flex:1;min-width:200px">
             <input class="float-input" id="fl3" type="text" placeholder=" " value="Mumbai" />
             <label class="float-label" for="fl3">City (pre-filled)</label>
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;div class="float-field"&gt;
+  &lt;!-- placeholder=" " (single space) is required --&gt;
   &lt;input class="float-input" id="name" type="text" placeholder=" " /&gt;
   &lt;label class="float-label" for="name"&gt;Full name&lt;/label&gt;
 &lt;/div&gt;</pre>
@@ -1075,36 +810,44 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
               <span class="tag-pill">WiFi <button class="tag-pill-remove" onclick="removeTag(this)" aria-label="Remove WiFi">×</button></span>
               <span class="tag-pill">Pool <button class="tag-pill-remove" onclick="removeTag(this)" aria-label="Remove Pool">×</button></span>
               <span class="tag-pill">Parking <button class="tag-pill-remove" onclick="removeTag(this)" aria-label="Remove Parking">×</button></span>
-              <input class="tag-input-inner" id="ti" type="text" placeholder="Add amenity…" onkeydown="handleTag(event)" />
+              <input class="tag-input-inner" id="ti" type="text"
+                     placeholder="Add amenity…" onkeydown="handleTag(event)" />
             </div>
             <span class="field-helper">Press Enter to add · × to remove.</span>
           </div>
         </div>
         <pre class="demo-code" hidden>&lt;div class="tag-input-wrap"&gt;
-  &lt;span class="tag-pill"&gt;WiFi &lt;button class="tag-pill-remove" aria-label="Remove WiFi"&gt;×&lt;/button&gt;&lt;/span&gt;
-  &lt;input class="tag-input-inner" type="text" placeholder="Add amenity…" onkeydown="handleTag(event)" /&gt;
+  &lt;span class="tag-pill"&gt;
+    WiFi &lt;button class="tag-pill-remove" aria-label="Remove WiFi"&gt;×&lt;/button&gt;
+  &lt;/span&gt;
+  &lt;input class="tag-input-inner" type="text"
+         placeholder="Add amenity…"
+         onkeydown="handleTag(event)" /&gt;
 &lt;/div&gt;</pre>
       </div>
     </section>
 
     <hr class="page-rule" />
 
-    <!-- ═══════════════════════════════════════════════════════════
-         SUITE 01B — OTP / PIN (Solid)
-    ═══════════════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════
+         02 · OTP / PIN
+    ═══════════════════════════════════════════════ -->
     <section id="otp">
-      <p class="section-label">Suite 01 · OTP</p>
+      <p class="section-label">02</p>
       <h2 class="section-title">OTP / PIN</h2>
       <p class="section-body">
-        Auto-advances on input, backtracks on delete, supports paste and arrow-key navigation.
-        Classes: <code>.otp-input</code> · <code>.otp-input-lg</code> · <code>.otp-input-sm</code>
+        Squared single-character cells. Auto-advances on input, backtracks on delete,
+        supports clipboard paste and arrow-key navigation. Classes:
+        <code>.otp-input</code> · <code>.otp-input-lg</code> · <code>.otp-input-sm</code>
       </p>
+
       <div class="demo-card">
         <div class="demo-bar">
           <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
           <button class="demo-tab" onclick="switchTab(this)">HTML</button>
         </div>
-        <div class="demo-preview center" style="gap:40px">
+        <div class="demo-preview center" style="gap:36px">
+
           <div style="text-align:center">
             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);margin-bottom:16px">Standard · 6-digit OTP</p>
             <div class="otp-wrap" id="otp6" role="group" aria-label="One-time passcode">
@@ -1117,6 +860,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
               <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 6" />
             </div>
           </div>
+
           <div style="text-align:center">
             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);margin-bottom:16px">Large · 4-digit PIN</p>
             <div class="otp-wrap" id="otp4" role="group" aria-label="PIN code">
@@ -1126,6 +870,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
               <input class="otp-input otp-input-lg" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4" />
             </div>
           </div>
+
           <div style="text-align:center">
             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-error-text);margin-bottom:16px">Error state</p>
             <div class="otp-wrap" role="group" aria-label="Invalid code">
@@ -1136,329 +881,80 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
             </div>
             <p style="font-size:12px;color:var(--color-error-text);margin-top:10px;font-weight:500">Incorrect code. Please try again.</p>
           </div>
+
         </div>
         <pre class="demo-code" hidden>&lt;div class="otp-wrap" id="otp6" role="group" aria-label="One-time passcode"&gt;
-  &lt;input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 1" /&gt;
+  &lt;input class="otp-input" type="text" inputmode="numeric"
+         maxlength="1" pattern="[0-9]" aria-label="Digit 1" /&gt;
   &lt;!-- × 5 more --&gt;
 &lt;/div&gt;
-&lt;script&gt;initOTP('otp6');&lt;/script&gt;</pre>
+
+&lt;!-- Large PIN --&gt;
+&lt;div class="otp-wrap" id="otp4" role="group" aria-label="PIN code"&gt;
+  &lt;input class="otp-input otp-input-lg" type="text" inputmode="numeric"
+         maxlength="1" pattern="[0-9]" aria-label="Digit 1" /&gt;
+  &lt;!-- × 3 more --&gt;
+&lt;/div&gt;
+
+&lt;script&gt;initOTP('otp6'); initOTP('otp4');&lt;/script&gt;</pre>
       </div>
     </section>
 
     <hr class="page-rule" />
 
-    <!-- ═══════════════════════════════════════════════════════════
-         SUITE 02 — GLASSMORPHISM
-         Nature photography backgrounds to show glass depth.
-    ═══════════════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════
+         03 · GLASSMORPHISM INPUTS
+    ═══════════════════════════════════════════════ -->
     <section id="glass">
-      <p class="section-label">Suite 02</p>
+      <p class="section-label">03</p>
       <h2 class="section-title">Glassmorphism Set</h2>
       <p class="section-body">
-        Apple liquid-glass aesthetic — frosted backdrop-filter blur, luminous border, layered shadows.
-        Every component mirrors the Solid suite but uses <code>.input-glass</code>,
-        <code>.textarea-glass</code>, <code>.select-glass</code> classes.
-        Real nature photography is used as the stage background so the blur effect renders properly.
+        Apple liquid-glass aesthetic — frosted backdrop blur, luminous border, layered depth shadow.
+        Wrap in <code>.glass-panel</code> over a coloured / blurred background stage.
+        Classes: <code>.input-glass</code> · <code>.textarea-glass</code> · <code>.select-glass</code> · <code>.input-glass-search</code>
       </p>
 
-      <!-- Glass: Text, Email, PIN -->
-      <h3 class="section-h3" id="glass-text">Glass · Text, Email &amp; PIN</h3>
+      <!-- Sign-in card -->
+      <h3 class="section-h3" id="glass-card">Glass Sign-in Card</h3>
       <div class="demo-card">
         <div class="demo-bar">
           <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
           <button class="demo-tab" onclick="switchTab(this)">HTML</button>
         </div>
-        <!-- 🌿 Nature bg: Maldives ocean aerial — rich teal water creates perfect glass contrast -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200&q=80&fit=crop')">
-          <div class="glass-panel" style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:18px">
-            <div class="glass-field">
-              <label class="glass-label" for="gt1">Full name</label>
-              <input class="input-glass" id="gt1" type="text" placeholder="e.g. Rahul Verma" />
-            </div>
-            <div class="glass-field">
-              <label class="glass-label" for="gt2">Email address</label>
-              <input class="input-glass" id="gt2" type="email" placeholder="you@email.com" />
-            </div>
-            <div class="glass-field">
-              <label class="glass-label" for="gt3">PIN code</label>
-              <input class="input-glass" id="gt3" type="text" placeholder="400001" maxlength="6" style="max-width:180px" />
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="glass-field"&gt;
-  &lt;label class="glass-label" for="name"&gt;Full name&lt;/label&gt;
-  &lt;input class="input-glass" id="name" type="text" placeholder="e.g. Rahul Verma" /&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Glass: Sizes -->
-      <h3 class="section-h3" id="glass-sizes">Glass · Sizes</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🌲 Nature bg: Dense green forest canopy — dark green makes frosting very visible -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80&fit=crop')">
-          <div class="glass-panel" style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:20px">
-            <div class="glass-field">
-              <label class="glass-label">Small · <code style="background:rgba(255,255,255,0.15);border:none;color:rgba(255,255,255,0.9)">.input-glass-sm</code></label>
-              <input class="input-glass input-glass-sm" type="text" placeholder="Small glass input" />
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Medium · <code style="background:rgba(255,255,255,0.15);border:none;color:rgba(255,255,255,0.9)">.input-glass</code></label>
-              <input class="input-glass" type="text" placeholder="Medium glass input (default)" />
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Large · <code style="background:rgba(255,255,255,0.15);border:none;color:rgba(255,255,255,0.9)">.input-glass-lg</code></label>
-              <input class="input-glass input-glass-lg" type="text" placeholder="Large glass input" />
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;input class="input-glass input-glass-sm" type="text" placeholder="Small" /&gt;
-&lt;input class="input-glass"              type="text" placeholder="Medium (default)" /&gt;
-&lt;input class="input-glass input-glass-lg" type="text" placeholder="Large" /&gt;</pre>
-      </div>
-
-      <!-- Glass: States -->
-      <h3 class="section-h3" id="glass-states">Glass · States</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🏔️ Nature bg: Snow-capped mountain lake — cool blues complement the glass effect -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80&fit=crop')">
-          <div class="glass-panel" style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:18px">
-            <div class="glass-field">
-              <label class="glass-label">Default</label>
-              <input class="input-glass" type="text" placeholder="Normal glass input" />
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Error</label>
-              <input class="input-glass is-error" type="email" value="bad@@email" aria-invalid="true" />
-              <span style="font-size:12px;color:#ff6b6b;margin-top:2px">Please enter a valid email address.</span>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Success</label>
-              <input class="input-glass is-success" type="email" value="rahul@holidayseva.com" />
-              <span style="font-size:12px;color:#6bcb77;margin-top:2px">Looks good!</span>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Disabled</label>
-              <input class="input-glass" type="text" placeholder="Cannot edit" disabled />
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;input class="input-glass is-error" type="email" aria-invalid="true" /&gt;
-&lt;input class="input-glass is-success" type="email" value="ok@email.com" /&gt;
-&lt;input class="input-glass" type="text" disabled /&gt;</pre>
-      </div>
-
-      <!-- Glass: Icons + Password -->
-      <h3 class="section-h3" id="glass-icons">Glass · Icons &amp; Password</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🌅 Nature bg: Sunset over ocean — warm coral-orange tones match brand primary -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80&fit=crop')">
-          <div class="glass-panel" style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:18px">
-            <div class="glass-field">
-              <label class="glass-label">Search — leading icon</label>
-              <div class="input-wrap">
-                <span class="input-icon" aria-hidden="true" style="color:rgba(255,255,255,0.7)">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-                </span>
-                <input class="input-glass" type="search" placeholder="Search destinations…" />
-              </div>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Location — both icons</label>
-              <div class="input-wrap icon-both">
-                <span class="input-icon" aria-hidden="true" style="color:rgba(255,255,255,0.7)">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a5 5 0 015 5c0 3.5-5 9-5 9S3 9.5 3 6a5 5 0 015-5z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
-                </span>
-                <input class="input-glass" type="text" placeholder="City or destination" />
-                <span class="input-icon input-icon-right" aria-hidden="true" style="color:rgba(255,255,255,0.7)">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-              </div>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Password — eye toggle</label>
-              <div class="input-wrap icon-right">
-                <input class="input-glass" id="gpw1" type="password" placeholder="Min. 8 characters" />
-                <button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'gpw1')" style="color:rgba(255,255,255,0.7)">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M1 9C1 9 4 3.5 9 3.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="input-wrap"&gt;
-  &lt;span class="input-icon" aria-hidden="true"&gt;…svg…&lt;/span&gt;
-  &lt;input class="input-glass" type="search" /&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Glass: Select + Phone + Number -->
-      <h3 class="section-h3" id="glass-compound">Glass · Select, Phone &amp; Number</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🌸 Nature bg: Cherry blossoms — pink tones reinforce brand coral -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1200&q=80&fit=crop')">
-          <div class="glass-panel" style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:18px">
-            <div class="glass-field">
-              <label class="glass-label">Property type</label>
-              <div class="select-wrap">
-                <select class="select-glass">
-                  <option value="">Select a type…</option>
-                  <option>Apartment</option><option>Villa</option>
-                  <option>Cottage</option><option>Treehouse</option>
-                </select>
-                <span class="select-caret" aria-hidden="true" style="color:rgba(255,255,255,0.7)">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-              </div>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Phone number</label>
-              <div class="phone-wrap">
-                <select class="country-select-glass" aria-label="Country code">
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                </select>
-                <input class="input-glass" type="tel" placeholder="98765 43210" style="border-radius:0 var(--radius-md) var(--radius-md) 0;border-left:none" />
-              </div>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Guests</label>
-              <div class="number-wrap" style="max-width:200px">
-                <input class="input-glass" id="gng" type="number" value="2" min="1" max="16" style="padding-right:46px" />
-                <div class="number-stepper">
-                  <button class="stepper-btn-glass" type="button" onclick="step('gng',1)" aria-label="Increase guests">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 9V3M3 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <button class="stepper-btn-glass" type="button" onclick="step('gng',-1)" aria-label="Decrease guests">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v6M3 6l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="select-wrap"&gt;
-  &lt;select class="select-glass"&gt;…&lt;/select&gt;
-  &lt;span class="select-caret" aria-hidden="true"&gt;…chevron…&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Glass: Textarea + Range -->
-      <h3 class="section-h3" id="glass-textarea">Glass · Textarea &amp; Range</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🌊 Nature bg: Northern Lights / Aurora — deep purple-green creates dramatic depth -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1200&q=80&fit=crop')">
-          <div class="glass-panel" style="width:100%;max-width:500px;display:flex;flex-direction:column;gap:18px">
-            <div class="glass-field">
-              <label class="glass-label">Property description</label>
-              <textarea class="textarea-glass" rows="3" placeholder="Describe your space…"></textarea>
-            </div>
-            <div class="glass-field">
-              <label class="glass-label">Price per night</label>
-              <div class="range-wrap">
-                <input type="range" id="grng" min="0" max="20000" value="8000" step="500" style="--pct:40%;filter:brightness(1.2)" oninput="syncRange(this,'grv','₹')" />
-                <span class="range-val" id="grv" style="color:rgba(255,255,255,0.9)">₹8,000</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;textarea class="textarea-glass" rows="3" placeholder="Describe your space…"&gt;&lt;/textarea&gt;
-
-&lt;div class="range-wrap"&gt;
-  &lt;input type="range" min="0" max="20000" value="8000" style="--pct:40%" /&gt;
-  &lt;span class="range-val"&gt;₹8,000&lt;/span&gt;
-&lt;/div&gt;</pre>
-      </div>
-
-      <!-- Glass: OTP -->
-      <h3 class="section-h3" id="glass-otp">Glass · OTP / PIN</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🌋 Nature bg: Lava / volcanic rock with glowing cracks — dramatic and vivid -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1445262102387-5fbb30a5e59d?w=1200&q=80&fit=crop')">
-          <div class="glass-panel glass-panel-sm" style="display:flex;flex-direction:column;align-items:center;gap:24px;min-width:340px">
-            <div style="text-align:center">
-              <p style="font-size:20px;font-weight:700;color:rgba(255,255,255,0.95);margin-bottom:6px;text-shadow:0 1px 8px rgba(0,0,0,0.3)">Verify your number</p>
-              <p style="font-size:13px;color:rgba(255,255,255,0.7)">6-digit code sent to +91 98765 43210</p>
-            </div>
-            <div class="otp-wrap otp-glass" id="gotp" role="group" aria-label="Verification code">
-              <input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 1" />
-              <input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 2" />
-              <input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 3" />
-              <span class="otp-sep" aria-hidden="true" style="color:rgba(255,255,255,0.5)">–</span>
-              <input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4" />
-              <input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 5" />
-              <input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 6" />
-            </div>
-            <button type="button" class="btn-glass-primary">Verify Code</button>
-            <p style="font-size:12px;color:rgba(255,255,255,0.6)">Didn't receive? <a href="#" style="color:rgba(255,255,255,0.9);text-decoration:none;font-weight:600">Resend</a></p>
-          </div>
-        </div>
-        <pre class="demo-code" hidden>&lt;div class="otp-wrap" id="gotp" role="group" aria-label="Verification code"&gt;
-  &lt;input class="otp-input otp-glass-cell" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" /&gt;
-  &lt;!-- × 5 more --&gt;
-&lt;/div&gt;
-&lt;script&gt;initOTP('gotp');&lt;/script&gt;</pre>
-      </div>
-
-      <!-- Glass: Sign-in Card -->
-      <h3 class="section-h3" id="glass-card">Glass · Sign-in Card</h3>
-      <div class="demo-card">
-        <div class="demo-bar">
-          <button class="demo-tab active" onclick="switchTab(this)">Preview</button>
-          <button class="demo-tab" onclick="switchTab(this)">HTML</button>
-        </div>
-        <!-- 🌃 Nature bg: Milky Way / starry night over mountains — deep dark sky is perfect glass canvas -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1200&q=80&fit=crop')">
-          <div class="glass-panel glass-panel-sm" style="width:100%;max-width:440px">
+        <div class="glass-stage">
+          <div class="glass-panel glass-panel-sm" style="width:100%;max-width:480px">
             <div style="margin-bottom:24px">
-              <p style="font-size:26px;font-weight:700;letter-spacing:-.022em;color:rgba(255,255,255,0.95);margin-bottom:4px;text-shadow:0 2px 12px rgba(0,0,0,0.3)">Welcome back</p>
-              <p style="font-size:14px;color:rgba(255,255,255,0.65)">Sign in to Holidayseva</p>
+              <p style="font-size:24px;font-weight:700;letter-spacing:-.022em;color:var(--color-text-primary);margin-bottom:4px">Welcome back</p>
+              <p style="font-size:14px;color:var(--color-text-secondary)">Sign in to Holidayseva</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px">
               <div class="glass-field">
-                <label class="glass-label" for="gsi1">Email address</label>
+                <label class="glass-label" for="g1">Email address</label>
                 <div class="input-wrap">
-                  <span class="input-icon" aria-hidden="true" style="color:rgba(255,255,255,0.6)">
+                  <span class="input-icon" aria-hidden="true">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 5.5l6.5 4 6.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                   </span>
-                  <input class="input-glass" id="gsi1" type="email" placeholder="you@email.com" />
+                  <input class="input-glass" id="g1" type="email" placeholder="you@email.com"
+                         style="padding-left:40px;height:var(--input-h-md);font-size:var(--input-fs-md);border-radius:var(--radius-md)" />
                 </div>
               </div>
               <div class="glass-field">
-                <label class="glass-label" for="gsi2">Password</label>
+                <label class="glass-label" for="g2">Password</label>
                 <div class="input-wrap icon-right">
-                  <input class="input-glass" id="gsi2" type="password" placeholder="Min. 8 characters" />
-                  <button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'gsi2')" style="color:rgba(255,255,255,0.6)">
+                  <input class="input-glass" id="g2" type="password" placeholder="Min. 8 characters"
+                         style="height:var(--input-h-md);font-size:var(--input-fs-md);border-radius:var(--radius-md)" />
+                  <button class="pw-toggle" type="button" aria-label="Show password" onclick="togglePw(this,'g2')">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M1 9C1 9 4 3.5 9 3.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg>
                   </button>
                 </div>
               </div>
-              <button type="button" class="btn-glass-primary" style="margin-top:4px">Continue with email</button>
-              <p style="font-size:12px;text-align:center;color:rgba(255,255,255,0.5)">By continuing you agree to our <a href="#" style="color:rgba(255,255,255,0.85);text-decoration:none">Terms</a></p>
+              <button type="button"
+                style="height:44px;border-radius:var(--radius-md);background:var(--color-primary);color:var(--color-text-inverse);font-size:15px;font-weight:600;font-family:inherit;border:none;cursor:pointer;transition:background .14s;letter-spacing:-.01em;margin-top:4px"
+                onmouseover="this.style.background='var(--color-primary-hover)'"
+                onmouseout="this.style.background='var(--color-primary)'">
+                Continue with email
+              </button>
+              <p style="font-size:13px;text-align:center;color:var(--color-text-muted)">By continuing you agree to our <a href="#" style="color:var(--color-primary);text-decoration:none">Terms</a></p>
             </div>
           </div>
         </div>
@@ -1474,17 +970,74 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
 &lt;/div&gt;</pre>
       </div>
 
-      <!-- Glass: Search Bar -->
-      <h3 class="section-h3" id="glass-search">Glass · Search Bar</h3>
+      <!-- Glass search -->
+      <h3 class="section-h3" id="glass-search">Glass Search Bar</h3>
       <div class="demo-card">
         <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
-        <!-- 🏝️ Nature bg: Tropical beach from above — vivid turquoise water for max contrast -->
-        <div class="glass-stage" style="background-image:url('https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200&q=80&fit=crop')">
-          <div class="input-wrap" style="max-width:580px;width:100%">
-            <span class="input-icon" aria-hidden="true" style="left:18px;color:rgba(255,255,255,0.7)">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M14 14l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="glass-stage" style="padding:48px 36px">
+          <div class="input-wrap" style="max-width:540px;width:100%">
+            <span class="input-icon" aria-hidden="true" style="left:16px">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M12.5 12.5l3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
             </span>
-            <input class="input-glass-search" type="search" placeholder="Where do you want to go?" style="padding-left:52px;width:100%" />
+            <input class="input-glass-search" type="search" placeholder="Where do you want to go?"
+                   style="padding-left:48px;width:100%;font-size:16px" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Glass OTP -->
+      <h3 class="section-h3" id="glass-otp">Glass OTP Verification</h3>
+      <div class="demo-card">
+        <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
+        <div class="glass-stage" style="padding:56px 36px">
+          <div class="glass-panel glass-panel-sm" style="display:flex;flex-direction:column;align-items:center;gap:24px;min-width:340px">
+            <div style="text-align:center">
+              <p style="font-size:20px;font-weight:700;color:var(--color-text-primary);margin-bottom:6px">Verify your number</p>
+              <p style="font-size:13px;color:var(--color-text-secondary)">6-digit code sent to +91 98765 43210</p>
+            </div>
+            <div class="otp-wrap otp-glass" id="gotp" role="group" aria-label="Verification code">
+              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 1" />
+              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 2" />
+              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 3" />
+              <span class="otp-sep" aria-hidden="true">–</span>
+              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 4" />
+              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 5" />
+              <input class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="Digit 6" />
+            </div>
+            <button type="button"
+              style="height:40px;padding:0 32px;border-radius:var(--radius-pill);background:var(--color-primary);color:var(--color-text-inverse);font-size:14px;font-weight:600;font-family:inherit;border:none;cursor:pointer">
+              Verify Code
+            </button>
+            <p style="font-size:12px;color:var(--color-text-muted)">Didn't receive? <a href="#" style="color:var(--color-primary);text-decoration:none">Resend</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Glass textarea + select -->
+      <h3 class="section-h3" id="glass-forms">Glass Textarea &amp; Select</h3>
+      <div class="demo-card">
+        <div class="demo-bar"><button class="demo-tab active" onclick="switchTab(this)">Preview</button></div>
+        <div class="glass-stage">
+          <div class="glass-panel glass-panel-sm" style="width:100%;max-width:500px;display:flex;flex-direction:column;gap:18px">
+            <div class="glass-field">
+              <label class="glass-label" for="gta">Property description</label>
+              <textarea class="textarea-glass" id="gta" rows="3" placeholder="Describe your space…"></textarea>
+            </div>
+            <div class="glass-field">
+              <label class="glass-label" for="gsel">Category</label>
+              <div class="select-wrap">
+                <select class="select-glass" id="gsel">
+                  <option>Select a category…</option>
+                  <option>Beachfront</option>
+                  <option>Mountain retreat</option>
+                  <option>City centre</option>
+                  <option>Countryside</option>
+                </select>
+                <span class="select-caret" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1494,10 +1047,10 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
     <hr class="page-rule" />
 
     <!-- ═══════════════════════════════════════════════
-         03 · SPECIFICATIONS
+         04 · SPECIFICATIONS
     ═══════════════════════════════════════════════ -->
     <section id="specs">
-      <p class="section-label">03</p>
+      <p class="section-label">04</p>
       <h2 class="section-title">Specifications</h2>
       <div class="spec-grid">
         <div class="spec-item"><div class="spec-lbl">Height SM</div><div class="spec-val">34 px</div></div>
@@ -1506,36 +1059,42 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         <div class="spec-item"><div class="spec-lbl">OTP cell standard</div><div class="spec-val">48 × 56 px</div></div>
         <div class="spec-item"><div class="spec-lbl">OTP cell large</div><div class="spec-val">62 × 70 px</div></div>
         <div class="spec-item"><div class="spec-lbl">Border radius MD</div><div class="spec-val">10 px</div></div>
-        <div class="spec-item"><div class="spec-lbl">Solid border</div><div class="spec-val"><code>--color-border</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Focus ring (solid)</div><div class="spec-val"><code>--focus-ring-blue</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Focus ring (glass)</div><div class="spec-val"><code>--focus-ring</code> coral</div></div>
-        <div class="spec-item"><div class="spec-lbl">Glass blur</div><div class="spec-val">blur(20px) sat(1.8)</div></div>
+        <div class="spec-item"><div class="spec-lbl">Border default</div><div class="spec-val"><code>--color-border</code></div></div>
+        <div class="spec-item"><div class="spec-lbl">Border focus</div><div class="spec-val"><code>--color-border-focus</code></div></div>
+        <div class="spec-item"><div class="spec-lbl">Focus ring (standard)</div><div class="spec-val"><code>--focus-ring-blue</code></div></div>
+        <div class="spec-item"><div class="spec-lbl">Focus ring (OTP/glass)</div><div class="spec-val"><code>--focus-ring</code> coral</div></div>
+        <div class="spec-item"><div class="spec-lbl">Surface</div><div class="spec-val"><code>--color-surface</code></div></div>
         <div class="spec-item"><div class="spec-lbl">Glass bg</div><div class="spec-val"><code>--color-glass-bg</code></div></div>
-        <div class="spec-item"><div class="spec-lbl">Glass border</div><div class="spec-val"><code>--color-glass-border</code></div></div>
       </div>
     </section>
 
     <hr class="page-rule" />
 
     <!-- ═══════════════════════════════════════════════
-         04 · JS API
+         05 · JS API
     ═══════════════════════════════════════════════ -->
     <section id="javascript">
-      <p class="section-label">04</p>
+      <p class="section-label">05</p>
       <h2 class="section-title">JavaScript API</h2>
       <p class="section-body">Lightweight helpers in <code>input.js</code> — no framework required.</p>
       <table class="prop-table">
-        <thead><tr><th style="width:220px">Function</th><th style="width:200px">Signature</th><th>Description</th></tr></thead>
+        <thead>
+          <tr>
+            <th style="width:220px">Function</th>
+            <th style="width:200px">Signature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
         <tbody>
           <?php
           $api = [
-            ['togglePw(btn, id)',      '(El, string)',          'Toggles password visibility; updates aria-label and eye icon.'],
-            ['step(id, delta)',         '(string, number)',      'Increments / decrements number input, respects min/max.'],
-            ['countChars(el, id, max)', '(El, string, number)', 'Updates textarea character counter; adds .is-near / .is-max.'],
-            ['syncRange(el, id, …)',    '(El, string, str?, str?)','Syncs CSS --pct track fill and value label for range inputs.'],
-            ['initOTP(groupId)',        '(string)',              'Wires auto-advance, backspace, paste and arrow keys for an OTP group.'],
-            ['handleTag(event)',        '(KeyboardEvent)',       'Creates a tag pill on Enter inside .tag-input-inner.'],
-            ['removeTag(btn)',          '(El)',                  'Removes the closest .tag-pill from the tag input wrap.'],
+            ['togglePw(btn, id)',     '(El, string)',          'Toggles password visibility; updates aria-label and eye icon.'],
+            ['step(id, delta)',        '(string, number)',      'Increments / decrements number input, respects min/max.'],
+            ['countChars(el, id, max)','(El, string, number)', 'Updates textarea character counter; adds .is-near / .is-max.'],
+            ['syncRange(el, id, …)',   '(El, string, str?, str?)','Syncs CSS --pct track fill and value label for range inputs.'],
+            ['initOTP(groupId)',       '(string)',              'Wires auto-advance, backspace, paste and arrow keys for an OTP group.'],
+            ['handleTag(event)',       '(KeyboardEvent)',       'Creates a tag pill on Enter inside .tag-input-inner.'],
+            ['removeTag(btn)',         '(El)',                  'Removes the closest .tag-pill from the tag input wrap.'],
           ];
           foreach ($api as [$fn, $sig, $desc]): ?>
           <tr>
@@ -1551,10 +1110,56 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
     <hr class="page-rule" />
 
     <!-- ═══════════════════════════════════════════════
-         05 · ACCESSIBILITY
+         06 · INTEGRATION
+    ═══════════════════════════════════════════════ -->
+    <section id="integration">
+      <p class="section-label">06</p>
+      <h2 class="section-title">Integration</h2>
+      <p class="section-body">Three file includes — tokens first, then component CSS, then JS.</p>
+      <div class="demo-card">
+        <pre class="demo-code">&lt;!-- ① Token layer — always first --&gt;
+&lt;link rel="stylesheet" href="/colors.css" /&gt;
+
+&lt;!-- ② Component CSS — zero hex literals inside --&gt;
+&lt;link rel="stylesheet" href="/Atom/input/input.css" /&gt;
+
+&lt;!-- ③ Helper JS (OTP, password, range, stepper, tags) --&gt;
+&lt;script src="/Atom/input/input.js" defer&gt;&lt;/script&gt;
+
+&lt;?php
+$partials = __DIR__ . '/../../';
+?&gt;
+&lt;?php include $partials . 'header.php'; ?&gt;
+&lt;?php include $partials . 'drawer_sidebar.php'; ?&gt;
+
+&lt;div class="page-layout"&gt;
+  &lt;aside class="sidebar-left" style="z-index:10000;"&gt;
+    &lt;?php include $partials . 'left_sidebar.php'; ?&gt;
+  &lt;/aside&gt;
+
+  &lt;main class="main-content"&gt;
+    &lt;!-- content --&gt;
+  &lt;/main&gt;
+
+  &lt;aside class="sidebar-right"&gt;
+    &lt;?php include $partials . 'right_sidebar.php'; ?&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;</pre>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠</span>
+        <span>Never write hex, <code>rgba()</code>, or <code>hsl()</code> literals in <code>input.css</code>.
+          All colour decisions live exclusively in <code>colors.css</code>.</span>
+      </div>
+    </section>
+
+    <hr class="page-rule" />
+
+    <!-- ═══════════════════════════════════════════════
+         07 · ACCESSIBILITY
     ═══════════════════════════════════════════════ -->
     <section id="accessibility">
-      <p class="section-label">05</p>
+      <p class="section-label">07</p>
       <h2 class="section-title">Accessibility</h2>
       <ul class="a11y-list">
         <?php
@@ -1562,7 +1167,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
           'Every <code>&lt;input&gt;</code> must have an associated <code>&lt;label&gt;</code> via matching <code>for</code>/<code>id</code>. Never use <code>placeholder</code> as the only label.',
           'Error states: set <code>aria-invalid="true"</code> on the input and <code>aria-describedby</code> pointing to the error message.',
           'OTP groups: <code>role="group"</code> + <code>aria-label</code> on the wrapper; individual <code>aria-label="Digit N"</code> on each cell.',
-          'Focus rings must never be suppressed without a high-contrast replacement. Tokens <code>--focus-ring</code> and <code>--focus-ring-blue</code> meet 3:1 contrast.',
+          'Focus rings must never be suppressed without a custom high-contrast replacement. Tokens <code>--focus-ring</code> and <code>--focus-ring-blue</code> meet 3:1 contrast.',
           'Password toggle: <code>aria-label</code> must reflect current action — "Show password" or "Hide password" — not a static label.',
           'Range sliders: expose the current value via <code>aria-valuenow</code>, <code>aria-valuemin</code>, and <code>aria-valuemax</code>.',
           'Tag input wrap: add <code>role="group"</code> + <code>aria-label</code>; each pill remove button needs a descriptive <code>aria-label</code>.',
@@ -1571,7 +1176,9 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
         foreach ($checks as $c): ?>
         <li class="a11y-item">
           <span class="a11y-check" aria-hidden="true">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </span>
           <span><?= $c ?></span>
         </li>
