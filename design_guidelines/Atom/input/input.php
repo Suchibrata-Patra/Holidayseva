@@ -45,23 +45,9 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
 
   /* ── Page gradient background ────────────────────────────────── */
   body {
-  background:
-    /* Airbnb coral — barely-there warmth pooling top-left, like morning light */
-    radial-gradient(ellipse 90% 55% at -5% -10%,
-      rgba(255, 56, 92, 0.07) 0%,
-      rgba(255, 56, 92, 0.02) 45%,
-      transparent 70%),
-    /* Subtle warm ivory centre — lifts the page off clinical white */
-    radial-gradient(ellipse 120% 80% at 50% 0%,
-      rgba(255, 245, 240, 0.9) 0%,
-      transparent 65%),
-    /* Deep warm vignette at the bottom — anchors the page, adds gravitas */
-    radial-gradient(ellipse 100% 40% at 50% 110%,
-      rgba(30, 10, 5, 0.045) 0%,
-      transparent 70%),
-    /* Base: Airbnb's exact off-white — not #fafafa, not white, this warm tone */
-    #F7F5F3;
+  background: #FFFFFF;
 }
+
 
   /* ── Main content column ─────────────────────────────────────────
      design-system.css owns .page-layout (flex row) and positions
@@ -159,28 +145,32 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   }
 
   /* Demo preview gradient stage — makes white inputs pop against bg */
-  .demo-preview {
-    padding: 40px 36px;
-    background:
-      radial-gradient(ellipse 55% 80% at 0% 50%,   rgba(255, 56, 92, 0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 45% 60% at 100% 0%,  rgba(0, 166, 153, 0.05) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 122, 255, 0.04) 0%, transparent 70%),
-      #F4F4F8;
-    border-bottom: 1px solid var(--color-border, #d1d1d6);
-    display: flex; flex-wrap: wrap;
-    gap: 24px; align-items: flex-start;
-  }
-  .demo-preview.col    { flex-direction: column; }
-  .demo-preview.center { flex-direction: column; justify-content: center; align-items: center; }
+  /* ── Demo preview — single flat tint, no gradients ── */
+.demo-preview {
+  padding: 40px 36px;
+  background: #F5F5F7;
+  border-bottom: 1px solid var(--color-border, #d1d1d6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+.demo-preview.col    { flex-direction: column; }
+.demo-preview.center { flex-direction: column; justify-content: center; align-items: center; }
 
-  .demo-code {
-    font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
-    font-size: 12.5px; line-height: 1.8; tab-size: 2;
-    padding: 24px 28px; margin: 0;
-    color: var(--color-code-text, #abb2bf);
-    background: var(--color-code-bg, #1c1c1e);
-    overflow-x: auto; white-space: pre;
-  }
+/* ── Code block — Apple's exact dark surface ── */
+.demo-code {
+  font-family: 'DM Mono', 'SF Mono', 'Menlo', monospace;
+  font-size: 12.5px;
+  line-height: 1.8;
+  tab-size: 2;
+  padding: 24px 28px;
+  margin: 0;
+  color: #E0E0E5;
+  background: #1D1D1F;
+  overflow-x: auto;
+  white-space: pre;
+}
 
   /* ── Spec grid ───────────────────────────────────────────────── */
   .spec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 32px; }
