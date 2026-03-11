@@ -45,14 +45,23 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
 
   /* ── Page gradient background ────────────────────────────────── */
   body {
-    /* background:
-      radial-gradient(ellipse 80% 40% at 10% 0%,   rgba(255, 56, 92, 0.055) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 90% 20%,  rgba(0, 166, 153, 0.045) 0%, transparent 60%),
-      radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0, 122, 255, 0.035) 0%, transparent 60%),
-      #fafafa; */
-      background:grey;
-  }
-
+  background:
+    /* Airbnb coral — barely-there warmth pooling top-left, like morning light */
+    radial-gradient(ellipse 90% 55% at -5% -10%,
+      rgba(255, 56, 92, 0.07) 0%,
+      rgba(255, 56, 92, 0.02) 45%,
+      transparent 70%),
+    /* Subtle warm ivory centre — lifts the page off clinical white */
+    radial-gradient(ellipse 120% 80% at 50% 0%,
+      rgba(255, 245, 240, 0.9) 0%,
+      transparent 65%),
+    /* Deep warm vignette at the bottom — anchors the page, adds gravitas */
+    radial-gradient(ellipse 100% 40% at 50% 110%,
+      rgba(30, 10, 5, 0.045) 0%,
+      transparent 70%),
+    /* Base: Airbnb's exact off-white — not #fafafa, not white, this warm tone */
+    #F7F5F3;
+}
 
   /* ── Main content column ─────────────────────────────────────────
      design-system.css owns .page-layout (flex row) and positions
