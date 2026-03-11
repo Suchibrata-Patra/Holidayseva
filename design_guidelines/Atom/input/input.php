@@ -21,6 +21,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   <!-- ① Token layer — MUST come before input.css -->
   <link rel="stylesheet" href="/colors.css" />
   <!-- ② Component stylesheet — zero hex inside -->
+  <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/input/input.css" />
   <!-- ③ Design system shell (global-nav, section-nav, page-layout, sidebar-left etc.) -->
   <link rel="stylesheet" href="/design-system.css" />
