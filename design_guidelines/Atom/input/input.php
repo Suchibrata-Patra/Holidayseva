@@ -1469,7 +1469,6 @@ $partials = __DIR__ . '/../../';
   &lt;/main&gt;
 
   &lt;aside class="sidebar-right"&gt;
-    &lt;?php include $partials . 'right_sidebar.php'; ?&gt;
   &lt;/aside&gt;
 &lt;/div&gt;</pre>
       </div>
