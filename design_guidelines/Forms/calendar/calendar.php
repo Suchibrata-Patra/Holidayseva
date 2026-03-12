@@ -118,7 +118,6 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: -0.02em;
   flex-shrink: 0;
 }
-.global-nav-brand strong { color: var(--color-primary); }
 
 .global-nav-sep {
   width: 1px;
