@@ -324,7 +324,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                     if (isExtendEnd) cls += ' hs-calendar__day--extend-end';
                     if (inExtendRange) cls += ' hs-calendar__day--extend-range';
                     if (inHover && !inRange && !isStart && !isEnd) cls += ' hs-calendar__day--hover-range';
-                    if (isHoverEnd && !isEnd) cls += ' hs-calendar__day--selected';
+                    if (isHoverEnd && !isEnd && !isStart) cls += ' hs-calendar__day--selected';
                 }
 
                 const ariaSelected = (isStart || isEnd) ? 'true' : 'false';
