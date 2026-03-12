@@ -16,6 +16,9 @@ $partials = __DIR__ . '/../../';
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css">
   <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css">
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css">
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.js">
+
 <style>
 /* ═══════════════════════════════════════════
    PAGE: Grid override
