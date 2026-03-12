@@ -206,6 +206,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             this._el.removeEventListener('mouseover', this._boundHandlers.mouseover);
             this._el.removeEventListener('mouseleave', this._boundHandlers.mouseleave);
             this._el.removeEventListener('keydown', this._boundHandlers.keydown);
+            this._el.removeEventListener('touchstart', this._boundHandlers.touchstart);
             this._el.innerHTML = '';
         }
 
@@ -334,6 +335,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                   class="${cls}"
                   role="gridcell"
                   data-date="${ds}"
+                  data-day="${d}"
                   data-action="select"
                   aria-label="${ariaLabel}"
                   aria-selected="${ariaSelected}"
@@ -409,6 +411,20 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             this._el.addEventListener('mouseover', this._boundHandlers.mouseover);
             this._el.addEventListener('mouseleave', this._boundHandlers.mouseleave);
             this._el.addEventListener('keydown', this._boundHandlers.keydown);
+
+            /* ── Mobile: fire selection instantly on touchstart ── */
+            this._boundHandlers.touchstart = (e) => {
+                const btn = e.target.closest('[data-action]');
+                if (!btn) return;
+                /* Prevent 300ms delay, context menu, and text selection */
+                e.preventDefault();
+                const action = btn.dataset.action;
+                if (action === 'prev') this._navigate(-1);
+                if (action === 'next') this._navigate(1);
+                if (action === 'select') this._selectDate(btn.dataset.date);
+                if (action === 'extend') this._setExtend(parseInt(btn.dataset.days, 10), btn);
+            };
+            this._el.addEventListener('touchstart', this._boundHandlers.touchstart, { passive: false });
         }
 
         /* ── Lightweight hover updater — no full re-render, no flicker ── */
