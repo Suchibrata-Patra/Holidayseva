@@ -82,6 +82,7 @@
          * @param {string}   [options.defaultEnd]       Pre-selected check-out 'YYYY-MM-DD'
          * @param {number}   [options.months=2]         Columns of months to show (auto 1 on mobile)
          * @param {boolean}  [options.inline=false]     Remove shadow, add border
+         * @param {string}   [options.mode='range']      Selection mode: 'range' | 'single'
          * @param {boolean}  [options.showFooter=true]  Show footer with extend-days pills
          * @param {number[]} [options.extendOptions]    Days to offer as extensions [1,2,3,7,14]
          * @param {function} [options.onChange]         fn({ start, end, extendDays }) on complete range
@@ -111,6 +112,7 @@
                 defaultEnd: null,
                 months: 2,
                 inline: false,
+                mode: 'range',           /* 'range' | 'single' */
                 showFooter: true,
                 extendOptions: [1, 2, 3, 7, 14],
                 onChange: null,
@@ -161,6 +163,11 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                 extendDays: this._extendDays,
                 effectiveEnd: this._selEnd ? addDays(this._selEnd, this._extendDays) : null,
             };
+        }
+
+        /** Single-mode helper. Returns the selected Date or null. */
+        getDate() {
+            return this._selStart || null;
         }
 
         setRange(start, end) {
@@ -228,7 +235,11 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             /* live region */
             const live = this._el.querySelector('.hs-calendar__live');
             if (live) {
-                if (this._selStart && this._selEnd) {
+                if (this._opts.mode === 'single') {
+                    live.textContent = this._selStart
+                        ? `Selected: ${formatReadable(this._selStart)}.`
+                        : 'No date selected.';
+                } else if (this._selStart && this._selEnd) {
                     const nights = Math.round((this._selEnd - this._selStart) / 86400000);
                     const ext = this._extendDays > 0 ? ` Extended by ${this._extendDays} day${this._extendDays > 1 ? 's' : ''}.` : '';
                     live.textContent = `Selected: ${formatReadable(this._selStart)} to ${formatReadable(this._selEnd)}, ${nights} night${nights !== 1 ? 's' : ''}.${ext}`;
@@ -336,6 +347,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
         }
 
         _renderFooter() {
+            if (this._opts.mode === 'single') return '';
             if (!this._selEnd) return '';
             const opts = this._opts.extendOptions || [1, 2, 3, 7, 14];
             let html = `<span class="hs-calendar__extend-label">Extend stay:</span>`;
@@ -360,6 +372,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             };
 
             this._boundHandlers.mouseover = (e) => {
+                if (this._opts.mode === 'single') return;
                 const btn = e.target.closest('[data-action="select"]');
                 if (!btn || btn.disabled) return;
                 this._hoverDate = parseDate(btn.dataset.date);
@@ -367,6 +380,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             };
 
             this._boundHandlers.mouseleave = () => {
+                if (this._opts.mode === 'single') return;
                 if (this._hoverDate) {
                     this._hoverDate = null;
                     if (this._selStart && !this._selEnd) this._render();
@@ -409,26 +423,39 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             const date = parseDate(ds);
             if (!date) return;
 
-            if (!this._selStart || (this._selStart && this._selEnd)) {
-                this._selStart = date;
+            if (this._opts.mode === 'single') {
+                /* Toggle: tap selected → deselect; tap other → move selection */
+                this._selStart = sameDay(date, this._selStart) ? null : date;
                 this._selEnd = null;
                 this._hoverDate = null;
                 this._extendDays = 0;
+
+                if (this._opts.onSelect) this._opts.onSelect(this._selStart);
+                if (this._opts.onChange) this._opts.onChange({ date: this._selStart });
+
             } else {
-                if (date < this._selStart) {
-                    this._selEnd = this._selStart;
+                /* Original range-selection logic */
+                if (!this._selStart || (this._selStart && this._selEnd)) {
                     this._selStart = date;
-                } else if (sameDay(date, this._selStart)) {
-                    this._selStart = null;
+                    this._selEnd = null;
+                    this._hoverDate = null;
+                    this._extendDays = 0;
                 } else {
-                    this._selEnd = date;
+                    if (date < this._selStart) {
+                        this._selEnd = this._selStart;
+                        this._selStart = date;
+                    } else if (sameDay(date, this._selStart)) {
+                        this._selStart = null;
+                    } else {
+                        this._selEnd = date;
+                    }
                 }
-            }
 
-            if (this._opts.onSelect) this._opts.onSelect(date);
+                if (this._opts.onSelect) this._opts.onSelect(date);
 
-            if (this._selStart && this._selEnd && this._opts.onChange) {
-                this._opts.onChange({ start: this._selStart, end: this._selEnd, extendDays: this._extendDays });
+                if (this._selStart && this._selEnd && this._opts.onChange) {
+                    this._opts.onChange({ start: this._selStart, end: this._selEnd, extendDays: this._extendDays });
+                }
             }
 
             this._render();
