@@ -1,21 +1,3 @@
-/**
- * calendar.js
- * HolidaysevaCalendar — Date Range Picker
- * Holidayseva Design System · Components
- *
- * Usage:
- *   const cal = new HolidaysevaCalendar('#myCalendar', { options });
- *   cal.getRange()   → { start: Date|null, end: Date|null }
- *   cal.setRange(start, end)
- *   cal.clear()
- *   cal.goToMonth(year, month)
- *   cal.disable(dates)
- *   cal.destroy()
- *
- * Auto-init via data attribute:
- *   HolidaysevaCalendar.autoInit();  ← reads data-calendar-config on .calendar-wrapper
- */
-
 (function (global) {
     'use strict';
 
