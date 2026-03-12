@@ -10,11 +10,11 @@
 
 <body>
 
-    <div id="myCal">dd</div>
+    <div id="hs_calendar">dd</div>
 
     <script src="https://holidayseva.com/UI/Forms/calendar/calendar.js"></script>
     <script>
-        const cal = new HolidaysevaCalendar('#myCal', {
+        const cal = new HolidaysevaCalendar('#hs_calendar', {
             minDate: new Date(),
             onChange: ({ start, end }) => {
                 console.log('Check-in:', start);
