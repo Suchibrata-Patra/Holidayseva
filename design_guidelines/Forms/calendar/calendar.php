@@ -952,6 +952,7 @@ $partials = __DIR__ . '/../../';
 
   <!-- ── Left sidebar (untouched) ── -->
   <aside class="sidebar-left" style="z-index:10000;">
+    <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
 
   <!-- MAIN CONTENT -->
