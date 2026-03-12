@@ -204,7 +204,7 @@
 
 /* ── In-range fill ────────────────────────────────────────── */
 .hs-calendar__day--in-range {
-    background: var(--color-primary-alpha, rgba(255, 56, 92, 0.10)) !important;
+    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10)) !important;
     color: var(--color-text-primary, #1D1D1F);
     border-radius: 0;
 }
