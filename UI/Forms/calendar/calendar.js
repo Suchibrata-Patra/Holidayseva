@@ -375,16 +375,18 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                 if (this._opts.mode === 'single') return;
                 const btn = e.target.closest('[data-action="select"]');
                 if (!btn || btn.disabled) return;
-                this._hoverDate = parseDate(btn.dataset.date);
-                if (this._selStart && !this._selEnd) this._render();
+                const newHover = parseDate(btn.dataset.date);
+                if (!this._selStart || this._selEnd) return; /* only active while picking end */
+                if (sameDay(newHover, this._hoverDate)) return; /* same cell, skip */
+                this._hoverDate = newHover;
+                this._applyHoverClasses();
             };
 
             this._boundHandlers.mouseleave = () => {
                 if (this._opts.mode === 'single') return;
-                if (this._hoverDate) {
-                    this._hoverDate = null;
-                    if (this._selStart && !this._selEnd) this._render();
-                }
+                if (!this._hoverDate) return;
+                this._hoverDate = null;
+                this._applyHoverClasses();
             };
 
             this._boundHandlers.keydown = (e) => {
@@ -407,6 +409,33 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             this._el.addEventListener('mouseover', this._boundHandlers.mouseover);
             this._el.addEventListener('mouseleave', this._boundHandlers.mouseleave);
             this._el.addEventListener('keydown', this._boundHandlers.keydown);
+        }
+
+        /* ── Lightweight hover updater — no full re-render, no flicker ── */
+        _applyHoverClasses() {
+            const cells = this._el.querySelectorAll('.hs-calendar__day[data-date]');
+            cells.forEach(cell => {
+                const date = parseDate(cell.dataset.date);
+
+                /* Never touch the confirmed check-in cell */
+                if (sameDay(date, this._selStart)) return;
+
+                const inHover = this._selStart && this._hoverDate &&
+                    isBetween(date, this._selStart, this._hoverDate);
+                const isHoverEnd = this._selStart && sameDay(date, this._hoverDate);
+
+                /* Remove previous hover classes */
+                cell.classList.remove(
+                    'hs-calendar__day--hover-range',
+                    'hs-calendar__day--selected'
+                );
+
+                if (inHover) {
+                    cell.classList.add('hs-calendar__day--hover-range');
+                } else if (isHoverEnd) {
+                    cell.classList.add('hs-calendar__day--selected');
+                }
+            });
         }
 
         _navigate(dir) {
