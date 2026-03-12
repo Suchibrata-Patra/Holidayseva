@@ -21,6 +21,77 @@ $partials = __DIR__ . '/../../';
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css">
 <style>
 /* ═══════════════════════════════════════════════════════
+   GRID LAYOUT OVERRIDE
+   Replaces design-system.css fixed+padding approach with
+   a true 3-column CSS grid so sidebars sit in-flow.
+═══════════════════════════════════════════════════════ */
+.page-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr var(--toc-w);
+  grid-template-rows: 1fr;
+  /* cancel the padding offsets set by design-system.css */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  min-height: calc(100vh - var(--header-h));
+  align-items: start;
+}
+
+/* Left sidebar — sticky in its grid column */
+.page-layout > .sidebar-left {
+  grid-column: 1;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  border-right: 1px solid var(--border-light);
+  /* undo the fixed positioning from design-system.css */
+  left: unset;
+  width: 100%;
+  z-index: 10 !important;
+}
+
+/* Main content — centre column */
+.page-layout > .main-content {
+  grid-column: 2;
+  min-width: 0;
+  padding: 48px 56px;
+}
+
+/* Right sidebar — sticky in its grid column */
+.page-layout > .sidebar-right {
+  grid-column: 3;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  border-left: 1px solid var(--border-light);
+  /* undo the fixed positioning from design-system.css */
+  right: unset;
+  width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .page-layout {
+    grid-template-columns: var(--sidebar-w) 1fr;
+  }
+  .page-layout > .sidebar-right {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+  .page-layout > .sidebar-left {
+    display: none;
+  }
+  .page-layout > .main-content {
+    padding: 32px 20px;
+  }
+}
+/* ═══════════════════════════════════════════════════════
    PAGE TYPOGRAPHY
 ═══════════════════════════════════════════════════════ */
 .page-eyebrow {
@@ -348,7 +419,7 @@ $partials = __DIR__ . '/../../';
 <div class="page-layout">
 
   <!-- ── Left sidebar ── -->
-  <aside class="sidebar-left" style="z-index:10000;">
+  <aside class="sidebar-left">
     <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
 
