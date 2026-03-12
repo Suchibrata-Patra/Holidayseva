@@ -184,7 +184,7 @@
     right: 0;
     width: 50%;
     height: 100%;
-    background: var(--color-primary-alpha, rgba(255, 56, 92, 0.10));
+    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10));
     border-radius: 0;
     z-index: -1;
 }
@@ -197,7 +197,7 @@
     left: 0;
     width: 50%;
     height: 100%;
-    background: var(--color-primary-alpha, rgba(255, 56, 92, 0.10));
+    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10));
     border-radius: 0;
     z-index: -1;
 }
@@ -214,7 +214,7 @@
 }
 
 .hs-calendar__day--hover-range {
-    background: var(--color-primary-alpha, rgba(255, 56, 92, 0.10)) !important;
+    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10)) !important;
     border-radius: 0;
 }
 
