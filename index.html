@@ -7,25 +7,20 @@
 </head>
 
 <body>
-    <div class="calendar-wrapper" id="bookingCal">
-        <div class="calendar-mode-toggle">
-            <button class="calendar-mode-btn active" data-action="mode" data-mode="dates">Dates</button>
-            <button class="calendar-mode-btn" data-action="mode" data-mode="flexible">Flexible</button>
-        </div>
-        <div class="calendar-months"></div>
-        <div class="calendar-footer">
-            <button class="flex-pill active-pill" data-action="flex" data-flex="exact">Exact dates</button>
-            <button class="flex-pill" data-action="flex" data-flex="1">± 1 day</button>
-            <button class="flex-pill" data-action="flex" data-flex="7">± 7 days</button>
-        </div>
-    </div>
-    <script src="/UI/Components/calendar/calendar.js"></script>
+
+    <div id="myCal"></div>
+
+    <script src="/UI/Forms/calendar/calendar.js"></script>
     <script>
-        const cal = new HolidaysevaCalendar('#bookingCal', {
+        const cal = new HolidaysevaCalendar('#myCal', {
             minDate: new Date(),
-            onChange: ({ start, end }) => console.log(start, end),
+            onChange: ({ start, end }) => {
+                console.log('Check-in:', start);
+                console.log('Check-out:', end);
+            }
         });
     </script>
+
 </body>
 
 </html>
