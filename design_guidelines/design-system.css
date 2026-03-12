@@ -448,8 +448,8 @@ body {
 
 /* ── Compensate for fixed sidebars in three-column layout ─── */
 .page-layout {
-    padding-left: var(--sidebar-w);
-    padding-right: var(--toc-w);
+    /* padding-left: var(--sidebar-w);
+    padding-right: var(--toc-w); */
 }
 
 .sidebar-right::-webkit-scrollbar {
