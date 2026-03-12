@@ -163,20 +163,22 @@
 .hs-calendar__day--range-start,
 .hs-calendar__day--range-end {
     background: var(--color-secondary, #222222) !important;
-    color: #000000 !important;
+    color: #ffffff !important;
     font-weight: var(--weight-semibold, 600);
     border-radius: 50%;
-    z-index: 2;
+    z-index: 3;
     transition: none !important;
+    isolation: isolate;
 }
 
 .hs-calendar__day--selected::after,
 .hs-calendar__day--range-start::after,
 .hs-calendar__day--range-end::after {
-    background: #fff !important;
+    background: #ffffff !important;
 }
 
-/* Range start: right half-pill bleed into range */
+
+/* Range start: right half-pill bleed into range — sits strictly behind circle */
 .hs-calendar__day--range-start::before {
     content: '';
     position: absolute;
@@ -184,12 +186,13 @@
     right: 0;
     width: 50%;
     height: 100%;
-    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10));
+    background: var(--color-muted, #EBEBEB);
     border-radius: 0;
     z-index: -1;
+    pointer-events: none;
 }
 
-/* Range end: left half-pill bleed from range */
+/* Range end: left half-pill bleed from range — sits strictly behind circle */
 .hs-calendar__day--range-end::before {
     content: '';
     position: absolute;
@@ -197,25 +200,28 @@
     left: 0;
     width: 50%;
     height: 100%;
-    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10));
+    background: var(--color-muted, #EBEBEB);
     border-radius: 0;
     z-index: -1;
+    pointer-events: none;
 }
 
 /* ── In-range fill ────────────────────────────────────────── */
 .hs-calendar__day--in-range {
-    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10)) !important;
+    background: var(--color-muted, #EBEBEB) !important;
     color: var(--color-text-primary, #1D1D1F);
     border-radius: 0;
+    z-index: 0;
 }
 
 .hs-calendar__day--in-range:hover {
-    background: rgba(255, 56, 92, 0.18) !important;
+    background: #E0E0E0 !important;
 }
 
 .hs-calendar__day--hover-range {
-    background: var(--sys-gray-5, rgba(255, 56, 92, 0.10)) !important;
+    background: var(--color-muted, #EBEBEB) !important;
     border-radius: 0;
+    z-index: 0;
 }
 
 /* ── Extend-stay states ───────────────────────────────────── */
