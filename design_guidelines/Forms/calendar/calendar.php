@@ -30,6 +30,8 @@
     │  3. doc.css      — this documentation page only     │
     └─────────────────────────────────────────────────────┘
 -->
+  <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css" />
+  <link rel="stylesheet" href="https://holidayseva.com/header.php" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/colors.css" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar.js" />
