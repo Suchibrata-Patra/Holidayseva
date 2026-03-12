@@ -156,77 +156,93 @@
     height: 4px;
     background: var(--color-primary, #FF385C);
     border-radius: 50%;
+    z-index: 4;
 }
 
-/* Completely kill the today dot when the cell is selected — the black circle IS the indicator */
-.hs-calendar__day--today.hs-calendar__day--selected::after,
-.hs-calendar__day--today.hs-calendar__day--range-start::after,
-.hs-calendar__day--today.hs-calendar__day--range-end::after {
-    content: none;
-    display: none;
-    width: 0;
-    height: 0;
-    background: none;
-}
+/* ══════════════════════════════════════════════════════════
+   SELECTED / RANGE ENDPOINTS
+   Approach: the CELL element itself is transparent/band-only.
+   The black circle is drawn entirely via ::before (full inset).
+   The today dot is drawn via ::after (unchanged, sits on top).
+   This way z-index never fights — ::before is always under
+   the element background of siblings, ::after is always on top.
+   ══════════════════════════════════════════════════════════ */
 
-/* ── Selected / range endpoints ───────────────────────────── */
-.hs-calendar__day--selected,
-.hs-calendar__day--range-start,
-.hs-calendar__day--range-end {
+/* ── Single selected (no range) ── */
+.hs-calendar__day--selected {
     background: var(--color-secondary, #222222) !important;
     color: #ffffff !important;
     font-weight: var(--weight-semibold, 600);
     border-radius: 50%;
-    z-index: 3;
+    z-index: 2;
     transition: none !important;
-    isolation: isolate;
 }
 
-/* When today is selected, ::after becomes the white dot — reset it fully */
-.hs-calendar__day--selected::after,
-.hs-calendar__day--range-start::after,
-.hs-calendar__day--range-end::after {
-    /* Override the today dot: restore natural dimensions so it shows as a white dot */
+/* today dot turns white when selected */
+.hs-calendar__day--selected::after {
     background: #ffffff !important;
 }
 
+/* today + selected: hide the dot — the solid circle is indicator enough */
+.hs-calendar__day--today.hs-calendar__day--selected::after {
+    display: none !important;
+}
 
+/* ── Range start ── */
+.hs-calendar__day--range-start {
+    /* Right half = grey band; left half = transparent */
+    background: linear-gradient(to right, transparent 50%, #EBEBEB 50%) !important;
+    border-radius: 0 !important;
+    color: transparent !important;
+    /* hide real text — ::before redraws it */
+    transition: none !important;
+    z-index: 2;
+    position: relative;
+}
 
+/* ── Range end ── */
+.hs-calendar__day--range-end {
+    /* Left half = grey band; right half = transparent */
+    background: linear-gradient(to left, transparent 50%, #EBEBEB 50%) !important;
+    border-radius: 0 !important;
+    color: transparent !important;
+    transition: none !important;
+    z-index: 2;
+    position: relative;
+}
 
-/* Range start: right half-pill bleed into range — sits strictly behind circle */
-.hs-calendar__day--range-start::before {
-    content: '';
+/* Black circle drawn via ::before — sits over the band, under ::after (today dot) */
+.hs-calendar__day--range-start::before,
+.hs-calendar__day--range-end::before {
+    content: attr(data-day);
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    background: var(--color-muted, #EBEBEB);
-    border-radius: 0;
-    z-index: -1;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-secondary, #222222);
+    color: #ffffff;
+    font-size: inherit;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 50%;
+    z-index: 1;
     pointer-events: none;
 }
 
-/* Range end: left half-pill bleed from range — sits strictly behind circle */
-.hs-calendar__day--range-end::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: var(--color-muted, #EBEBEB);
-    border-radius: 0;
-    z-index: -1;
-    pointer-events: none;
+/* Today dot on range endpoints — ::after still fires, sits above ::before circle */
+.hs-calendar__day--today.hs-calendar__day--range-start::after,
+.hs-calendar__day--today.hs-calendar__day--range-end::after {
+    background: #ffffff !important;
+    z-index: 4;
 }
 
 /* ── In-range fill ────────────────────────────────────────── */
 .hs-calendar__day--in-range {
-    background: var(--color-muted, #EBEBEB) !important;
+    background: #EBEBEB !important;
     color: var(--color-text-primary, #1D1D1F);
     border-radius: 0;
-    z-index: 0;
+    z-index: 1;
 }
 
 .hs-calendar__day--in-range:hover {
@@ -234,9 +250,9 @@
 }
 
 .hs-calendar__day--hover-range {
-    background: var(--color-muted, #EBEBEB) !important;
+    background: #EBEBEB !important;
     border-radius: 0;
-    z-index: 0;
+    z-index: 1;
 }
 
 /* ── Extend-stay states ───────────────────────────────────── */
