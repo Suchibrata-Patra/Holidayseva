@@ -605,7 +605,6 @@ $partials = __DIR__ . '/../../';
 
 </div><!-- /page-layout -->
 
-<script src="/Components/calendar/calendar.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
