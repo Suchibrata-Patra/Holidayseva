@@ -1,7 +1,8 @@
 <?php
 /**
  * calendar.php
- * Calendar / Date Picker — Holidayseva Design System Documentation
+ * Calendar / Date Picker — Holidayseva Design System
+ * Layout: header + drawer_sidebar + left_sidebar + main + right_sidebar
  */
 $partials = __DIR__ . '/../../';
 ?>
@@ -10,134 +11,565 @@ $partials = __DIR__ . '/../../';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calendar — Holidayseva Design System</title>
+  <title>Calendar / Date Picker — Holidayseva Design System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css">
   <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css">
-  
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css">
+  <!-- calendar.js loaded as <script> at bottom of body, NOT as stylesheet -->
+
 <style>
-/* ═══════════════════════════════════════════
-   PAGE: Grid override
-═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   CALENDAR COMPONENT STYLES
+   These define the actual grid layout for the date picker.
+   Embedded here as a fallback in case calendar.css path
+   resolves to the doc stylesheet instead of component styles.
+═══════════════════════════════════════════════════════ */
+
+/* Wrapper */
+.calendar-wrapper {
+  background: var(--color-surface, #fff);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08);
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.calendar-wrapper.calendar-inline {
+  box-shadow: none;
+  border: 1px solid var(--color-border, #D2D2D7);
+}
+
+/* Dual-month grid */
+.calendar-months {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 20px;
+}
+
+/* Single month column */
+.calendar-month { min-width: 0; }
+
+/* Month header */
+.calendar-month__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.calendar-month__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary, #1D1D1F);
+  letter-spacing: -0.01em;
+}
+
+/* Nav buttons */
+.calendar-nav-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border, #D2D2D7);
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-primary, #1D1D1F);
+  cursor: pointer;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+  flex-shrink: 0;
+}
+.calendar-nav-btn:hover { background: var(--color-muted, #F7F7F7); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.calendar-nav-btn--hidden { visibility: hidden; pointer-events: none; }
+
+/* Weekday labels row */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+.calendar-weekday {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #6E6E73);
+  padding: 4px 0;
+  letter-spacing: 0.02em;
+}
+
+/* Days grid — THIS is the key rule that was missing */
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px 0;
+}
+
+/* Day cell */
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 400;
+  color: var(--color-text-primary, #1D1D1F);
+  background: none; border: none;
+  border-radius: 50%;
+  position: relative;
+  transition: background 0.12s ease, color 0.12s ease;
+  cursor: pointer;
+  z-index: 1;
+  font-family: inherit;
+}
+.calendar-day:hover:not(:disabled):not(.calendar-day--empty) {
+  background: var(--color-muted, #F7F7F7);
+}
+.calendar-day--empty   { cursor: default; }
+.calendar-day--disabled {
+  color: var(--color-muted-dark, #DDDDDD);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* Today dot */
+.calendar-day--today { font-weight: 700; }
+.calendar-day--today::after {
+  content: '';
+  position: absolute; bottom: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  background: var(--color-primary, #FF385C);
+  border-radius: 50%;
+}
+
+/* Selected / endpoints */
+.calendar-day--selected,
+.calendar-day--range-start,
+.calendar-day--range-end {
+  background: var(--color-secondary, #222222) !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 50%;
+  z-index: 2;
+}
+.calendar-day--selected::after,
+.calendar-day--range-start::after,
+.calendar-day--range-end::after { background: #fff !important; }
+
+/* Range start half-pill */
+.calendar-day--range-start::before {
+  content: ''; position: absolute;
+  top: 0; right: 0; width: 50%; height: 100%;
+  background: var(--color-primary-alpha, rgba(255,56,92,0.10));
+  border-radius: 0; z-index: -1;
+}
+/* Range end half-pill */
+.calendar-day--range-end::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; width: 50%; height: 100%;
+  background: var(--color-primary-alpha, rgba(255,56,92,0.10));
+  border-radius: 0; z-index: -1;
+}
+/* In-range fill */
+.calendar-day--in-range {
+  background: var(--color-primary-alpha, rgba(255,56,92,0.10)) !important;
+  color: var(--color-text-primary, #1D1D1F);
+  border-radius: 0;
+}
+.calendar-day--in-range:hover { background: rgba(255,56,92,0.18) !important; }
+.calendar-day--hover-range {
+  background: var(--color-primary-alpha, rgba(255,56,92,0.10)) !important;
+  border-radius: 0;
+}
+
+/* Focus ring */
+.calendar-day:focus-visible {
+  outline: 2px solid var(--color-primary, #FF385C);
+  outline-offset: 1px;
+}
+
+/* Footer */
+.calendar-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 20px;
+  margin-top: 4px;
+  border-top: 1px solid var(--color-border-light, #EBEBEB);
+  align-items: center;
+}
+
+/* Live region (screen-reader only) */
+.calendar-live-region {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+
+/* Responsive: single month on narrow screens */
+@media (max-width: 600px) {
+  .calendar-months { grid-template-columns: 1fr; gap: 24px; }
+  .calendar-wrapper { padding: 20px 16px; }
+}
+/* ═══════════════════════════════════════════════════════
+   GRID LAYOUT OVERRIDE
+   Replaces design-system.css fixed+padding approach with
+   a true 3-column CSS grid so sidebars sit in-flow.
+═══════════════════════════════════════════════════════ */
 .page-layout {
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr var(--toc-w);
   grid-template-rows: 1fr;
+  /* cancel the padding offsets set by design-system.css */
   padding-left: 0 !important;
   padding-right: 0 !important;
   min-height: calc(100vh - var(--header-h));
   align-items: start;
 }
+
+/* Left sidebar — sticky in its grid column */
 .page-layout > .sidebar-left {
-  grid-column: 1; position: sticky;
-  top: var(--header-h); height: calc(100vh - var(--header-h));
-  overflow-y: auto; border-right: 1px solid var(--border-light);
-  left: unset; width: 100%; z-index: 10 !important;
-}
-.page-layout > .main-content { grid-column: 2; min-width: 0; padding: 48px 56px; }
-.page-layout > .sidebar-right {
-  grid-column: 3; position: sticky;
-  top: var(--header-h); height: calc(100vh - var(--header-h));
-  overflow-y: auto; border-left: 1px solid var(--border-light);
-  right: unset; width: 100%;
-}
-@media (max-width: 1100px) {
-  .page-layout { grid-template-columns: var(--sidebar-w) 1fr; }
-  .page-layout > .sidebar-right { display: none; }
-}
-@media (max-width: 680px) {
-  .page-layout { grid-template-columns: 1fr; }
-  .page-layout > .sidebar-left { display: none; }
-  .page-layout > .main-content { padding: 32px 20px; }
+  grid-column: 1;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  border-right: 1px solid var(--border-light);
+  /* undo the fixed positioning from design-system.css */
+  left: unset;
+  width: 100%;
+  z-index: 10 !important;
 }
 
-/* ═══════════════════════════════════════════
+/* Main content — centre column */
+.page-layout > .main-content {
+  grid-column: 2;
+  min-width: 0;
+  padding: 48px 56px;
+}
+
+/* Right sidebar — sticky in its grid column */
+.page-layout > .sidebar-right {
+  grid-column: 3;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  border-left: 1px solid var(--border-light);
+  /* undo the fixed positioning from design-system.css */
+  right: unset;
+  width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .page-layout {
+    grid-template-columns: var(--sidebar-w) 1fr;
+  }
+  .page-layout > .sidebar-right {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+  .page-layout > .sidebar-left {
+    display: none;
+  }
+  .page-layout > .main-content {
+    padding: 32px 20px;
+  }
+}
+/* ═══════════════════════════════════════════════════════
    PAGE TYPOGRAPHY
-═══════════════════════════════════════════ */
+═══════════════════════════════════════════════════════ */
 .page-eyebrow {
-  font-size: 11px; font-weight: 600; color: var(--color-primary);
-  letter-spacing: var(--tracking-wide); text-transform: uppercase; margin-bottom: 8px;
+  font-size: 11px; font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 .page-title {
-  font-family: var(--font-display); font-size: 34px; font-weight: 700;
-  letter-spacing: var(--tracking-tight); color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: 34px; font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
   line-height: 1.15; margin-bottom: 16px;
 }
-.page-lead { font-size: 16px; color: var(--color-text-secondary); line-height: 1.65; max-width: 600px; margin-bottom: 40px; }
-.page-divider { border: none; border-top: 1px solid var(--color-border-light); margin: 48px 0; }
+.page-lead {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  line-height: 1.65; max-width: 620px;
+  margin-bottom: 40px;
+}
+.page-divider {
+  border: none;
+  border-top: 1px solid var(--color-border-light);
+  margin: 48px 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════════════ */
 .section { margin-bottom: 56px; }
 .section-title {
-  font-size: 20px; font-weight: 600; letter-spacing: var(--tracking-tight);
-  color: var(--color-text-primary); margin-bottom: 16px;
-  padding-bottom: 12px; border-bottom: 1px solid var(--color-border-light);
+  font-size: 20px; font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-light);
 }
 .section-body { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; }
-.section-body p + p { margin-top: 10px; }
 .section-subtitle { font-size: 14px; font-weight: 600; color: var(--color-text-primary); margin: 24px 0 10px; }
 
-/* ═══════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
+   CALLOUTS
+═══════════════════════════════════════════════════════ */
+.callout {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 13px; line-height: 1.6;
+  margin-bottom: 20px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.callout--info    { background: rgba(0,122,255,0.07); border: 1px solid rgba(0,122,255,0.20); }
+.callout--warning { background: rgba(255,149,0,0.10); border: 1px solid rgba(255,149,0,0.30); }
+.callout__icon { flex-shrink: 0; margin-top: 1px; }
+.callout__body { color: var(--color-text-secondary); }
+.callout__body strong { color: var(--color-text-primary); }
+.callout__body code {
+  font-family: var(--font-mono); font-size: 11px;
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px; border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════
    PREVIEW CARD
-═══════════════════════════════════════════ */
+═══════════════════════════════════════════════════════ */
 .preview-card {
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-light);
-  border-radius: 18px;
-  padding: 40px 24px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 32px; min-height: 300px;
-  overflow: hidden;
-}
-
-/* ═══════════════════════════════════════════
-   QUICK EMBED — hero snippet box
-═══════════════════════════════════════════ */
-.embed-hero {
-  background: #0D0D0D;
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: var(--radius-xl);
+  padding: 40px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 32px;
-  position: relative;
+  min-height: 280px;
 }
-.embed-hero__title {
-  font-size: 11px; font-weight: 600; color: #5E5E6A;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  margin-bottom: 20px;
-  display: flex; align-items: center; gap: 8px;
-}
-.embed-hero__title::before {
-  content: '';
-  display: inline-block;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #30D158;
-}
-.embed-hero pre {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px; line-height: 1.75;
-  color: #E5E5EA; white-space: pre; overflow-x: auto;
-  padding-bottom: 4px;
-}
-.embed-copy {
-  position: absolute; top: 20px; right: 20px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 7px; padding: 6px 12px;
-  font-size: 12px; font-family: 'DM Sans', sans-serif;
-  color: #8E8E93; cursor: pointer;
-  transition: all 0.12s;
-}
-.embed-copy:hover { background: rgba(255,255,255,0.14); color: #fff; }
 
-/* ═══════════════════════════════════════════
-   STEP LIST (Quick Start)
-═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   ANATOMY
+═══════════════════════════════════════════════════════ */
+.anatomy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 32px;
+}
+.anatomy-item { display: flex; align-items: flex-start; gap: 12px; }
+.anatomy-number {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary); color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.anatomy-label { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
+.anatomy-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; line-height: 1.5; }
+.anatomy-desc code {
+  font-family: var(--font-mono); font-size: 11px;
+  background: var(--color-muted); padding: 1px 4px;
+  border-radius: 3px; color: var(--color-primary);
+}
+
+/* Day state strip */
+.state-strip {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  background: var(--color-bg-secondary);
+  padding: 24px; border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  margin-bottom: 8px;
+}
+.state-item { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 72px; }
+.state-label { font-size: 11px; color: var(--color-text-secondary); font-weight: 500; text-align: center; }
+
+.demo-day {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-family: var(--font-system);
+  border-radius: 50%; position: relative;
+}
+.demo-day--default  { color: var(--color-text-primary); }
+.demo-day--hover    { background: var(--color-muted); color: var(--color-text-primary); }
+.demo-day--today    { font-weight: 700; color: var(--color-text-primary); }
+.demo-day--today::after {
+  content: ''; position: absolute; bottom: 3px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px; background: var(--color-primary); border-radius: 50%;
+}
+.demo-day--selected  { background: var(--color-secondary); color: #fff; font-weight: 600; }
+.demo-day--disabled  { color: var(--color-muted-dark); text-decoration: line-through; }
+
+.demo-range-wrap { display: flex; }
+.demo-day--rs {
+  background: var(--color-secondary); color: #fff; font-weight: 600;
+  border-radius: 50% 0 0 50%;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.demo-day--ir {
+  background: var(--color-primary-alpha); color: var(--color-text-primary);
+  border-radius: 0;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.demo-day--re {
+  background: var(--color-secondary); color: #fff; font-weight: 600;
+  border-radius: 0 50% 50% 0;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TABLES
+═══════════════════════════════════════════════════════ */
+.spec-table, .props-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px; margin-bottom: 24px;
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--color-border-light);
+}
+.spec-table th, .props-table th {
+  text-align: left; font-weight: 600;
+  color: var(--color-text-primary);
+  padding: 10px 14px;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: 11px; letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+.spec-table td, .props-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary); vertical-align: top;
+}
+.spec-table tr:last-child td, .props-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child {
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--color-text-primary); font-weight: 500;
+}
+.props-table td code {
+  font-family: var(--font-mono); font-size: 11px;
+  background: var(--color-muted); padding: 2px 5px;
+  border-radius: 4px; color: var(--color-text-primary);
+}
+.token-val {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--color-muted); padding: 2px 6px;
+  border-radius: 4px; color: var(--color-primary);
+}
+.type-badge {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: 11px;
+  padding: 2px 6px; border-radius: 4px;
+  background: var(--color-primary-alpha);
+  color: var(--color-primary); font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════
+   COLOR SWATCHES
+═══════════════════════════════════════════════════════ */
+.swatch-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: 13px;
+}
+.swatch-row:last-child { border-bottom: none; }
+.swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.08); flex-shrink: 0; }
+.swatch-name  { font-family: var(--font-mono); font-size: 12px; color: var(--color-primary); flex: 1; }
+.swatch-value { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-secondary); }
+
+/* ═══════════════════════════════════════════════════════
+   CODE BLOCKS
+═══════════════════════════════════════════════════════ */
+.code-label {
+  font-size: 10px; font-weight: 600;
+  color: #8E8E93; text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 8px;
+}
+.code-block {
+  background: var(--color-code-bg);
+  border-radius: var(--radius-lg);
+  padding: 24px; margin-bottom: 24px;
+  overflow-x: auto; position: relative;
+}
+.code-block pre {
+  font-family: var(--font-mono); font-size: 12px;
+  line-height: 1.75; color: var(--color-code-text);
+  white-space: pre;
+}
+.copy-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px; padding: 5px 10px;
+  font-size: 11px; font-family: var(--font-system);
+  color: #8E8E93; cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.copy-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.kw   { color: var(--color-code-keyword); }
+.str  { color: var(--color-code-string); }
+.num  { color: var(--color-code-number); }
+.cmt  { color: var(--color-code-comment); font-style: italic; }
+.prop { color: var(--color-code-property); }
+.tag  { color: var(--color-code-tag); }
+.attr { color: var(--color-code-attr); }
+
+/* ═══════════════════════════════════════════════════════
+   DO / DON'T GRID
+═══════════════════════════════════════════════════════ */
+.usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.usage-card { border-radius: var(--radius-lg); border: 1.5px solid transparent; overflow: hidden; }
+.usage-card--do   { border-color: rgba(52,199,89,0.35); }
+.usage-card--dont { border-color: rgba(255,59,48,0.30); }
+.usage-card__header { padding: 10px 16px; font-size: 13px; font-weight: 600; }
+.usage-card--do   .usage-card__header { background: rgba(52,199,89,0.10); color: #1A9E35; }
+.usage-card--dont .usage-card__header { background: rgba(255,59,48,0.08); color: #C13515; }
+.usage-card__body { padding: 14px 16px; background: var(--color-bg); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════════════
+   ACCESSIBILITY LIST
+═══════════════════════════════════════════════════════ */
+.a11y-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.a11y-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--color-text-secondary); }
+.a11y-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(52,199,89,0.10);
+  border: 1.5px solid rgba(52,199,89,0.30);
+  color: #1A9E35;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.a11y-item strong { color: var(--color-text-primary); }
+.a11y-item code { font-family: var(--font-mono); font-size: 11px; background: var(--color-muted); padding: 1px 4px; border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════════════
+   STEP LIST
+═══════════════════════════════════════════════════════ */
 .step-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
 .step-item { display: flex; gap: 16px; position: relative; }
 .step-item + .step-item::before {
-  content: ''; position: absolute; left: 14px; top: -14px;
-  width: 2px; height: 14px; background: var(--color-border-light);
+  content: ''; position: absolute;
+  left: 14px; top: -16px; width: 2px; height: 16px;
+  background: var(--color-border-light);
 }
 .step-number {
   width: 30px; height: 30px; border-radius: 50%;
@@ -146,506 +578,314 @@ $partials = __DIR__ . '/../../';
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 2px;
 }
-.step-content { padding-bottom: 24px; }
-.step-title { font-weight: 600; color: var(--color-text-primary); font-size: 15px; margin-bottom: 6px; }
+.step-content { padding-bottom: 28px; }
+.step-title { font-weight: 600; color: var(--color-text-primary); font-size: 14px; margin-bottom: 6px; }
 .step-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
-.step-desc code {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  background: var(--color-muted); padding: 1px 5px;
-  border-radius: 3px; color: var(--color-primary);
-}
+.step-desc code { font-family: var(--font-mono); font-size: 11px; background: var(--color-muted); padding: 1px 5px; border-radius: 3px; color: var(--color-primary); }
 
-/* ═══════════════════════════════════════════
-   CODE BLOCKS
-═══════════════════════════════════════════ */
-.code-label {
-  font-size: 11px; font-weight: 600; color: #8E8E93;
-  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
-}
-.code-block {
-  background: #0D0D0D;
-  border-radius: 14px; padding: 24px; margin-bottom: 24px;
-  overflow-x: auto; position: relative;
-}
-.code-block pre {
-  font-family: 'DM Mono', monospace; font-size: 13px;
-  line-height: 1.7; color: #E5E5EA; white-space: pre;
-}
-.copy-btn {
-  position: absolute; top: 14px; right: 14px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 6px; padding: 5px 10px;
-  font-size: 11px; font-family: 'DM Sans', sans-serif;
-  color: #8E8E93; cursor: pointer; transition: all 0.12s;
-}
-.copy-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
-.kw { color: #FF7AB2; }
-.str { color: #FC6A5D; }
-.cmt { color: #6C7986; font-style: italic; }
-.prop { color: #67B7A4; }
-.tag { color: #FF8170; }
-.attr { color: #67B7A4; }
-.num { color: #D9C97C; }
-
-/* ═══════════════════════════════════════════
-   PROPS TABLE
-═══════════════════════════════════════════ */
-.props-table {
-  width: 100%; border-collapse: collapse; font-size: 13px;
-  margin-bottom: 24px; border-radius: 10px; overflow: hidden;
-  border: 1px solid var(--color-border-light);
-}
-.props-table th {
-  text-align: left; font-weight: 600; color: var(--color-text-primary);
-  padding: 10px 14px; background: var(--color-bg-secondary);
-  border-bottom: 1px solid var(--color-border-light);
-  font-size: 11px; letter-spacing: var(--tracking-wide); text-transform: uppercase;
-}
-.props-table td {
-  padding: 10px 14px; border-bottom: 1px solid var(--color-border-light);
-  color: var(--color-text-secondary); vertical-align: top;
-}
-.props-table tr:last-child td { border-bottom: none; }
-.props-table td code {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  background: var(--color-muted); padding: 2px 5px;
-  border-radius: 4px; color: var(--color-text-primary);
-}
-.type-badge {
-  display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px;
-  padding: 2px 6px; border-radius: 4px;
-  background: var(--color-primary-alpha); color: var(--color-primary); font-weight: 500;
-}
-
-/* ═══════════════════════════════════════════
-   CALLOUTS
-═══════════════════════════════════════════ */
-.callout {
-  padding: 14px 18px; border-radius: 10px; font-size: 13px;
-  line-height: 1.6; margin-bottom: 20px;
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.callout--info { background: rgba(0,122,255,0.07); border: 1px solid rgba(0,122,255,0.20); }
-.callout--tip  { background: rgba(52,199,89,0.08); border: 1px solid rgba(52,199,89,0.25); }
-.callout__body { color: var(--color-text-secondary); }
-.callout__body strong { color: var(--color-text-primary); }
-.callout__body code {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px;
-}
-
-/* ═══════════════════════════════════════════
-   DO / DON'T
-═══════════════════════════════════════════ */
-.usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.usage-card { border-radius: 12px; border: 1.5px solid transparent; overflow: hidden; }
-.usage-card--do { border-color: rgba(52,199,89,0.35); }
-.usage-card--dont { border-color: rgba(255,59,48,0.30); }
-.usage-card__header { padding: 10px 16px; font-size: 13px; font-weight: 600; }
-.usage-card--do .usage-card__header { background: rgba(52,199,89,0.10); color: #1A9E35; }
-.usage-card--dont .usage-card__header { background: rgba(255,59,48,0.08); color: #C13515; }
-.usage-card__body { padding: 14px 16px; background: var(--color-bg); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
-.usage-card__body code {
-  font-family: 'DM Mono', monospace; font-size: 11px;
-  background: var(--color-muted); padding: 1px 4px; border-radius: 3px;
-}
-@media (max-width: 560px) {
-  .usage-grid { grid-template-columns: 1fr; }
-}
-
-/* ═══════════════════════════════════════════
-   CALLBACK DEMO OUTPUT
-═══════════════════════════════════════════ */
-.output-box {
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-light);
-  border-radius: 10px; padding: 16px 20px;
-  font-family: 'DM Mono', monospace; font-size: 12px;
-  color: var(--color-text-secondary); line-height: 1.6;
-  margin-top: 16px; min-height: 52px;
-}
-.output-box strong { color: var(--color-primary); }
-
-/* ═══════════════════════════════════════════
-   CALENDAR COMPONENT INLINE STYLES
-   (in case holidayseva.com/UI files are unreachable)
-═══════════════════════════════════════════ */
-.hs-calendar {
-  background: #fff;
-  border-radius: 18px; padding: 28px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08);
-  max-width: 720px; width: 100%;
-  display: flex; flex-direction: column; gap: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "DM Sans", "Segoe UI", sans-serif;
-  box-sizing: border-box;
-}
-.hs-calendar *, .hs-calendar *::before, .hs-calendar *::after { box-sizing: border-box; }
-.hs-calendar.hs-calendar--inline { box-shadow: none; border: 1px solid #D2D2D7; }
-.hs-calendar__months { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-bottom: 20px; }
-.hs-calendar__month { min-width: 0; }
-.hs-calendar__month-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.hs-calendar__month-title { font-size: 15px; font-weight: 600; color: #1D1D1F; letter-spacing: -0.01em; }
-.hs-calendar__nav {
-  width: 32px; height: 32px; border-radius: 50%; border: 1px solid #D2D2D7;
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  color: #1D1D1F; cursor: pointer; transition: background 0.12s, box-shadow 0.12s; flex-shrink: 0;
-}
-.hs-calendar__nav:hover { background: #F5F5F7; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.hs-calendar__nav--hidden { visibility: hidden; pointer-events: none; }
-.hs-calendar__weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
-.hs-calendar__weekday { text-align: center; font-size: 11px; font-weight: 600; color: #6E6E73; padding: 4px 0; letter-spacing: 0.02em; }
-.hs-calendar__days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px 0; }
-.hs-calendar__day {
-  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 400; color: #1D1D1F;
-  background: none; border: none; border-radius: 50%;
-  position: relative; transition: background 0.12s, color 0.12s;
-  cursor: pointer; z-index: 1; font-family: inherit;
-}
-.hs-calendar__day:hover:not(:disabled):not(.hs-calendar__day--empty) { background: #F5F5F7; }
-.hs-calendar__day--empty { cursor: default; pointer-events: none; }
-.hs-calendar__day--disabled { color: #DDDDDD; text-decoration: line-through; cursor: not-allowed; pointer-events: none; }
-.hs-calendar__day--today { font-weight: 700; }
-.hs-calendar__day--today::after {
-  content: ''; position: absolute; bottom: 4px; left: 50%;
-  transform: translateX(-50%); width: 4px; height: 4px;
-  background: #FF385C; border-radius: 50%;
-}
-.hs-calendar__day--selected,
-.hs-calendar__day--range-start,
-.hs-calendar__day--range-end {
-  background: #222222 !important; color: #fff !important;
-  font-weight: 600; border-radius: 50%; z-index: 2;
-}
-.hs-calendar__day--selected::after,
-.hs-calendar__day--range-start::after,
-.hs-calendar__day--range-end::after { background: #fff !important; }
-.hs-calendar__day--range-start::before {
-  content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 100%;
-  background: rgba(255,56,92,0.10); border-radius: 0; z-index: -1;
-}
-.hs-calendar__day--range-end::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 100%;
-  background: rgba(255,56,92,0.10); border-radius: 0; z-index: -1;
-}
-.hs-calendar__day--in-range {
-  background: rgba(255,56,92,0.10) !important; color: #1D1D1F; border-radius: 0;
-}
-.hs-calendar__day--in-range:hover { background: rgba(255,56,92,0.18) !important; }
-.hs-calendar__day--hover-range { background: rgba(255,56,92,0.10) !important; border-radius: 0; }
-.hs-calendar__day--extend-end {
-  background: #1A7A35 !important; color: #fff !important; font-weight: 600; border-radius: 50%; z-index: 2;
-}
-.hs-calendar__day--extend-end::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 100%;
-  background: rgba(52,199,89,0.12); border-radius: 0; z-index: -1;
-}
-.hs-calendar__day--extend-range {
-  background: rgba(52,199,89,0.12) !important; color: #1D1D1F; border-radius: 0;
-}
-.hs-calendar__day:focus-visible { outline: 2px solid #FF385C; outline-offset: 1px; }
-.hs-calendar__footer {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  padding-top: 20px; margin-top: 4px;
-  border-top: 1px solid #EBEBEB; align-items: center;
-}
-.hs-calendar__extend-label { font-size: 12px; color: #6E6E73; font-weight: 500; margin-right: 4px; white-space: nowrap; }
-.hs-calendar__extend-pill {
-  padding: 6px 14px; border: 1.5px solid #D2D2D7; border-radius: 999px;
-  background: none; font-family: inherit; font-size: 13px; color: #6E6E73;
-  cursor: pointer; transition: all 0.12s; white-space: nowrap;
-}
-.hs-calendar__extend-pill:hover { border-color: #1D1D1F; color: #1D1D1F; }
-.hs-calendar__extend-pill--active {
-  border-color: #1D1D1F; color: #1D1D1F; font-weight: 600;
-  background: rgba(0,0,0,0.04);
-}
-.hs-calendar__live {
+/* ── Live region (screen reader only) ── */
+.calendar-live-region {
   position: absolute; width: 1px; height: 1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
 }
-@media (max-width: 600px) {
-  .hs-calendar__months { grid-template-columns: 1fr; gap: 24px; }
-  .hs-calendar { padding: 20px 16px; }
-  .hs-calendar__extend-label { display: none; }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .anatomy-grid { grid-template-columns: 1fr; }
+  .usage-grid   { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .preview-card { padding: 20px 12px; }
 }
 </style>
 </head>
 <body>
 
 <?php include $partials . 'header.php'; ?>
+<?php include $partials . 'drawer_sidebar.php'; ?>
 
 <div class="page-layout">
 
   <!-- ── Left sidebar ── -->
   <aside class="sidebar-left">
-    <?php include $partials . 'drawer_sidebar.php'; ?>
     <?php include $partials . 'left_sidebar.php'; ?>
   </aside>
 
   <!-- ── Main content ── -->
   <main class="main-content">
 
-    <!-- HEADER -->
-    <p class="page-eyebrow">Components · Forms</p>
-    <h1 class="page-title">Calendar</h1>
-    <p class="page-lead">
-      A responsive date-range picker for booking flows. One script tag, one div — done.
-      Works on desktop (two months) and collapses to a single month on mobile automatically.
-    </p>
+    <!-- Page Header -->
+    <div id="overview">
+      <p class="page-eyebrow">Components</p>
+      <h1 class="page-title">Calendar / Date Picker</h1>
+      <p class="page-lead">
+        A dual-month date range picker for selecting check-in and check-out dates.
+        Supports exact dates, flexible windows, range hover states, disabled dates,
+        and today highlighting — built for travel and booking flows.
+      </p>
+
+      <div class="callout callout--info">
+        <svg class="callout__icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6.5" stroke="#007AFF" stroke-width="1.3"/>
+          <path d="M8 5.5v.5M8 7.5v3.5" stroke="#007AFF" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <div class="callout__body">
+          <strong>Token dependency:</strong> This component reads exclusively from
+          <code>colors.css</code>. Always load design tokens <em>before</em>
+          <code>calendar.css</code> — reversed order will leave all
+          <code>var(--…)</code> calls unresolved.
+        </div>
+      </div>
+    </div>
 
     <hr class="page-divider" />
 
-    <!-- ── LIVE PREVIEW ── -->
+    <!-- LIVE PREVIEW -->
     <section class="section" id="preview">
       <h2 class="section-title">Live Preview</h2>
+      <p class="section-body" style="margin-bottom:24px;">
+        Interact with the calendar below. Click a date to set check-in,
+        click a second date to set check-out. Navigate months with the arrows.
+        Footer pills adjust date flexibility.
+      </p>
+
       <div class="preview-card">
-        <div id="previewCal"></div>
-      </div>
-      <div class="output-box" id="previewOutput">
-        <span style="color:#AEAEB2;">Select a check-in and check-out date above…</span>
+        <div class="calendar-wrapper" id="previewCal">
+          <div class="calendar-mode-toggle">
+            <button class="calendar-mode-btn active" data-action="mode" data-mode="dates">Dates</button>
+            <button class="calendar-mode-btn" data-action="mode" data-mode="flexible">Flexible</button>
+          </div>
+          <div class="calendar-months"></div>
+          <div class="calendar-footer">
+            <button class="flex-pill active-pill" data-action="flex" data-flex="exact">Exact dates</button>
+            <button class="flex-pill" data-action="flex" data-flex="1">± 1 day</button>
+            <button class="flex-pill" data-action="flex" data-flex="2">± 2 days</button>
+            <button class="flex-pill" data-action="flex" data-flex="3">± 3 days</button>
+            <button class="flex-pill" data-action="flex" data-flex="7">± 7 days</button>
+            <button class="flex-pill" data-action="flex" data-flex="14">± 14 days</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ── QUICK EMBED ── -->
-    <section class="section" id="embed">
-      <h2 class="section-title">Quick Embed</h2>
+    <!-- ANATOMY -->
+    <section class="section" id="anatomy">
+      <h2 class="section-title">Anatomy</h2>
       <p class="section-body" style="margin-bottom:24px;">
-        Two lines. That's all you need to drop a fully working calendar into any page.
+        The calendar is built from discrete, independently styled sub-elements.
+        Each maps to a specific BEM class in <code style="font-family:var(--font-mono);font-size:12px;background:var(--color-muted);padding:1px 5px;border-radius:4px;">calendar.css</code>.
       </p>
 
-      <div class="embed-hero">
-        <div class="embed-hero__title">Minimum embed</div>
-        <button class="embed-copy" onclick="copyCode(this)">Copy</button>
-        <pre><span class="cmt">&lt;!-- 1. One div --&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">data-hs-calendar</span><span class="tag">&gt;&lt;/div&gt;</span>
-
-<span class="cmt">&lt;!-- 2. One script --&gt;</span>
-<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"https://holidayseva.com/UI/Forms/calendar/calendar-component.js"</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+      <div class="anatomy-grid">
+        <div class="anatomy-item"><div class="anatomy-number">1</div><div><div class="anatomy-label">Mode Toggle</div><div class="anatomy-desc">Segmented pill switching between "Dates" and "Flexible" intent. Wired via <code>data-action="mode"</code>.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">2</div><div><div class="anatomy-label">Month Header</div><div class="anatomy-desc">Month name + year. Houses prev/next nav via <code>.calendar-month__header</code>.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">3</div><div><div class="anatomy-label">Navigation Buttons</div><div class="anatomy-desc">32×32 circular icon buttons (<code>.calendar-nav-btn</code>). Left hidden on right month; right hidden on left month.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">4</div><div><div class="anatomy-label">Weekday Labels</div><div class="anatomy-desc">S M T W T F S row. Class <code>.calendar-weekday</code>. Token: <code>--text-xs</code>, <code>--color-text-secondary</code>.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">5</div><div><div class="anatomy-label">Day Cell</div><div class="anatomy-desc">7-column button grid (<code>.calendar-day</code>). Each cell has 6 visual states applied via BEM modifier classes.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">6</div><div><div class="anatomy-label">Range Fill</div><div class="anatomy-desc">Rectangular alpha band between endpoints. Class <code>.calendar-day--in-range</code>. Token: <code>--color-primary-alpha</code>.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">7</div><div><div class="anatomy-label">Today Dot</div><div class="anatomy-desc">4px circle via <code>.calendar-day--today::after</code>. Token: <code>--color-primary</code>. Turns white on selected state.</div></div></div>
+        <div class="anatomy-item"><div class="anatomy-number">8</div><div><div class="anatomy-label">Flexibility Footer</div><div class="anatomy-desc">Pill row (<code>.calendar-footer</code>) softening the constraint by ±1–14 days. Wired via <code>data-action="flex"</code>.</div></div></div>
       </div>
 
-      <div class="callout callout--tip">
-        <span class="callout__icon">💡</span>
+      <h3 class="section-subtitle">Day Cell States</h3>
+      <div class="state-strip">
+        <div class="state-item"><div class="demo-day demo-day--default">8</div><div class="state-label">Default</div></div>
+        <div class="state-item"><div class="demo-day demo-day--hover">8</div><div class="state-label">Hover</div></div>
+        <div class="state-item"><div class="demo-day demo-day--today">8</div><div class="state-label">Today</div></div>
+        <div class="state-item"><div class="demo-day demo-day--selected">8</div><div class="state-label">Selected</div></div>
+        <div class="state-item">
+          <div class="demo-range-wrap"><div class="demo-day--rs">6</div><div class="demo-day--ir">7</div><div class="demo-day--re">8</div></div>
+          <div class="state-label">Range</div>
+        </div>
+        <div class="state-item"><div class="demo-day demo-day--disabled">8</div><div class="state-label">Disabled</div></div>
+      </div>
+    </section>
+
+    <!-- SPECIFICATIONS -->
+    <section class="section" id="specs">
+      <h2 class="section-title">Specifications</h2>
+
+      <h3 class="section-subtitle">Layout &amp; Sizing</h3>
+      <table class="spec-table">
+        <thead><tr><th>Property</th><th>Value</th><th>Token</th></tr></thead>
+        <tbody>
+          <tr><td>Wrapper max-width</td><td>700px</td><td>—</td></tr>
+          <tr><td>Wrapper padding</td><td>28px</td><td><span class="token-val">--space-lg</span></td></tr>
+          <tr><td>Wrapper border-radius</td><td>18px</td><td><span class="token-val">--radius-xl</span></td></tr>
+          <tr><td>Wrapper shadow</td><td>layered drop shadow</td><td><span class="token-val">--shadow-modal</span></td></tr>
+          <tr><td>Dual-month column gap</td><td>32px</td><td><span class="token-val">--space-2xl</span></td></tr>
+          <tr><td>Day cell</td><td>aspect-ratio: 1 (fills grid column)</td><td>—</td></tr>
+          <tr><td>Nav button</td><td>32 × 32px, border-radius 50%</td><td>—</td></tr>
+          <tr><td>Grid columns</td><td>7</td><td>—</td></tr>
+          <tr><td>Today dot</td><td>4 × 4px</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-subtitle">Color Tokens</h3>
+      <div style="border:1px solid var(--color-border-light);border-radius:10px;padding:0 16px;">
+        <div class="swatch-row"><div class="swatch" style="background:#FF385C;"></div><span class="swatch-name">--color-primary</span><span class="swatch-value">#FF385C — today dot, focus ring</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:rgba(255,56,92,0.12);"></div><span class="swatch-name">--color-primary-alpha</span><span class="swatch-value">rgba(255,56,92,.12) — in-range fill</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#222222;"></div><span class="swatch-name">--color-secondary</span><span class="swatch-value">#222222 — selected, range endpoints</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#EBEBEB;border-color:#ddd;"></div><span class="swatch-name">--color-muted</span><span class="swatch-value">#EBEBEB — hover background</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#D2D2D7;"></div><span class="swatch-name">--color-border</span><span class="swatch-value">#D2D2D7 — nav button border</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#1D1D1F;"></div><span class="swatch-name">--color-text-primary</span><span class="swatch-value">#1D1D1F — default day number</span></div>
+        <div class="swatch-row" style="border:none;"><div class="swatch" style="background:#6E6E73;"></div><span class="swatch-name">--color-text-secondary</span><span class="swatch-value">#6E6E73 — weekday labels</span></div>
+      </div>
+    </section>
+
+    <!-- HTML USAGE -->
+    <section class="section" id="usage">
+      <h2 class="section-title">HTML Usage</h2>
+      <p class="section-body" style="margin-bottom:20px;">
+        Copy the skeleton below. The <code style="font-family:var(--font-mono);font-size:12px;background:var(--color-muted);padding:1px 4px;border-radius:4px;">.calendar-months</code> div is populated by
+        <code style="font-family:var(--font-mono);font-size:12px;background:var(--color-muted);padding:1px 4px;border-radius:4px;">calendar.js</code> — never add day cells manually.
+      </p>
+      <div class="callout callout--warning">
+        <svg class="callout__icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2L15 14H1L8 2Z" stroke="#C45508" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M8 6v4M8 11.5v.5" stroke="#C45508" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
         <div class="callout__body">
-          <strong>That's it.</strong> The script self-injects all required CSS, auto-finds every
-          <code>[data-hs-calendar]</code> div, and initialises. No <code>new HolidaysevaCalendar()</code> call needed unless you want custom options.
+          <strong>Load order is critical.</strong> <code>colors.css</code> must come before <code>calendar.css</code>.
         </div>
       </div>
-
-      <!-- Option B: with options -->
-      <h3 class="section-subtitle">With options (data attribute)</h3>
       <div class="code-label">HTML</div>
       <div class="code-block">
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><span class="tag">&lt;div</span>
-  <span class="attr">data-hs-calendar</span>
-  <span class="attr">data-hs-config</span>=<span class="str">'{"months":2,"showFooter":true}'</span>
-<span class="tag">&gt;&lt;/div&gt;</span>
+        <pre><span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"/assets/css/colors.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"/Components/calendar/calendar.css"</span><span class="tag">&gt;</span>
 
-<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"/UI/Forms/calendar/calendar-component.js"</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
-      </div>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"calendar-wrapper"</span> <span class="attr">id</span>=<span class="str">"bookingCal"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"calendar-mode-toggle"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"calendar-mode-btn active"</span> <span class="attr">data-action</span>=<span class="str">"mode"</span> <span class="attr">data-mode</span>=<span class="str">"dates"</span><span class="tag">&gt;</span>Dates<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"calendar-mode-btn"</span> <span class="attr">data-action</span>=<span class="str">"mode"</span> <span class="attr">data-mode</span>=<span class="str">"flexible"</span><span class="tag">&gt;</span>Flexible<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"calendar-months"</span><span class="tag">&gt;&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"calendar-footer"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"flex-pill active-pill"</span> <span class="attr">data-action</span>=<span class="str">"flex"</span> <span class="attr">data-flex</span>=<span class="str">"exact"</span><span class="tag">&gt;</span>Exact dates<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"flex-pill"</span> <span class="attr">data-action</span>=<span class="str">"flex"</span> <span class="attr">data-flex</span>=<span class="str">"1"</span><span class="tag">&gt;</span>± 1 day<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"flex-pill"</span> <span class="attr">data-action</span>=<span class="str">"flex"</span> <span class="attr">data-flex</span>=<span class="str">"7"</span><span class="tag">&gt;</span>± 7 days<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
 
-      <!-- Option C: JS init -->
-      <h3 class="section-subtitle">JS initialisation (full control)</h3>
-      <div class="code-label">HTML + JS</div>
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><span class="cmt">&lt;!-- your page --&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"bookingCal"</span><span class="tag">&gt;&lt;/div&gt;</span>
-
-<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"/UI/Forms/calendar/calendar-component.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"/Components/calendar/calendar.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
 <span class="tag">&lt;script&gt;</span>
   <span class="kw">const</span> cal = <span class="kw">new</span> <span class="prop">HolidaysevaCalendar</span>(<span class="str">'#bookingCal'</span>, {
     <span class="prop">minDate</span>: <span class="kw">new</span> Date(),
-    <span class="prop">onChange</span>: ({ start, end, extendDays, effectiveEnd }) <span class="kw">=&gt;</span> {
-      console.<span class="prop">log</span>(<span class="str">'Check-in:'</span>, start);
-      console.<span class="prop">log</span>(<span class="str">'Check-out:'</span>, end);
-      console.<span class="prop">log</span>(<span class="str">'Extended checkout:'</span>, effectiveEnd);
-    },
+    <span class="prop">onChange</span>: ({ start, end }) => console.<span class="prop">log</span>(start, end),
   });
 <span class="tag">&lt;/script&gt;</span></pre>
       </div>
     </section>
 
-    <!-- ── QUICK START ── -->
-    <section class="section" id="quickstart">
-      <h2 class="section-title">Quick Start</h2>
+    <!-- JAVASCRIPT API -->
+    <section class="section" id="javascript">
+      <h2 class="section-title">JavaScript API</h2>
+      <p class="section-body" style="margin-bottom:20px;">
+        <code style="font-family:var(--font-mono);font-size:12px;background:var(--color-muted);padding:1px 4px;border-radius:4px;">HolidaysevaCalendar</code> is a vanilla JS class exposed on <code style="font-family:var(--font-mono);font-size:12px;background:var(--color-muted);padding:1px 4px;border-radius:4px;">window</code>.
+        No framework or build step required.
+      </p>
+
+      <h3 class="section-subtitle">Constructor Options</h3>
+      <table class="props-table">
+        <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>minDate</code></td><td><span class="type-badge">Date</span></td><td><code>new Date()</code></td><td>Earliest selectable date. Past dates render disabled.</td></tr>
+          <tr><td><code>maxDate</code></td><td><span class="type-badge">Date</span></td><td><code>null</code></td><td>Latest selectable date. <code>null</code> = no upper limit.</td></tr>
+          <tr><td><code>disabledDates</code></td><td><span class="type-badge">string[]</span></td><td><code>[]</code></td><td>Array of <code>YYYY-MM-DD</code> strings to block.</td></tr>
+          <tr><td><code>months</code></td><td><span class="type-badge">number</span></td><td><code>2</code></td><td>Month columns to render. Use <code>1</code> on narrow layouts.</td></tr>
+          <tr><td><code>inline</code></td><td><span class="type-badge">boolean</span></td><td><code>false</code></td><td>Replaces drop-shadow with a border. Adds <code>.calendar-inline</code>.</td></tr>
+          <tr><td><code>onChange</code></td><td><span class="type-badge">function</span></td><td><code>null</code></td><td>Fired on complete range. Receives <code>{ start: Date, end: Date }</code>.</td></tr>
+          <tr><td><code>onMonthChange</code></td><td><span class="type-badge">function</span></td><td><code>null</code></td><td>Fired on navigation. Receives <code>{ year, month }</code>.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-subtitle">Instance Methods</h3>
+      <table class="props-table">
+        <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>getRange()</code></td><td><span class="type-badge">{ start, end }</span></td><td>Returns current selection. Values are <code>Date</code> or <code>null</code>.</td></tr>
+          <tr><td><code>setRange(start, end)</code></td><td><code>void</code></td><td>Programmatically sets dates.</td></tr>
+          <tr><td><code>clear()</code></td><td><code>void</code></td><td>Clears selection and hover state, re-renders.</td></tr>
+          <tr><td><code>goToMonth(year, month)</code></td><td><code>void</code></td><td>Navigates to month. <code>month</code> is 0-indexed.</td></tr>
+          <tr><td><code>disable(dates)</code></td><td><code>void</code></td><td>Dynamically adds to disabled list.</td></tr>
+          <tr><td><code>destroy()</code></td><td><code>void</code></td><td>Removes all event listeners and clears HTML.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- INTEGRATION -->
+    <section class="section" id="integration">
+      <h2 class="section-title">Integration</h2>
+      <p class="section-body" style="margin-bottom:28px;">Six steps to add the Calendar to any Holidayseva page from scratch.</p>
       <ol class="step-list">
-        <li class="step-item">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <div class="step-title">Copy the component file</div>
-            <div class="step-desc">Upload <code>calendar-component.js</code> to <code>/UI/Forms/calendar/</code> on your server. That single file includes all styles — no separate CSS needed.</div>
-          </div>
-        </li>
-        <li class="step-item">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <div class="step-title">Add a div where you want the calendar</div>
-            <div class="step-desc">Place <code>&lt;div data-hs-calendar&gt;&lt;/div&gt;</code> anywhere in your page body. Give it an <code>id</code> if you need to reference it via JS.</div>
-          </div>
-        </li>
-        <li class="step-item">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <div class="step-title">Load the script</div>
-            <div class="step-desc">Add one <code>&lt;script src="/UI/Forms/calendar/calendar-component.js"&gt;&lt;/script&gt;</code> tag before <code>&lt;/body&gt;</code>. Auto-init runs immediately.</div>
-          </div>
-        </li>
-        <li class="step-item">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <div class="step-title">Wire up your form (optional)</div>
-            <div class="step-desc">Use the <code>onChange</code> callback to sync <code>start</code>, <code>end</code>, and <code>effectiveEnd</code> into hidden inputs for form submission.</div>
-          </div>
-        </li>
-        <li class="step-item">
-          <div class="step-number">5</div>
-          <div class="step-content">
-            <div class="step-title">Block unavailable dates</div>
-            <div class="step-desc">Pass <code>disabledDates: ['2026-04-15', '2026-04-16']</code> on init, or call <code>cal.disable(dates)</code> dynamically inside <code>onMonthChange</code> to fetch from your API.</div>
-          </div>
-        </li>
+        <li class="step-item"><div class="step-number">1</div><div class="step-content"><div class="step-title">Copy component files</div><div class="step-desc">Place <code>calendar.css</code> and <code>calendar.js</code> into <code>/Components/calendar/</code>.</div></div></li>
+        <li class="step-item"><div class="step-number">2</div><div class="step-content"><div class="step-title">Import in correct order</div><div class="step-desc">In your <code>&lt;head&gt;</code>: load <code>colors.css</code> first, then <code>calendar.css</code>.</div></div></li>
+        <li class="step-item"><div class="step-number">3</div><div class="step-content"><div class="step-title">Add the HTML wrapper</div><div class="step-desc">Place <code>.calendar-wrapper</code> with an empty <code>.calendar-months</code> inside it.</div></div></li>
+        <li class="step-item"><div class="step-number">4</div><div class="step-content"><div class="step-title">Initialise</div><div class="step-desc">Call <code>new HolidaysevaCalendar('#id', options)</code> after the DOM is ready.</div></div></li>
+        <li class="step-item"><div class="step-number">5</div><div class="step-content"><div class="step-title">Wire to your form</div><div class="step-desc">Use the <code>onChange</code> callback to sync <code>{ start, end }</code> into hidden inputs.</div></div></li>
+        <li class="step-item"><div class="step-number">6</div><div class="step-content"><div class="step-title">Load disabled dates from your API</div><div class="step-desc">Pass unavailable nights via <code>disabledDates</code> on init, or call <code>cal.disable(dates)</code> inside <code>onMonthChange</code>.</div></div></li>
       </ol>
     </section>
 
-    <!-- ── EXTEND DAYS FEATURE ── -->
-    <section class="section" id="extend">
-      <h2 class="section-title">Extend Stay Buttons</h2>
-      <p class="section-body" style="margin-bottom:20px;">
-        Once a date range is selected, pill buttons appear in the footer letting the user extend their checkout by +1, +2, +3, +7, or +14 days. The extended end date is highlighted in green. Clicking the same pill again toggles it off.
-      </p>
-
-      <div class="callout callout--info">
-        <span class="callout__icon">ℹ️</span>
-        <div class="callout__body">
-          The <code>onChange</code> callback receives <strong>four values</strong>: <code>start</code>, <code>end</code> (original selection), <code>extendDays</code> (0 if not extended), and <code>effectiveEnd</code> (the actual checkout after extension).
-        </div>
-      </div>
-
-      <div class="code-label">Customise the options</div>
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><span class="kw">new</span> <span class="prop">HolidaysevaCalendar</span>(<span class="str">'#cal'</span>, {
-  <span class="prop">extendOptions</span>: [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">7</span>, <span class="num">14</span>],  <span class="cmt">// default</span>
-  <span class="prop">showFooter</span>: <span class="kw">true</span>,                 <span class="cmt">// set false to hide footer</span>
-  <span class="prop">onChange</span>: ({ start, end, extendDays, effectiveEnd }) <span class="kw">=&gt;</span> {
-    <span class="cmt">// extendDays = 0 means no extension selected</span>
-    document.<span class="prop">getElementById</span>(<span class="str">'checkin'</span>).value  = start.<span class="prop">toISOString</span>().<span class="prop">slice</span>(<span class="num">0</span>, <span class="num">10</span>);
-    document.<span class="prop">getElementById</span>(<span class="str">'checkout'</span>).value = effectiveEnd.<span class="prop">toISOString</span>().<span class="prop">slice</span>(<span class="num">0</span>, <span class="num">10</span>);
-  },
-});</pre>
-      </div>
-    </section>
-
-    <!-- ── OPTIONS ── -->
-    <section class="section" id="options">
-      <h2 class="section-title">Options</h2>
-      <table class="props-table">
-        <thead>
-          <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>minDate</code></td><td><span class="type-badge">Date</span></td><td><code>new Date()</code></td><td>Earliest selectable date. Past dates are struck through.</td></tr>
-          <tr><td><code>maxDate</code></td><td><span class="type-badge">Date</span></td><td><code>null</code></td><td>Latest selectable date. Null = no upper limit.</td></tr>
-          <tr><td><code>disabledDates</code></td><td><span class="type-badge">string[]</span></td><td><code>[]</code></td><td>Array of <code>YYYY-MM-DD</code> strings to block.</td></tr>
-          <tr><td><code>defaultStart</code></td><td><span class="type-badge">string</span></td><td><code>null</code></td><td>Pre-selected check-in date as <code>YYYY-MM-DD</code>.</td></tr>
-          <tr><td><code>defaultEnd</code></td><td><span class="type-badge">string</span></td><td><code>null</code></td><td>Pre-selected check-out date as <code>YYYY-MM-DD</code>.</td></tr>
-          <tr><td><code>months</code></td><td><span class="type-badge">number</span></td><td><code>2</code></td><td>Month columns on desktop. On mobile (&lt;600px) always 1.</td></tr>
-          <tr><td><code>inline</code></td><td><span class="type-badge">boolean</span></td><td><code>false</code></td><td>Replaces drop-shadow with a border. Useful inside modals.</td></tr>
-          <tr><td><code>showFooter</code></td><td><span class="type-badge">boolean</span></td><td><code>true</code></td><td>Shows/hides the extend-stay footer.</td></tr>
-          <tr><td><code>extendOptions</code></td><td><span class="type-badge">number[]</span></td><td><code>[1,2,3,7,14]</code></td><td>Days to offer as checkout extensions in the footer.</td></tr>
-          <tr><td><code>onChange</code></td><td><span class="type-badge">function</span></td><td><code>null</code></td><td>Fires on complete range. Receives <code>{ start, end, extendDays, effectiveEnd }</code>.</td></tr>
-          <tr><td><code>onMonthChange</code></td><td><span class="type-badge">function</span></td><td><code>null</code></td><td>Fires on navigation. Receives <code>{ year, month }</code>.</td></tr>
-          <tr><td><code>onSelect</code></td><td><span class="type-badge">function</span></td><td><code>null</code></td><td>Fires on each individual click. Receives the clicked <code>Date</code>.</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- ── METHODS ── -->
-    <section class="section" id="methods">
-      <h2 class="section-title">JavaScript Methods</h2>
-      <table class="props-table">
-        <thead>
-          <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>getRange()</code></td><td><span class="type-badge">object</span></td><td>Returns <code>{ start, end, extendDays, effectiveEnd }</code>. Values are <code>Date</code> or <code>null</code>.</td></tr>
-          <tr><td><code>setRange(start, end)</code></td><td><code>void</code></td><td>Programmatically sets dates. Accepts <code>Date</code> or <code>YYYY-MM-DD</code> string.</td></tr>
-          <tr><td><code>clear()</code></td><td><code>void</code></td><td>Clears selection, hover, and extend state. Re-renders.</td></tr>
-          <tr><td><code>goToMonth(year, month)</code></td><td><code>void</code></td><td>Navigates to a month. <code>month</code> is 0-indexed (0 = January).</td></tr>
-          <tr><td><code>disable(dates)</code></td><td><code>void</code></td><td>Dynamically adds dates to the disabled list.</td></tr>
-          <tr><td><code>destroy()</code></td><td><code>void</code></td><td>Removes all event listeners and clears the DOM.</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- ── USAGE GUIDELINES ── -->
+    <!-- USAGE GUIDELINES -->
     <section class="section" id="guidelines">
       <h2 class="section-title">Usage Guidelines</h2>
       <div class="usage-grid">
-        <div class="usage-card usage-card--do">
-          <div class="usage-card__header">✓ Do</div>
-          <div class="usage-card__body">Show two months for range selection. Users comparing weekly stays need to see both start and end without navigating.</div>
-        </div>
-        <div class="usage-card usage-card--dont">
-          <div class="usage-card__header">✗ Don't</div>
-          <div class="usage-card__body">Embed the dual calendar inside a container narrower than 600px — it will collapse to one month automatically, but don't fight it.</div>
-        </div>
-        <div class="usage-card usage-card--do">
-          <div class="usage-card__header">✓ Do</div>
-          <div class="usage-card__body">Pass <code>minDate: new Date()</code> in booking flows to prevent past-date selection out of the box.</div>
-        </div>
-        <div class="usage-card usage-card--dont">
-          <div class="usage-card__header">✗ Don't</div>
-          <div class="usage-card__body">Override the color variables inline. Edit <code>colors.css</code> tokens so the theme propagates everywhere consistently.</div>
-        </div>
-        <div class="usage-card usage-card--do">
-          <div class="usage-card__header">✓ Do</div>
-          <div class="usage-card__body">Use <code>effectiveEnd</code> (not <code>end</code>) when syncing to hidden form inputs, so extend-stay days are always included.</div>
-        </div>
-        <div class="usage-card usage-card--dont">
-          <div class="usage-card__header">✗ Don't</div>
-          <div class="usage-card__body">Load the script inside the <code>&lt;head&gt;</code> with no <code>defer</code>. Place it before <code>&lt;/body&gt;</code> or add <code>defer</code>.</div>
-        </div>
+        <div class="usage-card usage-card--do"><div class="usage-card__header">✓ Do</div><div class="usage-card__body">Show two months side-by-side. Users comparing weekly stays need to see both start and end without navigating.</div></div>
+        <div class="usage-card usage-card--dont"><div class="usage-card__header">✗ Don't</div><div class="usage-card__body">Show one month for range selection. It forces navigation and hides the span of the trip from the user.</div></div>
+        <div class="usage-card usage-card--do"><div class="usage-card__header">✓ Do</div><div class="usage-card__body">Pass <code style="font-family:var(--font-mono);font-size:11px;background:var(--color-muted);padding:1px 4px;border-radius:3px;">minDate: new Date()</code> in booking flows to prevent any past-date selection.</div></div>
+        <div class="usage-card usage-card--dont"><div class="usage-card__header">✗ Don't</div><div class="usage-card__body">Write raw hex overrides. Always reference <code style="font-family:var(--font-mono);font-size:11px;background:var(--color-muted);padding:1px 4px;border-radius:3px;">colors.css</code> tokens so dark mode propagates automatically.</div></div>
+        <div class="usage-card usage-card--do"><div class="usage-card__header">✓ Do</div><div class="usage-card__body">Include the footer flex pills in travel search. Flexible windows measurably improve booking conversion rates.</div></div>
+        <div class="usage-card usage-card--dont"><div class="usage-card__header">✗ Don't</div><div class="usage-card__body">Embed the dual calendar inside a container narrower than 600px without switching to <code style="font-family:var(--font-mono);font-size:11px;background:var(--color-muted);padding:1px 4px;border-radius:3px;">months: 1</code>.</div></div>
       </div>
+    </section>
+
+    <!-- ACCESSIBILITY -->
+    <section class="section" id="accessibility">
+      <h2 class="section-title">Accessibility</h2>
+      <p class="section-body" style="margin-bottom:20px;">
+        The calendar targets WCAG 2.1 AA. All checks below are enforced by default in <code style="font-family:var(--font-mono);font-size:12px;background:var(--color-muted);padding:1px 4px;border-radius:4px;">calendar.js</code>.
+      </p>
+      <ul class="a11y-list">
+        <li class="a11y-item"><div class="a11y-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Keyboard navigation</strong> — Tab enters the grid. Arrow keys move between cells. Enter/Space selects. Escape clears.</div></li>
+        <li class="a11y-item"><div class="a11y-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>ARIA grid roles</strong> — <code>role="grid"</code> on the day container; <code>role="row"</code> on rows; <code>role="gridcell"</code> on every cell.</div></li>
+        <li class="a11y-item"><div class="a11y-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Descriptive aria-label per cell</strong> — e.g. <code>"Thursday, April 10, 2026, check-in selected"</code>. Never just the number.</div></li>
+        <li class="a11y-item"><div class="a11y-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Focus ring</strong> — 2px <code>:focus-visible</code> outline using <code>--color-primary</code>. Never suppressed.</div></li>
+        <li class="a11y-item"><div class="a11y-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Live region</strong> — Visually hidden <code>aria-live="polite"</code> element announces the range after every change.</div></li>
+      </ul>
     </section>
 
   </main>
 
-  <!-- ── Right sidebar TOC ── -->
+  <!-- ── Right sidebar (TOC) ── -->
   <aside class="sidebar-right">
     <?php include $partials . 'right_sidebar.php'; ?>
   </aside>
 
-</div>
+</div><!-- /page-layout -->
 
-<!-- The component script -->
-<script src="https://holidayseva.com/UI/Forms/calendar/calendar-component.js"></script>
+<script src="https://holidayseva.com/UI/Forms/calendar/calendar.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  const output = document.getElementById('previewOutput');
-
+  // ── Calendar init ──────────────────────────
   new HolidaysevaCalendar('#previewCal', {
     minDate: new Date(),
     months: 2,
-    onChange: ({ start, end, extendDays, effectiveEnd }) => {
-      const fmt = d => d ? d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '—';
-      const nights = start && end ? Math.round((end - start) / 86400000) : 0;
-      const extText = extendDays > 0
-        ? ` &nbsp;+&nbsp; <strong style="color:#1A7A35">+${extendDays} day${extendDays>1?'s':''} extension → ${fmt(effectiveEnd)}</strong>`
-        : '';
-      output.innerHTML = `<strong>${fmt(start)}</strong> → <strong>${fmt(end)}</strong> &nbsp;·&nbsp; ${nights} night${nights!==1?'s':''}${extText}`;
+    onChange: ({ start, end }) => {
+      const nights = Math.round((end - start) / 86400000);
+      console.log(`${start.toDateString()} → ${end.toDateString()} (${nights} nights)`);
     },
   });
 
 });
 
+// ── Copy code ───────────────────────────────
 function copyCode(btn) {
-  const block = btn.closest('.code-block, .embed-hero');
-  const text = block.querySelector('pre').innerText;
+  const text = btn.closest('.code-block').querySelector('pre').innerText;
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy', 1800);
