@@ -158,86 +158,66 @@
     border-radius: 50%;
 }
 
+/* Completely kill the today dot when the cell is selected — the black circle IS the indicator */
+.hs-calendar__day--today.hs-calendar__day--selected::after,
+.hs-calendar__day--today.hs-calendar__day--range-start::after,
+.hs-calendar__day--today.hs-calendar__day--range-end::after {
+    content: none;
+    display: none;
+    width: 0;
+    height: 0;
+    background: none;
+}
+
 /* ── Selected / range endpoints ───────────────────────────── */
-/* ── Selected (single, no range) ── */
-.hs-calendar__day--selected {
+.hs-calendar__day--selected,
+.hs-calendar__day--range-start,
+.hs-calendar__day--range-end {
     background: var(--color-secondary, #222222) !important;
     color: #ffffff !important;
     font-weight: var(--weight-semibold, 600);
     border-radius: 50%;
-    z-index: 2;
+    z-index: 3;
     transition: none !important;
+    isolation: isolate;
 }
 
-/* Today dot stays white on selected */
-.hs-calendar__day--selected::after {
+/* When today is selected, ::after becomes the white dot — reset it fully */
+.hs-calendar__day--selected::after,
+.hs-calendar__day--range-start::after,
+.hs-calendar__day--range-end::after {
+    /* Override the today dot: restore natural dimensions so it shows as a white dot */
     background: #ffffff !important;
 }
 
-/* ── Range endpoints: band drawn as element background, circle as ::after ── */
-.hs-calendar__day--range-start,
-.hs-calendar__day--range-end {
-    /* No border-radius on the element — it's the band */
-    border-radius: 0;
-    background: var(--color-muted, #EBEBEB) !important;
-    color: #ffffff !important;
-    font-weight: var(--weight-semibold, 600);
-    z-index: 2;
-    transition: none !important;
-    /* Circle drawn on top via ::after */
-}
 
-/* Range start: band only on right half */
-.hs-calendar__day--range-start {
-    background: linear-gradient(to right,
-            transparent 50%,
-            var(--color-muted, #EBEBEB) 50%) !important;
-}
 
-/* Range end: band only on left half */
-.hs-calendar__day--range-end {
-    background: linear-gradient(to left,
-            transparent 50%,
-            var(--color-muted, #EBEBEB) 50%) !important;
-}
 
-/* The black circle face — always on top */
-.hs-calendar__day--range-start::after,
-.hs-calendar__day--range-end::after {
-    content: attr(data-day);
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-secondary, #222222);
-    border-radius: 50%;
-    color: #ffffff;
-    font-size: inherit;
-    font-weight: 600;
-    font-family: inherit;
-    /* Override today dot — it's now inside ::after which can't have ::after */
-}
-
-/* Hide the real text node — ::after shows the number */
-.hs-calendar__day--range-start,
-.hs-calendar__day--range-end {
-    color: transparent !important;
-}
-
-/* Today dot on range endpoints — paint it white on the ::after circle */
-.hs-calendar__day--range-start.hs-calendar__day--today::before,
-.hs-calendar__day--range-end.hs-calendar__day--today::before {
+/* Range start: right half-pill bleed into range — sits strictly behind circle */
+.hs-calendar__day--range-start::before {
     content: '';
     position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background: #ffffff;
-    border-radius: 50%;
-    z-index: 3;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--color-muted, #EBEBEB);
+    border-radius: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Range end: left half-pill bleed from range — sits strictly behind circle */
+.hs-calendar__day--range-end::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--color-muted, #EBEBEB);
+    border-radius: 0;
+    z-index: -1;
     pointer-events: none;
 }
 
