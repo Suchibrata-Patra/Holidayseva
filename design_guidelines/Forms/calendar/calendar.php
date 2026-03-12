@@ -31,6 +31,8 @@
     └─────────────────────────────────────────────────────┘
 -->
   <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css" />
+  <link rel="stylesheet" href="https://holidayseva.com/UI/left-sidebar.php" />
+  <link rel="stylesheet" href="https://holidayseva.com/UI/right-soidebar.php" />
   <link rel="stylesheet" href="https://holidayseva.com/header.php" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/colors.css" />
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css" />
