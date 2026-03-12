@@ -163,7 +163,7 @@
 .hs-calendar__day--range-start,
 .hs-calendar__day--range-end {
     background: var(--color-secondary, #222222) !important;
-    color: #fff !important;
+    color: #000000 !important;
     font-weight: var(--weight-semibold, 600);
     border-radius: 50%;
     z-index: 2;
