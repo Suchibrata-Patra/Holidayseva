@@ -18,198 +18,13 @@ $partials = __DIR__ . '/../../';
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css">
   <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css">
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css">
-  <!-- calendar.js loaded as <script> at bottom of body, NOT as stylesheet -->
 
 <style>
-/* ═══════════════════════════════════════════════════════
-   CALENDAR COMPONENT STYLES
-   These define the actual grid layout for the date picker.
-   Embedded here as a fallback in case calendar.css path
-   resolves to the doc stylesheet instead of component styles.
-═══════════════════════════════════════════════════════ */
+/* ============================================================
+   DOCUMENTATION PAGE STYLES — calendar.php only
+   Component styles live in calendar.css
+   ============================================================ */
 
-/* Wrapper */
-.calendar-wrapper {
-  background: var(--color-surface, #fff);
-  border-radius: 18px;
-  padding: 28px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08);
-  max-width: 700px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.calendar-wrapper.calendar-inline {
-  box-shadow: none;
-  border: 1px solid var(--color-border, #D2D2D7);
-}
-
-/* Dual-month grid */
-.calendar-months {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  margin-bottom: 20px;
-}
-
-/* Single month column */
-.calendar-month { min-width: 0; }
-
-/* Month header */
-.calendar-month__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-.calendar-month__title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--color-text-primary, #1D1D1F);
-  letter-spacing: -0.01em;
-}
-
-/* Nav buttons */
-.calendar-nav-btn {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border, #D2D2D7);
-  background: #fff;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--color-text-primary, #1D1D1F);
-  cursor: pointer;
-  transition: background 0.12s ease, box-shadow 0.12s ease;
-  flex-shrink: 0;
-}
-.calendar-nav-btn:hover { background: var(--color-muted, #F7F7F7); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.calendar-nav-btn--hidden { visibility: hidden; pointer-events: none; }
-
-/* Weekday labels row */
-.calendar-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 6px;
-}
-.calendar-weekday {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-secondary, #6E6E73);
-  padding: 4px 0;
-  letter-spacing: 0.02em;
-}
-
-/* Days grid — THIS is the key rule that was missing */
-.calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1px 0;
-}
-
-/* Day cell */
-.calendar-day {
-  aspect-ratio: 1;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 400;
-  color: var(--color-text-primary, #1D1D1F);
-  background: none; border: none;
-  border-radius: 50%;
-  position: relative;
-  transition: background 0.12s ease, color 0.12s ease;
-  cursor: pointer;
-  z-index: 1;
-  font-family: inherit;
-}
-.calendar-day:hover:not(:disabled):not(.calendar-day--empty) {
-  background: var(--color-muted, #F7F7F7);
-}
-.calendar-day--empty   { cursor: default; }
-.calendar-day--disabled {
-  color: var(--color-muted-dark, #DDDDDD);
-  text-decoration: line-through;
-  cursor: not-allowed;
-}
-
-/* Today dot */
-.calendar-day--today { font-weight: 700; }
-.calendar-day--today::after {
-  content: '';
-  position: absolute; bottom: 4px; left: 50%;
-  transform: translateX(-50%);
-  width: 4px; height: 4px;
-  background: var(--color-primary, #FF385C);
-  border-radius: 50%;
-}
-
-/* Selected / endpoints */
-.calendar-day--selected,
-.calendar-day--range-start,
-.calendar-day--range-end {
-  background: var(--color-secondary, #222222) !important;
-  color: #fff !important;
-  font-weight: 600;
-  border-radius: 50%;
-  z-index: 2;
-}
-.calendar-day--selected::after,
-.calendar-day--range-start::after,
-.calendar-day--range-end::after { background: #fff !important; }
-
-/* Range start half-pill */
-.calendar-day--range-start::before {
-  content: ''; position: absolute;
-  top: 0; right: 0; width: 50%; height: 100%;
-  background: var(--color-primary-alpha, rgba(255,56,92,0.10));
-  border-radius: 0; z-index: -1;
-}
-/* Range end half-pill */
-.calendar-day--range-end::before {
-  content: ''; position: absolute;
-  top: 0; left: 0; width: 50%; height: 100%;
-  background: var(--color-primary-alpha, rgba(255,56,92,0.10));
-  border-radius: 0; z-index: -1;
-}
-/* In-range fill */
-.calendar-day--in-range {
-  background: var(--color-primary-alpha, rgba(255,56,92,0.10)) !important;
-  color: var(--color-text-primary, #1D1D1F);
-  border-radius: 0;
-}
-.calendar-day--in-range:hover { background: rgba(255,56,92,0.18) !important; }
-.calendar-day--hover-range {
-  background: var(--color-primary-alpha, rgba(255,56,92,0.10)) !important;
-  border-radius: 0;
-}
-
-/* Focus ring */
-.calendar-day:focus-visible {
-  outline: 2px solid var(--color-primary, #FF385C);
-  outline-offset: 1px;
-}
-
-/* Footer */
-.calendar-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 20px;
-  margin-top: 4px;
-  border-top: 1px solid var(--color-border-light, #EBEBEB);
-  align-items: center;
-}
-
-/* Live region (screen-reader only) */
-.calendar-live-region {
-  position: absolute; width: 1px; height: 1px;
-  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
-}
-
-/* Responsive: single month on narrow screens */
-@media (max-width: 600px) {
-  .calendar-months { grid-template-columns: 1fr; gap: 24px; }
-  .calendar-wrapper { padding: 20px 16px; }
-}
 /* ═══════════════════════════════════════════════════════
    GRID LAYOUT OVERRIDE
    Replaces design-system.css fixed+padding approach with
@@ -599,6 +414,7 @@ $partials = __DIR__ . '/../../';
 @media (max-width: 700px) {
   .preview-card { padding: 20px 12px; }
 }
+
 </style>
 </head>
 <body>
