@@ -125,7 +125,7 @@
     font-family: inherit;
 }
 
-.hs-calendar__day:hover:not(:disabled):not(.hs-calendar__day--empty) {
+.hs-calendar__day:hover:not(:disabled):not(.hs-calendar__day--empty):not(.hs-calendar__day--selected):not(.hs-calendar__day--range-start):not(.hs-calendar__day--range-end) {
     background: var(--color-muted, #F5F5F7);
 }
 
