@@ -111,6 +111,7 @@
                 defaultEnd: null,
                 months: 2,
                 inline: false,
+                mode: 'range',           /* 'range' | 'single' */
                 showFooter: true,
                 extendOptions: [1, 2, 3, 7, 14],
                 onChange: null,
@@ -161,6 +162,11 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                 extendDays: this._extendDays,
                 effectiveEnd: this._selEnd ? addDays(this._selEnd, this._extendDays) : null,
             };
+        }
+
+        /** Single-mode helper — returns the selected Date or null. */
+        getDate() {
+            return this._selStart || null;
         }
 
         setRange(start, end) {
@@ -307,12 +313,12 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                 if (isDisabled) cls += ' hs-calendar__day--disabled';
                 if (isToday) cls += ' hs-calendar__day--today';
                 if (this._opts.mode === 'single') {
-                    /* Single mode: only ever one selected date, no range/hover classes */
+                    /* Single mode: ONLY mark the one selected date, nothing else */
                     if (isStart) cls += ' hs-calendar__day--selected';
                 } else {
                     if (isStart && this._selEnd) cls += ' hs-calendar__day--range-start';
                     else if (isEnd && !isExtendEnd) cls += ' hs-calendar__day--range-end';
-                    else if (isEnd && isExtendEnd) cls += ' hs-calendar__day--range-end'; /* same day as extend end – rare */
+                    else if (isEnd && isExtendEnd) cls += ' hs-calendar__day--range-end';
                     else if (isStart) cls += ' hs-calendar__day--selected';
                     if (inRange) cls += ' hs-calendar__day--in-range';
                     if (isExtendEnd) cls += ' hs-calendar__day--extend-end';
@@ -341,6 +347,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
         }
 
         _renderFooter() {
+            if (this._opts.mode === 'single') return '';
             if (!this._selEnd) return '';
             const opts = this._opts.extendOptions || [1, 2, 3, 7, 14];
             let html = `<span class="hs-calendar__extend-label">Extend stay:</span>`;
@@ -365,6 +372,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             };
 
             this._boundHandlers.mouseover = (e) => {
+                if (this._opts.mode === 'single') return;
                 const btn = e.target.closest('[data-action="select"]');
                 if (!btn || btn.disabled) return;
                 this._hoverDate = parseDate(btn.dataset.date);
@@ -372,6 +380,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             };
 
             this._boundHandlers.mouseleave = () => {
+                if (this._opts.mode === 'single') return;
                 if (this._hoverDate) {
                     this._hoverDate = null;
                     if (this._selStart && !this._selEnd) this._render();
@@ -414,26 +423,38 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
             const date = parseDate(ds);
             if (!date) return;
 
-            if (!this._selStart || (this._selStart && this._selEnd)) {
-                this._selStart = date;
+            if (this._opts.mode === 'single') {
+                /* Toggle: same date → deselect; different date → move selection */
+                this._selStart = sameDay(date, this._selStart) ? null : date;
                 this._selEnd = null;
                 this._hoverDate = null;
                 this._extendDays = 0;
+
+                if (this._opts.onSelect) this._opts.onSelect(this._selStart);
+                if (this._opts.onChange) this._opts.onChange({ date: this._selStart });
+
             } else {
-                if (date < this._selStart) {
-                    this._selEnd = this._selStart;
+                if (!this._selStart || (this._selStart && this._selEnd)) {
                     this._selStart = date;
-                } else if (sameDay(date, this._selStart)) {
-                    this._selStart = null;
+                    this._selEnd = null;
+                    this._hoverDate = null;
+                    this._extendDays = 0;
                 } else {
-                    this._selEnd = date;
+                    if (date < this._selStart) {
+                        this._selEnd = this._selStart;
+                        this._selStart = date;
+                    } else if (sameDay(date, this._selStart)) {
+                        this._selStart = null;
+                    } else {
+                        this._selEnd = date;
+                    }
                 }
-            }
 
-            if (this._opts.onSelect) this._opts.onSelect(date);
+                if (this._opts.onSelect) this._opts.onSelect(date);
 
-            if (this._selStart && this._selEnd && this._opts.onChange) {
-                this._opts.onChange({ start: this._selStart, end: this._selEnd, extendDays: this._extendDays });
+                if (this._selStart && this._selEnd && this._opts.onChange) {
+                    this._opts.onChange({ start: this._selStart, end: this._selEnd, extendDays: this._extendDays });
+                }
             }
 
             this._render();
