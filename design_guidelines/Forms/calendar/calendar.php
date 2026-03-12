@@ -7,9 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://holidayseva.com/design-style.css">
-  <link rel="stylesheet" href="https://holidayseva.com/left-sidebar.css">
-  <link rel="stylesheet" href="https://holidayseva.com/right-sidebar.css">
+
 <style>
 /* ═══════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -120,6 +118,7 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: -0.02em;
   flex-shrink: 0;
 }
+.global-nav-brand strong { color: var(--color-primary); }
 
 .global-nav-sep {
   width: 1px;
@@ -209,7 +208,31 @@ button { font-family: inherit; cursor: pointer; }
 
 .section-nav-meta { margin-left: auto; }
 
-.drawer-backdrop { display: none; }
+.drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 299;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.drawer-backdrop.is-visible { display: block; }
+.drawer-backdrop.is-active { opacity: 1; }
+
+.drawer-sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 280px;
+  background: var(--color-bg);
+  z-index: 300;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+  padding: 20px 0;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+}
+.drawer-sidebar.is-open { transform: translateX(0); }
 
 /* ═══════════════════════════════════════════════════════
    PAGE LAYOUT
@@ -217,6 +240,7 @@ button { font-family: inherit; cursor: pointer; }
 .layout {
   display: grid;
   grid-template-columns: 260px 1fr 220px;
+  width: 100%;
   min-height: 100vh;
   padding-top: var(--header-h);
 }
@@ -249,7 +273,9 @@ button { font-family: inherit; cursor: pointer; }
 .main-content {
   padding: 48px 56px;
   max-width: 900px;
+  width: 100%;
   min-width: 0;
+  overflow-x: hidden;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -936,24 +962,241 @@ button { font-family: inherit; cursor: pointer; }
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header class="global-nav" id="globalNav" role="banner">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <a class="global-nav-brand" href="#" aria-label="Holidayseva home">
+    <strong>Holidayseva</strong>
+  </a>
+
+  <span class="global-nav-sep" aria-hidden="true"></span>
+
+  <ul class="global-nav-links" role="list">
+    <li><a href="#">Get Started</a></li>
+    <li><a href="#">UI/UX</a></li>
+    <li><a href="#" class="active">Components</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">DBMS</a></li>
+  </ul>
+
+  <div class="global-nav-actions">
+    <button class="global-nav-icon" aria-label="Search">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <circle cx="6.2" cy="6.2" r="4.5" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M10 10l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="global-nav-icon" aria-label="Account">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <circle cx="7.5" cy="5" r="2.8" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M1.5 14c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<nav class="section-nav" id="sectionNav" aria-label="Section navigation">
+  <span class="section-nav-title">Developer Guidelines</span>
+  <span class="section-nav-divider" aria-hidden="true"></span>
+  <div class="section-nav-meta">
+    <span class="section-nav-badge">β Release 1.1.2</span>
+  </div>
+</nav>
+
+<!-- DRAWER BACKDROP -->
+<div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- MOBILE DRAWER SIDEBAR -->
+<div class="drawer-sidebar" id="drawerSidebar" role="dialog" aria-label="Navigation" aria-modal="true">
+  <div class="sb-logo" style="padding: 0 16px 20px; display:flex; align-items:center; gap:8px; border-bottom: 1px solid var(--color-border-light); margin-bottom:16px;">
+    <div class="sb-logo-dot"></div>
+    <div>
+      <div class="sb-logo-text">Holidayseva</div>
+      <div class="sb-logo-sub">Design System</div>
+    </div>
+  </div>
+  <div class="sb-filter" style="margin: 0 16px 18px; padding: 7px 13px; background:#fff; border:1px solid #e5e5ea; border-radius:10px; display:flex; align-items:center; gap:8px; color:#000;">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <input type="text" placeholder="Filter" style="border:none;background:none;outline:none;font-size:15px;font-weight:500;color:#1d1d1f;width:100%;" oninput="filterSidebar(this)" />
+  </div>
+  <nav style="padding: 0 8px;">
+    <div class="sb-group"><button class="sb-group-btn" onclick="toggleGroup(this)"><svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Getting started</button></div>
+    <div class="sb-group"><button class="sb-group-btn" onclick="toggleGroup(this)"><svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Foundations</button></div>
+    <div class="sb-group open"><button class="sb-group-btn" onclick="toggleGroup(this)"><svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Components<span class="sb-count">1</span></button>
+      <ul class="sb-items"><li><a href="#" class="sb-link active">Calendar</a></li></ul>
+    </div>
+  </nav>
+</div>
 
 <!-- ═══════════════════════════════════════════
      MAIN LAYOUT
 ═══════════════════════════════════════════ -->
 <div class="layout">
-<?php
-$partials = __DIR__ . '/../../';
-?>
 
-<?php include $partials . 'header.php'; ?>
-<?php include $partials . 'drawer_sidebar.php'; ?>
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar-left">
+    <div class="sb-logo">
+      <div class="sb-logo-dot"></div>
+      <div>
+        <div class="sb-logo-text">Holidayseva</div>
+        <div class="sb-logo-sub">Design System</div>
+      </div>
+    </div>
 
-<div class="page-layout">
+    <div class="sb-filter">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input type="text" placeholder="Filter" id="sbFilterInput" oninput="filterSidebar(this)" />
+    </div>
 
-  <!-- ── Left sidebar (untouched) ── -->
-  <aside class="sidebar-left" style="z-index:10000;">
-    <?php include $partials . 'left_sidebar.php'; ?>
+    <nav class="sb-nav" id="sbNav">
+
+      <!-- Getting Started -->
+      <div class="sb-group" id="grpGetting">
+        <button class="sb-group-btn" onclick="toggleGroup(this)">
+          <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
+            <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Getting started
+        </button>
+        <ul class="sb-items" hidden>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3.5L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Introduction
+          </a></li>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="8.5" y="2" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+            Overview
+          </a></li>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 4.5H14l-3.7 2.7 1.4 4.3L8 11l-3.7 2.5 1.4-4.3L2 6.5h4.5L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            What's new
+          </a></li>
+        </ul>
+      </div>
+
+      <!-- Foundations -->
+      <div class="sb-group" id="grpFoundation">
+        <button class="sb-group-btn" onclick="toggleGroup(this)">
+          <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
+            <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Foundations
+        </button>
+        <ul class="sb-items" hidden>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="10.5" r="3" stroke="currentColor" stroke-width="1.2"/></svg>
+            Colour
+          </a></li>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M8 4v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Typography
+          </a></li>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Spacing
+          </a></li>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 3.6L14 6.2l-3 2.9.7 4.1L8 11.1l-3.7 2.1.7-4.1-3-2.9 4.2-.6L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            Icons
+          </a></li>
+          <li><a href="#" class="sb-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 6h12M6 6v8" stroke="currentColor" stroke-width="1.2"/></svg>
+            Layout
+          </a></li>
+        </ul>
+      </div>
+
+      <!-- Components (open, with calendar active) -->
+      <div class="sb-group open has-active" id="grpComponents">
+        <button class="sb-group-btn" onclick="toggleGroup(this)">
+          <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
+            <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;opacity:.7;">
+            <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M9 11.5h5M11.5 9v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          Components
+          <span class="sb-count">12</span>
+        </button>
+        <ul class="sb-items">
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="5" width="13" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/></svg>Button</a></li>
+          <li><a href="#" class="sb-link active">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 7h12M6 3v4M10 3v4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+            Calendar
+          </a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 8h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Input</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="5" width="14" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="11.5" cy="8" r="2" fill="currentColor"/></svg>Toggle</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 6.5h13" stroke="currentColor" stroke-width="1.2"/></svg>Modal</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 14c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Avatar</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="5" width="10" height="6" rx="3" stroke="currentColor" stroke-width="1.2"/></svg>Badge</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5h5M4 9h8M4 11h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Card</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 11h12M2 13.5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg>Dropdown</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 10V5.5A1.5 1.5 0 013.5 4H7l1.5 2H14v4a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 10z" stroke="currentColor" stroke-width="1.2"/></svg>Tabs</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 10.5l1.5 2.5 1.5-2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Tooltip</a></li>
+          <li><a href="#" class="sb-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 8l2.5 2.5L11 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Checkbox</a></li>
+        </ul>
+      </div>
+
+      <!-- Composite -->
+      <div class="sb-group" id="grpComposite">
+        <button class="sb-group-btn" onclick="toggleGroup(this)">
+          <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
+            <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;opacity:.7;">
+            <rect x="1.5" y="3" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <rect x="6" y="7" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+          Composite
+          <span class="sb-count">5</span>
+        </button>
+        <ul class="sb-items" hidden>
+          <li><a href="#" class="sb-link">Search Bar</a></li>
+          <li><a href="#" class="sb-link">Filters</a></li>
+          <li><a href="#" class="sb-link">User Menu</a></li>
+          <li><a href="#" class="sb-link">Review Card</a></li>
+          <li><a href="#" class="sb-link">Price Card</a></li>
+        </ul>
+      </div>
+
+      <!-- Data Display -->
+      <div class="sb-group" id="grpData">
+        <button class="sb-group-btn" onclick="toggleGroup(this)">
+          <svg class="sb-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none">
+            <path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;opacity:.7;">
+            <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M4 11l2.5-3 2 2 2-4 2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Data Display
+          <span class="sb-count">6</span>
+        </button>
+        <ul class="sb-items" hidden>
+          <li><a href="#" class="sb-link">Table</a></li>
+          <li><a href="#" class="sb-link">List</a></li>
+          <li><a href="#" class="sb-link">Gallery</a></li>
+          <li><a href="#" class="sb-link">Timeline</a></li>
+          <li><a href="#" class="sb-link">Stats Card</a></li>
+          <li><a href="#" class="sb-link">Rating Stars</a></li>
+        </ul>
+      </div>
+
+    </nav>
   </aside>
+
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
@@ -1204,9 +1447,29 @@ $partials = __DIR__ . '/../../';
 
   <!-- RIGHT SIDEBAR -->
   <aside class="sidebar-right">
-  <?php include $partials . '/right_sidebar.php'; ?>
-  </aside>
+    <div class="toc-wrap">
+      <div class="toc-platforms">
+        <p class="toc-platforms-label">Supported platforms</p>
+        <div class="toc-platform-icons">
+          <svg width="14" height="18" viewBox="0 0 18 22" fill="none" title="iPhone"><rect x="1" y="1" width="16" height="20" rx="3.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="18" r="1" fill="currentColor"/><path d="M7 3h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <svg width="14" height="18" viewBox="0 0 18 22" fill="none" title="iPad"><rect x="1" y="1" width="16" height="20" rx="2.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="18.5" r="1" fill="currentColor"/></svg>
+          <svg width="20" height="18" viewBox="0 0 24 22" fill="none" title="Mac"><rect x="1" y="1" width="22" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1 18h22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 18l1 3h6l1-3" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <svg width="12" height="18" viewBox="0 0 14 22" fill="none" title="Watch"><rect x="1" y="5" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.3"/><path d="M4 5V3.5a1 1 0 011-1h4a1 1 0 011 1V5M4 17v1.5a1 1 0 001 1h4a1 1 0 001-1V17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+      </div>
 
+      <ul class="toc-list" id="tocList">
+        <li><a class="toc-link" href="#overview">Element</a></li>
+        <li><a class="toc-link" href="#anatomy">Anatomy</a></li>
+        <li><a class="toc-link" href="#specs">Specifications</a></li>
+        <li><a class="toc-link" href="#usage">HTML Usage</a></li>
+        <li><a class="toc-link" href="#javascript">JavaScript API</a></li>
+        <li><a class="toc-link" href="#integration">Integration</a></li>
+        <li><a class="toc-link" href="#guidelines">Guidelines</a></li>
+        <li><a class="toc-link" href="#accessibility">Accessibility</a></li>
+      </ul>
+    </div>
+  </aside>
 
 </div><!-- /layout -->
 
@@ -1502,6 +1765,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { rootMargin: '-15% 0px -75% 0px' });
 
   sections.forEach(s => spy.observe(s));
+
+  // ── Mobile drawer ──────────────────────────
+  const hamburger   = document.getElementById('navHamburger');
+  const drawerBack  = document.getElementById('drawerBackdrop');
+  const drawer      = document.getElementById('drawerSidebar');
+  let drawerOpen    = false;
+
+  function openDrawer() {
+    if (!drawer) return;
+    drawerOpen = true;
+    drawer.classList.add('is-open');
+    drawerBack.classList.add('is-visible');
+    requestAnimationFrame(() => drawerBack.classList.add('is-active'));
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    if (!drawer) return;
+    drawerOpen = false;
+    drawer.classList.remove('is-open');
+    drawerBack.classList.remove('is-active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    setTimeout(() => drawerBack.classList.remove('is-visible'), 300);
+  }
+  if (hamburger) hamburger.addEventListener('click', () => drawerOpen ? closeDrawer() : openDrawer());
+  if (drawerBack) drawerBack.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawerOpen) closeDrawer(); });
 
   // ── Calendar init ──────────────────────────
   new HolidaysevaCalendar('#previewCal', {
