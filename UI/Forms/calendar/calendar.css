@@ -164,7 +164,7 @@
     color: var(--color-primary, #FF385C);
     font-weight: var(--weight-semibold, 600);
     /* Nudge number slightly above centre so it clears the label */
-    padding-bottom: 10px;
+    padding-bottom: auto;
 }
 
 /* The tiny holiday name — absolutely positioned at the bottom
