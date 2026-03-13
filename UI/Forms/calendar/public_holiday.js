@@ -3,10 +3,6 @@
     /** @type {Object.<string, string>}  'YYYY-MM-DD' → display name */
     global.HS_PUBLIC_HOLIDAYS = {
 
-        /* ════════════════════════════════════════════
-           2025
-        ════════════════════════════════════════════ */
-
         /* ── National / Gazetted ── */
         '2025-01-26': 'Republic Day',
         '2025-08-15': 'Independence Day',
