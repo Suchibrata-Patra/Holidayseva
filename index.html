@@ -4,17 +4,15 @@
 <head>
     <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css">
     <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css">
-    <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/public_holiday.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 
 <body>
 
-    <div id="hs_calendar">dd</div>
+    <div id="hs_calendar"></div>
 
+    <script src="https://holidayseva.com/UI/Forms/calendar/public_holiday.js"></script>
     <script src="https://holidayseva.com/UI/Forms/calendar/calendar.js"></script>
-
     <script>
         const cal = new HolidaysevaCalendar('#hs_calendar', {
             minDate: new Date(),
