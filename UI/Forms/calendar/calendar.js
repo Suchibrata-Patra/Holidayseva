@@ -352,7 +352,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                   ${holidayName ? `data-holiday="${holidayName}"` : ''}
                   ${isDisabled ? 'disabled aria-disabled="true"' : ''}
                   tabindex="${isStart || (!this._selStart && isToday) ? '0' : '-1'}"
-                >${d}</button>`;
+                >${d}${holidayName ? `<span class="hs-calendar__day-holiday-label">${holidayName}</span>` : ''}</button>`;
             }
 
             html += `</div></div>`;

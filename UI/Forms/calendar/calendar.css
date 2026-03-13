@@ -159,28 +159,59 @@
     z-index: 4;
 }
 
-/* ── Public holiday — red number ─────────────────────────── */
-/* The date number itself turns red. No pseudo-elements needed,
-   so there is zero conflict with the selection circle (::before)
-   or the today / range dots (::after).                        */
+/* ── Public holiday — red number + name label ─────────────── */
 .hs-calendar__day--holiday {
     color: var(--color-primary, #FF385C);
     font-weight: var(--weight-semibold, 600);
+    /* Nudge number slightly above centre so it clears the label */
+    padding-bottom: 10px;
 }
 
-/* Inside a selected or range-endpoint cell the number is white
-   (the ::before circle draws the black disc + white text),
-   so we must leave color alone there — no override needed.   */
+/* The tiny holiday name — absolutely positioned at the bottom
+   of the cell so it never breaks the 7-column grid layout.   */
+.hs-calendar__day-holiday-label {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    font-size: 6.5px;
+    font-weight: 500;
+    color: var(--color-primary, #FF385C);
+    line-height: 1;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    letter-spacing: 0;
+    padding: 0 2px;
+    opacity: 0.9;
+    z-index: 5;
+}
 
-/* Inside the range band the number stays the normal dark colour
-   so the holiday day is still distinguishable by its red hue.  */
+/* Inside the range band: keep red */
 .hs-calendar__day--in-range.hs-calendar__day--holiday {
     color: var(--color-primary, #FF385C);
 }
 
-/* Disabled holiday: keep the struck-through muted look,
-   just tint red so the holiday is still recognisable.         */
+.hs-calendar__day--in-range .hs-calendar__day-holiday-label {
+    color: var(--color-primary, #FF385C);
+}
+
+/* On selected / range endpoints: label turns white */
+.hs-calendar__day--selected .hs-calendar__day-holiday-label,
+.hs-calendar__day--range-start .hs-calendar__day-holiday-label,
+.hs-calendar__day--range-end .hs-calendar__day-holiday-label {
+    color: #ffffff;
+    opacity: 0.75;
+}
+
+/* Disabled holiday: faded red */
 .hs-calendar__day--disabled.hs-calendar__day--holiday {
+    color: rgba(255, 56, 92, 0.35);
+}
+
+.hs-calendar__day--disabled .hs-calendar__day-holiday-label {
     color: rgba(255, 56, 92, 0.35);
 }
 

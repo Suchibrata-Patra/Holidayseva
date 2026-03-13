@@ -18,7 +18,6 @@ $partials = __DIR__ . '/../../';
   <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css">
   <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css">
   <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/calendar.css">
-  <link rel="stylesheet" href="https://holidayseva.com/UI/Forms/calendar/public_holiday.css">
 
 
 <style>
@@ -685,6 +684,7 @@ $partials = __DIR__ . '/../../';
 
 </div><!-- /page-layout -->
 
+<script src="https://holidayseva.com/UI/Forms/calendar/public_holiday.js"></script>
 <script src="https://holidayseva.com/UI/Forms/calendar/calendar.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
