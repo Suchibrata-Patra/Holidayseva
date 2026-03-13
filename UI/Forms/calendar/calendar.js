@@ -117,11 +117,18 @@
                 onChange: null,
                 onMonthChange: null,
                 onSelect: null,
+                holidays: null,   /* { 'YYYY-MM-DD': 'Name', … } — merges with / overrides global list */
             }, options);
 
             this._opts.minDate = parseDate(this._opts.minDate) || today;
             this._opts.maxDate = parseDate(this._opts.maxDate);
             this._opts.disabledDates = (this._opts.disabledDates || []).map(formatDate);
+
+            /* Public holidays — merge global list with any passed via options.
+               options.holidays overrides/extends window.HS_PUBLIC_HOLIDAYS.
+               Set options.holidays = {} to suppress all holidays.            */
+            const globalHols = (typeof window !== 'undefined' && window.HS_PUBLIC_HOLIDAYS) || {};
+            this._holidays = Object.assign({}, globalHols, this._opts.holidays || {});
 
             /* state */
             this._selStart = parseDate(this._opts.defaultStart);
@@ -328,8 +335,11 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                     if (isHoverEnd && !isEnd && !isStart) cls += ' hs-calendar__day--selected';
                 }
 
+                const holidayName = this._holidays[ds] || null;
+                if (holidayName) cls += ' hs-calendar__day--holiday';
+
                 const ariaSelected = (isStart || isEnd) ? 'true' : 'false';
-                const ariaLabel = `${formatReadable(date)}${isDisabled ? ', unavailable' : ''}${isStart ? ', check-in' : ''}${isEnd ? ', check-out' : ''}`;
+                const ariaLabel = `${formatReadable(date)}${isDisabled ? ', unavailable' : ''}${holidayName ? `, ${holidayName}` : ''}${isStart ? ', check-in' : ''}${isEnd ? ', check-out' : ''}`;
 
                 html += `<button
                   class="${cls}"
@@ -339,6 +349,7 @@ ${this._opts.showFooter ? '<div class="hs-calendar__footer"></div>' : ''}
                   data-action="select"
                   aria-label="${ariaLabel}"
                   aria-selected="${ariaSelected}"
+                  ${holidayName ? `data-holiday="${holidayName}"` : ''}
                   ${isDisabled ? 'disabled aria-disabled="true"' : ''}
                   tabindex="${isStart || (!this._selStart && isToday) ? '0' : '-1'}"
                 >${d}</button>`;

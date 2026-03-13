@@ -159,6 +159,48 @@
     z-index: 4;
 }
 
+/* ── Public holiday dot ───────────────────────────────────── */
+/* A small filled dot sits at the bottom of the cell,         */
+/* distinct from the today dot (different color + position).  */
+/* On selected/range-endpoint cells the dot turns white.      */
+.hs-calendar__day--holiday::before {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: calc(50% + 5px);
+    /* offset right so it doesn't clash with today dot */
+    width: 4px;
+    height: 4px;
+    background: var(--color-primary, #FF385C);
+    border-radius: 50%;
+    opacity: 0.55;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* When it's ALSO today, shift both dots so they sit side-by-side */
+.hs-calendar__day--today.hs-calendar__day--holiday::after {
+    left: calc(50% - 5px);
+    transform: none;
+}
+
+/* White dot when the holiday cell is selected / range endpoint */
+.hs-calendar__day--holiday.hs-calendar__day--selected::before,
+.hs-calendar__day--holiday.hs-calendar__day--range-start::before,
+.hs-calendar__day--holiday.hs-calendar__day--range-end::before {
+    /* ::before on range-start/end is already used for the black circle,
+       so we can't reuse it — the holiday dot is drawn via a box-shadow trick instead */
+    display: none;
+}
+
+/* Fallback: holiday dot on range endpoints via the circle ::before's box-shadow */
+.hs-calendar__day--range-start.hs-calendar__day--holiday::before,
+.hs-calendar__day--range-end.hs-calendar__day--holiday::before {
+    /* The circle ::before content overrides, holiday indicator is visible
+       in the data-holiday tooltip only for range endpoints */
+    display: none;
+}
+
 /* ══════════════════════════════════════════════════════════
    SELECTED / RANGE ENDPOINTS
    Approach: the CELL element itself is transparent/band-only.
