@@ -19,7 +19,7 @@ if (!defined('DESIGN_GUIDELINES_WEB'))  define('DESIGN_GUIDELINES_WEB',  SITE_WE
   <title><?= htmlspecialchars($pageTitle) ?> — Airframe UI · Holidayseva</title>
 
   <!-- ① Token layer — MUST come before input.css -->
-  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css" />
   <!-- ② Component stylesheet — ALL form styles live here, zero hex inside -->
   <link rel="stylesheet" href="https://holidayseva.com/UI/Atom/input/input.css" />
   <!-- ③ Design system shell (global-nav, page-layout, sidebars, etc.) -->
