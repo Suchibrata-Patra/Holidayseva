@@ -892,40 +892,30 @@ body {
     white-space: normal;
 }
 
-/* Inline meta row: ★ 5.0 · 11 reviews · Chef in Kolkata */
+/* Inline meta row: ★ 4.98 · 248 reviews · Superhost in Kolkata
+   Single <p> element — no flex wrapping issues */
 .card-host-stats {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0;
+    display: block;
     width: 100%;
-    /* Override previous box styles — this is inline text, not a pill box */
+    text-align: center;
+    margin-bottom: 4px;
+    /* Reset all box styles from old implementation */
     border: none;
     border-radius: 0;
     background: transparent;
-    margin-bottom: 4px;
+    overflow: visible;
 }
 
 .card-host-stat {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0;
+    display: inline;
     background: transparent;
     flex: unset;
+    padding: 0;
 }
 
-/* Dot separator between stats */
-.card-host-stat + .card-host-stat::before {
-    content: '·';
-    margin: 0 6px;
-    color: var(--color-text-muted);
-    font-size: 13px;
-    border: none;
-}
+/* Stats are now a single <p> with inline spans — no ::before needed */
+.card-host-stat + .card-host-stat::before { content: none; }
 
-/* Remove the left-border that was used for the box layout */
 .card-host-stat + .card-host-stat {
     border-left: none;
 }
@@ -935,19 +925,21 @@ body {
     font-weight: 600;
     color: var(--color-text-primary);
     letter-spacing: -0.2px;
-    line-height: 1.3;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
+    line-height: 1.5;
+    display: inline;
+    white-space: nowrap;
 }
 
-/* Star icon inside the rating stat */
+/* Star icon inline with rating */
 .card-host-stat-value svg {
     width: 12px;
     height: 12px;
     fill: var(--color-star);
     flex-shrink: 0;
-    margin-top: -1px;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 1px;
+    display: inline;
 }
 
 .card-host-stat-label {
@@ -956,7 +948,9 @@ body {
     text-transform: none;
     letter-spacing: 0;
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.5;
+    display: inline;
+    white-space: nowrap;
 }
 
 /* Secondary meta line: "Provided at your home" */
@@ -965,6 +959,15 @@ body {
     color: var(--color-text-secondary);
     margin: 4px 0 0;
     line-height: 1.4;
+    text-align: center;
+}
+
+/* Dot separator inside stats paragraph */
+.card-host-stat-sep {
+    color: var(--color-text-secondary);
+    font-size: 13.5px;
+    font-weight: 400;
+    margin: 0 4px;
 }
 
 /* ── Action buttons row — share + heart icons ── */

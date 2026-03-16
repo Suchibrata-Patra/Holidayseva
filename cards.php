@@ -433,19 +433,19 @@ function nav_btns(string $prev_id, string $next_id): string {
                 <div class="card-host-body">
                     <h3 class="card-host-name"><?= htmlspecialchars($card['title']) ?></h3>
                     <p class="card-host-role"><?= htmlspecialchars($card['bio']) ?></p>
-                    <div class="card-host-stats">
-                        <div class="card-host-stat">
-                            <span class="card-host-stat-value">
-                                <?= svg_star() ?><?= htmlspecialchars(explode(' · ', $card['meta'])[0]) ?>
-                            </span>
-                        </div>
-                        <div class="card-host-stat">
-                            <span class="card-host-stat-label"><?= htmlspecialchars(explode(' · ', $card['meta'])[1]) ?></span>
-                        </div>
-                        <div class="card-host-stat">
-                            <span class="card-host-stat-label"><?= htmlspecialchars(explode(' · ', $card['meta'])[2]) ?></span>
-                        </div>
-                    </div>
+                    <p class="card-host-stats">
+                        <?php
+                            $parts = explode(' · ', $card['meta']);
+                            $rating  = $parts[0] ?? '';
+                            $reviews = $parts[1] ?? '';
+                            $loc     = $parts[2] ?? '';
+                        ?>
+                        <span class="card-host-stat-value"><?= svg_star() ?><?= htmlspecialchars($rating) ?></span><?php
+                        ?> <span class="card-host-stat-sep">·</span> <?php
+                        ?><span class="card-host-stat-label"><?= htmlspecialchars($reviews) ?></span><?php
+                        ?> <span class="card-host-stat-sep">·</span> <?php
+                        ?><span class="card-host-stat-label"><?= htmlspecialchars($loc) ?></span>
+                    </p>
                     <p class="card-host-meta-sub"><?= htmlspecialchars($card['sub']) ?></p>
                     <div class="card-host-actions">
                         <button class="card-host-action-btn" aria-label="Share">
