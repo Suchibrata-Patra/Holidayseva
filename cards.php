@@ -272,11 +272,11 @@ function nav_btns(string $prev_id, string $next_id): string {
 
 <div class="page-container">
 
-    <header class="page-header">
+    <!-- <header class="page-header">
         <p class="page-eyebrow">Airframe UI · Components</p>
         <h1 class="page-title">Card</h1>
         <p class="page-desc">Six card variations — listing, service, original, experience, host profile, and promo.</p>
-    </header>
+    </header> -->
 
 
     <!-- ════════════════════════════════════════════
