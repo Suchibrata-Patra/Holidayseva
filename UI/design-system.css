@@ -805,7 +805,7 @@ body {
     background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--r-xl);
-    padding: 64px 40px;
+    padding: 20px 40px;
     display: flex;
     align-items: center;
     justify-content: center;

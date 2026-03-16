@@ -17,23 +17,22 @@
     const DAY_NAMES_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     /* ─── Utility helpers ────────────────────────────────────────── */
-    function parseDate(val) {
-        if (!val) return null;
-        if (val instanceof Date) { const d = new Date(val); d.setHours(0, 0, 0, 0); return d; }
-        if (typeof val === 'string') {
-            const [y, m, d] = val.split('-').map(Number);
-            return new Date(y, m - 1, d);
+    function parseDate(val){
+        if(typeof val === 'string'){
+            const [y,m,d]=val.split('-').map(number);
+            return new Date(y,m-1,d)
         }
         return null;
     }
 
-    function formatDate(d) {
-        if (!d) return '';
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
+    function formDate(d){
+        if(!d) return '';
+        const yd = d.getFullYear();
+        const md = String(d.getMonth()+1).padStart(2,'0');
+        const day = String(d.getDate()).padStart(2,'0');
         return `${y}-${m}-${day}`;
     }
+    
 
     function formatReadable(d) {
         if (!d) return '';
