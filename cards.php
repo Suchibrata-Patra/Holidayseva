@@ -515,18 +515,65 @@ function nav_btns(string $prev_id, string $next_id): string {
 </script>
 
 </body>
-</html><link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</html>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
-<div id="map" style="height:500px;"></div>
+<style>
+#map{
+height:500px;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* Airbnb style price marker */
+.price-marker{
+background:white;
+padding:6px 10px;
+border-radius:20px;
+font-weight:600;
+font-size:14px;
+box-shadow:0 3px 10px rgba(0,0,0,0.25);
+border:1px solid #eee;
+}
+</style>
+
+<div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-var map = L.map('map').setView([22.5726, 88.3639], 12);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap'
+var map = L.map('map',{
+zoomControl:false
+}).setView([22.5726, 88.3639], 12);
+
+L.control.zoom({
+position:'topright'
 }).addTo(map);
 
-L.marker([22.5726, 88.3639]).addTo(map);
+/* Beautiful light map tiles */
+L.tileLayer(
+'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+{
+attribution:'©OpenStreetMap'
+}).addTo(map);
+
+
+/* Airbnb style markers */
+function priceMarker(lat,lng,price){
+
+return L.marker([lat,lng],{
+icon:L.divIcon({
+className:"",
+html:`<div class="price-marker">₹${price}</div>`
+})
+}).addTo(map);
+
+}
+
+priceMarker(22.5726,88.3639,4500);
+priceMarker(22.58,88.35,3200);
+priceMarker(22.56,88.38,2800);
+
 </script>
