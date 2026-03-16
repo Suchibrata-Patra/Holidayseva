@@ -26,12 +26,12 @@ $listing_cards = [
 ];
 
 $service_cards = [
-    ['title' => 'Photography',    'status' => '1 available', 'img' => unsplash('1542038374416-a55873f2e5ca', 320, 320)],
+    ['title' => 'Photography',    'status' => '1 available', 'img' => unsplash('1604654894610-df63bc536371', 320, 320)],
     ['title' => 'Chefs',          'status' => 'Coming soon', 'img' => unsplash('1466978913421-dad2ebd01d17', 320, 320)],
     ['title' => 'Massage',        'status' => 'Coming soon', 'img' => unsplash('1544161515-4ab6ce6db874', 320, 320)],
     ['title' => 'Prepared meals', 'status' => 'Coming soon', 'img' => unsplash('1547592180-85f173990554', 320, 320)],
     ['title' => 'Training',       'status' => 'Coming soon', 'img' => unsplash('1534438327276-14e5300c3a48', 320, 320)],
-    ['title' => 'Make-up',        'status' => 'Coming soon', 'img' => unsplash('1487412947147-5cebf100d293', 320, 320)],
+    ['title' => 'Make-up',        'status' => 'Coming soon', 'img' => unsplash('1604654894610-df63bc536371', 320, 320)],
     ['title' => 'Hair',           'status' => 'Coming soon', 'img' => unsplash('1522337360788-8b13dee7a37e', 320, 320)],
     ['title' => 'Spa treatments', 'status' => 'Coming soon', 'img' => unsplash('1540555700478-4be289fbecef', 320, 320)],
     ['title' => 'Catering',       'status' => 'Coming soon', 'img' => unsplash('1555244162-09c340d38bf9', 320, 320)],
