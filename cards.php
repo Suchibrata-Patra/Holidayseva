@@ -284,7 +284,6 @@ function nav_btns(string $prev_id, string $next_id): string {
          ════════════════════════════════════════════ -->
     <section class="card-section">
         <div class="card-section-header">
-            <a class="card-section-title-link" href="#">Popular homes in North 24 Parganas &nbsp;→</a>
             <?= nav_btns('homes-prev', 'homes-next') ?>
         </div>
         <div class="card-row" id="homes-row">
