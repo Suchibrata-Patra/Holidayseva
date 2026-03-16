@@ -119,54 +119,49 @@ $experience_cards = [
 
 $host_cards = [
     [
-        'name'       => 'Priya Sharma',
-        'role'       => 'Superhost · Kolkata',
-        'reviews'    => '248',
-        'years'      => '6 yrs',
-        'rating'     => '4.98',
+        'title'      => 'Authentic Bengali home cooking by Priya',
+        'bio'        => 'I\'ve hosted over 200 guests and bring 6 years of warmth and local flavour to every stay.',
+        'meta'       => '4.98 · 248 reviews · Superhost in Kolkata',
+        'sub'        => 'Entire home · Verified host',
         'superhost'  => true,
         'img'        => unsplash('1494790108377-be9c29b29330', 200, 200),
-        'cover'      => unsplash('1558618666-fcd25c85cd64', 440, 160),
+        'cover'      => unsplash('1558618666-fcd25c85cd64', 600, 360),
     ],
     [
-        'name'       => 'Arjun Mehta',
-        'role'       => 'Host · Varanasi',
-        'reviews'    => '134',
-        'years'      => '3 yrs',
-        'rating'     => '4.93',
+        'title'      => 'Sacred ghats and riverside stories with Arjun',
+        'bio'        => 'Born and raised in Varanasi, I know every hidden lane and temple along the river.',
+        'meta'       => '4.93 · 134 reviews · Host in Varanasi',
+        'sub'        => 'Private room · Local guide',
         'superhost'  => false,
         'img'        => unsplash('1507003211169-0a1dd7228f2d', 200, 200),
-        'cover'      => unsplash('1561361513-2d000a50f0dc', 440, 160),
+        'cover'      => unsplash('1561361513-2d000a50f0dc', 600, 360),
     ],
     [
-        'name'       => 'Sneha Das',
-        'role'       => 'Superhost · Darjeeling',
-        'reviews'    => '391',
-        'years'      => '8 yrs',
-        'rating'     => '4.99',
+        'title'      => 'Cloud-wrapped mountain retreats by Sneha',
+        'bio'        => 'My cottage sits at 7,000 ft — I\'ll have tea and a warm fire waiting for you.',
+        'meta'       => '4.99 · 391 reviews · Superhost in Darjeeling',
+        'sub'        => 'Entire cottage · Mountain view',
         'superhost'  => true,
         'img'        => unsplash('1438761681033-6461ffad8d80', 200, 200),
-        'cover'      => unsplash('1464822759023-fed622ff2c3b', 440, 160),
+        'cover'      => unsplash('1464822759023-fed622ff2c3b', 600, 360),
     ],
     [
-        'name'       => 'Rahul Bose',
-        'role'       => 'Host · Puri',
-        'reviews'    => '77',
-        'years'      => '2 yrs',
-        'rating'     => '4.87',
+        'title'      => 'Temple town mornings and beachside stays by Rahul',
+        'bio'        => 'Wake up to temple bells and ocean breeze — my place is right between both.',
+        'meta'       => '4.87 · 77 reviews · Host in Puri',
+        'sub'        => 'Entire apartment · 2 min to beach',
         'superhost'  => false,
         'img'        => unsplash('1472099645785-5658abf4ff4e', 200, 200),
-        'cover'      => unsplash('1507525428034-b723cf961d3e', 440, 160),
+        'cover'      => unsplash('1507525428034-b723cf961d3e', 600, 360),
     ],
     [
-        'name'       => 'Meera Nair',
-        'role'       => 'Superhost · Jaipur',
-        'reviews'    => '562',
-        'years'      => '9 yrs',
-        'rating'     => '4.97',
+        'title'      => 'Pink city heritage and desert stories by Meera',
+        'bio'        => 'A 9-year Superhost, I\'ll show you Jaipur the way only a local can.',
+        'meta'       => '4.97 · 562 reviews · Superhost in Jaipur',
+        'sub'        => 'Entire haveli · Heritage property',
         'superhost'  => true,
         'img'        => unsplash('1580489944761-15a19d654956', 200, 200),
-        'cover'      => unsplash('1477587458883-47145ed31407', 440, 160),
+        'cover'      => unsplash('1477587458883-47145ed31407', 600, 360),
     ],
 ];
 
@@ -426,32 +421,39 @@ function nav_btns(string $prev_id, string $next_id): string {
             <?php foreach ($host_cards as $card): ?>
             <article class="card-host">
                 <div class="card-host-cover">
-                    <img src="<?= $card['cover'] ?? $card['img'] ?>" alt="" aria-hidden="true" loading="lazy">
+                    <img src="<?= $card['cover'] ?>" alt="" aria-hidden="true" loading="lazy">
                 </div>
                 <div class="card-host-avatar-wrap">
-                    <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['name']) ?>" loading="lazy">
+                    <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
                     <?php if ($card['superhost']): ?>
                     <span class="card-host-superhost" aria-label="Superhost">⭐</span>
                     <?php endif; ?>
                 </div>
                 <div class="card-host-body">
-                    <p class="card-host-name"><?= htmlspecialchars($card['name']) ?></p>
-                    <p class="card-host-role"><?= htmlspecialchars($card['role']) ?></p>
+                    <h3 class="card-host-name"><?= htmlspecialchars($card['title']) ?></h3>
+                    <p class="card-host-role"><?= htmlspecialchars($card['bio']) ?></p>
                     <div class="card-host-stats">
                         <div class="card-host-stat">
-                            <span class="card-host-stat-value"><?= htmlspecialchars($card['reviews']) ?></span>
-                            <span class="card-host-stat-label">Reviews</span>
+                            <span class="card-host-stat-value">
+                                <?= svg_star() ?><?= htmlspecialchars(explode(' · ', $card['meta'])[0]) ?>
+                            </span>
                         </div>
                         <div class="card-host-stat">
-                            <span class="card-host-stat-value"><?= htmlspecialchars($card['years']) ?></span>
-                            <span class="card-host-stat-label">Hosting</span>
+                            <span class="card-host-stat-label"><?= htmlspecialchars(explode(' · ', $card['meta'])[1]) ?></span>
                         </div>
                         <div class="card-host-stat">
-                            <span class="card-host-stat-value"><?= htmlspecialchars($card['rating']) ?></span>
-                            <span class="card-host-stat-label">Rating</span>
+                            <span class="card-host-stat-label"><?= htmlspecialchars(explode(' · ', $card['meta'])[2]) ?></span>
                         </div>
                     </div>
-                    <button class="card-host-btn">View profile</button>
+                    <p class="card-host-meta-sub"><?= htmlspecialchars($card['sub']) ?></p>
+                    <div class="card-host-actions">
+                        <button class="card-host-action-btn" aria-label="Share">
+                            <?= svg_share() ?>
+                        </button>
+                        <button class="card-host-action-btn card-favorite-button" aria-label="Save to wishlist">
+                            <?= svg_heart() ?>
+                        </button>
+                    </div>
                 </div>
             </article>
             <?php endforeach; ?>

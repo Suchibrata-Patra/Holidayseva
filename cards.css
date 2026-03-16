@@ -710,13 +710,13 @@ body {
 
 /* ════════════════════════════════════════════════════════════════
    CARD VARIATION ⑤  —  .card-host
-   Host profile: Airbnb-inspired premium portrait card
-   Cover image + overlapping avatar + qualifications list
-   Used for: Meet the host, Superhost profiles, agent cards
+   Editorial portrait card — large cover, centered avatar overlap,
+   bold title, bio text, inline meta row, action icon buttons.
+   Matches the "Behind the flame" Airbnb-style reference design.
    ════════════════════════════════════════════════════════════════ */
 
 :root {
-    --card-w-host: 230px;
+    --card-w-host: 300px;
 }
 
 .card-host {
@@ -729,11 +729,11 @@ body {
     width: var(--card-w-host);
     flex-shrink: 0;
     background: var(--color-bg);
-    border-radius: 20px;
+    border-radius: 22px;
     border: 1px solid var(--color-border-lighter);
     overflow: hidden;
     box-shadow:
-        0 2px 12px rgba(0, 0, 0, 0.07),
+        0 2px 14px rgba(0, 0, 0, 0.07),
         0 1px 3px rgba(0, 0, 0, 0.04);
     transition:
         transform  var(--card-dur-base) var(--card-ease-spring),
@@ -743,15 +743,15 @@ body {
 .card-host:hover {
     transform: translateY(-6px);
     box-shadow:
-        0 20px 48px rgba(0, 0, 0, 0.12),
+        0 22px 52px rgba(0, 0, 0, 0.13),
         0 6px 16px rgba(0, 0, 0, 0.07);
 }
 
-/* ── Cover image strip ── */
+/* ── Cover image — tall, takes up ~half the card ── */
 .card-host-cover {
     position: relative;
     width: 100%;
-    height: 100px;
+    height: 180px;
     overflow: hidden;
     background: var(--color-bg-secondary);
     flex-shrink: 0;
@@ -761,35 +761,24 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 40%;
+    object-position: center 35%;
     display: block;
     transition: transform var(--card-dur-image) var(--card-ease-out);
-    filter: brightness(0.82) saturate(1.15);
+    filter: brightness(0.90) saturate(1.10);
 }
 
-.card-host:hover .card-host-cover img { transform: scale(1.07); }
+.card-host:hover .card-host-cover img { transform: scale(1.05); }
 
-/* Gradient scrim on cover — fades to card bg for seamless avatar blend */
-.card-host-cover::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0) 30%,
-        rgba(0,0,0,0.30) 100%
-    );
-    pointer-events: none;
-}
+/* No bottom scrim — avatar floats cleanly over the white card body */
 
-/* ── Avatar — overlaps the cover ── */
+/* ── Avatar — centered, overlaps cover bottom edge ── */
 .card-host-avatar-wrap {
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    margin-top: -40px;
-    margin-bottom: 10px;
+    margin-top: -45px;         /* half of height — clean overlap */
+    margin-bottom: 14px;
     flex-shrink: 0;
     z-index: 2;
 }
@@ -801,127 +790,186 @@ body {
     object-fit: cover;
     object-position: center top;
     display: block;
-    border: 3.5px solid var(--color-bg);
+    border: 4px solid var(--color-bg);
     box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.14),
-        0 1px 4px rgba(0, 0, 0, 0.10);
+        0 4px 18px rgba(0, 0, 0, 0.14),
+        0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 /* Superhost badge — bottom-right of avatar */
 .card-host-superhost {
     position: absolute;
-    bottom: 1px;
-    right: 1px;
-    width: 24px;
-    height: 24px;
+    bottom: 2px;
+    right: 2px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: var(--color-primary);
-    border: 2.5px solid var(--color-bg);
+    border: 3px solid var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1;
-    box-shadow: 0 2px 6px rgba(255, 56, 92, 0.40);
+    box-shadow: 0 2px 8px rgba(255, 56, 92, 0.40);
     z-index: 3;
 }
 
-/* ── Body content ── */
+/* ── Body content — generous padding, editorial spacing ── */
 .card-host-body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 18px 20px;
+    padding: 0 24px 24px;
     gap: 0;
     width: 100%;
 }
 
+/* Big bold title — like "Behind the flame and fusion flavors by Erick" */
 .card-host-name {
-    font-size: 15.5px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 800;
     color: var(--color-text-primary);
-    letter-spacing: -0.4px;
-    margin: 0 0 3px;
-    line-height: 1.25;
+    letter-spacing: -0.6px;
+    margin: 0 0 10px;
+    line-height: 1.22;
+    /* Allow wrapping — this is a headline, not a one-liner */
+    white-space: normal;
+    word-break: break-word;
 }
 
+/* Bio / tagline — muted, readable */
 .card-host-role {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--color-text-secondary);
     margin: 0 0 16px;
-    line-height: 1.4;
+    line-height: 1.55;
     font-weight: 400;
+    white-space: normal;
 }
 
-/* Stats row: Reviews · Years · Rating */
+/* Inline meta row: ★ 5.0 · 11 reviews · Chef in Kolkata */
 .card-host-stats {
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 0;
     width: 100%;
-    border-radius: 14px;
-    border: 1px solid var(--color-border-lighter);
-    overflow: hidden;
-    background: var(--color-bg-secondary);
+    /* Override previous box styles — this is inline text, not a pill box */
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    margin-bottom: 4px;
 }
 
 .card-host-stat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-    padding: 10px 4px;
-    gap: 2px;
+    gap: 4px;
+    padding: 0;
     background: transparent;
-    transition: background var(--card-dur-fast) var(--card-ease-out);
+    flex: unset;
 }
 
+/* Dot separator between stats */
+.card-host-stat + .card-host-stat::before {
+    content: '·';
+    margin: 0 6px;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    border: none;
+}
+
+/* Remove the left-border that was used for the box layout */
 .card-host-stat + .card-host-stat {
-    border-left: 1px solid var(--color-border-lighter);
+    border-left: none;
 }
 
 .card-host-stat-value {
-    font-size: 14.5px;
-    font-weight: 700;
+    font-size: 13.5px;
+    font-weight: 600;
     color: var(--color-text-primary);
-    letter-spacing: -0.4px;
-    line-height: 1.2;
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* Star icon inside the rating stat */
+.card-host-stat-value svg {
+    width: 12px;
+    height: 12px;
+    fill: var(--color-star);
+    flex-shrink: 0;
+    margin-top: -1px;
 }
 
 .card-host-stat-label {
-    font-size: 9.5px;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    font-weight: 600;
-    line-height: 1.2;
+    font-size: 13.5px;
+    color: var(--color-text-secondary);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    line-height: 1.3;
 }
 
-/* Contact button */
-.card-host-btn {
-    margin-top: 13px;
-    width: 100%;
-    padding: 10px 16px;
-    border-radius: var(--card-radius-pill);
-    border: 1.5px solid var(--color-border);
-    background: var(--color-bg);
+/* Secondary meta line: "Provided at your home" */
+.card-host-meta-sub {
     font-size: 13px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    cursor: pointer;
-    letter-spacing: -0.15px;
-    transition:
-        background   var(--card-dur-fast) var(--card-ease-out),
-        border-color var(--card-dur-fast) var(--card-ease-out),
-        transform    var(--card-dur-fast) var(--card-ease-spring);
+    color: var(--color-text-secondary);
+    margin: 4px 0 0;
+    line-height: 1.4;
 }
 
-.card-host-btn:hover {
-    background: var(--color-text-primary);
-    border-color: var(--color-text-primary);
-    color: var(--color-text-inverse);
-    transform: scale(1.02);
+/* ── Action buttons row — share + heart icons ── */
+.card-host-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-border-lighter);
+    width: 100%;
 }
+
+.card-host-action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform var(--card-dur-fast) var(--card-ease-spring),
+                background var(--card-dur-fast) var(--card-ease-out);
+}
+
+.card-host-action-btn:hover {
+    transform: scale(1.15);
+    background: var(--color-bg-secondary);
+}
+
+.card-host-action-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--color-text-primary);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.card-host-action-btn.is-favorited svg {
+    fill: var(--color-primary);
+    stroke: var(--color-primary);
+}
+
+/* ── Remove old "View profile" button — replaced by icon actions ── */
+.card-host-btn { display: none; }
 
 /* Dark mode adapts */
 @media (prefers-color-scheme: dark) {
@@ -1174,7 +1222,7 @@ body {
         --card-w-service: 134px;
         --card-w-original: 188px;
         --card-w-experience: 248px;
-        --card-w-host: 200px;
+        --card-w-host: 270px;
         --card-w-promo: 268px;
     }
 
@@ -1200,7 +1248,7 @@ body {
         --card-w-service: 124px;
         --card-w-original: 172px;
         --card-w-experience: 228px;
-        --card-w-host: 186px;
+        --card-w-host: 255px;
         --card-w-promo: 244px;
     }
 
@@ -1243,15 +1291,16 @@ body {
     .card-service { width: 112px; }
     .card-original { width: 60vw; max-width: 245px; flex-grow: 0; }
     .card-experience { width: 72vw; max-width: 290px; }
-    .card-host { width: 170px; }
+    .card-host { width: 82vw; max-width: 300px; }
     .card-promo { width: 78vw; max-width: 290px; }
 
     .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
     .card-grid .card { width: 100%; max-width: 100%; }
 
-    .card-host-cover { height: 64px; }
-    .card-host-avatar-wrap { width: 60px; height: 60px; margin-top: -30px; }
-    .card-host-stat-value { font-size: 12px; }
+    .card-host-cover { height: 140px; }
+    .card-host-avatar-wrap { width: 72px; height: 72px; margin-top: -36px; }
+    .card-host-name { font-size: 17px; }
+    .card-host-role { font-size: 13px; }
 
     .card .card-title,
     .card-original .card-title { font-size: 12.5px; }
