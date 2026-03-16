@@ -17,7 +17,7 @@ function unsplash(string $id, int $w = 480, int $h = 480): string {
 
 $listing_cards = [
     ['title' => 'Flat in Kolkata',          'desc' => '₹13,683 for 2 nights · ★ 4.77', 'badge' => 'Guest favourite', 'img' => unsplash('1631049307264-da0ec9d70304')],
-    ['title' => 'Villa in Kolkata',         'desc' => '₹11,526 for 2 nights · ★ 4.86', 'badge' => 'Guest favourite', 'img' => unsplash('1613977257363-707ba9578f43')],
+    ['title' => 'Villa in Kolkata',         'desc' => '₹11,526 for 2 nights · ★ 4.86', 'badge' => 'Guest favourite', 'img' => unsplash('1502672260266-1c1ef2d93688')],
     ['title' => 'Place to stay in Kolkata', 'desc' => '₹5,706 for 2 nights · ★ 4.95',  'badge' => 'Guest favourite', 'img' => unsplash('1600585154340-be6161a56a0c')],
     ['title' => 'Flat in Kolkata',          'desc' => '₹6,150 for 2 nights · ★ 4.86',  'badge' => 'Guest favourite', 'img' => unsplash('1618773928121-c32242e63f39')],
     ['title' => 'Flat in Kolkata',          'desc' => '₹5,250 for 2 nights · ★ 4.98',  'badge' => 'Guest favourite', 'img' => unsplash('1502672260266-1c1ef2d93688')],
