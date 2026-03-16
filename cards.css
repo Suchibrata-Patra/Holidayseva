@@ -1,16 +1,24 @@
 /* ================================================================
    HOLIDAYSEVA — CARD COMPONENT SYSTEM
-   cards.css — v2 Full Rewrite
+   cards.css — v3
 
-   Three card variations:
-   ①  .card            — Standard listing card (image + badge + heart + meta)
-   ②  .card-service    — Service category card (square, compact)
-   ③  .card-original   — Featured/Original card (portrait, badge + action)
+   Matches the Airbnb-grade card UI exactly:
+   - Cards fill row fluidly (no fixed narrow widths)
+   - Tall images with generous aspect ratio
+   - Heart icon directly on image, no background circle
+   - Clean "Guest favourite" pill badge
+   - Rating inline with price as "₹X for N nights · ★ Y.YY"
+   - Smooth image zoom on hover
+   - Proper horizontal scroll with snap
+
+   Three variations:
+   ① .card            — Standard listing card
+   ② .card-service    — Service category card
+   ③ .card-original   — Featured/Original card
 
    Rules:
    - Zero color literals — all colors via var(--color-*) tokens
    - Zero inline styles
-   - All spacing via consistent scale tokens
    ================================================================ */
 
 
@@ -20,52 +28,37 @@
 
 :root {
     /* Colors */
-    --color-bg:               #FFFFFF;
-    --color-bg-secondary:     #F7F7F7;
-    --color-bg-tertiary:      #EFEFEF;
-    --color-text-primary:     #222222;
-    --color-text-secondary:   #717171;
-    --color-text-muted:       #AAAAAA;
-    --color-border-light:     #DDDDDD;
-    --color-border-lighter:   #EEEEEE;
-    --color-primary:          #FF385C;
-    --color-surface-overlay:  rgba(255, 255, 255, 0.94);
-    --color-shadow-xs:        rgba(0, 0, 0, 0.06);
-    --color-shadow-sm:        rgba(0, 0, 0, 0.10);
-    --color-shadow-md:        rgba(0, 0, 0, 0.14);
-    --color-shadow-lg:        rgba(0, 0, 0, 0.20);
-    --color-star:             #222222;
-
-    /* Spacing scale */
-    --space-1:  4px;
-    --space-2:  8px;
-    --space-3:  12px;
-    --space-4:  16px;
-    --space-5:  20px;
-    --space-6:  24px;
-    --space-8:  32px;
-    --space-10: 40px;
-    --space-12: 48px;
-    --space-16: 64px;
+    --color-bg:                 #FFFFFF;
+    --color-bg-secondary:       #F7F7F7;
+    --color-text-primary:       #222222;
+    --color-text-secondary:     #717171;
+    --color-text-muted:         #AAAAAA;
+    --color-border-light:       #DDDDDD;
+    --color-border-lighter:     #EEEEEE;
+    --color-primary:            #FF385C;
+    --color-badge-bg:           rgba(255, 255, 255, 0.93);
+    --color-shadow-xs:          rgba(0, 0, 0, 0.06);
+    --color-shadow-sm:          rgba(0, 0, 0, 0.10);
+    --color-shadow-md:          rgba(0, 0, 0, 0.16);
+    --color-star:               #222222;
+    --color-heart-outline:      #FFFFFF;
+    --color-heart-shadow:       rgba(0, 0, 0, 0.30);
 
     /* Radii */
-    --radius-sm:     8px;
-    --radius-md:     12px;
-    --radius-lg:     16px;
-    --radius-xl:     20px;
-    --radius-full:   9999px;
+    --radius-card:   14px;
+    --radius-badge:  9999px;
 
     /* Transitions */
     --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --duration-fast: 180ms;
-    --duration-base: 260ms;
-    --duration-slow: 360ms;
+    --dur-fast:      180ms;
+    --dur-base:      260ms;
+    --dur-image:     400ms;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   00b. PAGE BASE — reset, body, layout
+   00b. PAGE BASE
    ──────────────────────────────────────────────────────────────── */
 
 *,
@@ -82,24 +75,23 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     background: var(--color-bg);
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .page-container {
-    max-width: 1280px;
+    max-width: 1380px;
     margin: 0 auto;
-    padding: var(--space-12) var(--space-8) var(--space-16);
+    padding: 40px 40px 80px;
 }
 
 .page-header {
-    margin-bottom: var(--space-12);
-    padding-bottom: var(--space-6);
+    margin-bottom: 48px;
+    padding-bottom: 24px;
     border-bottom: 1px solid var(--color-border-lighter);
 }
 
@@ -109,7 +101,7 @@ body {
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: var(--color-text-muted);
-    margin-bottom: var(--space-2);
+    margin-bottom: 8px;
 }
 
 .page-title {
@@ -118,13 +110,12 @@ body {
     letter-spacing: -0.8px;
     color: var(--color-text-primary);
     line-height: 1.1;
-    margin-bottom: var(--space-2);
+    margin-bottom: 6px;
 }
 
 .page-desc {
     font-size: 15px;
     color: var(--color-text-secondary);
-    line-height: 1.6;
 }
 
 
@@ -133,15 +124,15 @@ body {
    ──────────────────────────────────────────────────────────────── */
 
 .card-section {
-    margin-bottom: var(--space-16);
+    margin-bottom: 56px;
 }
 
 .card-section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-4);
-    margin-bottom: var(--space-5);
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .card-section-title {
@@ -156,69 +147,68 @@ body {
 .card-section-subtitle {
     font-size: 14px;
     color: var(--color-text-secondary);
-    margin: var(--space-1) 0 0;
-    font-weight: 400;
+    margin: 4px 0 0;
 }
 
+/* Title as underlined link (Airbnb style) */
 .card-section-title-link {
     display: inline-flex;
     align-items: center;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--color-text-primary);
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1.5px;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.5px;
     cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-out);
     background: none;
     border: none;
     padding: 0;
+    transition: color var(--dur-fast) var(--ease-out);
 }
 
 .card-section-title-link:hover {
     color: var(--color-text-secondary);
 }
 
-/* Scroll nav buttons */
+/* Scroll nav arrows */
 .card-section-nav {
     display: flex;
-    gap: var(--space-2);
+    gap: 8px;
     flex-shrink: 0;
 }
 
 .card-nav-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: var(--radius-full);
-    border: 1.5px solid var(--color-border-light);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-badge);
+    border: 1px solid var(--color-border-light);
     background: var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition:
-        border-color var(--duration-fast) var(--ease-out),
-        box-shadow   var(--duration-fast) var(--ease-out);
     box-shadow: 0 1px 4px var(--color-shadow-xs);
+    transition: box-shadow var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out);
     padding: 0;
     flex-shrink: 0;
 }
 
 .card-nav-btn:hover {
+    box-shadow: 0 2px 8px var(--color-shadow-sm);
     border-color: var(--color-text-primary);
-    box-shadow: 0 2px 10px var(--color-shadow-sm);
 }
 
 .card-nav-btn:disabled {
-    opacity: 0.35;
+    opacity: 0.3;
     cursor: not-allowed;
 }
 
 .card-nav-btn svg {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
     stroke: var(--color-text-primary);
     fill: none;
     stroke-width: 2.5;
@@ -229,20 +219,17 @@ body {
 
 /* ────────────────────────────────────────────────────────────────
    02. HORIZONTAL SCROLL ROW
-   Used by all three card types
    ──────────────────────────────────────────────────────────────── */
 
 .card-row {
     display: flex;
-    flex-direction: row;
-    gap: var(--space-5);           /* 20px gap between cards */
+    gap: 16px;
     overflow-x: auto;
     overflow-y: visible;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: var(--space-3);
-    padding-top: var(--space-2);   /* room for hover lift shadow */
-    /* Hide scrollbar */
+    padding-bottom: 12px;  /* space for hover shadow */
+    padding-top: 4px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -259,7 +246,14 @@ body {
 
 /* ────────────────────────────────────────────────────────────────
    03. VARIATION ① — STANDARD LISTING CARD  (.card)
-   Airbnb-style: square image, badge, heart, title + rating + price
+
+   Key traits from screenshot:
+   - Image fills ~65% of card height (aspect-ratio: 4/3 ish but taller ~1:1.1)
+   - No box-shadow on card itself — shadow only on hover
+   - Heart is plain outline SVG on image, no circle background
+   - Badge pill is semi-transparent frosted white, bold text
+   - Title bold, description as "₹X · ★ Y.YY" in one line
+   - Cards are wide enough to show ~6-7 across on desktop
    ──────────────────────────────────────────────────────────────── */
 
 .card {
@@ -267,27 +261,26 @@ body {
     display: flex;
     flex-direction: column;
     background: var(--color-bg);
-    border-radius: var(--radius-md);
-    overflow: visible;             /* allow shadow on hover to show */
+    border-radius: var(--radius-card);
+    overflow: visible;
     cursor: pointer;
-    width: 240px;                  /* fixed card width in row */
-    transition: transform var(--duration-base) var(--ease-spring);
+    /* Fill row: each card is ~200px min, auto-expands to fill */
+    width: 200px;
+    flex-grow: 1;
+    max-width: 240px;
+    transition: transform var(--dur-base) var(--ease-spring);
 }
 
 .card:hover {
     transform: translateY(-3px);
 }
 
-.card:active {
-    transform: translateY(-1px);
-}
-
-/* Image container */
+/* ── Image wrapper ── */
 .card .card-header {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: var(--radius-lg);
+    aspect-ratio: 20 / 19;   /* slightly taller than square — matches screenshot */
+    border-radius: var(--radius-card);
     overflow: hidden;
     background: var(--color-bg-secondary);
 }
@@ -298,94 +291,100 @@ body {
     object-fit: cover;
     object-position: center;
     display: block;
-    transition: transform var(--duration-slow) var(--ease-spring);
+    transition: transform var(--dur-image) var(--ease-out);
 }
 
 .card:hover .card-header img {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
 
-/* Badge — "Guest favourite" */
+/* ── Badge ── */
 .card .card-badge {
     position: absolute;
-    top: var(--space-3);
-    left: var(--space-3);
-    background: var(--color-surface-overlay);
+    top: 12px;
+    left: 12px;
+    background: var(--color-badge-bg);
     padding: 6px 14px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-badge);
     font-size: 12px;
     font-weight: 600;
     color: var(--color-text-primary);
     z-index: 5;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 1px 4px var(--color-shadow-xs);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     letter-spacing: -0.1px;
+    /* subtle shadow to lift off image */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
-/* Heart / favorite button */
+/* ── Heart button — plain outline, no circle ── */
 .card-favorite-button {
     position: absolute;
-    top: var(--space-3);
-    right: var(--space-3);
+    top: 10px;
+    right: 10px;
     background: transparent;
     border: none;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
     padding: 0;
-    transition: transform var(--duration-fast) var(--ease-spring);
+    transition: transform var(--dur-fast) var(--ease-spring);
 }
 
 .card-favorite-button:hover {
-    transform: scale(1.18);
+    transform: scale(1.15);
 }
 
 .card-favorite-button svg {
-    width: 22px;
-    height: 22px;
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
-    transition: fill var(--duration-fast) var(--ease-out);
+    width: 24px;
+    height: 24px;
+    /* White fill with dark drop shadow — readable over any image */
+    fill: rgba(255, 255, 255, 0.25);
+    stroke: var(--color-heart-outline);
+    stroke-width: 2;
+    filter: drop-shadow(0 1px 2px var(--color-heart-shadow));
+    transition: fill var(--dur-fast) var(--ease-out),
+                stroke var(--dur-fast) var(--ease-out);
 }
 
 .card-favorite-button.is-favorited svg {
     fill: var(--color-primary);
-    stroke: var(--color-primary) !important;
+    stroke: var(--color-primary);
 }
 
-/* Content below image */
+/* ── Content below image ── */
 .card .card-content {
-    padding: var(--space-3) var(--space-1) 0;
+    padding: 10px 2px 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: 3px;
 }
 
 .card-meta-row {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--space-2);
+    gap: 8px;
 }
 
 .card .card-title {
     margin: 0;
     font-size: 14px;
     font-weight: 600;
-    line-height: 1.35;
+    line-height: 1.3;
     color: var(--color-text-primary);
     letter-spacing: -0.2px;
+    white-space: nowrap;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
     flex: 1;
 }
 
+/* Rating — "★ 4.77" aligned right of title */
 .card-rating {
     display: inline-flex;
     align-items: center;
@@ -404,48 +403,46 @@ body {
     flex-shrink: 0;
 }
 
+/* Price row — "₹13,683 for 2 nights" */
+.card-price {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-price strong {
+    font-weight: 400;   /* matches screenshot — NOT bold for price line */
+    color: var(--color-text-secondary);
+}
+
 .card .card-description {
     margin: 0;
     font-size: 13px;
     color: var(--color-text-secondary);
+    white-space: nowrap;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-}
-
-.card-price {
-    margin: 0;
-    font-size: 13px;
-    color: var(--color-text-primary);
-    line-height: 1.4;
-}
-
-.card-price strong {
-    font-weight: 600;
-}
-
-.card-price span {
-    color: var(--color-text-secondary);
-    font-weight: 400;
+    text-overflow: ellipsis;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
    04. VARIATION ② — SERVICE CATEGORY CARD  (.card-service)
-   Compact square card: rounded image, name + status
+   Square rounded image, name + status below
    ──────────────────────────────────────────────────────────────── */
 
 .card-service {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: 10px;
     cursor: pointer;
-    width: 160px;                  /* fixed width in row */
+    width: 152px;
     flex-shrink: 0;
     background: transparent;
-    border-radius: 0;
-    transition: transform var(--duration-base) var(--ease-spring);
+    transition: transform var(--dur-base) var(--ease-spring);
 }
 
 .card-service:hover {
@@ -455,7 +452,7 @@ body {
 .card-service-image {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     overflow: hidden;
     background: var(--color-bg-secondary);
 }
@@ -466,8 +463,7 @@ body {
     object-fit: cover;
     object-position: center;
     display: block;
-    border-radius: var(--radius-lg);
-    transition: transform var(--duration-slow) var(--ease-spring);
+    transition: transform var(--dur-image) var(--ease-out);
 }
 
 .card-service:hover .card-service-image img {
@@ -477,8 +473,8 @@ body {
 .card-service-info {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    padding: 0 var(--space-1);
+    gap: 2px;
+    padding: 0 2px;
 }
 
 .card-service-title {
@@ -503,7 +499,7 @@ body {
 
 /* ────────────────────────────────────────────────────────────────
    05. VARIATION ③ — ORIGINAL / FEATURED CARD  (.card-original)
-   Editorial portrait card: badge + action button overlay
+   Portrait image, "🪶 Original" badge, share/heart action
    ──────────────────────────────────────────────────────────────── */
 
 .card-original {
@@ -511,11 +507,12 @@ body {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    width: 210px;                  /* fixed width in row */
+    width: 200px;
+    flex-grow: 1;
+    max-width: 230px;
     flex-shrink: 0;
     background: transparent;
-    border-radius: 0;
-    transition: transform var(--duration-base) var(--ease-spring);
+    transition: transform var(--dur-base) var(--ease-spring);
 }
 
 .card-original:hover {
@@ -526,7 +523,7 @@ body {
     position: relative;
     width: 100%;
     aspect-ratio: 3 / 4;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     overflow: hidden;
     background: var(--color-bg-secondary);
 }
@@ -537,21 +534,20 @@ body {
     object-fit: cover;
     object-position: center top;
     display: block;
-    transition: transform var(--duration-slow) var(--ease-spring);
+    transition: transform var(--dur-image) var(--ease-out);
 }
 
 .card-original:hover .card-header img {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
 
-/* Badge — "🪶 Original" */
 .card-original .card-badge {
     position: absolute;
-    top: var(--space-3);
-    left: var(--space-3);
-    background: var(--color-surface-overlay);
+    top: 12px;
+    left: 12px;
+    background: var(--color-badge-bg);
     padding: 5px 12px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-badge);
     font-size: 12px;
     font-weight: 600;
     color: var(--color-text-primary);
@@ -559,10 +555,9 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 1px 4px var(--color-shadow-xs);
-    letter-spacing: -0.1px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 .card-badge-icon {
@@ -570,37 +565,38 @@ body {
     line-height: 1;
 }
 
-/* Action button — share / heart */
 .card-action-button {
     position: absolute;
-    top: var(--space-3);
-    right: var(--space-3);
+    top: 10px;
+    right: 10px;
     background: transparent;
     border: none;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
     padding: 0;
-    transition: transform var(--duration-fast) var(--ease-spring);
+    transition: transform var(--dur-fast) var(--ease-spring);
 }
 
 .card-action-button:hover {
-    transform: scale(1.18);
+    transform: scale(1.15);
 }
 
 .card-action-button svg {
-    width: 20px;
-    height: 20px;
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));
+    width: 22px;
+    height: 22px;
+    fill: rgba(255,255,255,0.2);
+    stroke: var(--color-heart-outline);
+    stroke-width: 2;
+    filter: drop-shadow(0 1px 2px var(--color-heart-shadow));
 }
 
-/* Content below image */
 .card-original .card-content {
-    padding: var(--space-3) var(--space-1) 0;
+    padding: 10px 2px 0;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -623,7 +619,6 @@ body {
     margin: 0;
     font-size: 13px;
     color: var(--color-text-secondary);
-    line-height: 1.4;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -632,20 +627,11 @@ body {
 .card-original .card-price {
     margin: 2px 0 0;
     font-size: 13px;
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 4px;
-}
-
-.card-original .card-price strong {
-    font-weight: 600;
-}
-
-.card-original .card-price span {
-    color: var(--color-text-secondary);
-    font-weight: 400;
 }
 
 .card-original .card-rating {
@@ -665,31 +651,32 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   06. STANDARD CARD GRID  (non-scrolling, page-level grids)
+   06. STANDARD CARD GRID  (non-scrolling)
    ──────────────────────────────────────────────────────────────── */
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
     width: 100%;
 }
 
 .card-grid .card {
-    width: 100%;        /* override fixed row width inside grid */
+    width: 100%;
+    max-width: 100%;
+    flex-grow: unset;
 }
 
-
 /* ────────────────────────────────────────────────────────────────
-   07. CARD FOOTER  (optional, standard cards)
+   07. CARD FOOTER / BODY  (optional)
    ──────────────────────────────────────────────────────────────── */
 
 .card-footer {
-    padding: var(--space-3) var(--space-4);
+    padding: 12px 16px;
     border-top: 1px solid var(--color-border-lighter);
     background: var(--color-bg-secondary);
     display: flex;
-    gap: var(--space-2);
+    gap: 8px;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -698,7 +685,7 @@ body {
 }
 
 .card-body {
-    padding: var(--space-4);
+    padding: 14px;
     font-size: 14px;
     line-height: 1.6;
     color: var(--color-text-primary);
@@ -706,163 +693,188 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   08. RESPONSIVE — TABLET  (≤ 1024px)
+   08. RESPONSIVE — LARGE DESKTOP  (> 1280px)
+   Show more cards, slightly wider gutters
    ──────────────────────────────────────────────────────────────── */
 
-@media (max-width: 1024px) {
-    .page-container {
-        padding: var(--space-10) var(--space-6) var(--space-12);
+@media (min-width: 1280px) {
+    .card-row {
+        gap: 20px;
     }
 
     .card {
-        width: 210px;
-    }
-
-    .card-original {
-        width: 190px;
-    }
-
-    .card-section {
-        margin-bottom: var(--space-12);
+        min-width: 210px;
     }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   09. RESPONSIVE — TABLET PORTRAIT  (≤ 768px)
+   09. RESPONSIVE — TABLET  (≤ 1024px)
+   ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    .page-container {
+        padding: 32px 32px 64px;
+    }
+
+    .card-row {
+        gap: 14px;
+    }
+
+    .card {
+        width: 185px;
+        max-width: 210px;
+    }
+
+    .card-service {
+        width: 136px;
+    }
+
+    .card-original {
+        width: 180px;
+        max-width: 205px;
+    }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   10. RESPONSIVE — TABLET PORTRAIT  (≤ 768px)
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
     .page-container {
-        padding: var(--space-8) var(--space-5) var(--space-10);
+        padding: 28px 20px 56px;
     }
 
     .page-title {
         font-size: 28px;
     }
 
-    .card-section-title {
+    .card-section {
+        margin-bottom: 44px;
+    }
+
+    .card-section-title,
+    .card-section-title-link {
         font-size: 18px;
     }
 
-    .card-section-title-link {
-        font-size: 17px;
-    }
-
-    .card-section {
-        margin-bottom: var(--space-10);
-    }
-
     .card-row {
-        gap: var(--space-4);       /* tighten gap on tablet */
+        gap: 12px;
     }
 
     .card {
-        width: 190px;
+        width: 170px;
+        max-width: 190px;
     }
 
     .card-service {
-        width: 140px;
+        width: 124px;
     }
 
     .card-original {
-        width: 170px;
+        width: 165px;
+        max-width: 185px;
     }
 
     .card .card-title,
-    .card-original .card-title {
+    .card-original .card-title,
+    .card-service-title {
         font-size: 13px;
     }
 
+    .card-price,
+    .card-rating,
     .card .card-description,
     .card-original .card-description,
     .card-service-status {
         font-size: 12px;
     }
-
-    .card-service-title {
-        font-size: 13px;
-    }
-
-    .card-rating {
-        font-size: 12px;
-    }
-
-    .card-price {
-        font-size: 12px;
-    }
-
-    .card-nav-btn {
-        width: 30px;
-        height: 30px;
-    }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   10. RESPONSIVE — MOBILE  (≤ 480px)
+   11. RESPONSIVE — MOBILE  (≤ 480px)
+   Show ~1.5 cards to signal scroll, hide nav arrows
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 480px) {
     .page-container {
-        padding: var(--space-6) var(--space-4) var(--space-8);
+        padding: 20px 16px 48px;
     }
 
     .page-title {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .page-desc {
-        font-size: 14px;
-    }
-
-    .card-section-title {
-        font-size: 16px;
-    }
-
-    .card-section-title-link {
-        font-size: 15px;
-    }
-
-    .card-section-header {
-        margin-bottom: var(--space-4);
+        font-size: 13px;
     }
 
     .card-section {
-        margin-bottom: var(--space-8);
+        margin-bottom: 36px;
+    }
+
+    .card-section-title,
+    .card-section-title-link {
+        font-size: 16px;
+    }
+
+    .card-section-header {
+        margin-bottom: 14px;
+    }
+
+    /* Nav arrows hidden on mobile — users swipe */
+    .card-section-nav {
+        display: none;
     }
 
     .card-row {
-        gap: var(--space-3);       /* 12px gap on mobile */
+        gap: 10px;
     }
 
-    /* Cards slightly narrower on mobile — show ~1.5 cards */
+    /* ~1.5 cards visible = clear scroll affordance */
     .card {
-        width: 200px;
+        width: 64vw;
+        max-width: 260px;
+        flex-grow: 0;
     }
 
     .card-service {
-        width: 120px;
-    }
-
-    .card-service-image {
-        border-radius: var(--radius-md);
-    }
-
-    .card-service-image img {
-        border-radius: var(--radius-md);
+        width: 110px;
     }
 
     .card-original {
-        width: 160px;
+        width: 60vw;
+        max-width: 240px;
+        flex-grow: 0;
     }
 
     .card .card-header {
-        border-radius: var(--radius-md);
+        border-radius: 10px;
     }
 
     .card-original .card-header {
-        border-radius: var(--radius-md);
+        border-radius: 10px;
+    }
+
+    .card-service-image {
+        border-radius: 10px;
+    }
+
+    .card-service-image img {
+        border-radius: 10px;
+    }
+
+    /* Grid: 2-col on mobile */
+    .card-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .card-grid .card {
+        width: 100%;
+        max-width: 100%;
     }
 
     .card .card-title,
@@ -870,60 +882,50 @@ body {
         font-size: 12px;
     }
 
+    .card-price,
+    .card-rating,
     .card .card-description,
     .card-original .card-description,
-    .card-service-status,
-    .card-price,
-    .card-rating {
+    .card-service-title,
+    .card-service-status {
         font-size: 11px;
     }
 
-    .card-service-title {
-        font-size: 12px;
-    }
-
-    /* Hide nav arrows on mobile — swipe is sufficient */
-    .card-section-nav {
-        display: none;
-    }
-
-    /* Grid becomes 2-col on mobile */
-    .card-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-3);
+    .card .card-content,
+    .card-original .card-content {
+        gap: 2px;
     }
 
     .card-body {
-        padding: var(--space-3);
+        padding: 12px;
         font-size: 13px;
     }
 
     .card-footer {
-        padding: var(--space-2) var(--space-3);
+        padding: 10px 12px;
         font-size: 11px;
     }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   11. DARK MODE
+   12. DARK MODE
    ──────────────────────────────────────────────────────────────── */
 
 @media (prefers-color-scheme: dark) {
     :root {
         --color-bg:               #121212;
         --color-bg-secondary:     #1E1E1E;
-        --color-bg-tertiary:      #2A2A2A;
         --color-text-primary:     #F0F0F0;
         --color-text-secondary:   #999999;
         --color-text-muted:       #555555;
         --color-border-light:     #2E2E2E;
         --color-border-lighter:   #242424;
-        --color-surface-overlay:  rgba(28, 28, 28, 0.92);
-        --color-shadow-xs:        rgba(0, 0, 0, 0.25);
-        --color-shadow-sm:        rgba(0, 0, 0, 0.40);
-        --color-shadow-md:        rgba(0, 0, 0, 0.55);
-        --color-shadow-lg:        rgba(0, 0, 0, 0.70);
+        --color-badge-bg:         rgba(24, 24, 24, 0.88);
+        --color-shadow-xs:        rgba(0, 0, 0, 0.30);
+        --color-shadow-sm:        rgba(0, 0, 0, 0.45);
+        --color-shadow-md:        rgba(0, 0, 0, 0.60);
         --color-star:             #F0F0F0;
+        --color-heart-outline:    #FFFFFF;
     }
 }
