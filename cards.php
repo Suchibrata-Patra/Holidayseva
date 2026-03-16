@@ -515,4 +515,18 @@ function nav_btns(string $prev_id, string $next_id): string {
 </script>
 
 </body>
-</html>
+</html><link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<div id="map" style="height:500px;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+var map = L.map('map').setView([22.5726, 88.3639], 12);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+L.marker([22.5726, 88.3639]).addTo(map);
+</script>
