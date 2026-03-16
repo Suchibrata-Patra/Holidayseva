@@ -263,7 +263,7 @@ function svg_arrow_right(): string {
             <?php foreach ($listing_cards as $card): ?>
             <article class="card">
                 <div class="card-header">
-                    <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
+                    <img loading="lazy"src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
                     <span class="card-badge"><?= htmlspecialchars($card['badge']) ?></span>
                     <button class="card-favorite-button" aria-label="Save to wishlist">
                         <?= svg_heart() ?>
@@ -297,7 +297,7 @@ function svg_arrow_right(): string {
             <?php foreach ($service_cards as $card): ?>
             <article class="card-service">
                 <div class="card-service-image">
-                    <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
+                    <img loading="lazy"src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
                 </div>
                 <div class="card-service-info">
                     <h3 class="card-service-title"><?= htmlspecialchars($card['title']) ?></h3>
@@ -331,7 +331,7 @@ function svg_arrow_right(): string {
             <?php foreach ($original_cards as $card): ?>
             <article class="card-original">
                 <div class="card-header">
-                    <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
+                    <img loading="lazy"src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
                     <span class="card-badge">
                         <span class="card-badge-icon" aria-hidden="true">🪶</span>
                         Original
