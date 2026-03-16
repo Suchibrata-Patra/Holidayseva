@@ -809,7 +809,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 24px 0;
+    margin: 0px 0;
     overflow: visible;
     position: relative;
 }
