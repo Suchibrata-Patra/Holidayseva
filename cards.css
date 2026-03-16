@@ -1,60 +1,71 @@
 /* ================================================================
    HOLIDAYSEVA — CARD COMPONENT SYSTEM
-   cards.css — Premium, Production-Grade Component Library
-   
-   Three card variations matching Airbnb-grade booking platform
-   aesthetics. All colors use var(--color-*) tokens exclusively.
-   Zero color literals. Zero inline styles.
-   
-   Variations:
-   ① .card                    — Standard listing card (image + badge + heart + meta)
-   ② .card-service            — Service category card (square icon-style)
-   ③ .card-original           — Featured/Original card (badge + action button)
-   
-   Features:
-   - Perfect image-first design
-   - Smooth hover states with image zoom
-   - Premium shadows & borders
-   - Horizontal scroll rows + responsive grid
-   - Dark mode support
-   - Accessibility-first
+   cards.css — v2 Full Rewrite
+
+   Three card variations:
+   ①  .card            — Standard listing card (image + badge + heart + meta)
+   ②  .card-service    — Service category card (square, compact)
+   ③  .card-original   — Featured/Original card (portrait, badge + action)
+
+   Rules:
+   - Zero color literals — all colors via var(--color-*) tokens
+   - Zero inline styles
+   - All spacing via consistent scale tokens
    ================================================================ */
 
 
 /* ────────────────────────────────────────────────────────────────
-   00. DESIGN TOKENS (ROOT VARIABLES)
+   00a. DESIGN TOKENS
    ──────────────────────────────────────────────────────────────── */
 
 :root {
+    /* Colors */
     --color-bg:               #FFFFFF;
     --color-bg-secondary:     #F7F7F7;
     --color-bg-tertiary:      #EFEFEF;
     --color-text-primary:     #222222;
     --color-text-secondary:   #717171;
-    --color-text-muted:       #B0B0B0;
-    --color-border-light:     #E5E5E5;
-    --color-border-lighter:   #F0F0F0;
+    --color-text-muted:       #AAAAAA;
+    --color-border-light:     #DDDDDD;
+    --color-border-lighter:   #EEEEEE;
     --color-primary:          #FF385C;
-    --color-primary-hover:    #E0294A;
-    --color-surface-overlay:  rgba(255, 255, 255, 0.92);
-    --color-shadow-sm:        rgba(0, 0, 0, 0.08);
-    --color-shadow-md:        rgba(0, 0, 0, 0.12);
-    --color-shadow-lg:        rgba(0, 0, 0, 0.18);
+    --color-surface-overlay:  rgba(255, 255, 255, 0.94);
+    --color-shadow-xs:        rgba(0, 0, 0, 0.06);
+    --color-shadow-sm:        rgba(0, 0, 0, 0.10);
+    --color-shadow-md:        rgba(0, 0, 0, 0.14);
+    --color-shadow-lg:        rgba(0, 0, 0, 0.20);
     --color-star:             #222222;
 
-    --radius-card:     12px;
-    --radius-badge:    20px;
-    --radius-button:   50%;
+    /* Spacing scale */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  20px;
+    --space-6:  24px;
+    --space-8:  32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
 
-    --transition-fast:    200ms ease;
-    --transition-base:    280ms cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transition-image:   380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Radii */
+    --radius-sm:     8px;
+    --radius-md:     12px;
+    --radius-lg:     16px;
+    --radius-xl:     20px;
+    --radius-full:   9999px;
+
+    /* Transitions */
+    --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --duration-fast: 180ms;
+    --duration-base: 260ms;
+    --duration-slow: 360ms;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   00b. PAGE BASE — reset, body, container, header
-   Used by cards.php demo page. Zero color literals.
+   00b. PAGE BASE — reset, body, layout
    ──────────────────────────────────────────────────────────────── */
 
 *,
@@ -67,48 +78,50 @@
 
 html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
     font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: -0.2px;
+    line-height: 1.5;
     background: var(--color-bg);
     color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .page-container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 48px 24px 80px;
+    padding: var(--space-12) var(--space-8) var(--space-16);
 }
 
 .page-header {
-    margin-bottom: 48px;
-    padding-bottom: 24px;
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-6);
     border-bottom: 1px solid var(--color-border-lighter);
 }
 
 .page-eyebrow {
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
     color: var(--color-text-muted);
-    margin-bottom: 8px;
+    margin-bottom: var(--space-2);
 }
 
 .page-title {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     letter-spacing: -0.8px;
     color: var(--color-text-primary);
-    line-height: 1.15;
+    line-height: 1.1;
+    margin-bottom: var(--space-2);
 }
 
 .page-desc {
-    margin-top: 8px;
     font-size: 15px;
     color: var(--color-text-secondary);
     line-height: 1.6;
@@ -116,66 +129,167 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   01. SHARED CARD BASE
-   Common structural patterns used across all card variants
+   01. SECTION LAYOUT
    ──────────────────────────────────────────────────────────────── */
 
-.card,
-.card-service,
-.card-original {
-    position: relative;
+.card-section {
+    margin-bottom: var(--space-16);
+}
+
+.card-section-header {
     display: flex;
-    flex-direction: column;
-    background: var(--color-bg);
-    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+.card-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.card-section-subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: var(--space-1) 0 0;
+    font-weight: 400;
+}
+
+.card-section-title-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+    letter-spacing: -0.4px;
     cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-out);
+    background: none;
+    border: none;
+    padding: 0;
 }
 
-/* Shared image zoom on hover */
-.card:hover .card-header img,
-.card-original:hover .card-header img {
-    transform: scale(1.06);
+.card-section-title-link:hover {
+    color: var(--color-text-secondary);
 }
 
-.card-service:hover .card-service-image img {
-    transform: scale(1.06);
+/* Scroll nav buttons */
+.card-section-nav {
+    display: flex;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+
+.card-nav-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--color-border-light);
+    background: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+        border-color var(--duration-fast) var(--ease-out),
+        box-shadow   var(--duration-fast) var(--ease-out);
+    box-shadow: 0 1px 4px var(--color-shadow-xs);
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.card-nav-btn:hover {
+    border-color: var(--color-text-primary);
+    box-shadow: 0 2px 10px var(--color-shadow-sm);
+}
+
+.card-nav-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.card-nav-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--color-text-primary);
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   02. VARIATION ① — STANDARD LISTING CARD
-   Airbnb-style property/listing card with badge + heart + pricing
-   Usage: Popular homes, search results, recommendation rows
+   02. HORIZONTAL SCROLL ROW
+   Used by all three card types
+   ──────────────────────────────────────────────────────────────── */
+
+.card-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-5);           /* 20px gap between cards */
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-3);
+    padding-top: var(--space-2);   /* room for hover lift shadow */
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.card-row::-webkit-scrollbar {
+    display: none;
+}
+
+.card-row > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   03. VARIATION ① — STANDARD LISTING CARD  (.card)
+   Airbnb-style: square image, badge, heart, title + rating + price
    ──────────────────────────────────────────────────────────────── */
 
 .card {
-    border: none;
-    border-radius: var(--radius-card);
-    transition:
-        box-shadow var(--transition-base),
-        transform   var(--transition-base);
-    min-width: 0; /* required inside flex/grid */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    overflow: visible;             /* allow shadow on hover to show */
+    cursor: pointer;
+    width: 240px;                  /* fixed card width in row */
+    transition: transform var(--duration-base) var(--ease-spring);
 }
 
 .card:hover {
-    box-shadow: 0 8px 28px var(--color-shadow-md);
+    transform: translateY(-3px);
 }
 
 .card:active {
-    transform: scale(0.99);
+    transform: translateY(-1px);
 }
 
-/* — Card Header: Image Container — */
+/* Image container */
 .card .card-header {
     position: relative;
     width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--color-bg-secondary);
-    aspect-ratio: 1 / 1;
-    border-radius: var(--radius-card);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .card .card-header img {
@@ -184,75 +298,78 @@ body {
     object-fit: cover;
     object-position: center;
     display: block;
-    transition: transform var(--transition-image);
-    border-radius: var(--radius-card);
+    transition: transform var(--duration-slow) var(--ease-spring);
 }
 
-/* — Badge: "Guest favourite" pill — */
+.card:hover .card-header img {
+    transform: scale(1.05);
+}
+
+/* Badge — "Guest favourite" */
 .card .card-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: var(--space-3);
+    left: var(--space-3);
     background: var(--color-surface-overlay);
-    padding: 6px 12px;
-    border-radius: var(--radius-badge);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
     font-size: 12px;
     font-weight: 600;
     color: var(--color-text-primary);
     z-index: 5;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: 0 1px 4px var(--color-shadow-sm);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 4px var(--color-shadow-xs);
+    letter-spacing: -0.1px;
 }
 
-/* — Favorite / Heart Button — */
+/* Heart / favorite button */
 .card-favorite-button {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: var(--space-3);
+    right: var(--space-3);
     background: transparent;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    transition: transform var(--transition-fast);
     padding: 0;
-}
-
-.card-favorite-button svg {
-    width: 24px;
-    height: 24px;
-    transition: fill var(--transition-fast), stroke var(--transition-fast);
+    transition: transform var(--duration-fast) var(--ease-spring);
 }
 
 .card-favorite-button:hover {
-    transform: scale(1.15);
+    transform: scale(1.18);
+}
+
+.card-favorite-button svg {
+    width: 22px;
+    height: 22px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+    transition: fill var(--duration-fast) var(--ease-out);
 }
 
 .card-favorite-button.is-favorited svg {
     fill: var(--color-primary);
-    stroke: var(--color-primary);
+    stroke: var(--color-primary) !important;
 }
 
-/* — Card Content: Below image — */
+/* Content below image */
 .card .card-content {
-    padding: 10px 2px 0;
+    padding: var(--space-3) var(--space-1) 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    flex: 1;
+    gap: var(--space-1);
 }
 
-/* — Card Meta Row: Title + Rating — */
 .card-meta-row {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--space-2);
 }
 
 .card .card-title {
@@ -262,15 +379,15 @@ body {
     line-height: 1.35;
     color: var(--color-text-primary);
     letter-spacing: -0.2px;
+    overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    overflow: hidden;
     flex: 1;
 }
 
 .card-rating {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 3px;
     font-size: 13px;
@@ -281,28 +398,27 @@ body {
 }
 
 .card-rating svg {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     fill: var(--color-star);
+    flex-shrink: 0;
 }
 
-/* — Card Description: Sub-info (location, type, nights) — */
 .card .card-description {
     margin: 0;
     font-size: 13px;
-    line-height: 1.38;
     color: var(--color-text-secondary);
+    overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
-/* — Card Price — */
 .card-price {
-    margin: 2px 0 0;
+    margin: 0;
     font-size: 13px;
     color: var(--color-text-primary);
+    line-height: 1.4;
 }
 
 .card-price strong {
@@ -316,24 +432,30 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   03. VARIATION ② — SERVICE CATEGORY CARD
-   Compact icon-style card: square image, name + status
-   Usage: "Services in Kolkata" category grid
+   04. VARIATION ② — SERVICE CATEGORY CARD  (.card-service)
+   Compact square card: rounded image, name + status
    ──────────────────────────────────────────────────────────────── */
 
 .card-service {
-    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    cursor: pointer;
+    width: 160px;                  /* fixed width in row */
+    flex-shrink: 0;
     background: transparent;
-    gap: 10px;
-    min-width: 120px;
+    border-radius: 0;
+    transition: transform var(--duration-base) var(--ease-spring);
 }
 
-/* — Service Image: Square with rounded corners — */
+.card-service:hover {
+    transform: translateY(-2px);
+}
+
 .card-service-image {
-    position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--color-bg-secondary);
 }
@@ -344,16 +466,19 @@ body {
     object-fit: cover;
     object-position: center;
     display: block;
-    transition: transform var(--transition-image);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
+    transition: transform var(--duration-slow) var(--ease-spring);
 }
 
-/* — Service Info — */
+.card-service:hover .card-service-image img {
+    transform: scale(1.05);
+}
+
 .card-service-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    padding: 0 2px;
+    gap: 3px;
+    padding: 0 var(--space-1);
 }
 
 .card-service-title {
@@ -377,25 +502,33 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   04. VARIATION ③ — ORIGINAL / FEATURED CARD
-   Editorial card with left badge + right action button
-   Usage: "Airbnb Originals", curated experiences, featured listings
+   05. VARIATION ③ — ORIGINAL / FEATURED CARD  (.card-original)
+   Editorial portrait card: badge + action button overlay
    ──────────────────────────────────────────────────────────────── */
 
 .card-original {
-    border-radius: var(--radius-card);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: 210px;                  /* fixed width in row */
+    flex-shrink: 0;
     background: transparent;
-    min-width: 0;
+    border-radius: 0;
+    transition: transform var(--duration-base) var(--ease-spring);
 }
 
-/* — Original Card Header — */
+.card-original:hover {
+    transform: translateY(-3px);
+}
+
 .card-original .card-header {
     position: relative;
     width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--color-bg-secondary);
-    aspect-ratio: 3 / 4;
-    border-radius: var(--radius-card);
 }
 
 .card-original .card-header img {
@@ -404,18 +537,21 @@ body {
     object-fit: cover;
     object-position: center top;
     display: block;
-    transition: transform var(--transition-image);
-    border-radius: var(--radius-card);
+    transition: transform var(--duration-slow) var(--ease-spring);
 }
 
-/* — Original Badge (left) — */
+.card-original:hover .card-header img {
+    transform: scale(1.05);
+}
+
+/* Badge — "🪶 Original" */
 .card-original .card-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: var(--space-3);
+    left: var(--space-3);
     background: var(--color-surface-overlay);
-    padding: 5px 10px;
-    border-radius: var(--radius-badge);
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
     font-size: 12px;
     font-weight: 600;
     color: var(--color-text-primary);
@@ -423,9 +559,10 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: 0 1px 4px var(--color-shadow-sm);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 4px var(--color-shadow-xs);
+    letter-spacing: -0.1px;
 }
 
 .card-badge-icon {
@@ -433,41 +570,40 @@ body {
     line-height: 1;
 }
 
-/* — Original Action Button (right: share / heart) — */
+/* Action button — share / heart */
 .card-action-button {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: var(--space-3);
+    right: var(--space-3);
     background: transparent;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    transition: transform var(--transition-fast);
     padding: 0;
-}
-
-.card-action-button svg {
-    width: 22px;
-    height: 22px;
-    transition: opacity var(--transition-fast);
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));
+    transition: transform var(--duration-fast) var(--ease-spring);
 }
 
 .card-action-button:hover {
-    transform: scale(1.15);
+    transform: scale(1.18);
 }
 
-/* — Original Card Content — */
+.card-action-button svg {
+    width: 20px;
+    height: 20px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));
+}
+
+/* Content below image */
 .card-original .card-content {
-    padding: 10px 2px 0;
+    padding: var(--space-3) var(--space-1) 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
 }
 
 .card-original .card-title {
@@ -487,17 +623,20 @@ body {
     margin: 0;
     font-size: 13px;
     color: var(--color-text-secondary);
-    line-height: 1.38;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-original .card-price {
     margin: 2px 0 0;
     font-size: 13px;
     color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .card-original .card-price strong {
@@ -510,191 +649,47 @@ body {
 }
 
 .card-original .card-rating {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 3px;
     font-size: 13px;
     font-weight: 500;
     color: var(--color-text-primary);
-    margin-top: 1px;
 }
 
 .card-original .card-rating svg {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     fill: var(--color-star);
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   05. CARD GRID — STANDARD
-   Responsive auto-fill grid for standard cards
+   06. STANDARD CARD GRID  (non-scrolling, page-level grids)
    ──────────────────────────────────────────────────────────────── */
 
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 24px;
+    gap: var(--space-6);
     width: 100%;
 }
 
-
-/* ────────────────────────────────────────────────────────────────
-   06. CARD ROW — HORIZONTAL SCROLL
-   Used for all three card types in horizontal scroll sections
-   ──────────────────────────────────────────────────────────────── */
-
-.card-row {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(200px, 1fr);
-    gap: 16px;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-    /* Hide scrollbar across browsers */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.card-row::-webkit-scrollbar {
-    display: none;
-}
-
-.card-row > * {
-    scroll-snap-align: start;
-}
-
-/* Sizing overrides for card-row contexts */
-.card-row .card-service {
-    width: 148px;
-    min-width: 148px;
-}
-
-.card-row .card {
-    width: 220px;
-    min-width: 220px;
-}
-
-.card-row .card-original {
-    width: 200px;
-    min-width: 200px;
+.card-grid .card {
+    width: 100%;        /* override fixed row width inside grid */
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   07. SECTION WRAPPER
-   Used to contain section heading + scroll row + nav arrows
-   ──────────────────────────────────────────────────────────────── */
-
-.card-section {
-    margin-bottom: 48px;
-}
-
-.card-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 12px;
-}
-
-.card-section-title-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.card-section-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-    margin: 0;
-}
-
-.card-section-subtitle {
-    font-size: 14px;
-    color: var(--color-text-secondary);
-    margin: 4px 0 0;
-    font-weight: 400;
-    line-height: 1.4;
-}
-
-.card-section-title-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    cursor: pointer;
-    transition: color var(--transition-fast);
-    letter-spacing: -0.4px;
-}
-
-.card-section-title-link:hover {
-    color: var(--color-text-secondary);
-}
-
-/* — Scroll Nav Arrows — */
-.card-section-nav {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-}
-
-.card-nav-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid var(--color-border-light);
-    background: var(--color-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    box-shadow: 0 1px 3px var(--color-shadow-sm);
-    padding: 0;
-}
-
-.card-nav-btn:hover {
-    box-shadow: 0 2px 8px var(--color-shadow-md);
-    border-color: var(--color-text-primary);
-}
-
-.card-nav-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.card-nav-btn svg {
-    width: 14px;
-    height: 14px;
-    stroke: var(--color-text-primary);
-    fill: none;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-
-/* ────────────────────────────────────────────────────────────────
-   08. CARD FOOTER (used in standard cards only)
+   07. CARD FOOTER  (optional, standard cards)
    ──────────────────────────────────────────────────────────────── */
 
 .card-footer {
-    padding: 12px 16px;
+    padding: var(--space-3) var(--space-4);
     border-top: 1px solid var(--color-border-lighter);
     background: var(--color-bg-secondary);
     display: flex;
-    gap: 8px;
+    gap: var(--space-2);
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -702,13 +697,8 @@ body {
     color: var(--color-text-secondary);
 }
 
-
-/* ────────────────────────────────────────────────────────────────
-   09. CARD BODY (long-form text content)
-   ──────────────────────────────────────────────────────────────── */
-
 .card-body {
-    padding: 16px;
+    padding: var(--space-4);
     font-size: 14px;
     line-height: 1.6;
     color: var(--color-text-primary);
@@ -716,13 +706,39 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   10. RESPONSIVE — TABLET (≤ 768px)
+   08. RESPONSIVE — TABLET  (≤ 1024px)
+   ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    .page-container {
+        padding: var(--space-10) var(--space-6) var(--space-12);
+    }
+
+    .card {
+        width: 210px;
+    }
+
+    .card-original {
+        width: 190px;
+    }
+
+    .card-section {
+        margin-bottom: var(--space-12);
+    }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   09. RESPONSIVE — TABLET PORTRAIT  (≤ 768px)
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-    .card-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 16px;
+    .page-container {
+        padding: var(--space-8) var(--space-5) var(--space-10);
+    }
+
+    .page-title {
+        font-size: 28px;
     }
 
     .card-section-title {
@@ -730,7 +746,27 @@ body {
     }
 
     .card-section-title-link {
-        font-size: 15px;
+        font-size: 17px;
+    }
+
+    .card-section {
+        margin-bottom: var(--space-10);
+    }
+
+    .card-row {
+        gap: var(--space-4);       /* tighten gap on tablet */
+    }
+
+    .card {
+        width: 190px;
+    }
+
+    .card-service {
+        width: 140px;
+    }
+
+    .card-original {
+        width: 170px;
     }
 
     .card .card-title,
@@ -748,29 +784,85 @@ body {
         font-size: 13px;
     }
 
-    .card-body {
-        padding: 14px;
+    .card-rating {
+        font-size: 12px;
     }
 
-    .card-footer {
-        padding: 11px 14px;
+    .card-price {
         font-size: 12px;
+    }
+
+    .card-nav-btn {
+        width: 30px;
+        height: 30px;
     }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   11. RESPONSIVE — MOBILE (≤ 480px)
+   10. RESPONSIVE — MOBILE  (≤ 480px)
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 480px) {
-    .card-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+    .page-container {
+        padding: var(--space-6) var(--space-4) var(--space-8);
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .page-desc {
+        font-size: 14px;
     }
 
     .card-section-title {
         font-size: 16px;
+    }
+
+    .card-section-title-link {
+        font-size: 15px;
+    }
+
+    .card-section-header {
+        margin-bottom: var(--space-4);
+    }
+
+    .card-section {
+        margin-bottom: var(--space-8);
+    }
+
+    .card-row {
+        gap: var(--space-3);       /* 12px gap on mobile */
+    }
+
+    /* Cards slightly narrower on mobile — show ~1.5 cards */
+    .card {
+        width: 200px;
+    }
+
+    .card-service {
+        width: 120px;
+    }
+
+    .card-service-image {
+        border-radius: var(--radius-md);
+    }
+
+    .card-service-image img {
+        border-radius: var(--radius-md);
+    }
+
+    .card-original {
+        width: 160px;
+    }
+
+    .card .card-header {
+        border-radius: var(--radius-md);
+    }
+
+    .card-original .card-header {
+        border-radius: var(--radius-md);
     }
 
     .card .card-title,
@@ -780,41 +872,41 @@ body {
 
     .card .card-description,
     .card-original .card-description,
-    .card-service-status {
+    .card-service-status,
+    .card-price,
+    .card-rating {
         font-size: 11px;
     }
 
+    .card-service-title {
+        font-size: 12px;
+    }
+
+    /* Hide nav arrows on mobile — swipe is sufficient */
+    .card-section-nav {
+        display: none;
+    }
+
+    /* Grid becomes 2-col on mobile */
+    .card-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-3);
+    }
+
     .card-body {
-        padding: 12px;
+        padding: var(--space-3);
         font-size: 13px;
     }
 
     .card-footer {
-        padding: 10px 12px;
+        padding: var(--space-2) var(--space-3);
         font-size: 11px;
-    }
-
-    .card-row .card-service {
-        width: 120px;
-        min-width: 120px;
-    }
-
-    .card-row .card {
-        width: 180px;
-        min-width: 180px;
-    }
-
-    .card-row .card-original {
-        width: 160px;
-        min-width: 160px;
     }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   12. DARK MODE SUPPORT
-   All colors handled via CSS custom properties—
-   automatically adapts to system preference or .dark class
+   11. DARK MODE
    ──────────────────────────────────────────────────────────────── */
 
 @media (prefers-color-scheme: dark) {
@@ -822,19 +914,16 @@ body {
         --color-bg:               #121212;
         --color-bg-secondary:     #1E1E1E;
         --color-bg-tertiary:      #2A2A2A;
-        --color-text-primary:     #F5F5F5;
-        --color-text-secondary:   #A0A0A0;
-        --color-text-muted:       #666666;
+        --color-text-primary:     #F0F0F0;
+        --color-text-secondary:   #999999;
+        --color-text-muted:       #555555;
         --color-border-light:     #2E2E2E;
-        --color-border-lighter:   #252525;
-        --color-surface-overlay:  rgba(30, 30, 30, 0.92);
-        --color-shadow-sm:        rgba(0, 0, 0, 0.3);
-        --color-shadow-md:        rgba(0, 0, 0, 0.45);
-        --color-shadow-lg:        rgba(0, 0, 0, 0.6);
-        --color-star:             #F5F5F5;
+        --color-border-lighter:   #242424;
+        --color-surface-overlay:  rgba(28, 28, 28, 0.92);
+        --color-shadow-xs:        rgba(0, 0, 0, 0.25);
+        --color-shadow-sm:        rgba(0, 0, 0, 0.40);
+        --color-shadow-md:        rgba(0, 0, 0, 0.55);
+        --color-shadow-lg:        rgba(0, 0, 0, 0.70);
+        --color-star:             #F0F0F0;
     }
-}
-
-.dark {
-    /* Colors automatically adapt via tokens */
 }
