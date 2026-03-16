@@ -53,6 +53,69 @@
 
 
 /* ────────────────────────────────────────────────────────────────
+   00b. PAGE BASE — reset, body, container, header
+   Used by cards.php demo page. Zero color literals.
+   ──────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.2px;
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+}
+
+.page-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+}
+
+.page-header {
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border-lighter);
+}
+
+.page-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    color: var(--color-text-primary);
+    line-height: 1.15;
+}
+
+.page-desc {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
    01. SHARED CARD BASE
    Common structural patterns used across all card variants
    ──────────────────────────────────────────────────────────────── */
