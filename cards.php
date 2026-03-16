@@ -517,3 +517,109 @@ function nav_btns(string $prev_id, string $next_id): string {
 
 </body>
 </html>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+
+.map-wrapper{
+width:100%;
+max-width:900px;
+margin:auto;
+border-radius:24px;
+overflow:hidden;
+box-shadow:0 12px 35px rgba(0,0,0,0.12);
+}
+
+#map{
+height:420px;
+}
+
+/* floating round buttons */
+.leaflet-control-zoom a{
+border-radius:50%;
+width:42px;
+height:42px;
+line-height:42px;
+font-size:18px;
+box-shadow:0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* custom search button */
+.map-search{
+position:absolute;
+top:18px;
+left:18px;
+z-index:999;
+background:white;
+width:46px;
+height:46px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 8px 18px rgba(0,0,0,0.2);
+cursor:pointer;
+font-size:18px;
+}
+
+</style>
+
+
+<div class="map-wrapper">
+
+<div class="map-search">🔍</div>
+
+<div id="map"></div>
+
+</div>
+
+
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+var map = L.map('map',{
+zoomControl:false
+}).setView([-23.545, -46.311], 13);
+
+L.control.zoom({
+position:'topright'
+}).addTo(map);
+
+
+/* minimal Airbnb style map */
+L.tileLayer(
+'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+{
+attribution:'©OpenStreetMap'
+}).addTo(map);
+
+
+/* soft markers */
+
+function marker(lat,lng,text){
+
+var icon = L.divIcon({
+className:'',
+html:`<div style="
+background:white;
+padding:6px 10px;
+border-radius:20px;
+font-weight:600;
+font-size:13px;
+box-shadow:0 3px 10px rgba(0,0,0,0.25);
+border:1px solid #eee;
+">${text}</div>`
+});
+
+L.marker([lat,lng],{icon}).addTo(map);
+
+}
+
+
+marker(-23.545,-46.311,"Apollo Grill");
+marker(-23.55,-46.32,"Blue Beach");
+marker(-23.54,-46.33,"Chácara");
+
+</script>
