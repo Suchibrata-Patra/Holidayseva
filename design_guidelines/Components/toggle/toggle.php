@@ -38,8 +38,6 @@ $partials = __DIR__ . '/../../';
       <p class="page-lead">A binary switch for enabling or disabling a single option. Communicates state instantly through colour and position.</p>
     </div>
 
-    <hr class="rule">
-
     <!-- ── Live demo ─────────────────────────
          .toggle and .toggle-circle are styled
          entirely by toggle.css — no inline CSS
@@ -321,8 +319,6 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
     └── toggle.js</code></pre>
       </div>
     </section>
-
-    <hr class="rule">
 
     <!-- ── Accessibility ──────────────────── -->
     <section id="accessibility">
