@@ -126,6 +126,7 @@ $host_cards = [
         'rating'     => '4.98',
         'superhost'  => true,
         'img'        => unsplash('1494790108377-be9c29b29330', 200, 200),
+        'cover'      => unsplash('1558618666-fcd25c85cd64', 440, 160),
     ],
     [
         'name'       => 'Arjun Mehta',
@@ -135,6 +136,7 @@ $host_cards = [
         'rating'     => '4.93',
         'superhost'  => false,
         'img'        => unsplash('1507003211169-0a1dd7228f2d', 200, 200),
+        'cover'      => unsplash('1561361513-2d000a50f0dc', 440, 160),
     ],
     [
         'name'       => 'Sneha Das',
@@ -144,6 +146,7 @@ $host_cards = [
         'rating'     => '4.99',
         'superhost'  => true,
         'img'        => unsplash('1438761681033-6461ffad8d80', 200, 200),
+        'cover'      => unsplash('1464822759023-fed622ff2c3b', 440, 160),
     ],
     [
         'name'       => 'Rahul Bose',
@@ -153,6 +156,7 @@ $host_cards = [
         'rating'     => '4.87',
         'superhost'  => false,
         'img'        => unsplash('1472099645785-5658abf4ff4e', 200, 200),
+        'cover'      => unsplash('1507525428034-b723cf961d3e', 440, 160),
     ],
     [
         'name'       => 'Meera Nair',
@@ -162,6 +166,7 @@ $host_cards = [
         'rating'     => '4.97',
         'superhost'  => true,
         'img'        => unsplash('1580489944761-15a19d654956', 200, 200),
+        'cover'      => unsplash('1477587458883-47145ed31407', 440, 160),
     ],
 ];
 
@@ -421,7 +426,7 @@ function nav_btns(string $prev_id, string $next_id): string {
             <?php foreach ($host_cards as $card): ?>
             <article class="card-host">
                 <div class="card-host-cover">
-                    <img src="<?= $card['img'] ?>" alt="" aria-hidden="true" loading="lazy">
+                    <img src="<?= $card['cover'] ?? $card['img'] ?>" alt="" aria-hidden="true" loading="lazy">
                 </div>
                 <div class="card-host-avatar-wrap">
                     <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['name']) ?>" loading="lazy">
