@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Design Guidelines | Holidayseva</title>
-  <link rel="stylesheet" href="https://holidayseva.com/design-system.css">
+  <link rel="stylesheet" href="https://holidayseva.com/UI/design-system.css">
   <style>
 
     /* ─── RESET ─────────────────────────────────────── */
