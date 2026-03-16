@@ -409,9 +409,6 @@ function nav_btns(string $prev_id, string $next_id): string {
     </section>
 
 
-    <!-- ════════════════════════════════════════════
-         ⑤ .card-host — Host Profile Card
-         ════════════════════════════════════════════ -->
     <section class="card-section">
         <div class="card-section-header">
             <div>
@@ -423,29 +420,34 @@ function nav_btns(string $prev_id, string $next_id): string {
         <div class="card-row" id="host-row">
             <?php foreach ($host_cards as $card): ?>
             <article class="card-host">
+                <div class="card-host-cover">
+                    <img src="<?= $card['img'] ?>" alt="" aria-hidden="true" loading="lazy">
+                </div>
                 <div class="card-host-avatar-wrap">
                     <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['name']) ?>" loading="lazy">
                     <?php if ($card['superhost']): ?>
                     <span class="card-host-superhost" aria-label="Superhost">⭐</span>
                     <?php endif; ?>
                 </div>
-                <p class="card-host-name"><?= htmlspecialchars($card['name']) ?></p>
-                <p class="card-host-role"><?= htmlspecialchars($card['role']) ?></p>
-                <div class="card-host-stats">
-                    <div class="card-host-stat">
-                        <span class="card-host-stat-value"><?= htmlspecialchars($card['reviews']) ?></span>
-                        <span class="card-host-stat-label">Reviews</span>
+                <div class="card-host-body">
+                    <p class="card-host-name"><?= htmlspecialchars($card['name']) ?></p>
+                    <p class="card-host-role"><?= htmlspecialchars($card['role']) ?></p>
+                    <div class="card-host-stats">
+                        <div class="card-host-stat">
+                            <span class="card-host-stat-value"><?= htmlspecialchars($card['reviews']) ?></span>
+                            <span class="card-host-stat-label">Reviews</span>
+                        </div>
+                        <div class="card-host-stat">
+                            <span class="card-host-stat-value"><?= htmlspecialchars($card['years']) ?></span>
+                            <span class="card-host-stat-label">Hosting</span>
+                        </div>
+                        <div class="card-host-stat">
+                            <span class="card-host-stat-value"><?= htmlspecialchars($card['rating']) ?></span>
+                            <span class="card-host-stat-label">Rating</span>
+                        </div>
                     </div>
-                    <div class="card-host-stat">
-                        <span class="card-host-stat-value"><?= htmlspecialchars($card['years']) ?></span>
-                        <span class="card-host-stat-label">Hosting</span>
-                    </div>
-                    <div class="card-host-stat">
-                        <span class="card-host-stat-value"><?= htmlspecialchars($card['rating']) ?></span>
-                        <span class="card-host-stat-label">Rating</span>
-                    </div>
+                    <button class="card-host-btn">View profile</button>
                 </div>
-                <button class="card-host-btn">View profile</button>
             </article>
             <?php endforeach; ?>
         </div>

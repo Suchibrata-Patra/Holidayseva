@@ -710,9 +710,14 @@ body {
 
 /* ════════════════════════════════════════════════════════════════
    CARD VARIATION ⑤  —  .card-host
-   Host profile: avatar top-center, name, languages, stats row
+   Host profile: Airbnb-inspired premium portrait card
+   Cover image + overlapping avatar + qualifications list
    Used for: Meet the host, Superhost profiles, agent cards
    ════════════════════════════════════════════════════════════════ */
+
+:root {
+    --card-w-host: 220px;
+}
 
 .card-host {
     position: relative;
@@ -724,27 +729,69 @@ body {
     width: var(--card-w-host);
     flex-shrink: 0;
     background: var(--color-bg);
-    border-radius: var(--card-radius);
+    border-radius: 18px;
     border: 1px solid var(--color-border-lighter);
-    padding: 28px 20px 22px;
-    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        0 1px 2px rgba(0, 0, 0, 0.03);
     transition:
         transform  var(--card-dur-base) var(--card-ease-spring),
         box-shadow var(--card-dur-base) var(--card-ease-out);
 }
 
 .card-host:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.10),
+        0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
+/* ── Cover image strip ── */
+.card-host-cover {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    flex-shrink: 0;
+}
+
+.card-host-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+    transition: transform var(--card-dur-image) var(--card-ease-out);
+    filter: brightness(0.88) saturate(1.1);
+}
+
+.card-host:hover .card-host-cover img { transform: scale(1.06); }
+
+/* Subtle scrim on cover */
+.card-host-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 40%,
+        rgba(0,0,0,0.20) 100%
+    );
+    pointer-events: none;
+}
+
+/* ── Avatar — overlaps the cover ── */
 .card-host-avatar-wrap {
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    margin-bottom: 14px;
+    margin-top: -36px;        /* half of height: overlap */
+    margin-bottom: 10px;
     flex-shrink: 0;
+    z-index: 2;
 }
 
 .card-host-avatar-wrap img {
@@ -755,40 +802,55 @@ body {
     object-position: center top;
     display: block;
     border: 3px solid var(--color-bg);
-    box-shadow: var(--shadow-md);
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.12),
+        0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 /* Superhost badge — bottom-right of avatar */
 .card-host-superhost {
     position: absolute;
-    bottom: -2px;
-    right: -2px;
-    width: 26px;
-    height: 26px;
+    bottom: 0px;
+    right: 0px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: var(--color-primary);
-    border: 2.5px solid var(--color-bg);
+    border: 2px solid var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 4px rgba(255, 56, 92, 0.35);
+    z-index: 3;
+}
+
+/* ── Body content ── */
+.card-host-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 20px;
+    gap: 0;
+    width: 100%;
 }
 
 .card-host-name {
     font-size: 15px;
     font-weight: 700;
     color: var(--color-text-primary);
-    letter-spacing: -0.3px;
-    margin-bottom: 3px;
+    letter-spacing: -0.35px;
+    margin: 0 0 2px;
+    line-height: 1.25;
 }
 
 .card-host-role {
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--color-text-secondary);
-    margin-bottom: 14px;
+    margin: 0 0 14px;
     line-height: 1.4;
+    font-weight: 400;
 }
 
 /* Stats row: Reviews · Years · Rating */
@@ -797,10 +859,10 @@ body {
     align-items: stretch;
     gap: 0;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--color-border-lighter);
     overflow: hidden;
-    margin-top: 4px;
+    background: var(--color-bg-secondary);
 }
 
 .card-host-stat {
@@ -808,9 +870,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 4px;
-    background: var(--color-bg-secondary);
+    padding: 9px 4px;
     gap: 1px;
+    background: transparent;
+    transition: background var(--card-dur-fast) var(--card-ease-out);
 }
 
 .card-host-stat + .card-host-stat {
@@ -818,7 +881,7 @@ body {
 }
 
 .card-host-stat-value {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--color-text-primary);
     letter-spacing: -0.3px;
@@ -826,8 +889,8 @@ body {
 }
 
 .card-host-stat-label {
-    font-size: 10px;
-    color: var(--color-text-secondary);
+    font-size: 9.5px;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 500;
@@ -836,33 +899,54 @@ body {
 
 /* Contact button */
 .card-host-btn {
-    margin-top: 14px;
+    margin-top: 12px;
     width: 100%;
     padding: 9px 16px;
     border-radius: var(--card-radius-pill);
     border: 1.5px solid var(--color-border);
     background: var(--color-bg);
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--color-text-primary);
     cursor: pointer;
     letter-spacing: -0.1px;
     transition:
         background   var(--card-dur-fast) var(--card-ease-out),
-        border-color var(--card-dur-fast) var(--card-ease-out);
+        border-color var(--card-dur-fast) var(--card-ease-out),
+        transform    var(--card-dur-fast) var(--card-ease-spring);
 }
 
 .card-host-btn:hover {
-    background: var(--color-bg-secondary);
-    border-color: var(--color-border-dark);
+    background: var(--color-text-primary);
+    border-color: var(--color-text-primary);
+    color: var(--color-text-inverse);
+    transform: scale(1.02);
+}
+
+/* Dark mode adapts */
+@media (prefers-color-scheme: dark) {
+    .card-host {
+        background: var(--color-surface);
+        border-color: var(--color-border);
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.28),
+            0 1px 2px rgba(0, 0, 0, 0.18);
+    }
+    .card-host:hover {
+        box-shadow: var(--shadow-xl);
+    }
 }
 
 
 /* ════════════════════════════════════════════════════════════════
    CARD VARIATION ⑥  —  .card-promo
-   Full-bleed background image, gradient overlay, headline + CTA
+   Full-bleed background image, rich gradient, premium CTA
    Used for: Seasonal promotions, destination highlights, offers
    ════════════════════════════════════════════════════════════════ */
+
+:root {
+    --card-w-promo: 300px;
+}
 
 .card-promo {
     position: relative;
@@ -872,18 +956,22 @@ body {
     cursor: pointer;
     width: var(--card-w-promo);
     flex-shrink: 0;
-    border-radius: var(--card-radius);
+    border-radius: 20px;
     overflow: hidden;
-    aspect-ratio: 4 / 5;
-    box-shadow: var(--shadow-md);
+    aspect-ratio: 3 / 4;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.12),
+        0 1px 4px rgba(0, 0, 0, 0.06);
     transition:
         transform  var(--card-dur-base) var(--card-ease-spring),
         box-shadow var(--card-dur-base) var(--card-ease-out);
 }
 
 .card-promo:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-6px);
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.18),
+        0 8px 20px rgba(0, 0, 0, 0.10);
 }
 
 .card-promo-bg {
@@ -897,88 +985,114 @@ body {
     object-fit: cover; object-position: center;
     display: block;
     transition: transform var(--card-dur-image) var(--card-ease-out);
+    filter: saturate(1.05);
 }
 
-.card-promo:hover .card-promo-bg img { transform: scale(1.06); }
+.card-promo:hover .card-promo-bg img { transform: scale(1.07); }
 
-/* Gradient overlay — bottom-up scrim */
+/* Rich three-stop gradient overlay */
 .card-promo-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
     background: linear-gradient(
         to top,
-        rgba(0, 0, 0, 0.72) 0%,
-        rgba(0, 0, 0, 0.30) 45%,
+        rgba(0, 0, 0, 0.82) 0%,
+        rgba(0, 0, 0, 0.50) 38%,
+        rgba(0, 0, 0, 0.08) 70%,
         rgba(0, 0, 0, 0.00) 100%
     );
+}
+
+/* Subtle vignette ring */
+.card-promo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    pointer-events: none;
 }
 
 /* Content over overlay */
 .card-promo-content {
     position: relative;
-    z-index: 2;
-    padding: 20px;
+    z-index: 3;
+    padding: 20px 22px 24px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 }
 
-/* Optional tag pill */
+/* Tag pill — slightly more refined */
 .card-promo-tag {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 4px 10px;
+    padding: 4px 11px;
     border-radius: var(--card-radius-pill);
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.15px;
     color: var(--color-text-on-primary);
     background: var(--color-primary);
     width: fit-content;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
+    box-shadow: 0 2px 8px rgba(255, 56, 92, 0.40);
 }
 
 .card-promo-title {
     margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--color-text-inverse);
-    line-height: 1.25;
-    letter-spacing: -0.4px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.25);
 }
 
 .card-promo-sub {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.78);
-    line-height: 1.4;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.80);
+    line-height: 1.45;
     margin: 0;
+    font-weight: 400;
 }
 
+/* CTA button — frosted glass pill, premium */
 .card-promo-cta {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-top: 10px;
-    padding: 9px 18px;
+    margin-top: 14px;
+    padding: 10px 20px;
     border-radius: var(--card-radius-pill);
     font-size: 13px;
     font-weight: 700;
     color: var(--color-text-primary);
-    background: rgba(255, 255, 255, 0.92);
-    border: none;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.60);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
     cursor: pointer;
     width: fit-content;
-    letter-spacing: -0.1px;
+    letter-spacing: -0.15px;
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
     transition:
         background var(--card-dur-fast) var(--card-ease-out),
-        transform  var(--card-dur-fast) var(--card-ease-spring);
+        transform  var(--card-dur-fast) var(--card-ease-spring),
+        box-shadow var(--card-dur-fast) var(--card-ease-out);
 }
 
 .card-promo-cta:hover {
     background: #FFFFFF;
-    transform: scale(1.03);
+    transform: scale(1.04);
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 
@@ -1052,8 +1166,8 @@ body {
         --card-w-service: 134px;
         --card-w-original: 188px;
         --card-w-experience: 248px;
-        --card-w-host: 180px;
-        --card-w-promo: 280px;
+        --card-w-host: 200px;
+        --card-w-promo: 268px;
     }
 
     .card-section { margin-bottom: 48px; }
@@ -1078,8 +1192,8 @@ body {
         --card-w-service: 124px;
         --card-w-original: 172px;
         --card-w-experience: 228px;
-        --card-w-host: 164px;
-        --card-w-promo: 248px;
+        --card-w-host: 186px;
+        --card-w-promo: 244px;
     }
 
     .card .card-title,
@@ -1121,14 +1235,15 @@ body {
     .card-service { width: 112px; }
     .card-original { width: 60vw; max-width: 245px; flex-grow: 0; }
     .card-experience { width: 72vw; max-width: 290px; }
-    .card-host { width: 160px; padding: 20px 14px 16px; }
-    .card-promo { width: 80vw; max-width: 300px; }
+    .card-host { width: 170px; }
+    .card-promo { width: 78vw; max-width: 290px; }
 
     .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
     .card-grid .card { width: 100%; max-width: 100%; }
 
-    .card-host-avatar-wrap { width: 64px; height: 64px; }
-    .card-host-stat-value { font-size: 13px; }
+    .card-host-cover { height: 64px; }
+    .card-host-avatar-wrap { width: 60px; height: 60px; margin-top: -30px; }
+    .card-host-stat-value { font-size: 12px; }
 
     .card .card-title,
     .card-original .card-title { font-size: 12.5px; }
