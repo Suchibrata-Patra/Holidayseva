@@ -87,8 +87,6 @@ $partials = __DIR__ . '/../../';
       </div>
     </section>
 
-    <hr class="rule">
-
     <!-- ── Specifications ────────────────── -->
     <section id="specs">
       <h2 class="section-title">Specifications</h2>
