@@ -81,7 +81,7 @@ $patternPages    = ['charting-data.php','forms.php','data-display.php'];
      ══════════════════════════════════════════════════════ -->
 <nav class="section-nav" id="sectionNav" aria-label="Section navigation">
 
-  <span class="section-nav-title">Developer Guidelines</span>
+  <span class="section-nav-title">Developer Guidelines</span> <br> Copyright © 2024 Suchibrata.
   <span class="section-nav-divider" aria-hidden="true"></span>
 
   <!-- <ul class="section-nav-tabs" role="list">
