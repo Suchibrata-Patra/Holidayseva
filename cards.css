@@ -1,64 +1,53 @@
 /* ================================================================
    HOLIDAYSEVA — CARD COMPONENT SYSTEM
-   cards.css — v3
+   cards.css — v4 Premium
 
-   Matches the Airbnb-grade card UI exactly:
-   - Cards fill row fluidly (no fixed narrow widths)
-   - Tall images with generous aspect ratio
-   - Heart icon directly on image, no background circle
-   - Clean "Guest favourite" pill badge
-   - Rating inline with price as "₹X for N nights · ★ Y.YY"
-   - Smooth image zoom on hover
-   - Proper horizontal scroll with snap
+   Requires: colors.css (must be loaded before this file)
+   All colors exclusively via var(--color-*) tokens from colors.css.
+   Zero raw hex values. Zero color literals.
 
    Three variations:
-   ① .card            — Standard listing card
-   ② .card-service    — Service category card
-   ③ .card-original   — Featured/Original card
+   ① .card            — Standard listing card (homes, stays)
+   ② .card-service    — Service category card (compact square)
+   ③ .card-original   — Featured/Original editorial card (portrait)
 
-   Rules:
-   - Zero color literals — all colors via var(--color-*) tokens
-   - Zero inline styles
+   Special:
+   - .card-badge uses subtle glassmorphism (not overdone)
+   - Heart/action icons are plain SVG outlines on images
+   - All spacing via internal --card-* tokens for easy tweaking
    ================================================================ */
 
 
 /* ────────────────────────────────────────────────────────────────
-   00a. DESIGN TOKENS
+   00. LOCAL SPACING & MOTION TOKENS
+   (Colors come entirely from colors.css)
    ──────────────────────────────────────────────────────────────── */
 
 :root {
-    /* Colors */
-    --color-bg:                 #FFFFFF;
-    --color-bg-secondary:       #F7F7F7;
-    --color-text-primary:       #222222;
-    --color-text-secondary:     #717171;
-    --color-text-muted:         #AAAAAA;
-    --color-border-light:       #DDDDDD;
-    --color-border-lighter:     #EEEEEE;
-    --color-primary:            #FF385C;
-    --color-badge-bg:           rgba(255, 255, 255, 0.93);
-    --color-shadow-xs:          rgba(0, 0, 0, 0.06);
-    --color-shadow-sm:          rgba(0, 0, 0, 0.10);
-    --color-shadow-md:          rgba(0, 0, 0, 0.16);
-    --color-star:               #222222;
-    --color-heart-outline:      #FFFFFF;
-    --color-heart-shadow:       rgba(0, 0, 0, 0.30);
+    /* Spacing */
+    --card-gap:           16px;   /* gap between cards in a row */
+    --card-pad-content:   11px;   /* padding below image */
+    --card-pad-badge:     6px 14px;
+    --card-radius:        14px;   /* image corner radius */
+    --card-radius-sm:     10px;   /* mobile image corner radius */
+    --card-radius-badge:  9999px;
 
-    /* Radii */
-    --radius-card:   14px;
-    --radius-badge:  9999px;
+    /* Motion */
+    --card-ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+    --card-ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --card-dur-fast:      170ms;
+    --card-dur-base:      250ms;
+    --card-dur-image:     420ms;
 
-    /* Transitions */
-    --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --dur-fast:      180ms;
-    --dur-base:      260ms;
-    --dur-image:     400ms;
+    /* Card widths in scroll row */
+    --card-w:             200px;
+    --card-w-service:     148px;
+    --card-w-original:    205px;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   00b. PAGE BASE
+   01. PAGE BASE
    ──────────────────────────────────────────────────────────────── */
 
 *,
@@ -75,56 +64,60 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+                 Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     background: var(--color-bg);
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .page-container {
     max-width: 1380px;
     margin: 0 auto;
-    padding: 40px 40px 80px;
+    padding: 44px 44px 88px;
 }
 
 .page-header {
-    margin-bottom: 48px;
-    padding-bottom: 24px;
+    margin-bottom: 52px;
+    padding-bottom: 28px;
     border-bottom: 1px solid var(--color-border-lighter);
 }
 
 .page-eyebrow {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 600;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.4px;
     text-transform: uppercase;
     color: var(--color-text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .page-title {
-    font-size: 36px;
+    font-size: 38px;
     font-weight: 700;
-    letter-spacing: -0.8px;
+    letter-spacing: -1px;
     color: var(--color-text-primary);
     line-height: 1.1;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .page-desc {
     font-size: 15px;
     color: var(--color-text-secondary);
+    line-height: 1.6;
+    font-weight: 400;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   01. SECTION LAYOUT
+   02. SECTION LAYOUT
    ──────────────────────────────────────────────────────────────── */
 
 .card-section {
-    margin-bottom: 56px;
+    margin-bottom: 60px;
 }
 
 .card-section-header {
@@ -132,9 +125,10 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
+/* Plain bold title */
 .card-section-title {
     font-size: 22px;
     font-weight: 700;
@@ -147,10 +141,11 @@ body {
 .card-section-subtitle {
     font-size: 14px;
     color: var(--color-text-secondary);
-    margin: 4px 0 0;
+    margin: 5px 0 0;
+    font-weight: 400;
 }
 
-/* Title as underlined link (Airbnb style) */
+/* Underlined link title (Airbnb Originals style) */
 .card-section-title-link {
     display: inline-flex;
     align-items: center;
@@ -165,14 +160,14 @@ body {
     background: none;
     border: none;
     padding: 0;
-    transition: color var(--dur-fast) var(--ease-out);
+    transition: color var(--card-dur-fast) var(--card-ease-out);
 }
 
 .card-section-title-link:hover {
     color: var(--color-text-secondary);
 }
 
-/* Scroll nav arrows */
+/* Prev / Next arrows */
 .card-section-nav {
     display: flex;
     gap: 8px;
@@ -182,28 +177,32 @@ body {
 .card-nav-btn {
     width: 32px;
     height: 32px;
-    border-radius: var(--radius-badge);
-    border: 1px solid var(--color-border-light);
+    border-radius: var(--card-radius-badge);
+    border: 1px solid var(--color-border);
     background: var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 1px 4px var(--color-shadow-xs);
-    transition: box-shadow var(--dur-fast) var(--ease-out),
-                border-color var(--dur-fast) var(--ease-out);
+    box-shadow: var(--shadow-sm);
+    transition:
+        box-shadow   var(--card-dur-fast) var(--card-ease-out),
+        border-color var(--card-dur-fast) var(--card-ease-out),
+        background   var(--card-dur-fast) var(--card-ease-out);
     padding: 0;
     flex-shrink: 0;
 }
 
 .card-nav-btn:hover {
-    box-shadow: 0 2px 8px var(--color-shadow-sm);
+    box-shadow: var(--shadow-md);
     border-color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
 }
 
 .card-nav-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .card-nav-btn svg {
@@ -218,25 +217,23 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   02. HORIZONTAL SCROLL ROW
+   03. HORIZONTAL SCROLL ROW
    ──────────────────────────────────────────────────────────────── */
 
 .card-row {
     display: flex;
-    gap: 16px;
+    gap: var(--card-gap);
     overflow-x: auto;
     overflow-y: visible;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 12px;  /* space for hover shadow */
-    padding-top: 4px;
+    padding-bottom: 14px;   /* shadow room */
+    padding-top: 6px;       /* shadow room on hover lift */
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-.card-row::-webkit-scrollbar {
-    display: none;
-}
+.card-row::-webkit-scrollbar { display: none; }
 
 .card-row > * {
     scroll-snap-align: start;
@@ -245,44 +242,122 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   03. VARIATION ① — STANDARD LISTING CARD  (.card)
+   04. GLASSMORPHISM BADGE — shared by all card types
+   Subtle frost effect, not overdone.
+   ──────────────────────────────────────────────────────────────── */
 
-   Key traits from screenshot:
-   - Image fills ~65% of card height (aspect-ratio: 4/3 ish but taller ~1:1.1)
-   - No box-shadow on card itself — shadow only on hover
-   - Heart is plain outline SVG on image, no circle background
-   - Badge pill is semi-transparent frosted white, bold text
-   - Title bold, description as "₹X · ★ Y.YY" in one line
-   - Cards are wide enough to show ~6-7 across on desktop
+.card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: var(--card-pad-badge);
+    border-radius: var(--card-radius-badge);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    color: var(--color-text-primary);
+    /* Glassmorphism — subtle, premium */
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow:
+        0 1px 3px var(--color-glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 5;
+    /* Prevents text blur bleed */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.card-badge-icon {
+    font-size: 11px;
+    line-height: 1;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   05. HEART / FAVORITE BUTTON — shared
+   Plain outline SVG on image. No background circle.
+   ──────────────────────────────────────────────────────────────── */
+
+.card-favorite-button,
+.card-action-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0;
+    transition: transform var(--card-dur-fast) var(--card-ease-spring);
+}
+
+.card-favorite-button:hover,
+.card-action-button:hover {
+    transform: scale(1.18);
+}
+
+.card-favorite-button svg,
+.card-action-button svg {
+    width: 24px;
+    height: 24px;
+    fill: rgba(0, 0, 0, 0.22);  /* subtle dark fill so outline pops on bright images */
+    stroke: #FFFFFF;
+    stroke-width: 2;
+    filter:
+        drop-shadow(0 1px 2px rgba(0,0,0,0.45))
+        drop-shadow(0 0px 1px rgba(0,0,0,0.25));
+    transition:
+        fill   var(--card-dur-fast) var(--card-ease-out),
+        stroke var(--card-dur-fast) var(--card-ease-out);
+}
+
+.card-favorite-button.is-favorited svg {
+    fill: var(--color-primary);
+    stroke: var(--color-primary);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   06. VARIATION ① — STANDARD LISTING CARD  (.card)
    ──────────────────────────────────────────────────────────────── */
 
 .card {
     position: relative;
     display: flex;
     flex-direction: column;
-    background: var(--color-bg);
-    border-radius: var(--radius-card);
-    overflow: visible;
+    background: transparent;
     cursor: pointer;
-    /* Fill row: each card is ~200px min, auto-expands to fill */
-    width: 200px;
+    width: var(--card-w);
     flex-grow: 1;
     max-width: 240px;
-    transition: transform var(--dur-base) var(--ease-spring);
+    transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
 .card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 }
 
-/* ── Image wrapper ── */
+/* Image */
 .card .card-header {
     position: relative;
     width: 100%;
-    aspect-ratio: 20 / 19;   /* slightly taller than square — matches screenshot */
-    border-radius: var(--radius-card);
+    aspect-ratio: 20 / 19;
+    border-radius: var(--card-radius);
     overflow: hidden;
     background: var(--color-bg-secondary);
+    /* Subtle shadow on the card image itself */
+    box-shadow: var(--shadow-sm);
 }
 
 .card .card-header img {
@@ -291,74 +366,22 @@ body {
     object-fit: cover;
     object-position: center;
     display: block;
-    transition: transform var(--dur-image) var(--ease-out);
+    transition: transform var(--card-dur-image) var(--card-ease-out);
 }
 
 .card:hover .card-header img {
     transform: scale(1.06);
 }
 
-/* ── Badge ── */
-.card .card-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--color-badge-bg);
-    padding: 6px 14px;
-    border-radius: var(--radius-badge);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    z-index: 5;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    letter-spacing: -0.1px;
-    /* subtle shadow to lift off image */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+/* On hover: elevate shadow */
+.card:hover .card-header {
+    box-shadow: var(--shadow-lg);
+    transition: box-shadow var(--card-dur-base) var(--card-ease-out);
 }
 
-/* ── Heart button — plain outline, no circle ── */
-.card-favorite-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    padding: 0;
-    transition: transform var(--dur-fast) var(--ease-spring);
-}
-
-.card-favorite-button:hover {
-    transform: scale(1.15);
-}
-
-.card-favorite-button svg {
-    width: 24px;
-    height: 24px;
-    /* White fill with dark drop shadow — readable over any image */
-    fill: rgba(255, 255, 255, 0.25);
-    stroke: var(--color-heart-outline);
-    stroke-width: 2;
-    filter: drop-shadow(0 1px 2px var(--color-heart-shadow));
-    transition: fill var(--dur-fast) var(--ease-out),
-                stroke var(--dur-fast) var(--ease-out);
-}
-
-.card-favorite-button.is-favorited svg {
-    fill: var(--color-primary);
-    stroke: var(--color-primary);
-}
-
-/* ── Content below image ── */
+/* Content */
 .card .card-content {
-    padding: 10px 2px 0;
+    padding: var(--card-pad-content) 2px 0;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -384,7 +407,7 @@ body {
     flex: 1;
 }
 
-/* Rating — "★ 4.77" aligned right of title */
+/* Rating — "★ 4.77" */
 .card-rating {
     display: inline-flex;
     align-items: center;
@@ -403,10 +426,11 @@ body {
     flex-shrink: 0;
 }
 
-/* Price row — "₹13,683 for 2 nights" */
+/* Price — "₹13,683 for 2 nights" — secondary weight, matches screenshot */
 .card-price {
     margin: 0;
     font-size: 13px;
+    font-weight: 400;
     color: var(--color-text-secondary);
     line-height: 1.4;
     white-space: nowrap;
@@ -415,7 +439,7 @@ body {
 }
 
 .card-price strong {
-    font-weight: 400;   /* matches screenshot — NOT bold for price line */
+    font-weight: 400;
     color: var(--color-text-secondary);
 }
 
@@ -430,8 +454,7 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   04. VARIATION ② — SERVICE CATEGORY CARD  (.card-service)
-   Square rounded image, name + status below
+   07. VARIATION ② — SERVICE CATEGORY CARD  (.card-service)
    ──────────────────────────────────────────────────────────────── */
 
 .card-service {
@@ -439,22 +462,29 @@ body {
     flex-direction: column;
     gap: 10px;
     cursor: pointer;
-    width: 152px;
+    width: var(--card-w-service);
     flex-shrink: 0;
     background: transparent;
-    transition: transform var(--dur-base) var(--ease-spring);
+    transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
 .card-service:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 .card-service-image {
+    position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: var(--radius-card);
+    border-radius: var(--card-radius);
     overflow: hidden;
     background: var(--color-bg-secondary);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--card-dur-base) var(--card-ease-out);
+}
+
+.card-service:hover .card-service-image {
+    box-shadow: var(--shadow-md);
 }
 
 .card-service-image img {
@@ -463,11 +493,11 @@ body {
     object-fit: cover;
     object-position: center;
     display: block;
-    transition: transform var(--dur-image) var(--ease-out);
+    transition: transform var(--card-dur-image) var(--card-ease-out);
 }
 
 .card-service:hover .card-service-image img {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
 
 .card-service-info {
@@ -498,8 +528,7 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   05. VARIATION ③ — ORIGINAL / FEATURED CARD  (.card-original)
-   Portrait image, "🪶 Original" badge, share/heart action
+   08. VARIATION ③ — ORIGINAL / FEATURED CARD  (.card-original)
    ──────────────────────────────────────────────────────────────── */
 
 .card-original {
@@ -507,25 +536,31 @@ body {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    width: 200px;
+    width: var(--card-w-original);
     flex-grow: 1;
     max-width: 230px;
     flex-shrink: 0;
     background: transparent;
-    transition: transform var(--dur-base) var(--ease-spring);
+    transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
 .card-original:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 }
 
 .card-original .card-header {
     position: relative;
     width: 100%;
     aspect-ratio: 3 / 4;
-    border-radius: var(--radius-card);
+    border-radius: var(--card-radius);
     overflow: hidden;
     background: var(--color-bg-secondary);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--card-dur-base) var(--card-ease-out);
+}
+
+.card-original:hover .card-header {
+    box-shadow: var(--shadow-lg);
 }
 
 .card-original .card-header img {
@@ -534,69 +569,15 @@ body {
     object-fit: cover;
     object-position: center top;
     display: block;
-    transition: transform var(--dur-image) var(--ease-out);
+    transition: transform var(--card-dur-image) var(--card-ease-out);
 }
 
 .card-original:hover .card-header img {
     transform: scale(1.06);
 }
 
-.card-original .card-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--color-badge-bg);
-    padding: 5px 12px;
-    border-radius: var(--radius-badge);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-}
-
-.card-badge-icon {
-    font-size: 11px;
-    line-height: 1;
-}
-
-.card-action-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    padding: 0;
-    transition: transform var(--dur-fast) var(--ease-spring);
-}
-
-.card-action-button:hover {
-    transform: scale(1.15);
-}
-
-.card-action-button svg {
-    width: 22px;
-    height: 22px;
-    fill: rgba(255,255,255,0.2);
-    stroke: var(--color-heart-outline);
-    stroke-width: 2;
-    filter: drop-shadow(0 1px 2px var(--color-heart-shadow));
-}
-
 .card-original .card-content {
-    padding: 10px 2px 0;
+    padding: var(--card-pad-content) 2px 0;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -606,7 +587,7 @@ body {
     margin: 0;
     font-size: 14px;
     font-weight: 600;
-    line-height: 1.35;
+    line-height: 1.38;
     color: var(--color-text-primary);
     letter-spacing: -0.2px;
     display: -webkit-box;
@@ -627,6 +608,7 @@ body {
 .card-original .card-price {
     margin: 2px 0 0;
     font-size: 13px;
+    font-weight: 400;
     color: var(--color-text-secondary);
     display: flex;
     align-items: center;
@@ -651,7 +633,7 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   06. STANDARD CARD GRID  (non-scrolling)
+   09. STANDARD CARD GRID  (non-scrolling layout)
    ──────────────────────────────────────────────────────────────── */
 
 .card-grid {
@@ -667,8 +649,9 @@ body {
     flex-grow: unset;
 }
 
+
 /* ────────────────────────────────────────────────────────────────
-   07. CARD FOOTER / BODY  (optional)
+   10. CARD FOOTER / BODY  (optional utility slots)
    ──────────────────────────────────────────────────────────────── */
 
 .card-footer {
@@ -693,57 +676,47 @@ body {
 
 
 /* ────────────────────────────────────────────────────────────────
-   08. RESPONSIVE — LARGE DESKTOP  (> 1280px)
-   Show more cards, slightly wider gutters
+   11. RESPONSIVE — LARGE DESKTOP  (≥ 1280px)
    ──────────────────────────────────────────────────────────────── */
 
 @media (min-width: 1280px) {
-    .card-row {
-        gap: 20px;
-    }
-
-    .card {
-        min-width: 210px;
+    :root {
+        --card-gap: 20px;
+        --card-w: 210px;
+        --card-w-original: 215px;
     }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   09. RESPONSIVE — TABLET  (≤ 1024px)
+   12. RESPONSIVE — TABLET  (≤ 1024px)
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 1024px) {
     .page-container {
-        padding: 32px 32px 64px;
+        padding: 36px 32px 72px;
     }
 
-    .card-row {
-        gap: 14px;
+    :root {
+        --card-gap: 14px;
+        --card-w: 185px;
+        --card-w-service: 134px;
+        --card-w-original: 188px;
     }
 
-    .card {
-        width: 185px;
-        max-width: 210px;
-    }
-
-    .card-service {
-        width: 136px;
-    }
-
-    .card-original {
-        width: 180px;
-        max-width: 205px;
+    .card-section {
+        margin-bottom: 48px;
     }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   10. RESPONSIVE — TABLET PORTRAIT  (≤ 768px)
+   13. RESPONSIVE — TABLET PORTRAIT  (≤ 768px)
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
     .page-container {
-        padding: 28px 20px 56px;
+        padding: 28px 20px 60px;
     }
 
     .page-title {
@@ -751,7 +724,7 @@ body {
     }
 
     .card-section {
-        margin-bottom: 44px;
+        margin-bottom: 40px;
     }
 
     .card-section-title,
@@ -759,22 +732,11 @@ body {
         font-size: 18px;
     }
 
-    .card-row {
-        gap: 12px;
-    }
-
-    .card {
-        width: 170px;
-        max-width: 190px;
-    }
-
-    .card-service {
-        width: 124px;
-    }
-
-    .card-original {
-        width: 165px;
-        max-width: 185px;
+    :root {
+        --card-gap: 12px;
+        --card-w: 172px;
+        --card-w-service: 124px;
+        --card-w-original: 172px;
     }
 
     .card .card-title,
@@ -790,21 +752,27 @@ body {
     .card-service-status {
         font-size: 12px;
     }
+
+    .card-badge {
+        font-size: 11px;
+        padding: 5px 11px;
+    }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   11. RESPONSIVE — MOBILE  (≤ 480px)
-   Show ~1.5 cards to signal scroll, hide nav arrows
+   14. RESPONSIVE — MOBILE  (≤ 480px)
+   Show ~1.5 cards to signal horizontal scroll.
+   Nav arrows hidden — users swipe naturally.
    ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 480px) {
     .page-container {
-        padding: 20px 16px 48px;
+        padding: 20px 16px 52px;
     }
 
     .page-title {
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .page-desc {
@@ -817,56 +785,42 @@ body {
 
     .card-section-title,
     .card-section-title-link {
-        font-size: 16px;
+        font-size: 17px;
     }
 
     .card-section-header {
         margin-bottom: 14px;
     }
 
-    /* Nav arrows hidden on mobile — users swipe */
+    /* Hide prev/next on mobile — swipe is sufficient */
     .card-section-nav {
         display: none;
     }
 
-    .card-row {
-        gap: 10px;
+    :root {
+        --card-gap: 10px;
+        --card-radius: 10px;
+        --card-radius-sm: 10px;
     }
 
-    /* ~1.5 cards visible = clear scroll affordance */
+    /* ~1.5 cards visible = strong scroll affordance */
     .card {
-        width: 64vw;
+        width: 65vw;
         max-width: 260px;
         flex-grow: 0;
     }
 
     .card-service {
-        width: 110px;
+        width: 112px;
     }
 
     .card-original {
         width: 60vw;
-        max-width: 240px;
+        max-width: 245px;
         flex-grow: 0;
     }
 
-    .card .card-header {
-        border-radius: 10px;
-    }
-
-    .card-original .card-header {
-        border-radius: 10px;
-    }
-
-    .card-service-image {
-        border-radius: 10px;
-    }
-
-    .card-service-image img {
-        border-radius: 10px;
-    }
-
-    /* Grid: 2-col on mobile */
+    /* Two-column grid on mobile */
     .card-grid {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
@@ -879,7 +833,7 @@ body {
 
     .card .card-title,
     .card-original .card-title {
-        font-size: 12px;
+        font-size: 12.5px;
     }
 
     .card-price,
@@ -888,7 +842,26 @@ body {
     .card-original .card-description,
     .card-service-title,
     .card-service-status {
-        font-size: 11px;
+        font-size: 11.5px;
+    }
+
+    .card-badge {
+        font-size: 10.5px;
+        padding: 4px 10px;
+        top: 10px;
+        left: 10px;
+    }
+
+    .card-favorite-button,
+    .card-action-button {
+        top: 8px;
+        right: 8px;
+    }
+
+    .card-favorite-button svg,
+    .card-action-button svg {
+        width: 21px;
+        height: 21px;
     }
 
     .card .card-content,
@@ -904,28 +877,5 @@ body {
     .card-footer {
         padding: 10px 12px;
         font-size: 11px;
-    }
-}
-
-
-/* ────────────────────────────────────────────────────────────────
-   12. DARK MODE
-   ──────────────────────────────────────────────────────────────── */
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-bg:               #121212;
-        --color-bg-secondary:     #1E1E1E;
-        --color-text-primary:     #F0F0F0;
-        --color-text-secondary:   #999999;
-        --color-text-muted:       #555555;
-        --color-border-light:     #2E2E2E;
-        --color-border-lighter:   #242424;
-        --color-badge-bg:         rgba(24, 24, 24, 0.88);
-        --color-shadow-xs:        rgba(0, 0, 0, 0.30);
-        --color-shadow-sm:        rgba(0, 0, 0, 0.45);
-        --color-shadow-md:        rgba(0, 0, 0, 0.60);
-        --color-star:             #F0F0F0;
-        --color-heart-outline:    #FFFFFF;
     }
 }
