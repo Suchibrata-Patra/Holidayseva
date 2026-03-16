@@ -171,7 +171,7 @@ $promo_cards = [
         'title' => 'Explore Rajasthan this Summer',
         'sub'   => 'Up to 30% off on stays in Jaipur, Udaipur & Jodhpur',
         'cta'   => 'Explore deals',
-        'img'   => unsplash('1477587458883-47145ed31407', 480, 600),
+        'img'   => unsplash('1464822759023-fed622ff2c3b', 480, 600),
     ],
     [
         'tag'   => '⭐ Superhost Pick',
