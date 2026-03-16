@@ -1,48 +1,44 @@
 /* ================================================================
    HOLIDAYSEVA — CARD COMPONENT SYSTEM
-   cards.css — v4 Premium
+   cards.css — v5
 
-   Requires: colors.css (must be loaded before this file)
-   All colors exclusively via var(--color-*) tokens from colors.css.
-   Zero raw hex values. Zero color literals.
+   Requires: colors.css loaded before this file.
+   Zero raw hex values. All colors via var(--color-*) tokens.
 
-   Three variations:
-   ① .card            — Standard listing card (homes, stays)
-   ② .card-service    — Service category card (compact square)
-   ③ .card-original   — Featured/Original editorial card (portrait)
-
-   Special:
-   - .card-badge uses subtle glassmorphism (not overdone)
-   - Heart/action icons are plain SVG outlines on images
-   - All spacing via internal --card-* tokens for easy tweaking
+   Six card variations:
+   ① .card               — Standard listing card (homes/stays)
+   ② .card-service       — Service category (compact square grid)
+   ③ .card-original      — Featured/Original (portrait editorial)
+   ④ .card-experience    — Experience card (landscape image + icon pill)
+   ⑤ .card-host          — Host profile card (avatar + stats)
+   ⑥ .card-promo         — Promotional banner card (full-bleed bg + CTA)
    ================================================================ */
 
 
 /* ────────────────────────────────────────────────────────────────
-   00. LOCAL SPACING & MOTION TOKENS
-   (Colors come entirely from colors.css)
+   00. LOCAL TOKENS  (layout, motion — colors come from colors.css)
    ──────────────────────────────────────────────────────────────── */
 
 :root {
-    /* Spacing */
-    --card-gap:           16px;   /* gap between cards in a row */
-    --card-pad-content:   11px;   /* padding below image */
-    --card-pad-badge:     6px 14px;
-    --card-radius:        14px;   /* image corner radius */
-    --card-radius-sm:     10px;   /* mobile image corner radius */
-    --card-radius-badge:  9999px;
+    --card-gap:          16px;
+    --card-pad-content:  11px;
+    --card-radius:       14px;
+    --card-radius-sm:    10px;
+    --card-radius-pill:  9999px;
 
-    /* Motion */
-    --card-ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
-    --card-ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --card-dur-fast:      170ms;
-    --card-dur-base:      250ms;
-    --card-dur-image:     420ms;
+    --card-ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+    --card-ease-out:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --card-dur-fast:     170ms;
+    --card-dur-base:     250ms;
+    --card-dur-image:    420ms;
 
-    /* Card widths in scroll row */
-    --card-w:             200px;
-    --card-w-service:     148px;
-    --card-w-original:    205px;
+    /* Row widths */
+    --card-w:            200px;
+    --card-w-service:    148px;
+    --card-w-original:   205px;
+    --card-w-experience: 280px;
+    --card-w-host:       200px;
+    --card-w-promo:      320px;
 }
 
 
@@ -50,28 +46,18 @@
    01. PAGE BASE
    ──────────────────────────────────────────────────────────────── */
 
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
-                 Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+                 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     background: var(--color-bg);
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .page-container {
@@ -108,7 +94,6 @@ body {
     font-size: 15px;
     color: var(--color-text-secondary);
     line-height: 1.6;
-    font-weight: 400;
 }
 
 
@@ -125,10 +110,9 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
-/* Plain bold title */
 .card-section-title {
     font-size: 22px;
     font-weight: 700;
@@ -142,10 +126,8 @@ body {
     font-size: 14px;
     color: var(--color-text-secondary);
     margin: 5px 0 0;
-    font-weight: 400;
 }
 
-/* Underlined link title (Airbnb Originals style) */
 .card-section-title-link {
     display: inline-flex;
     align-items: center;
@@ -163,21 +145,15 @@ body {
     transition: color var(--card-dur-fast) var(--card-ease-out);
 }
 
-.card-section-title-link:hover {
-    color: var(--color-text-secondary);
-}
+.card-section-title-link:hover { color: var(--color-text-secondary); }
 
 /* Prev / Next arrows */
-.card-section-nav {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-}
+.card-section-nav { display: flex; gap: 8px; flex-shrink: 0; }
 
 .card-nav-btn {
     width: 32px;
     height: 32px;
-    border-radius: var(--card-radius-badge);
+    border-radius: var(--card-radius-pill);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     display: flex;
@@ -185,10 +161,8 @@ body {
     justify-content: center;
     cursor: pointer;
     box-shadow: var(--shadow-sm);
-    transition:
-        box-shadow   var(--card-dur-fast) var(--card-ease-out),
-        border-color var(--card-dur-fast) var(--card-ease-out),
-        background   var(--card-dur-fast) var(--card-ease-out);
+    transition: box-shadow var(--card-dur-fast) var(--card-ease-out),
+                border-color var(--card-dur-fast) var(--card-ease-out);
     padding: 0;
     flex-shrink: 0;
 }
@@ -196,18 +170,12 @@ body {
 .card-nav-btn:hover {
     box-shadow: var(--shadow-md);
     border-color: var(--color-text-primary);
-    background: var(--color-bg-secondary);
 }
 
-.card-nav-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    box-shadow: none;
-}
+.card-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
 
 .card-nav-btn svg {
-    width: 13px;
-    height: 13px;
+    width: 13px; height: 13px;
     stroke: var(--color-text-primary);
     fill: none;
     stroke-width: 2.5;
@@ -227,61 +195,56 @@ body {
     overflow-y: visible;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 14px;   /* shadow room */
-    padding-top: 6px;       /* shadow room on hover lift */
+    padding-bottom: 14px;
+    padding-top: 6px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
 .card-row::-webkit-scrollbar { display: none; }
-
-.card-row > * {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-}
+.card-row > * { scroll-snap-align: start; flex-shrink: 0; }
 
 
 /* ────────────────────────────────────────────────────────────────
-   04. GLASSMORPHISM BADGE — shared by all card types
-   Subtle frost effect, not overdone.
+   04. BADGE — subtle frosted white pill
+   Translucent white, not opaque. Delicate border. Clean.
+   Matches the Airbnb screenshot aesthetic exactly.
    ──────────────────────────────────────────────────────────────── */
 
 .card-badge {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: var(--card-pad-badge);
-    border-radius: var(--card-radius-badge);
+    padding: 6px 14px;
+    border-radius: var(--card-radius-pill);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: -0.1px;
     color: var(--color-text-primary);
-    /* Glassmorphism — subtle, premium */
-    background: var(--color-glass-bg);
-    border: 1px solid var(--color-glass-border);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
+
+    /* ── The badge look: translucent frosted white ── */
+    background: rgba(255, 255, 255, 0.62);          /* translucent white, not solid */
+    border: 1px solid rgba(255, 255, 255, 0.50);    /* subtle white border */
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
     box-shadow:
-        0 1px 3px var(--color-glass-shadow),
-        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        0 1px 4px rgba(0, 0, 0, 0.10),              /* soft lift shadow */
+        inset 0 1px 0 rgba(255, 255, 255, 0.80);    /* inner top highlight */
+
     position: absolute;
     top: 12px;
     left: 12px;
     z-index: 5;
-    /* Prevents text blur bleed */
     transform: translateZ(0);
     will-change: transform;
+    pointer-events: none;
 }
 
-.card-badge-icon {
-    font-size: 11px;
-    line-height: 1;
-}
+.card-badge-icon { font-size: 11px; line-height: 1; }
 
 
 /* ────────────────────────────────────────────────────────────────
-   05. HEART / FAVORITE BUTTON — shared
-   Plain outline SVG on image. No background circle.
+   05. HEART / ACTION BUTTON — plain SVG outline, no circle bg
    ──────────────────────────────────────────────────────────────── */
 
 .card-favorite-button,
@@ -303,23 +266,19 @@ body {
 }
 
 .card-favorite-button:hover,
-.card-action-button:hover {
-    transform: scale(1.18);
-}
+.card-action-button:hover { transform: scale(1.18); }
 
 .card-favorite-button svg,
 .card-action-button svg {
-    width: 24px;
-    height: 24px;
-    fill: rgba(0, 0, 0, 0.22);  /* subtle dark fill so outline pops on bright images */
+    width: 24px; height: 24px;
+    fill: rgba(0, 0, 0, 0.18);
     stroke: #FFFFFF;
     stroke-width: 2;
     filter:
         drop-shadow(0 1px 2px rgba(0,0,0,0.45))
-        drop-shadow(0 0px 1px rgba(0,0,0,0.25));
-    transition:
-        fill   var(--card-dur-fast) var(--card-ease-out),
-        stroke var(--card-dur-fast) var(--card-ease-out);
+        drop-shadow(0 0 1px rgba(0,0,0,0.20));
+    transition: fill var(--card-dur-fast) var(--card-ease-out),
+                stroke var(--card-dur-fast) var(--card-ease-out);
 }
 
 .card-favorite-button.is-favorited svg {
@@ -328,9 +287,11 @@ body {
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   06. VARIATION ① — STANDARD LISTING CARD  (.card)
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   CARD VARIATION ①  —  .card
+   Standard listing card: square image, badge, heart, title + price
+   Used for: Homes, stays, property listings
+   ════════════════════════════════════════════════════════════════ */
 
 .card {
     position: relative;
@@ -344,11 +305,8 @@ body {
     transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
-.card:hover {
-    transform: translateY(-4px);
-}
+.card:hover { transform: translateY(-4px); }
 
-/* Image */
 .card .card-header {
     position: relative;
     width: 100%;
@@ -356,30 +314,21 @@ body {
     border-radius: var(--card-radius);
     overflow: hidden;
     background: var(--color-bg-secondary);
-    /* Subtle shadow on the card image itself */
     box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--card-dur-base) var(--card-ease-out);
 }
 
+.card:hover .card-header { box-shadow: var(--shadow-lg); }
+
 .card .card-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
     display: block;
     transition: transform var(--card-dur-image) var(--card-ease-out);
 }
 
-.card:hover .card-header img {
-    transform: scale(1.06);
-}
+.card:hover .card-header img { transform: scale(1.06); }
 
-/* On hover: elevate shadow */
-.card:hover .card-header {
-    box-shadow: var(--shadow-lg);
-    transition: box-shadow var(--card-dur-base) var(--card-ease-out);
-}
-
-/* Content */
 .card .card-content {
     padding: var(--card-pad-content) 2px 0;
     display: flex;
@@ -407,7 +356,6 @@ body {
     flex: 1;
 }
 
-/* Rating — "★ 4.77" */
 .card-rating {
     display: inline-flex;
     align-items: center;
@@ -420,13 +368,11 @@ body {
 }
 
 .card-rating svg {
-    width: 11px;
-    height: 11px;
+    width: 11px; height: 11px;
     fill: var(--color-star);
     flex-shrink: 0;
 }
 
-/* Price — "₹13,683 for 2 nights" — secondary weight, matches screenshot */
 .card-price {
     margin: 0;
     font-size: 13px;
@@ -436,11 +382,6 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.card-price strong {
-    font-weight: 400;
-    color: var(--color-text-secondary);
 }
 
 .card .card-description {
@@ -453,9 +394,11 @@ body {
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   07. VARIATION ② — SERVICE CATEGORY CARD  (.card-service)
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   CARD VARIATION ②  —  .card-service
+   Compact square: rounded image, name + status below
+   Used for: Service categories (Photography, Massage, etc.)
+   ════════════════════════════════════════════════════════════════ */
 
 .card-service {
     display: flex;
@@ -468,12 +411,9 @@ body {
     transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
-.card-service:hover {
-    transform: translateY(-3px);
-}
+.card-service:hover { transform: translateY(-3px); }
 
 .card-service-image {
-    position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: var(--card-radius);
@@ -483,22 +423,16 @@ body {
     transition: box-shadow var(--card-dur-base) var(--card-ease-out);
 }
 
-.card-service:hover .card-service-image {
-    box-shadow: var(--shadow-md);
-}
+.card-service:hover .card-service-image { box-shadow: var(--shadow-md); }
 
 .card-service-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
     display: block;
     transition: transform var(--card-dur-image) var(--card-ease-out);
 }
 
-.card-service:hover .card-service-image img {
-    transform: scale(1.06);
-}
+.card-service:hover .card-service-image img { transform: scale(1.06); }
 
 .card-service-info {
     display: flex;
@@ -527,9 +461,11 @@ body {
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   08. VARIATION ③ — ORIGINAL / FEATURED CARD  (.card-original)
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   CARD VARIATION ③  —  .card-original
+   Editorial portrait: 3:4 image, feather badge, share/heart
+   Used for: Curated Originals, featured experiences
+   ════════════════════════════════════════════════════════════════ */
 
 .card-original {
     position: relative;
@@ -544,9 +480,7 @@ body {
     transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
-.card-original:hover {
-    transform: translateY(-4px);
-}
+.card-original:hover { transform: translateY(-4px); }
 
 .card-original .card-header {
     position: relative;
@@ -559,22 +493,16 @@ body {
     transition: box-shadow var(--card-dur-base) var(--card-ease-out);
 }
 
-.card-original:hover .card-header {
-    box-shadow: var(--shadow-lg);
-}
+.card-original:hover .card-header { box-shadow: var(--shadow-lg); }
 
 .card-original .card-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
     display: block;
     transition: transform var(--card-dur-image) var(--card-ease-out);
 }
 
-.card-original:hover .card-header img {
-    transform: scale(1.06);
-}
+.card-original:hover .card-header img { transform: scale(1.06); }
 
 .card-original .card-content {
     padding: var(--card-pad-content) 2px 0;
@@ -608,7 +536,6 @@ body {
 .card-original .card-price {
     margin: 2px 0 0;
     font-size: 13px;
-    font-weight: 400;
     color: var(--color-text-secondary);
     display: flex;
     align-items: center;
@@ -626,15 +553,438 @@ body {
 }
 
 .card-original .card-rating svg {
-    width: 11px;
-    height: 11px;
+    width: 11px; height: 11px;
     fill: var(--color-star);
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   09. STANDARD CARD GRID  (non-scrolling layout)
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   CARD VARIATION ④  —  .card-experience
+   Landscape image (16:9), category icon pill, duration + price
+   Used for: Tours, activities, day experiences
+   ════════════════════════════════════════════════════════════════ */
+
+.card-experience {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: var(--card-w-experience);
+    flex-shrink: 0;
+    background: var(--color-bg);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-lighter);
+    transition:
+        transform  var(--card-dur-base) var(--card-ease-spring),
+        box-shadow var(--card-dur-base) var(--card-ease-out);
+}
+
+.card-experience:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-experience .card-header {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+}
+
+.card-experience .card-header img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+    transition: transform var(--card-dur-image) var(--card-ease-out);
+}
+
+.card-experience:hover .card-header img { transform: scale(1.06); }
+
+/* Category icon pill — top right */
+.card-experience-category {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.50);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10),
+                inset 0 1px 0 rgba(255,255,255,0.80);
+    border-radius: var(--card-radius-pill);
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+}
+
+.card-experience .card-content {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-experience .card-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    letter-spacing: -0.2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-experience-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.card-experience-meta span {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.card-experience-meta svg {
+    width: 12px; height: 12px;
+    stroke: var(--color-text-tertiary);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+.card-experience-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border-lighter);
+}
+
+.card-experience-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.2px;
+}
+
+.card-experience-price span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+.card-experience-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.card-experience-rating svg {
+    width: 11px; height: 11px;
+    fill: var(--color-star);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   CARD VARIATION ⑤  —  .card-host
+   Host profile: avatar top-center, name, languages, stats row
+   Used for: Meet the host, Superhost profiles, agent cards
+   ════════════════════════════════════════════════════════════════ */
+
+.card-host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    width: var(--card-w-host);
+    flex-shrink: 0;
+    background: var(--color-bg);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--color-border-lighter);
+    padding: 28px 20px 22px;
+    box-shadow: var(--shadow-sm);
+    transition:
+        transform  var(--card-dur-base) var(--card-ease-spring),
+        box-shadow var(--card-dur-base) var(--card-ease-out);
+}
+
+.card-host:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-host-avatar-wrap {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+}
+
+.card-host-avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    border: 3px solid var(--color-bg);
+    box-shadow: var(--shadow-md);
+}
+
+/* Superhost badge — bottom-right of avatar */
+.card-host-superhost {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 2.5px solid var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-host-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.3px;
+    margin-bottom: 3px;
+}
+
+.card-host-role {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+/* Stats row: Reviews · Years · Rating */
+.card-host-stats {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--color-border-lighter);
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.card-host-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 4px;
+    background: var(--color-bg-secondary);
+    gap: 1px;
+}
+
+.card-host-stat + .card-host-stat {
+    border-left: 1px solid var(--color-border-lighter);
+}
+
+.card-host-stat-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+.card-host-stat-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Contact button */
+.card-host-btn {
+    margin-top: 14px;
+    width: 100%;
+    padding: 9px 16px;
+    border-radius: var(--card-radius-pill);
+    border: 1.5px solid var(--color-border);
+    background: var(--color-bg);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    letter-spacing: -0.1px;
+    transition:
+        background   var(--card-dur-fast) var(--card-ease-out),
+        border-color var(--card-dur-fast) var(--card-ease-out);
+}
+
+.card-host-btn:hover {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-dark);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   CARD VARIATION ⑥  —  .card-promo
+   Full-bleed background image, gradient overlay, headline + CTA
+   Used for: Seasonal promotions, destination highlights, offers
+   ════════════════════════════════════════════════════════════════ */
+
+.card-promo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+    width: var(--card-w-promo);
+    flex-shrink: 0;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    box-shadow: var(--shadow-md);
+    transition:
+        transform  var(--card-dur-base) var(--card-ease-spring),
+        box-shadow var(--card-dur-base) var(--card-ease-out);
+}
+
+.card-promo:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.card-promo-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.card-promo-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+    transition: transform var(--card-dur-image) var(--card-ease-out);
+}
+
+.card-promo:hover .card-promo-bg img { transform: scale(1.06); }
+
+/* Gradient overlay — bottom-up scrim */
+.card-promo-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.72) 0%,
+        rgba(0, 0, 0, 0.30) 45%,
+        rgba(0, 0, 0, 0.00) 100%
+    );
+}
+
+/* Content over overlay */
+.card-promo-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Optional tag pill */
+.card-promo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: var(--card-radius-pill);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: var(--color-text-on-primary);
+    background: var(--color-primary);
+    width: fit-content;
+    margin-bottom: 2px;
+}
+
+.card-promo-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text-inverse);
+    line-height: 1.25;
+    letter-spacing: -0.4px;
+}
+
+.card-promo-sub {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.card-promo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 9px 18px;
+    border-radius: var(--card-radius-pill);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.92);
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    letter-spacing: -0.1px;
+    transition:
+        background var(--card-dur-fast) var(--card-ease-out),
+        transform  var(--card-dur-fast) var(--card-ease-spring);
+}
+
+.card-promo-cta:hover {
+    background: #FFFFFF;
+    transform: scale(1.03);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   CARD GRID  (non-scrolling layout)
+   ════════════════════════════════════════════════════════════════ */
 
 .card-grid {
     display: grid;
@@ -649,10 +999,24 @@ body {
     flex-grow: unset;
 }
 
+/* Experience grid — 2 col */
+.card-grid-experience {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
 
-/* ────────────────────────────────────────────────────────────────
-   10. CARD FOOTER / BODY  (optional utility slots)
-   ──────────────────────────────────────────────────────────────── */
+/* Host grid — auto fill */
+.card-grid-host {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   UTILITY  —  footer / body slots
+   ════════════════════════════════════════════════════════════════ */
 
 .card-footer {
     padding: 12px 16px;
@@ -675,207 +1039,132 @@ body {
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   11. RESPONSIVE — LARGE DESKTOP  (≥ 1280px)
-   ──────────────────────────────────────────────────────────────── */
-
-@media (min-width: 1280px) {
-    :root {
-        --card-gap: 20px;
-        --card-w: 210px;
-        --card-w-original: 215px;
-    }
-}
-
-
-/* ────────────────────────────────────────────────────────────────
-   12. RESPONSIVE — TABLET  (≤ 1024px)
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE  ≤ 1024px  TABLET
+   ════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 1024px) {
-    .page-container {
-        padding: 36px 32px 72px;
-    }
+    .page-container { padding: 36px 32px 72px; }
 
     :root {
         --card-gap: 14px;
         --card-w: 185px;
         --card-w-service: 134px;
         --card-w-original: 188px;
+        --card-w-experience: 248px;
+        --card-w-host: 180px;
+        --card-w-promo: 280px;
     }
 
-    .card-section {
-        margin-bottom: 48px;
-    }
+    .card-section { margin-bottom: 48px; }
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   13. RESPONSIVE — TABLET PORTRAIT  (≤ 768px)
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE  ≤ 768px  TABLET PORTRAIT
+   ════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
-    .page-container {
-        padding: 28px 20px 60px;
-    }
-
-    .page-title {
-        font-size: 28px;
-    }
-
-    .card-section {
-        margin-bottom: 40px;
-    }
+    .page-container { padding: 28px 20px 60px; }
+    .page-title { font-size: 28px; }
+    .card-section { margin-bottom: 40px; }
 
     .card-section-title,
-    .card-section-title-link {
-        font-size: 18px;
-    }
+    .card-section-title-link { font-size: 18px; }
 
     :root {
         --card-gap: 12px;
         --card-w: 172px;
         --card-w-service: 124px;
         --card-w-original: 172px;
+        --card-w-experience: 228px;
+        --card-w-host: 164px;
+        --card-w-promo: 248px;
     }
 
     .card .card-title,
     .card-original .card-title,
-    .card-service-title {
-        font-size: 13px;
-    }
+    .card-experience .card-title,
+    .card-service-title { font-size: 13px; }
 
-    .card-price,
-    .card-rating,
+    .card-price, .card-rating,
     .card .card-description,
     .card-original .card-description,
-    .card-service-status {
-        font-size: 12px;
-    }
+    .card-service-status { font-size: 12px; }
 
-    .card-badge {
-        font-size: 11px;
-        padding: 5px 11px;
-    }
+    .card-badge { font-size: 11px; padding: 5px 11px; }
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   14. RESPONSIVE — MOBILE  (≤ 480px)
-   Show ~1.5 cards to signal horizontal scroll.
-   Nav arrows hidden — users swipe naturally.
-   ──────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE  ≤ 480px  MOBILE
+   ════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 480px) {
-    .page-container {
-        padding: 20px 16px 52px;
-    }
-
-    .page-title {
-        font-size: 24px;
-    }
-
-    .page-desc {
-        font-size: 13px;
-    }
-
-    .card-section {
-        margin-bottom: 36px;
-    }
+    .page-container { padding: 20px 16px 52px; }
+    .page-title { font-size: 24px; }
+    .page-desc { font-size: 13px; }
+    .card-section { margin-bottom: 36px; }
 
     .card-section-title,
-    .card-section-title-link {
-        font-size: 17px;
-    }
+    .card-section-title-link { font-size: 17px; }
 
-    .card-section-header {
-        margin-bottom: 14px;
-    }
-
-    /* Hide prev/next on mobile — swipe is sufficient */
-    .card-section-nav {
-        display: none;
-    }
+    .card-section-header { margin-bottom: 14px; }
+    .card-section-nav { display: none; }   /* swipe on mobile */
 
     :root {
         --card-gap: 10px;
         --card-radius: 10px;
-        --card-radius-sm: 10px;
     }
 
-    /* ~1.5 cards visible = strong scroll affordance */
-    .card {
-        width: 65vw;
-        max-width: 260px;
-        flex-grow: 0;
-    }
+    .card { width: 65vw; max-width: 260px; flex-grow: 0; }
+    .card-service { width: 112px; }
+    .card-original { width: 60vw; max-width: 245px; flex-grow: 0; }
+    .card-experience { width: 72vw; max-width: 290px; }
+    .card-host { width: 160px; padding: 20px 14px 16px; }
+    .card-promo { width: 80vw; max-width: 300px; }
 
-    .card-service {
-        width: 112px;
-    }
+    .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card-grid .card { width: 100%; max-width: 100%; }
 
-    .card-original {
-        width: 60vw;
-        max-width: 245px;
-        flex-grow: 0;
-    }
-
-    /* Two-column grid on mobile */
-    .card-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-    }
-
-    .card-grid .card {
-        width: 100%;
-        max-width: 100%;
-    }
+    .card-host-avatar-wrap { width: 64px; height: 64px; }
+    .card-host-stat-value { font-size: 13px; }
 
     .card .card-title,
-    .card-original .card-title {
-        font-size: 12.5px;
-    }
+    .card-original .card-title { font-size: 12.5px; }
 
-    .card-price,
-    .card-rating,
+    .card-price, .card-rating,
     .card .card-description,
     .card-original .card-description,
     .card-service-title,
-    .card-service-status {
-        font-size: 11.5px;
+    .card-service-status { font-size: 11.5px; }
+
+    .card-badge { font-size: 10.5px; padding: 4px 10px; top: 10px; left: 10px; }
+    .card-favorite-button, .card-action-button { top: 8px; right: 8px; }
+    .card-favorite-button svg, .card-action-button svg { width: 21px; height: 21px; }
+
+    .card-promo-title { font-size: 15px; }
+    .card-promo-sub { font-size: 12px; }
+    .card-promo-cta { font-size: 12px; padding: 8px 14px; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   DARK MODE  (all via colors.css tokens — nothing extra needed)
+   ════════════════════════════════════════════════════════════════ */
+
+@media (prefers-color-scheme: dark) {
+    /* Badge adapts: dark-mode glass uses dark bg token */
+    .card-badge,
+    .card-experience-category {
+        background: rgba(30, 30, 32, 0.68);
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow:
+            0 1px 4px rgba(0,0,0,0.36),
+            inset 0 1px 0 rgba(255,255,255,0.10);
     }
 
-    .card-badge {
-        font-size: 10.5px;
-        padding: 4px 10px;
-        top: 10px;
-        left: 10px;
-    }
-
-    .card-favorite-button,
-    .card-action-button {
-        top: 8px;
-        right: 8px;
-    }
-
-    .card-favorite-button svg,
-    .card-action-button svg {
-        width: 21px;
-        height: 21px;
-    }
-
-    .card .card-content,
-    .card-original .card-content {
-        gap: 2px;
-    }
-
-    .card-body {
-        padding: 12px;
-        font-size: 13px;
-    }
-
-    .card-footer {
-        padding: 10px 12px;
-        font-size: 11px;
+    .card-promo-cta {
+        background: rgba(245, 245, 247, 0.90);
     }
 }
