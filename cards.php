@@ -171,7 +171,7 @@ $promo_cards = [
         'title' => 'Explore Rajasthan this Summer',
         'sub'   => 'Up to 30% off on stays in Jaipur, Udaipur & Jodhpur',
         'cta'   => 'Explore deals',
-        'img'   => unsplash('1464822759023-fed622ff2c3b', 480, 600),
+        'img'   => unsplash('1477587458883-47145ed31407', 480, 600),
     ],
     [
         'tag'   => '⭐ Superhost Pick',
@@ -375,7 +375,12 @@ function nav_btns(string $prev_id, string $next_id): string {
          ════════════════════════════════════════════ -->
     <section class="card-section">
         <div class="card-section-header">
-            <a class="card-section-title-link" href="#">Experiences near you &nbsp;→</a>
+            <div class="card-section-title-group">
+                <h2 class="card-section-title">Experiences near you</h2>
+                <a href="#" class="card-section-arrow-btn" aria-label="See all experiences">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+            </div>
             <?= nav_btns('exp-prev', 'exp-next') ?>
         </div>
         <div class="card-row" id="exp-row">
@@ -383,23 +388,19 @@ function nav_btns(string $prev_id, string $next_id): string {
             <article class="card-experience">
                 <div class="card-header">
                     <img src="<?= $card['img'] ?>" alt="<?= htmlspecialchars($card['title']) ?>" loading="lazy">
-                    <span class="card-experience-category"><?= htmlspecialchars($card['category']) ?></span>
                 </div>
                 <div class="card-content">
                     <h3 class="card-title"><?= htmlspecialchars($card['title']) ?></h3>
                     <div class="card-experience-meta">
-                        <span><?= svg_clock() ?><?= htmlspecialchars($card['duration']) ?></span>
-                        <span><?= svg_users() ?><?= htmlspecialchars($card['people']) ?></span>
+                        <span><?= htmlspecialchars(preg_replace('/^[^\s]+\s/', '', $card['category'])) ?></span>
+                        <span><?= htmlspecialchars($card['duration']) ?></span>
                     </div>
                     <div class="card-experience-footer">
                         <p class="card-experience-price">
-                            <?= htmlspecialchars($card['price']) ?>
-                            <span><?= htmlspecialchars($card['per']) ?></span>
+                            From <?= htmlspecialchars($card['price']) ?><span><?= htmlspecialchars($card['per']) ?></span>
                         </p>
                         <span class="card-experience-rating">
-                            <?= svg_star() ?>
-                            <?= htmlspecialchars($card['rating']) ?>
-                            <span style="font-weight:400;color:var(--color-text-secondary)">(<?= $card['reviews'] ?>)</span>
+                            <?= svg_star() ?><?= htmlspecialchars($card['rating']) ?>
                         </span>
                     </div>
                 </div>
@@ -516,64 +517,3 @@ function nav_btns(string $prev_id, string $next_id): string {
 
 </body>
 </html>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
-<style>
-#map{
-height:500px;
-border-radius:18px;
-overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,0.12);
-}
-
-/* Airbnb style price marker */
-.price-marker{
-background:white;
-padding:6px 10px;
-border-radius:20px;
-font-weight:600;
-font-size:14px;
-box-shadow:0 3px 10px rgba(0,0,0,0.25);
-border:1px solid #eee;
-}
-</style>
-
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<script>
-
-var map = L.map('map',{
-zoomControl:false
-}).setView([22.5726, 88.3639], 12);
-
-L.control.zoom({
-position:'topright'
-}).addTo(map);
-
-/* Beautiful light map tiles */
-L.tileLayer(
-'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-{
-attribution:'©OpenStreetMap'
-}).addTo(map);
-
-
-/* Airbnb style markers */
-function priceMarker(lat,lng,price){
-
-return L.marker([lat,lng],{
-icon:L.divIcon({
-className:"",
-html:`<div class="price-marker">₹${price}</div>`
-})
-}).addTo(map);
-
-}
-
-priceMarker(22.5726,88.3639,4500);
-priceMarker(22.58,88.35,3200);
-priceMarker(22.56,88.38,2800);
-
-</script>

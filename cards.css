@@ -145,6 +145,42 @@ body {
     transition: color var(--card-dur-fast) var(--card-ease-out);
 }
 
+/* Title + arrow button group (used on experience section) */
+.card-section-title-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-section-arrow-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+    transition:
+        box-shadow var(--card-dur-fast) var(--card-ease-out),
+        border-color var(--card-dur-fast) var(--card-ease-out),
+        transform var(--card-dur-fast) var(--card-ease-spring);
+}
+
+.card-section-arrow-btn:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-text-primary);
+    transform: scale(1.05);
+}
+
+.card-section-arrow-btn svg {
+    stroke: var(--color-text-primary);
+}
+
 .card-section-title-link:hover { color: var(--color-text-secondary); }
 
 /* Prev / Next arrows */
@@ -560,9 +596,13 @@ body {
 
 /* ════════════════════════════════════════════════════════════════
    CARD VARIATION ④  —  .card-experience
-   Landscape image (16:9), category icon pill, duration + price
-   Used for: Tours, activities, day experiences
+   Tall square image, no card border/shadow, clean text stack below.
+   Matches: "More experiences in São Paulo" Airbnb reference design.
    ════════════════════════════════════════════════════════════════ */
+
+:root {
+    --card-w-experience: 340px;
+}
 
 .card-experience {
     position: relative;
@@ -571,27 +611,25 @@ body {
     cursor: pointer;
     width: var(--card-w-experience);
     flex-shrink: 0;
-    background: var(--color-bg);
-    border-radius: var(--card-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--color-border-lighter);
-    transition:
-        transform  var(--card-dur-base) var(--card-ease-spring),
-        box-shadow var(--card-dur-base) var(--card-ease-out);
+    /* No card border, no shadow, no background — floats like the reference */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    transition: transform var(--card-dur-base) var(--card-ease-spring);
 }
 
-.card-experience:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-}
+.card-experience:hover { transform: translateY(-3px); }
 
+/* Tall image — near-square (5:4 ratio matches the reference) */
 .card-experience .card-header {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     background: var(--color-bg-secondary);
+    border-radius: 16px;           /* rounded corners on image only */
+    box-shadow: none;
 }
 
 .card-experience .card-header img {
@@ -599,112 +637,118 @@ body {
     object-fit: cover; object-position: center;
     display: block;
     transition: transform var(--card-dur-image) var(--card-ease-out);
+    border-radius: 16px;
 }
 
-.card-experience:hover .card-header img { transform: scale(1.06); }
+.card-experience:hover .card-header img { transform: scale(1.04); }
 
-/* Category icon pill — top right */
-.card-experience-category {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.50);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.10),
-                inset 0 1px 0 rgba(255,255,255,0.80);
-    border-radius: var(--card-radius-pill);
-    padding: 5px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    pointer-events: none;
-}
+/* Remove floating category pill — category goes into text below */
+.card-experience-category { display: none; }
 
+/* Text content — generous top gap, no horizontal padding box */
 .card-experience .card-content {
-    padding: 14px 16px 16px;
+    padding: 14px 2px 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
+    background: transparent;
 }
 
+/* Bold title — larger, two-line wrap, matches the reference weight */
 .card-experience .card-title {
     margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.35;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
     color: var(--color-text-primary);
-    letter-spacing: -0.2px;
+    letter-spacing: -0.35px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
+/* "Category · Duration" — single muted line */
 .card-experience-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 2px;
-    font-size: 13px;
+    gap: 0;
+    margin-top: 1px;
+    font-size: 14px;
     color: var(--color-text-secondary);
+    font-weight: 400;
+    /* Dot-separated inline: "Cultural tours · 3 hours" */
+    flex-wrap: wrap;
 }
 
 .card-experience-meta span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: 0;
 }
 
-.card-experience-meta svg {
-    width: 12px; height: 12px;
-    stroke: var(--color-text-tertiary);
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    flex-shrink: 0;
+/* Dot separator between category and duration */
+.card-experience-meta span + span::before {
+    content: ' · ';
+    white-space: pre;
+    color: var(--color-text-secondary);
 }
 
+/* Hide the SVG icons — reference uses plain text only */
+.card-experience-meta svg { display: none; }
+
+/* "From ₹X,XXX / guest · ★ X.XX" — single line, matches reference */
 .card-experience-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-top: 8px;
-    padding-top: 10px;
-    border-top: 1px solid var(--color-border-lighter);
+    gap: 0;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;          /* remove old divider */
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    flex-wrap: wrap;
 }
 
 .card-experience-price {
     font-size: 14px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    letter-spacing: -0.2px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    letter-spacing: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
 }
 
+/* "/ guest" text */
 .card-experience-price span {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--color-text-secondary);
 }
 
+/* Dot + star rating inline after price */
 .card-experience-rating {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 3px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-text-primary);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+.card-experience-rating::before {
+    content: ' · ';
+    white-space: pre;
+    color: var(--color-text-secondary);
 }
 
 .card-experience-rating svg {
-    width: 11px; height: 11px;
+    width: 12px; height: 12px;
     fill: var(--color-star);
+    flex-shrink: 0;
+    margin-top: -1px;
 }
 
 
@@ -1221,7 +1265,7 @@ body {
         --card-w: 185px;
         --card-w-service: 134px;
         --card-w-original: 188px;
-        --card-w-experience: 248px;
+        --card-w-experience: 300px;
         --card-w-host: 270px;
         --card-w-promo: 268px;
     }
@@ -1247,7 +1291,7 @@ body {
         --card-w: 172px;
         --card-w-service: 124px;
         --card-w-original: 172px;
-        --card-w-experience: 228px;
+        --card-w-experience: 275px;
         --card-w-host: 255px;
         --card-w-promo: 244px;
     }
@@ -1290,7 +1334,7 @@ body {
     .card { width: 65vw; max-width: 260px; flex-grow: 0; }
     .card-service { width: 112px; }
     .card-original { width: 60vw; max-width: 245px; flex-grow: 0; }
-    .card-experience { width: 72vw; max-width: 290px; }
+    .card-experience { width: 76vw; max-width: 320px; }
     .card-host { width: 82vw; max-width: 300px; }
     .card-promo { width: 78vw; max-width: 290px; }
 
