@@ -197,7 +197,7 @@ function arrow_right_svg(): string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card Components — HolidaySeva Airframe UI</title>
-    <link rel="stylesheet" href="cards.css">
+    <link rel="stylesheet" href="https://holidayseva.com/cards.css">
     <style>
         /* ──────────────────────────────────────────────
            PAGE BASE — reset, typography, layout
