@@ -1264,7 +1264,7 @@ $partials = __DIR__ . '/../../';
 </button>
 
 <!-- Form helpers live in input.js; only page-chrome JS here -->
-<script src="/Atom/input/input.js" defer></script>
+<script src="https://holidayseva.com/UI/Atom/input/input.js" defer></script>
 <script>
 /* ── Tab switcher (page chrome only) ──────────────────────── */
 function switchTab(btn) {
