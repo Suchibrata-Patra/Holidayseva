@@ -145,8 +145,6 @@ $partials = __DIR__ . '/../../';
       </div>
     </section>
 
-    <hr class="rule">
-
     <!-- ── HTML Usage ─────────────────────── -->
     <section id="usage">
       <h2 class="section-title">HTML Usage</h2>
@@ -205,7 +203,6 @@ $partials = __DIR__ . '/../../';
       </div>
     </section>
 
-    <hr class="rule">
 
     <!-- ── JavaScript API ─────────────────── -->
     <section id="javascript">
@@ -288,7 +285,6 @@ sw.<span class="k">getState</span>(el);          <span class="c">// → "on" | "
       </div>
     </section>
 
-    <hr class="rule">
 
     <!-- ── Integration ────────────────────── -->
     <section id="integration">
