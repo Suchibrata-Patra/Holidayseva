@@ -1,351 +1,446 @@
+<?php
+/**
+ * HolidaySeva — Card Component Demo Page
+ * Demonstrates all three card variations:
+ *   ① Standard listing cards (Popular homes)
+ *   ② Service category cards (Services in Kolkata)
+ *   ③ Original/featured cards (HolidaySeva Originals)
+ */
+
+// ── Data ─────────────────────────────────────────────────────────
+
+$listing_cards = [
+    [
+        'title'   => 'Flat in Kolkata',
+        'desc'    => '₹13,683 for 2 nights',
+        'rating'  => '4.77',
+        'badge'   => 'Guest favourite',
+        'color'   => '#8B7355,#6B5A3E',
+    ],
+    [
+        'title'   => 'Villa in Kolkata',
+        'desc'    => '₹11,526 for 2 nights',
+        'rating'  => '4.86',
+        'badge'   => 'Guest favourite',
+        'color'   => '#5C8A6B,#3D6B50',
+    ],
+    [
+        'title'   => 'Place to stay in Kolkata',
+        'desc'    => '₹5,706 for 2 nights',
+        'rating'  => '4.95',
+        'badge'   => 'Guest favourite',
+        'color'   => '#7A6E8A,#5A5070',
+    ],
+    [
+        'title'   => 'Flat in Kolkata',
+        'desc'    => '₹6,150 for 2 nights',
+        'rating'  => '4.86',
+        'badge'   => 'Guest favourite',
+        'color'   => '#5B8FA8,#3B6F88',
+    ],
+    [
+        'title'   => 'Flat in Kolkata',
+        'desc'    => '₹5,250 for 2 nights',
+        'rating'  => '4.98',
+        'badge'   => 'Guest favourite',
+        'color'   => '#8A7B5C,#6B5C3D',
+    ],
+    [
+        'title'   => 'Apartment in Kolkata',
+        'desc'    => '₹8,729 for 2 nights',
+        'rating'  => '4.98',
+        'badge'   => 'Guest favourite',
+        'color'   => '#7C6B8A,#5C4B6A',
+    ],
+    [
+        'title'   => 'Place to stay in Kolkata',
+        'desc'    => '₹5,596 for 2 nights',
+        'rating'  => '4.91',
+        'badge'   => 'Guest favourite',
+        'color'   => '#6B8A7C,#4B6A5C',
+    ],
+];
+
+$service_cards = [
+    ['title' => 'Photography',   'status' => '1 available',  'color' => '#C4A882,#9C7C5A'],
+    ['title' => 'Chefs',         'status' => 'Coming soon',  'color' => '#D4B896,#B4886A'],
+    ['title' => 'Massage',       'status' => 'Coming soon',  'color' => '#C8A88A,#A87860'],
+    ['title' => 'Prepared meals','status' => 'Coming soon',  'color' => '#A8C890,#78A860'],
+    ['title' => 'Training',      'status' => 'Coming soon',  'color' => '#707880,#505860'],
+    ['title' => 'Make-up',       'status' => 'Coming soon',  'color' => '#E8C8B0,#C8A888'],
+    ['title' => 'Hair',          'status' => 'Coming soon',  'color' => '#A87855,#785533'],
+    ['title' => 'Spa treatments','status' => 'Coming soon',  'color' => '#E8B8C8,#C888A8'],
+    ['title' => 'Catering',      'status' => 'Coming soon',  'color' => '#7A9060,#5A7040'],
+    ['title' => 'Nails',         'status' => 'Coming soon',  'color' => '#982040,#780020'],
+];
+
+$original_cards = [
+    [
+        'title'  => 'Go backstage at Lolla Brasil with a festival boss',
+        'loc'    => 'São Paulo, Brazil',
+        'price'  => 'From ₹4,521 / guest',
+        'date'   => null,
+        'rating' => null,
+        'color'  => '#2A2A2A,#1A1A1A',
+        'action' => 'share',
+    ],
+    [
+        'title'  => 'Tapas and trophies with Fernando Morientes',
+        'loc'    => 'Madrid, Spain',
+        'price'  => null,
+        'date'   => 'Coming 10 April',
+        'rating' => null,
+        'color'  => '#1E3A5F,#0E2A4F',
+        'action' => 'share',
+    ],
+    [
+        'title'  => 'VIP access to a LALIGA match with Isabel Forner',
+        'loc'    => 'Vitoria-Gasteiz, Spain',
+        'price'  => null,
+        'date'   => 'Coming 30 April',
+        'rating' => null,
+        'color'  => '#3A1E1E,#2A0E0E',
+        'action' => 'share',
+    ],
+    [
+        'title'  => 'Paella and a LALIGA game with Arturo Valls',
+        'loc'    => 'València, Spain',
+        'price'  => null,
+        'date'   => 'Coming 30 April',
+        'rating' => null,
+        'color'  => '#1A3A2A,#0A2A1A',
+        'action' => 'share',
+    ],
+    [
+        'title'  => 'Carve marble with a third-generation sculptor',
+        'loc'    => 'Athens, Greece',
+        'price'  => 'From ₹6,350 / guest',
+        'date'   => null,
+        'rating' => '5.0',
+        'color'  => '#E8E0D8,#C8C0B8',
+        'action' => 'heart',
+    ],
+    [
+        'title'  => 'Learn mixology and cocktail tasting in a speakeasy',
+        'loc'    => 'Nice, France',
+        'price'  => 'From ₹3,704 / guest',
+        'date'   => null,
+        'rating' => '4.8',
+        'color'  => '#2A1A10,#1A0A00',
+        'action' => 'heart',
+    ],
+    [
+        'title'  => 'Experience a sacred Buddhist ritual and yoga class',
+        'loc'    => 'Haiya Sub-district, Thailand',
+        'price'  => 'From ₹1,399 / guest',
+        'date'   => null,
+        'rating' => '4.96',
+        'color'  => '#E8D8C8,#C8B0A0',
+        'action' => 'heart',
+    ],
+];
+
+// ── SVG Helpers ────────────────────────────────────────────────────
+
+function svg_gradient(string $id, string $from, string $to): string {
+    return "<defs><linearGradient id='$id' x1='0%' y1='0%' x2='100%' y2='100%'>"
+         . "<stop offset='0%' style='stop-color:$from;stop-opacity:1'/>"
+         . "<stop offset='100%' style='stop-color:$to;stop-opacity:1'/>"
+         . "</linearGradient></defs>";
+}
+
+function placeholder_img(string $color_pair, float $ratio = 1.0): string {
+    [$from, $to] = explode(',', $color_pair);
+    $id    = 'g' . substr(md5($color_pair . $ratio), 0, 6);
+    $h     = round(300 * $ratio);
+    $svg   = rawurlencode(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 $h'>"
+        . svg_gradient($id, $from, $to)
+        . "<rect fill='url(#$id)' width='300' height='$h'/>"
+        . "</svg>"
+    );
+    return "data:image/svg+xml,$svg";
+}
+
+function star_svg(): string {
+    return '<svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">'
+         . '<path d="M6 1l1.236 2.506L10 3.927l-2 1.949.472 2.751L6 7.5 3.528 8.627 4 5.876 2 3.927l2.764-.421L6 1z"/>'
+         . '</svg>';
+}
+
+function heart_svg(): string {
+    return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" '
+         . 'stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+         . '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>'
+         . '</svg>';
+}
+
+function share_svg(): string {
+    return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" '
+         . 'stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+         . '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
+         . '<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
+         . '</svg>';
+}
+
+function arrow_left_svg(): string {
+    return '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>';
+}
+
+function arrow_right_svg(): string {
+    return '<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services in Kolkata - HolidaySeva</title>
+    <title>Card Components — HolidaySeva Airframe UI</title>
+    <link rel="stylesheet" href="cards.css">
     <style>
-        /* ════════════════════════════════════════════════════════════════
-           RESET & TYPOGRAPHY BASE
-           ════════════════════════════════════════════════════════════════ */
+        /* ──────────────────────────────────────────────
+           PAGE BASE — reset, typography, layout
+           ────────────────────────────────────────────── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
             font-size: 16px;
             line-height: 1.6;
-            letter-spacing: -0.3px;
-            background: #FFFFFF;
-            color: #222222;
+            background: var(--color-bg);
+            color: var(--color-text-primary);
         }
 
-        /* ════════════════════════════════════════════════════════════════
-           COLOR TOKENS
-           ════════════════════════════════════════════════════════════════ */
-
-        :root {
-            --color-bg: #FFFFFF;
-            --color-bg-secondary: #F7F7F7;
-            --color-text-primary: #222222;
-            --color-text-secondary: #717171;
-            --color-border-light: #E5E5E5;
-            --color-border-lighter: #F0F0F0;
-            --color-primary: #FF385C;
-        }
-
-        /* ════════════════════════════════════════════════════════════════
-           LAYOUT — CONTAINER & SPACING
-           ════════════════════════════════════════════════════════════════ */
-
-        .container {
+        .page-container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 48px 24px 80px;
         }
 
-        /* ════════════════════════════════════════════════════════════════
-           PAGE HEADER
-           ════════════════════════════════════════════════════════════════ */
-
+        /* ──────────────────────────────────────────────
+           PAGE HEADER (doc breadcrumb)
+           ────────────────────────────────────────────── */
         .page-header {
-            padding: 48px 0 40px 0;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border-lighter);
+        }
+
+        .page-eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
         }
 
         .page-title {
             font-size: 32px;
             font-weight: 700;
+            letter-spacing: -0.8px;
+            color: var(--color-text-primary);
             line-height: 1.15;
-            letter-spacing: -0.6px;
-            color: #222222;
-            margin-bottom: 32px;
         }
 
-        /* ════════════════════════════════════════════════════════════════
-           CARD STYLES (from cards.css)
-           ════════════════════════════════════════════════════════════════ */
-
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border-light);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: 
-                box-shadow 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-        }
-
-        .card:hover {
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }
-
-        .card:active {
-            transform: translateY(-2px);
-        }
-
-        .card-favorite-button {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background 200ms ease, transform 200ms ease;
-            z-index: 10;
-        }
-
-        .card-favorite-button:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: scale(1.1);
-        }
-
-        .card-header {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            background: var(--color-bg-secondary);
-            aspect-ratio: 4 / 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            transition: transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .card:hover .card-header img {
-            transform: scale(1.06);
-        }
-
-        .card-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--color-text-primary);
-            z-index: 5;
-        }
-
-        .card-content {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-        }
-
-        .card-title {
-            margin: 0;
+        .page-desc {
+            margin-top: 8px;
             font-size: 15px;
-            font-weight: 600;
-            line-height: 1.35;
-            color: var(--color-text-primary);
-            letter-spacing: -0.3px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-description {
-            margin: 0;
-            font-size: 13px;
-            line-height: 1.38;
             color: var(--color-text-secondary);
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 16px;
-            width: 100%;
-        }
-
-        /* ════════════════════════════════════════════════════════════════
-           RESPONSIVE
-           ════════════════════════════════════════════════════════════════ */
-
-        @media (max-width: 768px) {
-            .card-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 14px;
-            }
-
-            .page-title {
-                font-size: 24px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .card-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 12px;
-            }
-
-            .page-title {
-                font-size: 20px;
-            }
-
-            .container {
-                padding: 0 16px;
-            }
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">Services in Kolkata</h1>
-        </div>
+<div class="page-container">
 
-        <!-- Services Grid -->
-        <div class="card-grid">
-            <!-- Photography -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23D35400;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%238B4513;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad1)' width='400' height='300'/%3E%3C/svg%3E" alt="Photography">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Photography</h3>
-                    <p class="card-description">1 available</p>
-                </div>
-            </div>
-
-            <!-- Chefs -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23F4A460;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23DAA520;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad2)' width='400' height='300'/%3E%3C/svg%3E" alt="Chefs">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Chefs</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Massage -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23CD853F;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23A0522D;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad3)' width='400' height='300'/%3E%3C/svg%3E" alt="Massage">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Massage</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Prepared meals -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad4' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2390EE90;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23228B22;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad4)' width='400' height='300'/%3E%3C/svg%3E" alt="Prepared meals">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Prepared meals</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Training -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad5' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23696969;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23404040;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad5)' width='400' height='300'/%3E%3C/svg%3E" alt="Training">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Training</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Make-up -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad6' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23F5DEB3;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23DEB887;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad6)' width='400' height='300'/%3E%3C/svg%3E" alt="Make-up">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Make-up</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Hair -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad7' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23A0522D;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23654321;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad7)' width='400' height='300'/%3E%3C/svg%3E" alt="Hair">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Hair</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Spa treatments -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad8' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFB6C1;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23FF69B4;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad8)' width='400' height='300'/%3E%3C/svg%3E" alt="Spa treatments">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Spa treatments</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Catering -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad9' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23556B2F;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23355E3B;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad9)' width='400' height='300'/%3E%3C/svg%3E" alt="Catering">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Catering</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-
-            <!-- Nails -->
-            <div class="card">
-                <div class="card-header">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad10' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23800020;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23660011;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad10)' width='400' height='300'/%3E%3C/svg%3E" alt="Nails">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Nails</h3>
-                    <p class="card-description">Coming soon</p>
-                </div>
-            </div>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <p class="page-eyebrow">Airframe UI · Components</p>
+        <h1 class="page-title">Card</h1>
+        <p class="page-desc">Three card variations — standard listing, service category, and featured original.</p>
     </div>
+
+
+    <!-- ════════════════════════════════════════════════════
+         SECTION ① — POPULAR HOMES (Standard .card)
+         Matches screenshot: cards_variation_2.png
+         ════════════════════════════════════════════════════ -->
+    <section class="card-section">
+        <div class="card-section-header">
+            <div>
+                <a class="card-section-title-link" href="#">
+                    Popular homes in North 24 Parganas &nbsp;→
+                </a>
+            </div>
+            <div class="card-section-nav">
+                <button class="card-nav-btn" id="homes-prev" aria-label="Previous">
+                    <?= arrow_left_svg() ?>
+                </button>
+                <button class="card-nav-btn" id="homes-next" aria-label="Next">
+                    <?= arrow_right_svg() ?>
+                </button>
+            </div>
+        </div>
+
+        <div class="card-row" id="homes-row">
+            <?php foreach ($listing_cards as $i => $card): ?>
+            <div class="card">
+                <div class="card-header">
+                    <img
+                        src="<?= placeholder_img($card['color'], 1.0) ?>"
+                        alt="<?= htmlspecialchars($card['title']) ?>"
+                        loading="lazy"
+                    >
+                    <?php if (!empty($card['badge'])): ?>
+                    <span class="card-badge"><?= htmlspecialchars($card['badge']) ?></span>
+                    <?php endif; ?>
+                    <button class="card-favorite-button" aria-label="Save to wishlist">
+                        <?= heart_svg() ?>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="card-meta-row">
+                        <h3 class="card-title"><?= htmlspecialchars($card['title']) ?></h3>
+                        <?php if (!empty($card['rating'])): ?>
+                        <span class="card-rating">
+                            <?= star_svg() ?>
+                            <?= htmlspecialchars($card['rating']) ?>
+                        </span>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (!empty($card['desc'])): ?>
+                    <p class="card-price"><strong><?= htmlspecialchars($card['desc']) ?></strong></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════════════
+         SECTION ② — SERVICES IN KOLKATA (.card-service)
+         Matches screenshot: cards_variation_1.png
+         ════════════════════════════════════════════════════ -->
+    <section class="card-section">
+        <div class="card-section-header">
+            <h2 class="card-section-title">Services in Kolkata</h2>
+        </div>
+
+        <div class="card-row" id="services-row">
+            <?php foreach ($service_cards as $card): ?>
+            <div class="card-service">
+                <div class="card-service-image">
+                    <img
+                        src="<?= placeholder_img($card['color'], 1.0) ?>"
+                        alt="<?= htmlspecialchars($card['title']) ?>"
+                        loading="lazy"
+                    >
+                </div>
+                <div class="card-service-info">
+                    <h3 class="card-service-title"><?= htmlspecialchars($card['title']) ?></h3>
+                    <p class="card-service-status"><?= htmlspecialchars($card['status']) ?></p>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════════════
+         SECTION ③ — HOLIDAYSEVA ORIGINALS (.card-original)
+         Matches screenshot: card_variation_3.png
+         ════════════════════════════════════════════════════ -->
+    <section class="card-section">
+        <div class="card-section-header">
+            <div>
+                <h2 class="card-section-title">HolidaySeva Originals &nbsp;→</h2>
+                <p class="card-section-subtitle">Hosted by the most interesting people</p>
+            </div>
+            <div class="card-section-nav">
+                <button class="card-nav-btn" id="originals-prev" aria-label="Previous">
+                    <?= arrow_left_svg() ?>
+                </button>
+                <button class="card-nav-btn" id="originals-next" aria-label="Next">
+                    <?= arrow_right_svg() ?>
+                </button>
+            </div>
+        </div>
+
+        <div class="card-row" id="originals-row">
+            <?php foreach ($original_cards as $card): ?>
+            <div class="card-original">
+                <div class="card-header">
+                    <img
+                        src="<?= placeholder_img($card['color'], 4/3) ?>"
+                        alt="<?= htmlspecialchars($card['title']) ?>"
+                        loading="lazy"
+                    >
+                    <span class="card-badge">
+                        <span class="card-badge-icon">🪶</span>
+                        Original
+                    </span>
+                    <button class="card-action-button" aria-label="<?= $card['action'] === 'share' ? 'Share' : 'Save' ?>">
+                        <?= $card['action'] === 'share' ? share_svg() : heart_svg() ?>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title"><?= htmlspecialchars($card['title']) ?></h3>
+                    <p class="card-description"><?= htmlspecialchars($card['loc']) ?></p>
+                    <?php if (!empty($card['date'])): ?>
+                        <p class="card-price"><span><?= htmlspecialchars($card['date']) ?></span></p>
+                    <?php elseif (!empty($card['price'])): ?>
+                        <p class="card-price">
+                            <strong><?= htmlspecialchars($card['price']) ?></strong>
+                            <?php if (!empty($card['rating'])): ?>
+                            &nbsp;·&nbsp;
+                            <span class="card-rating" style="display:inline-flex;">
+                                <?= star_svg() ?>
+                                <?= htmlspecialchars($card['rating']) ?>
+                            </span>
+                            <?php endif; ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+</div><!-- /.page-container -->
+
+<script>
+    // ── Horizontal Scroll Nav ────────────────────────────────────
+    function setupRowNav(rowId, prevId, nextId) {
+        const row  = document.getElementById(rowId);
+        const prev = document.getElementById(prevId);
+        const next = document.getElementById(nextId);
+        if (!row) return;
+
+        const scrollBy = () => row.clientWidth * 0.75;
+
+        if (prev) prev.addEventListener('click', () => {
+            row.scrollBy({ left: -scrollBy(), behavior: 'smooth' });
+        });
+        if (next) next.addEventListener('click', () => {
+            row.scrollBy({ left: scrollBy(), behavior: 'smooth' });
+        });
+    }
+
+    setupRowNav('homes-row',     'homes-prev',     'homes-next');
+    setupRowNav('originals-row', 'originals-prev', 'originals-next');
+
+    // ── Favorite Button Toggle ───────────────────────────────────
+    document.querySelectorAll('.card-favorite-button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.classList.toggle('is-favorited');
+        });
+    });
+</script>
 </body>
 </html>
