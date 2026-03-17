@@ -6,354 +6,488 @@
 <title>Month Slider</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700&display=swap" rel="stylesheet"/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
+  /* ─── Page shell (remove when embedding) ─── */
+  html, body {
+    margin: 0; padding: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #ebe8e3;
     font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ══════════════════════════════════════════
+     COMPONENT STYLES — self-contained,
+     scope everything under .month-slider-root
+  ══════════════════════════════════════════ */
+  .month-slider-root {
+    --ms-size:        320px;   /* overall diameter — override freely */
+    --ms-accent:      #E8175A;
+    --ms-bg:          #ebe8e3;
+    --ms-font:        'DM Sans', sans-serif;
+
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--ms-font);
     user-select: none;
     -webkit-user-select: none;
     touch-action: none;
   }
 
-  .scene {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 28px;
-  }
-
-  .slider-wrap {
+  .month-slider-root .ms-wrap {
     position: relative;
+    width: var(--ms-size);
+    height: var(--ms-size);
+    flex-shrink: 0;
   }
 
-  canvas {
+  .month-slider-root canvas {
     display: block;
     cursor: pointer;
+    /* no border-radius — canvas is square, ring drawn in JS */
   }
 
-  .center {
+  .month-slider-root .ms-center {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     pointer-events: none;
+    line-height: 1;
   }
 
-  .num {
-    font-size: clamp(3.2rem, 13vw, 5rem);
+  .month-slider-root .ms-num {
+    display: inline-block;
+    font-size: calc(var(--ms-size) * 0.175);
     font-weight: 700;
     color: #1a1a1a;
+    letter-spacing: -0.04em;
     line-height: 1;
-    letter-spacing: -3px;
     transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-    display: inline-block;
   }
+  .month-slider-root .ms-num.pop { transform: scale(1.13); }
 
-  .num.pop { transform: scale(1.13); }
-
-  .sub {
-    font-size: clamp(0.8rem, 2.8vw, 1rem);
+  .month-slider-root .ms-sub {
+    display: block;
+    font-size: calc(var(--ms-size) * 0.058);
     font-weight: 400;
     color: #999;
     letter-spacing: 0.04em;
-    margin-top: 6px;
+    margin-top: calc(var(--ms-size) * 0.018);
   }
 
-  .month-label {
-    font-size: clamp(0.85rem, 3vw, 1rem);
+  .month-slider-root .ms-month {
+    font-size: calc(var(--ms-size) * 0.062);
     font-weight: 700;
     letter-spacing: 0.18em;
-    color: #E8175A;
+    color: var(--ms-accent);
     text-transform: uppercase;
     min-height: 1.4em;
+    text-align: center;
   }
 </style>
 </head>
 <body>
 
-<div class="scene">
-  <div class="slider-wrap" id="wrap">
-    <canvas id="c"></canvas>
-    <div class="center">
-      <div class="num" id="num">1</div>
-      <div class="sub">month</div>
-    </div>
-  </div>
-  <div class="month-label" id="mlabel">January</div>
+<!-- ═══════════════════════════════════════════════════
+     COMPONENT ROOT  —  drop this anywhere on your page
+     Customise via data attributes:
+       data-min="1"       minimum value  (default 1)
+       data-max="12"      maximum value  (default 12)
+       data-value="1"     initial value  (default min)
+       data-size="320"    diameter in px (default 320)
+═══════════════════════════════════════════════════ -->
+<div class="month-slider-root"
+     id="mySlider"
+     data-min="1"
+     data-max="12"
+     data-value="1"
+     data-size="320">
 </div>
 
 <script>
-const MONTHS = ['January','February','March','April','May','June',
-                'July','August','September','October','November','December'];
+(function () {
+  'use strict';
 
-const canvas = document.getElementById('c');
-const ctx    = canvas.getContext('2d');
-const numEl  = document.getElementById('num');
-const mlabel = document.getElementById('mlabel');
-const wrap   = document.getElementById('wrap');
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
 
-// ── Sizing ───────────────────────────────────────────────
-const SIZE  = Math.min(320, window.innerWidth * 0.82);
-const DPR   = window.devicePixelRatio || 1;
-canvas.width        = SIZE * DPR;
-canvas.height       = SIZE * DPR;
-canvas.style.width  = SIZE + 'px';
-canvas.style.height = SIZE + 'px';
-ctx.scale(DPR, DPR);
-wrap.style.width  = SIZE + 'px';
-wrap.style.height = SIZE + 'px';
-
-const CX       = SIZE / 2;
-const CY       = SIZE / 2;
-const OUTER_R  = SIZE * 0.455;
-const INNER_R  = SIZE * 0.285;
-const TRACK_R  = SIZE * 0.370;
-const TRACK_W  = SIZE * 0.082;
-const HANDLE_R = SIZE * 0.052;
-const DOT_ORB  = SIZE * 0.308;
-const DOT_CNT  = 52;
-const DOT_SZ   = SIZE * 0.008;
-
-// ── Arc geometry ─────────────────────────────────────────
-// 12 o'clock = -π/2 in canvas coords (x right, y down)
-const START_RAD = -Math.PI / 2;           // -90° = top
-const SWEEP_RAD = (330 / 180) * Math.PI;  // 330° clockwise
-
-function valueToRad(v) {
-  return START_RAD + ((v - 1) / 11) * SWEEP_RAD;
-}
-
-function radToValue(rad) {
-  let rel = ((rad - START_RAD) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-  if (rel > SWEEP_RAD + 0.3) rel = rel > Math.PI ? 0 : SWEEP_RAD;
-  rel = Math.max(0, Math.min(SWEEP_RAD, rel));
-  return Math.round((rel / SWEEP_RAD) * 11) + 1;
-}
-
-// ── State ────────────────────────────────────────────────
-let value        = 1;
-let smoothRad    = START_RAD;
-let targetRad    = START_RAD;
-let isDragging   = false;
-let rafId        = null;
-let lastValue    = 1;
-
-// ── Drawing ───────────────────────────────────────────────
-function drawRing() {
-  // Main disc gradient
-  const g = ctx.createRadialGradient(CX - SIZE*0.08, CY - SIZE*0.1, SIZE*0.04, CX, CY, OUTER_R);
-  g.addColorStop(0, '#f8f5f1');
-  g.addColorStop(1, '#d9d5cf');
-  ctx.beginPath();
-  ctx.arc(CX, CY, OUTER_R, 0, Math.PI * 2);
-  ctx.fillStyle = g;
-  ctx.fill();
-
-  // Top-left highlight
-  ctx.save();
-  ctx.shadowColor   = 'rgba(255,255,255,1)';
-  ctx.shadowBlur    = SIZE * 0.07;
-  ctx.shadowOffsetX = -SIZE * 0.025;
-  ctx.shadowOffsetY = -SIZE * 0.025;
-  ctx.beginPath();
-  ctx.arc(CX, CY, OUTER_R - 1, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(255,255,255,0.01)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.restore();
-
-  // Bottom-right shadow
-  ctx.save();
-  ctx.shadowColor   = 'rgba(150,140,128,0.5)';
-  ctx.shadowBlur    = SIZE * 0.08;
-  ctx.shadowOffsetX = SIZE * 0.03;
-  ctx.shadowOffsetY = SIZE * 0.03;
-  ctx.beginPath();
-  ctx.arc(CX, CY, OUTER_R - 1, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(0,0,0,0.01)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.restore();
-}
-
-function drawTicks() {
-  for (let i = 0; i < DOT_CNT; i++) {
-    const a = (i / DOT_CNT) * Math.PI * 2 - Math.PI / 2;
-    ctx.beginPath();
-    ctx.arc(
-      CX + Math.cos(a) * DOT_ORB,
-      CY + Math.sin(a) * DOT_ORB,
-      DOT_SZ, 0, Math.PI * 2
-    );
-    ctx.fillStyle = 'rgba(165,157,147,0.45)';
-    ctx.fill();
+  /* ─── helper: short-circuit angle wrap ─────────────────
+     Returns the angular difference (−π … +π) between two angles
+  ──────────────────────────────────────────────────────── */
+  function angleDiff(a, b) {
+    let d = b - a;
+    while (d >  Math.PI) d -= 2 * Math.PI;
+    while (d < -Math.PI) d += 2 * Math.PI;
+    return d;
   }
-}
 
-function drawInner() {
-  const g = ctx.createRadialGradient(CX - SIZE*0.04, CY - SIZE*0.05, SIZE*0.01, CX, CY, INNER_R);
-  g.addColorStop(0, '#ffffff');
-  g.addColorStop(1, '#f2eeea');
-  ctx.beginPath();
-  ctx.arc(CX, CY, INNER_R, 0, Math.PI * 2);
-  ctx.fillStyle = g;
-  ctx.fill();
+  /* ─── mount function — call on any .month-slider-root ── */
+  function mountSlider(root) {
+    // Read config
+    const MIN    = parseInt(root.dataset.min   || '1',   10);
+    const MAX    = parseInt(root.dataset.max   || '12',  10);
+    const INIT   = parseInt(root.dataset.value || String(MIN), 10);
+    const SIZE   = parseInt(root.dataset.size  || '320', 10);
+    const STEPS  = MAX - MIN;          // number of intervals
 
-  ctx.beginPath();
-  ctx.arc(CX, CY, INNER_R, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-  ctx.lineWidth = SIZE * 0.005;
-  ctx.stroke();
-}
+    // Override CSS variable so label sizes scale too
+    root.style.setProperty('--ms-size', SIZE + 'px');
 
-function drawArc(rad) {
-  if (rad <= START_RAD + 0.001) return;
+    // Build DOM
+    root.innerHTML = `
+      <div class="ms-wrap">
+        <canvas id="ms-canvas-${SIZE}"></canvas>
+        <div class="ms-center">
+          <span class="ms-num">${INIT}</span>
+          <span class="ms-sub">month${INIT !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <div class="ms-month">${MONTHS[INIT - 1] || ''}</div>`;
 
-  // Soft glow (blurred pass)
-  ctx.save();
-  ctx.lineCap     = 'round';
-  ctx.lineWidth   = TRACK_W * 1.8;
-  ctx.strokeStyle = 'rgba(232,23,90,0.22)';
-  ctx.filter      = `blur(${(SIZE * 0.022).toFixed(1)}px)`;
-  ctx.beginPath();
-  ctx.arc(CX, CY, TRACK_R, START_RAD, rad, false);
-  ctx.stroke();
-  ctx.restore();
+    const wrap    = root.querySelector('.ms-wrap');
+    const canvas  = root.querySelector('canvas');
+    const numEl   = root.querySelector('.ms-num');
+    const subEl   = root.querySelector('.ms-sub');
+    const labelEl = root.querySelector('.ms-month');
 
-  // Solid arc
-  const sx = CX + Math.cos(START_RAD) * TRACK_R;
-  const sy = CY + Math.sin(START_RAD) * TRACK_R;
-  const ex = CX + Math.cos(rad) * TRACK_R;
-  const ey = CY + Math.sin(rad) * TRACK_R;
-  const ag = ctx.createLinearGradient(sx, sy, ex, ey);
-  ag.addColorStop(0, '#FF6090');
-  ag.addColorStop(1, '#C8114A');
+    const DPR = window.devicePixelRatio || 1;
+    canvas.width        = SIZE * DPR;
+    canvas.height       = SIZE * DPR;
+    canvas.style.width  = SIZE + 'px';
+    canvas.style.height = SIZE + 'px';
+    wrap.style.width    = SIZE + 'px';
+    wrap.style.height   = SIZE + 'px';
 
-  ctx.save();
-  ctx.lineCap     = 'round';
-  ctx.lineWidth   = TRACK_W;
-  ctx.strokeStyle = ag;
-  ctx.beginPath();
-  ctx.arc(CX, CY, TRACK_R, START_RAD, rad, false);
-  ctx.stroke();
-  ctx.restore();
-}
+    const ctx = canvas.getContext('2d');
+    ctx.scale(DPR, DPR);
 
-function drawHandle(rad) {
-  const hx = CX + Math.cos(rad) * TRACK_R;
-  const hy = CY + Math.sin(rad) * TRACK_R;
+    // Layout constants
+    const CX       = SIZE / 2;
+    const CY       = SIZE / 2;
+    const OUTER_R  = SIZE * 0.455;
+    const INNER_R  = SIZE * 0.285;
+    const TRACK_R  = SIZE * 0.370;
+    const TRACK_W  = SIZE * 0.082;
+    const HANDLE_R = SIZE * 0.052;
+    const DOT_ORB  = SIZE * 0.308;
+    const DOT_SZ   = SIZE * 0.009;
 
-  // Drop shadow
-  ctx.save();
-  ctx.shadowColor   = 'rgba(0,0,0,0.22)';
-  ctx.shadowBlur    = SIZE * 0.045;
-  ctx.shadowOffsetY = SIZE * 0.012;
-  ctx.beginPath();
-  ctx.arc(hx, hy, HANDLE_R, 0, Math.PI * 2);
-  ctx.fillStyle = '#fff';
-  ctx.fill();
-  ctx.restore();
+    // Arc geometry: 12 o'clock = -π/2, sweep 330° CW
+    const START_RAD  = -Math.PI / 2;
+    const SWEEP_RAD  = (330 / 180) * Math.PI;
 
-  // Gloss
-  const hg = ctx.createRadialGradient(hx - HANDLE_R*0.28, hy - HANDLE_R*0.32, HANDLE_R*0.04, hx, hy, HANDLE_R);
-  hg.addColorStop(0, '#ffffff');
-  hg.addColorStop(1, '#eeebe8');
-  ctx.beginPath();
-  ctx.arc(hx, hy, HANDLE_R, 0, Math.PI * 2);
-  ctx.fillStyle = hg;
-  ctx.fill();
-}
+    function valueToRad(v) {
+      return START_RAD + ((v - MIN) / STEPS) * SWEEP_RAD;
+    }
+    function radToValue(rad) {
+      // rel is always 0..SWEEP_RAD (clamped before calling)
+      const rel = rad - START_RAD;
+      return MIN + Math.round((rel / SWEEP_RAD) * STEPS);
+    }
 
-function draw(rad) {
-  ctx.clearRect(0, 0, SIZE, SIZE);
-  drawRing();
-  drawTicks();
-  drawInner();
-  drawArc(rad);
-  drawHandle(rad);
-}
+    // ── Haptics ────────────────────────────────────────
+    // Vibration API  — works on Android Chrome & many mobile browsers.
+    // iOS Safari requires a UserGesture AND "Settings > Sounds & Haptics"
+    // to be on; it uses the Taptic Engine via a silent AudioContext trick
+    // as a fallback so we try both paths.
+    let audioCtx = null;
 
-// ── Animation ─────────────────────────────────────────────
-function lerp(a, b, t) { return a + (b - a) * t; }
+    function iosHapticTick() {
+      // iOS doesn't support navigator.vibrate, but a near-silent 1-sample
+      // AudioContext click through the speaker triggers the Taptic Engine
+      // on devices where "System Haptics" is enabled.
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+        buf.getChannelData(0)[0] = 0.001; // almost silent
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(audioCtx.destination);
+        src.start(0);
+      } catch (_) {}
+    }
 
-function tick() {
-  const diff = targetRad - smoothRad;
-  if (Math.abs(diff) < 0.0008) {
-    smoothRad = targetRad;
-    draw(smoothRad);
-    rafId = null;
-    return;
+    function haptic() {
+      // 1. Vibration API (Android / some browsers)
+      if (navigator.vibrate) {
+        navigator.vibrate(8); // 8 ms — short crisp click
+        return;
+      }
+      // 2. iOS AudioContext fallback
+      iosHapticTick();
+    }
+
+    // Unlock AudioContext on first touch (required by browsers)
+    function unlockAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      canvas.removeEventListener('touchstart', unlockAudio);
+      canvas.removeEventListener('mousedown',  unlockAudio);
+    }
+    canvas.addEventListener('touchstart', unlockAudio, { once: true });
+    canvas.addEventListener('mousedown',  unlockAudio, { once: true });
+
+    // ── State ──────────────────────────────────────────
+    let value      = INIT;
+    let smoothRad  = valueToRad(INIT);
+    let targetRad  = valueToRad(INIT);
+    let isDragging = false;
+    let rafId      = null;
+    let lastValue  = INIT;
+
+    // Accumulator: total angle turned from drag-start, avoids wrap glitches
+    let dragStartAngle = 0;   // raw Math.atan2 angle when pointer went down
+    let dragStartRad   = valueToRad(INIT); // arc angle at drag start
+
+    // ── Draw helpers ───────────────────────────────────
+    function drawRing() {
+      const g = ctx.createRadialGradient(
+        CX - SIZE*0.08, CY - SIZE*0.10, SIZE*0.04,
+        CX, CY, OUTER_R);
+      g.addColorStop(0, '#f8f5f1');
+      g.addColorStop(1, '#d9d5cf');
+      ctx.beginPath();
+      ctx.arc(CX, CY, OUTER_R, 0, Math.PI*2);
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      // Highlight
+      ctx.save();
+      ctx.shadowColor   = 'rgba(255,255,255,0.95)';
+      ctx.shadowBlur    = SIZE * 0.07;
+      ctx.shadowOffsetX = -SIZE * 0.025;
+      ctx.shadowOffsetY = -SIZE * 0.025;
+      ctx.beginPath();
+      ctx.arc(CX, CY, OUTER_R - 1, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.01)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+
+      // Depth shadow
+      ctx.save();
+      ctx.shadowColor   = 'rgba(150,140,128,0.5)';
+      ctx.shadowBlur    = SIZE * 0.08;
+      ctx.shadowOffsetX = SIZE * 0.03;
+      ctx.shadowOffsetY = SIZE * 0.03;
+      ctx.beginPath();
+      ctx.arc(CX, CY, OUTER_R - 1, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(0,0,0,0.01)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawTicks(currentValue) {
+      // Total dots = MAX (one per possible month/step position)
+      // Dots up to currentValue are lit (accent colour), rest are grey
+      const totalDots = MAX;
+      for (let i = 0; i < totalDots; i++) {
+        // Spread dots evenly around full 360° like a clock face
+        const a = (i / totalDots) * Math.PI * 2 - Math.PI / 2;
+        const x = CX + Math.cos(a) * DOT_ORB;
+        const y = CY + Math.sin(a) * DOT_ORB;
+
+        // Which step does this dot correspond to?
+        // dot i=0 → top (month 1 position), i goes CW
+        const dotStep = i; // 0-indexed
+
+        ctx.beginPath();
+        ctx.arc(x, y, DOT_SZ, 0, Math.PI*2);
+
+        // Light up dots that are "filled" by current value
+        const filledCount = currentValue - MIN; // 0-indexed count of filled steps
+        ctx.fillStyle = dotStep < filledCount
+          ? 'rgba(232,23,90,0.35)'
+          : 'rgba(165,157,147,0.45)';
+        ctx.fill();
+      }
+    }
+
+    function drawInner() {
+      const g = ctx.createRadialGradient(
+        CX - SIZE*0.04, CY - SIZE*0.05, SIZE*0.01,
+        CX, CY, INNER_R);
+      g.addColorStop(0, '#ffffff');
+      g.addColorStop(1, '#f2eeea');
+      ctx.beginPath();
+      ctx.arc(CX, CY, INNER_R, 0, Math.PI*2);
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(CX, CY, INNER_R, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.lineWidth = SIZE * 0.005;
+      ctx.stroke();
+    }
+
+    function drawArc(rad) {
+      const arcEnd = rad;
+      if (arcEnd <= START_RAD + 0.005) return;
+
+      // Glow
+      ctx.save();
+      ctx.lineCap     = 'round';
+      ctx.lineWidth   = TRACK_W * 1.8;
+      ctx.strokeStyle = 'rgba(232,23,90,0.22)';
+      ctx.filter      = `blur(${(SIZE * 0.022).toFixed(1)}px)`;
+      ctx.beginPath();
+      ctx.arc(CX, CY, TRACK_R, START_RAD, arcEnd, false);
+      ctx.stroke();
+      ctx.restore();
+
+      // Solid arc
+      const sx = CX + Math.cos(START_RAD) * TRACK_R;
+      const sy = CY + Math.sin(START_RAD) * TRACK_R;
+      const ex = CX + Math.cos(arcEnd)    * TRACK_R;
+      const ey = CY + Math.sin(arcEnd)    * TRACK_R;
+      const ag = ctx.createLinearGradient(sx, sy, ex, ey);
+      ag.addColorStop(0, '#FF6090');
+      ag.addColorStop(1, '#C8114A');
+
+      ctx.save();
+      ctx.lineCap     = 'round';
+      ctx.lineWidth   = TRACK_W;
+      ctx.strokeStyle = ag;
+      ctx.beginPath();
+      ctx.arc(CX, CY, TRACK_R, START_RAD, arcEnd, false);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawHandle(rad) {
+      const hx = CX + Math.cos(rad) * TRACK_R;
+      const hy = CY + Math.sin(rad) * TRACK_R;
+
+      ctx.save();
+      ctx.shadowColor   = 'rgba(0,0,0,0.22)';
+      ctx.shadowBlur    = SIZE * 0.045;
+      ctx.shadowOffsetY = SIZE * 0.012;
+      ctx.beginPath();
+      ctx.arc(hx, hy, HANDLE_R, 0, Math.PI*2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.restore();
+
+      const hg = ctx.createRadialGradient(
+        hx - HANDLE_R*0.28, hy - HANDLE_R*0.32, HANDLE_R*0.04,
+        hx, hy, HANDLE_R);
+      hg.addColorStop(0, '#ffffff');
+      hg.addColorStop(1, '#eeebe8');
+      ctx.beginPath();
+      ctx.arc(hx, hy, HANDLE_R, 0, Math.PI*2);
+      ctx.fillStyle = hg;
+      ctx.fill();
+    }
+
+    function draw(rad, val) {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      drawRing();
+      drawTicks(val);
+      drawInner();
+      drawArc(rad);
+      drawHandle(rad);
+    }
+
+    // ── Animation ──────────────────────────────────────
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function tick() {
+      const diff = targetRad - smoothRad;
+      if (Math.abs(diff) < 0.0006) {
+        smoothRad = targetRad;
+        draw(smoothRad, value);
+        rafId = null;
+        return;
+      }
+      smoothRad = lerp(smoothRad, targetRad, isDragging ? 0.40 : 0.18);
+      draw(smoothRad, value);
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function kick() {
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
+    // ── Value commit ───────────────────────────────────
+    function commitRad(newRad) {
+      // Hard clamp — NEVER outside [START_RAD, START_RAD + SWEEP_RAD]
+      newRad = Math.max(START_RAD, Math.min(START_RAD + SWEEP_RAD, newRad));
+      targetRad = newRad;
+
+      const v = radToValue(newRad);
+      const clamped = Math.max(MIN, Math.min(MAX, v));
+      if (clamped !== lastValue) {
+        lastValue = clamped;
+        value = clamped;
+        numEl.textContent  = clamped;
+        subEl.textContent  = 'month' + (clamped !== 1 ? 's' : '');
+        labelEl.textContent = MONTHS[clamped - 1] || '';
+
+        haptic();
+
+        numEl.classList.remove('pop');
+        requestAnimationFrame(() => numEl.classList.add('pop'));
+        setTimeout(() => numEl.classList.remove('pop'), 200);
+      }
+      kick();
+    }
+
+    // ── Pointer helpers ────────────────────────────────
+    function rawAngle(e) {
+      const rect = canvas.getBoundingClientRect();
+      const pt   = e.touches ? e.touches[0] : e;
+      return Math.atan2(
+        pt.clientY - rect.top  - SIZE/2,
+        pt.clientX - rect.left - SIZE/2
+      ); // range −π … +π
+    }
+
+    // ── Pointer events ─────────────────────────────────
+    function onStart(e) {
+      isDragging     = true;
+      dragStartAngle = rawAngle(e);
+      dragStartRad   = targetRad;
+      e.preventDefault();
+    }
+
+    function onMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const currentAngle = rawAngle(e);
+
+      // Delta from where the drag began — handles 0/2π wrap cleanly
+      const delta = angleDiff(dragStartAngle, currentAngle);
+
+      // New arc angle = start position + how much we've rotated
+      const newRad = dragStartRad + delta;
+      commitRad(newRad);
+    }
+
+    function onEnd() { isDragging = false; }
+
+    canvas.addEventListener('mousedown',  onStart);
+    canvas.addEventListener('touchstart', onStart, { passive: false });
+    window.addEventListener('mousemove',  onMove);
+    window.addEventListener('touchmove',  onMove,  { passive: false });
+    window.addEventListener('mouseup',    onEnd);
+    window.addEventListener('touchend',   onEnd);
+
+    // Initial render
+    draw(smoothRad, value);
   }
-  smoothRad = lerp(smoothRad, targetRad, isDragging ? 0.42 : 0.18);
-  draw(smoothRad);
-  rafId = requestAnimationFrame(tick);
-}
 
-function kick() { if (!rafId) rafId = requestAnimationFrame(tick); }
-
-// ── Value commit ──────────────────────────────────────────
-function setTarget(rad) {
-  // Clamp into valid arc range
-  let rel = ((rad - START_RAD) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
-  if (rel > SWEEP_RAD + 0.25) {
-    rel = rel > Math.PI ? 0 : SWEEP_RAD;
-  }
-  rel = Math.max(0, Math.min(SWEEP_RAD, rel));
-  targetRad = START_RAD + rel;
-
-  const v = radToValue(targetRad);
-  if (v !== lastValue) {
-    lastValue = v;
-    value = v;
-    numEl.textContent = v;
-    mlabel.textContent = MONTHS[v - 1];
-    numEl.classList.remove('pop');
-    requestAnimationFrame(() => numEl.classList.add('pop'));
-    setTimeout(() => numEl.classList.remove('pop'), 200);
-  }
-  kick();
-}
-
-// ── Pointer ───────────────────────────────────────────────
-function getAngle(e) {
-  const rect = canvas.getBoundingClientRect();
-  const pt   = e.touches ? e.touches[0] : e;
-  const dx   = pt.clientX - rect.left - SIZE/2;
-  const dy   = pt.clientY - rect.top  - SIZE/2;
-  return Math.atan2(dy, dx);   // -π..π, 0=right, -π/2=top
-}
-
-canvas.addEventListener('mousedown', e => {
-  isDragging = true;
-  setTarget(getAngle(e));
-});
-canvas.addEventListener('touchstart', e => {
-  isDragging = true;
-  e.preventDefault();
-  setTarget(getAngle(e));
-}, { passive: false });
-
-window.addEventListener('mousemove', e => {
-  if (!isDragging) return;
-  setTarget(getAngle(e));
-});
-window.addEventListener('touchmove', e => {
-  if (!isDragging) return;
-  e.preventDefault();
-  setTarget(getAngle(e));
-}, { passive: false });
-
-window.addEventListener('mouseup',  () => { isDragging = false; });
-window.addEventListener('touchend', () => { isDragging = false; });
-
-// ── Boot ──────────────────────────────────────────────────
-draw(START_RAD);
+  // ── Auto-mount all roots on page ──────────────────────
+  document.querySelectorAll('.month-slider-root').forEach(mountSlider);
+})();
 </script>
 </body>
 </html>
