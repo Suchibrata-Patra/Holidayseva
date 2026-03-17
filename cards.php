@@ -265,7 +265,7 @@ function nav_btns(string $prev_id, string $next_id): string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card — HolidaySeva Airframe UI</title>
-    <link rel="stylesheet" href="colors.css">
+    <link rel="stylesheet" href="https://holidayseva.com/UI/Foundation/colors.css">
     <link rel="stylesheet" href="cards.css">
 </head>
 <body>
