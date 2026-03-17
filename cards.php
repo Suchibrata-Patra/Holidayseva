@@ -161,7 +161,7 @@ $host_cards = [
         'sub'        => 'Entire haveli · Heritage property',
         'superhost'  => true,
         'img'        => unsplash('1580489944761-15a19d654956', 200, 200),
-        'cover'      => unsplash('1477587458883-47145ed31407', 600, 360),
+        'cover'      => unsplash('1580489944761-15a19d654956', 600, 360),
     ],
 ];
 
