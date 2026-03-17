@@ -34,7 +34,7 @@ $service_cards = [
     ['title' => 'Make-up',        'status' => 'Coming soon', 'img' => unsplash('1604654894610-df63bc536371', 320, 320)],
     ['title' => 'Hair',           'status' => 'Coming soon', 'img' => unsplash('1522337360788-8b13dee7a37e', 320, 320)],
     ['title' => 'Spa treatments', 'status' => 'Coming soon', 'img' => unsplash('1540555700478-4be289fbecef', 320, 320)],
-    ['title' => 'Catering',       'status' => 'Coming soon', 'img' => unsplash('1555244162-09c340d38bf9', 320, 320)],
+    ['title' => 'Catering',       'status' => 'Coming soon', 'img' => unsplash('1604654894610-df63bc536371', 320, 320)],
     ['title' => 'Nails',          'status' => 'Coming soon', 'img' => unsplash('1604654894610-df63bc536371', 320, 320)],
 ];
 
@@ -171,7 +171,7 @@ $promo_cards = [
         'title' => 'Explore Rajasthan this Summer',
         'sub'   => 'Up to 30% off on stays in Jaipur, Udaipur & Jodhpur',
         'cta'   => 'Explore deals',
-        'img'   => unsplash('1477587458883-47145ed31407', 480, 600),
+        'img'   => unsplash('1506905925346-21bda4d32df4', 480, 600),
     ],
     [
         'tag'   => '⭐ Superhost Pick',
