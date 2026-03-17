@@ -1,385 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Circular Month Slider</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Month Slider</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --ring-size: min(300px, 80vw);
-      --ring-stroke: 36px;
-      --track-r: 112;
-      --accent: #E8175A;
-      --accent-glow: rgba(232, 23, 90, 0.45);
-      --ring-bg: #eeebe7;
-      --ring-shadow-light: rgba(255,255,255,0.95);
-      --ring-shadow-dark: rgba(180,170,158,0.7);
-    }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ebe8e3;
+    font-family: 'DM Sans', sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-    }
+  .scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f0ede9;
-      font-family: 'DM Sans', sans-serif;
-      user-select: none;
-      -webkit-user-select: none;
-    }
+  .slider-wrap {
+    position: relative;
+  }
 
-    .scene {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-    }
+  canvas {
+    display: block;
+    cursor: pointer;
+  }
 
-    .slider-wrap {
-      position: relative;
-      width: var(--ring-size);
-      height: var(--ring-size);
-      cursor: pointer;
-    }
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+  }
 
-    .ring-svg {
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-      display: block;
-    }
+  .num {
+    font-size: clamp(3.2rem, 13vw, 5rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+    letter-spacing: -3px;
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-block;
+  }
 
-    /* Center label */
-    .center-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      pointer-events: none;
-      transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
-    }
+  .num.pop { transform: scale(1.13); }
 
-    .center-label.bump {
-      transform: translate(-50%, -50%) scale(1.08);
-    }
+  .sub {
+    font-size: clamp(0.8rem, 2.8vw, 1rem);
+    font-weight: 400;
+    color: #999;
+    letter-spacing: 0.04em;
+    margin-top: 6px;
+  }
 
-    .center-num {
-      font-size: clamp(3rem, 14vw, 4.5rem);
-      font-weight: 700;
-      color: #1a1a1a;
-      line-height: 1;
-      letter-spacing: -2px;
-      transition: color 0.2s ease;
-    }
-
-    .center-sub {
-      font-size: clamp(0.8rem, 3vw, 1rem);
-      font-weight: 500;
-      color: #888;
-      letter-spacing: 0.05em;
-      text-transform: lowercase;
-      margin-top: 4px;
-    }
-
-    /* Month name display */
-    .month-name {
-      font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      height: 1.5em;
-    }
-
-    .month-name.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Hint text */
-    .hint {
-      font-size: 13px;
-      color: #bbb;
-      letter-spacing: 0.04em;
-    }
-  </style>
+  .month-label {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #E8175A;
+    text-transform: uppercase;
+    min-height: 1.4em;
+  }
+</style>
 </head>
 <body>
 
 <div class="scene">
-  <div class="slider-wrap" id="sliderWrap">
-    <svg class="ring-svg" id="svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <!-- Neumorphic ring gradient -->
-        <radialGradient id="ringFill" cx="40%" cy="35%" r="65%">
-          <stop offset="0%" stop-color="#f8f5f1"/>
-          <stop offset="100%" stop-color="#ddd9d4"/>
-        </radialGradient>
-
-        <!-- Inner white hole -->
-        <radialGradient id="holeFill" cx="45%" cy="40%" r="60%">
-          <stop offset="0%" stop-color="#ffffff"/>
-          <stop offset="100%" stop-color="#f5f3f0"/>
-        </radialGradient>
-
-        <!-- Glow filter for arc -->
-        <filter id="arcGlow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="8" result="blur"/>
-          <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-
-        <!-- Handle shadow -->
-        <filter id="hShadow" x="-60%" y="-60%" width="220%" height="220%">
-          <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(0,0,0,0.20)"/>
-          <feDropShadow dx="0" dy="0" stdDeviation="1" flood-color="rgba(0,0,0,0.08)"/>
-        </filter>
-
-        <!-- Ring outer shadow (neumorphic) -->
-        <filter id="ringShadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="-4" dy="-4" stdDeviation="6" flood-color="rgba(255,255,255,0.9)"/>
-          <feDropShadow dx="4" dy="4" stdDeviation="8" flood-color="rgba(170,160,148,0.55)"/>
-        </filter>
-
-        <!-- Pill pill gradient -->
-        <linearGradient id="pillGrad" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FF4D82"/>
-          <stop offset="100%" stop-color="#C8114A"/>
-        </linearGradient>
-
-        <clipPath id="ringClip">
-          <path d="M140,20 A120,120 0 1,1 139.999,20 Z
-                   M140,68 A72,72 0 1,0 140.001,68 Z" fill-rule="evenodd"/>
-        </clipPath>
-      </defs>
-
-      <!-- Main ring body -->
-      <circle cx="140" cy="140" r="122" fill="url(#ringFill)" filter="url(#ringShadow)"/>
-      <circle cx="140" cy="140" r="72" fill="url(#holeFill)"/>
-
-      <!-- Subtle inner edge highlight -->
-      <circle cx="140" cy="140" r="72" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
-      <circle cx="140" cy="140" r="122" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-
-      <!-- Tick dots around the track -->
-      <g id="ticks"></g>
-
-      <!-- Glow behind arc -->
-      <path id="glowArc"
-            fill="none"
-            stroke="#FF2D6B"
-            stroke-width="30"
-            stroke-linecap="round"
-            filter="url(#arcGlow)"
-            opacity="0"
-            style="transition: opacity 0.2s ease;"/>
-
-      <!-- Main colored arc -->
-      <path id="trackArc"
-            fill="none"
-            stroke="url(#pillGrad)"
-            stroke-width="24"
-            stroke-linecap="round"
-            opacity="0"/>
-
-      <!-- Handle white ball -->
-      <circle id="handle"
-              cx="140" cy="18" r="14"
-              fill="white"
-              filter="url(#hShadow)"
-              style="cursor: grab; transition: r 0.1s ease;"/>
-    </svg>
-
-    <div class="center-label" id="centerLabel">
-      <div class="center-num" id="numLabel">1</div>
-      <div class="center-sub">month</div>
+  <div class="slider-wrap" id="wrap">
+    <canvas id="c"></canvas>
+    <div class="center">
+      <div class="num" id="num">1</div>
+      <div class="sub">month</div>
     </div>
   </div>
-
-  <div class="month-name" id="monthName">January</div>
-  <div class="hint">Drag to select months</div>
+  <div class="month-label" id="mlabel">January</div>
 </div>
 
 <script>
-  const MONTHS = ['January','February','March','April','May','June',
-                  'July','August','September','October','November','December'];
-  const MIN = 1, MAX = 12;
-  const CX = 140, CY = 140, R = 97;
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
 
-  // Start exactly at 12 o'clock (-90°), sweep full 360 across 12 steps
-  // So value=1 → -90°, value=12 → -90° + (11/11)*360 = 270° = same as -90° but full circle
-  // We span 330° so there's a tiny gap (feels natural)
-  const SPAN = 330;
-  const START_DEG = -90;
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const numEl  = document.getElementById('num');
+const mlabel = document.getElementById('mlabel');
+const wrap   = document.getElementById('wrap');
 
-  let value = 1;
-  let dragging = false;
-  let lastAngle = null;
-  let animFrame = null;
-  let targetValue = 1;
+// ── Sizing ───────────────────────────────────────────────
+const SIZE  = Math.min(320, window.innerWidth * 0.82);
+const DPR   = window.devicePixelRatio || 1;
+canvas.width        = SIZE * DPR;
+canvas.height       = SIZE * DPR;
+canvas.style.width  = SIZE + 'px';
+canvas.style.height = SIZE + 'px';
+ctx.scale(DPR, DPR);
+wrap.style.width  = SIZE + 'px';
+wrap.style.height = SIZE + 'px';
 
-  const svg       = document.getElementById('svg');
-  const handle    = document.getElementById('handle');
-  const trackArc  = document.getElementById('trackArc');
-  const glowArc   = document.getElementById('glowArc');
-  const numLabel  = document.getElementById('numLabel');
-  const monthName = document.getElementById('monthName');
-  const centerLabel = document.getElementById('centerLabel');
-  const ticksEl  = document.getElementById('ticks');
+const CX       = SIZE / 2;
+const CY       = SIZE / 2;
+const OUTER_R  = SIZE * 0.455;
+const INNER_R  = SIZE * 0.285;
+const TRACK_R  = SIZE * 0.370;
+const TRACK_W  = SIZE * 0.082;
+const HANDLE_R = SIZE * 0.052;
+const DOT_ORB  = SIZE * 0.308;
+const DOT_CNT  = 52;
+const DOT_SZ   = SIZE * 0.008;
 
-  function toRad(d){ return d * Math.PI / 180; }
+// ── Arc geometry ─────────────────────────────────────────
+// 12 o'clock = -π/2 in canvas coords (x right, y down)
+const START_RAD = -Math.PI / 2;           // -90° = top
+const SWEEP_RAD = (330 / 180) * Math.PI;  // 330° clockwise
 
-  function polarXY(deg, r){
-    const rad = toRad(deg);
-    return { x: CX + r * Math.sin(rad), y: CY - r * Math.cos(rad) };
+function valueToRad(v) {
+  return START_RAD + ((v - 1) / 11) * SWEEP_RAD;
+}
+
+function radToValue(rad) {
+  let rel = ((rad - START_RAD) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+  if (rel > SWEEP_RAD + 0.3) rel = rel > Math.PI ? 0 : SWEEP_RAD;
+  rel = Math.max(0, Math.min(SWEEP_RAD, rel));
+  return Math.round((rel / SWEEP_RAD) * 11) + 1;
+}
+
+// ── State ────────────────────────────────────────────────
+let value        = 1;
+let smoothRad    = START_RAD;
+let targetRad    = START_RAD;
+let isDragging   = false;
+let rafId        = null;
+let lastValue    = 1;
+
+// ── Drawing ───────────────────────────────────────────────
+function drawRing() {
+  // Main disc gradient
+  const g = ctx.createRadialGradient(CX - SIZE*0.08, CY - SIZE*0.1, SIZE*0.04, CX, CY, OUTER_R);
+  g.addColorStop(0, '#f8f5f1');
+  g.addColorStop(1, '#d9d5cf');
+  ctx.beginPath();
+  ctx.arc(CX, CY, OUTER_R, 0, Math.PI * 2);
+  ctx.fillStyle = g;
+  ctx.fill();
+
+  // Top-left highlight
+  ctx.save();
+  ctx.shadowColor   = 'rgba(255,255,255,1)';
+  ctx.shadowBlur    = SIZE * 0.07;
+  ctx.shadowOffsetX = -SIZE * 0.025;
+  ctx.shadowOffsetY = -SIZE * 0.025;
+  ctx.beginPath();
+  ctx.arc(CX, CY, OUTER_R - 1, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.01)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // Bottom-right shadow
+  ctx.save();
+  ctx.shadowColor   = 'rgba(150,140,128,0.5)';
+  ctx.shadowBlur    = SIZE * 0.08;
+  ctx.shadowOffsetX = SIZE * 0.03;
+  ctx.shadowOffsetY = SIZE * 0.03;
+  ctx.beginPath();
+  ctx.arc(CX, CY, OUTER_R - 1, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(0,0,0,0.01)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawTicks() {
+  for (let i = 0; i < DOT_CNT; i++) {
+    const a = (i / DOT_CNT) * Math.PI * 2 - Math.PI / 2;
+    ctx.beginPath();
+    ctx.arc(
+      CX + Math.cos(a) * DOT_ORB,
+      CY + Math.sin(a) * DOT_ORB,
+      DOT_SZ, 0, Math.PI * 2
+    );
+    ctx.fillStyle = 'rgba(165,157,147,0.45)';
+    ctx.fill();
   }
+}
 
-  function arcD(startDeg, endDeg, r){
-    const s = polarXY(startDeg, r);
-    const e = polarXY(endDeg, r);
-    const delta = ((endDeg - startDeg) + 720) % 360;
-    const large = delta > 180 ? 1 : 0;
-    return `M ${s.x.toFixed(3)} ${s.y.toFixed(3)} A ${r} ${r} 0 ${large} 1 ${e.x.toFixed(3)} ${e.y.toFixed(3)}`;
+function drawInner() {
+  const g = ctx.createRadialGradient(CX - SIZE*0.04, CY - SIZE*0.05, SIZE*0.01, CX, CY, INNER_R);
+  g.addColorStop(0, '#ffffff');
+  g.addColorStop(1, '#f2eeea');
+  ctx.beginPath();
+  ctx.arc(CX, CY, INNER_R, 0, Math.PI * 2);
+  ctx.fillStyle = g;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(CX, CY, INNER_R, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+  ctx.lineWidth = SIZE * 0.005;
+  ctx.stroke();
+}
+
+function drawArc(rad) {
+  if (rad <= START_RAD + 0.001) return;
+
+  // Soft glow (blurred pass)
+  ctx.save();
+  ctx.lineCap     = 'round';
+  ctx.lineWidth   = TRACK_W * 1.8;
+  ctx.strokeStyle = 'rgba(232,23,90,0.22)';
+  ctx.filter      = `blur(${(SIZE * 0.022).toFixed(1)}px)`;
+  ctx.beginPath();
+  ctx.arc(CX, CY, TRACK_R, START_RAD, rad, false);
+  ctx.stroke();
+  ctx.restore();
+
+  // Solid arc
+  const sx = CX + Math.cos(START_RAD) * TRACK_R;
+  const sy = CY + Math.sin(START_RAD) * TRACK_R;
+  const ex = CX + Math.cos(rad) * TRACK_R;
+  const ey = CY + Math.sin(rad) * TRACK_R;
+  const ag = ctx.createLinearGradient(sx, sy, ex, ey);
+  ag.addColorStop(0, '#FF6090');
+  ag.addColorStop(1, '#C8114A');
+
+  ctx.save();
+  ctx.lineCap     = 'round';
+  ctx.lineWidth   = TRACK_W;
+  ctx.strokeStyle = ag;
+  ctx.beginPath();
+  ctx.arc(CX, CY, TRACK_R, START_RAD, rad, false);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawHandle(rad) {
+  const hx = CX + Math.cos(rad) * TRACK_R;
+  const hy = CY + Math.sin(rad) * TRACK_R;
+
+  // Drop shadow
+  ctx.save();
+  ctx.shadowColor   = 'rgba(0,0,0,0.22)';
+  ctx.shadowBlur    = SIZE * 0.045;
+  ctx.shadowOffsetY = SIZE * 0.012;
+  ctx.beginPath();
+  ctx.arc(hx, hy, HANDLE_R, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.restore();
+
+  // Gloss
+  const hg = ctx.createRadialGradient(hx - HANDLE_R*0.28, hy - HANDLE_R*0.32, HANDLE_R*0.04, hx, hy, HANDLE_R);
+  hg.addColorStop(0, '#ffffff');
+  hg.addColorStop(1, '#eeebe8');
+  ctx.beginPath();
+  ctx.arc(hx, hy, HANDLE_R, 0, Math.PI * 2);
+  ctx.fillStyle = hg;
+  ctx.fill();
+}
+
+function draw(rad) {
+  ctx.clearRect(0, 0, SIZE, SIZE);
+  drawRing();
+  drawTicks();
+  drawInner();
+  drawArc(rad);
+  drawHandle(rad);
+}
+
+// ── Animation ─────────────────────────────────────────────
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function tick() {
+  const diff = targetRad - smoothRad;
+  if (Math.abs(diff) < 0.0008) {
+    smoothRad = targetRad;
+    draw(smoothRad);
+    rafId = null;
+    return;
   }
+  smoothRad = lerp(smoothRad, targetRad, isDragging ? 0.42 : 0.18);
+  draw(smoothRad);
+  rafId = requestAnimationFrame(tick);
+}
 
-  function valueToAngle(v){
-    // v: 1..12 → 0..SPAN degrees from START_DEG
-    return START_DEG + ((v - MIN) / (MAX - MIN)) * SPAN;
+function kick() { if (!rafId) rafId = requestAnimationFrame(tick); }
+
+// ── Value commit ──────────────────────────────────────────
+function setTarget(rad) {
+  // Clamp into valid arc range
+  let rel = ((rad - START_RAD) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
+  if (rel > SWEEP_RAD + 0.25) {
+    rel = rel > Math.PI ? 0 : SWEEP_RAD;
   }
+  rel = Math.max(0, Math.min(SWEEP_RAD, rel));
+  targetRad = START_RAD + rel;
 
-  function buildTicks(){
-    ticksEl.innerHTML = '';
-    const tickCount = 48;
-    for(let i = 0; i < tickCount; i++){
-      const deg = (i / tickCount) * 360 - 90;
-      const p = polarXY(deg, 80);
-      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      c.setAttribute('cx', p.x.toFixed(2));
-      c.setAttribute('cy', p.y.toFixed(2));
-      c.setAttribute('r', '1.8');
-      c.setAttribute('fill', 'rgba(180,172,162,0.5)');
-      ticksEl.appendChild(c);
-    }
+  const v = radToValue(targetRad);
+  if (v !== lastValue) {
+    lastValue = v;
+    value = v;
+    numEl.textContent = v;
+    mlabel.textContent = MONTHS[v - 1];
+    numEl.classList.remove('pop');
+    requestAnimationFrame(() => numEl.classList.add('pop'));
+    setTimeout(() => numEl.classList.remove('pop'), 200);
   }
+  kick();
+}
 
-  function render(v){
-    const angle = valueToAngle(v);
-    const hPos = polarXY(angle, R);
-    handle.setAttribute('cx', hPos.x.toFixed(3));
-    handle.setAttribute('cy', hPos.y.toFixed(3));
+// ── Pointer ───────────────────────────────────────────────
+function getAngle(e) {
+  const rect = canvas.getBoundingClientRect();
+  const pt   = e.touches ? e.touches[0] : e;
+  const dx   = pt.clientX - rect.left - SIZE/2;
+  const dy   = pt.clientY - rect.top  - SIZE/2;
+  return Math.atan2(dy, dx);   // -π..π, 0=right, -π/2=top
+}
 
-    if(v > MIN){
-      const d = arcD(START_DEG, angle, R);
-      trackArc.setAttribute('d', d);
-      glowArc.setAttribute('d', d);
-      trackArc.setAttribute('opacity','1');
-      glowArc.setAttribute('opacity','0.5');
-    } else {
-      trackArc.setAttribute('opacity','0');
-      glowArc.setAttribute('opacity','0');
-    }
-  }
+canvas.addEventListener('mousedown', e => {
+  isDragging = true;
+  setTarget(getAngle(e));
+});
+canvas.addEventListener('touchstart', e => {
+  isDragging = true;
+  e.preventDefault();
+  setTarget(getAngle(e));
+}, { passive: false });
 
-  function setValueSmooth(newVal){
-    newVal = Math.max(MIN, Math.min(MAX, newVal));
-    if(newVal === value) return;
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  setTarget(getAngle(e));
+});
+window.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  e.preventDefault();
+  setTarget(getAngle(e));
+}, { passive: false });
 
-    const prev = value;
-    value = newVal;
-    numLabel.textContent = value;
-    monthName.textContent = MONTHS[value - 1];
-    monthName.classList.add('visible');
+window.addEventListener('mouseup',  () => { isDragging = false; });
+window.addEventListener('touchend', () => { isDragging = false; });
 
-    // bump animation
-    centerLabel.classList.remove('bump');
-    void centerLabel.offsetWidth;
-    centerLabel.classList.add('bump');
-    setTimeout(() => centerLabel.classList.remove('bump'), 200);
-
-    render(value);
-  }
-
-  function getAngle(e){
-    const rect = svg.getBoundingClientRect();
-    const pt = e.touches ? e.touches[0] : e;
-    const scale = 280 / rect.width;
-    const dx = (pt.clientX - rect.left) * scale - CX;
-    const dy = (pt.clientY - rect.top)  * scale - CY;
-    // atan2 returns angle from positive x-axis; we want from top (12 o'clock)
-    let deg = Math.atan2(dx, -dy) * 180 / Math.PI; // angle from top, CW
-    return deg; // -180..180
-  }
-
-  function angleToValue(deg){
-    // Map deg (−180..180) into 0..360 CW from top
-    let normalized = (deg + 360) % 360; // 0..360
-    // START_DEG is -90 → 270 in 0..360 space
-    let startNorm = (START_DEG + 360) % 360; // 270
-    // relative angle from start, CW
-    let rel = (normalized - startNorm + 360) % 360;
-    // clamp within SPAN
-    rel = Math.min(rel, SPAN);
-    const v = MIN + Math.round((rel / SPAN) * (MAX - MIN));
-    return Math.max(MIN, Math.min(MAX, v));
-  }
-
-  /* ── Smooth drag with velocity damping ── */
-  let velBuffer = [];
-  function onMove(e){
-    if(!dragging) return;
-    if(e.cancelable) e.preventDefault();
-
-    const now = performance.now();
-    const deg = getAngle(e);
-    velBuffer.push({ deg, t: now });
-    if(velBuffer.length > 4) velBuffer.shift();
-
-    const v = angleToValue(deg);
-    setValueSmooth(v);
-    lastAngle = deg;
-  }
-
-  function onDown(e){
-    dragging = true;
-    velBuffer = [];
-    handle.setAttribute('r', '15');
-    if(e.cancelable) e.preventDefault();
-    onMove(e);
-  }
-
-  function onUp(){
-    dragging = false;
-    handle.setAttribute('r', '14');
-  }
-
-  /* Click anywhere on ring to jump */
-  svg.addEventListener('mousedown', onDown);
-  svg.addEventListener('touchstart', onDown, {passive:false});
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('touchmove', onMove, {passive:false});
-  window.addEventListener('mouseup', onUp);
-  window.addEventListener('touchend', onUp);
-
-  buildTicks();
-  render(value);
-  numLabel.textContent = value;
+// ── Boot ──────────────────────────────────────────────────
+draw(START_RAD);
 </script>
 </body>
 </html>
