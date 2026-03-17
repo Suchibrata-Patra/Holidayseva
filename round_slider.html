@@ -190,20 +190,42 @@
     }
 
     // ── Haptics ────────────────────────────────────────
-    // Vibration API  — works on Android Chrome & many mobile browsers.
-    // iOS Safari requires a UserGesture AND "Settings > Sounds & Haptics"
-    // to be on; it uses the Taptic Engine via a silent AudioContext trick
-    // as a fallback so we try both paths.
-    let audioCtx = null;
+    // Android Chrome: vibrate() must be called synchronously inside a
+    // user-gesture handler (touchmove counts). We queue a flag and flush
+    // it at the top of onMove — which IS the touch handler — so it fires
+    // in the same call stack as the gesture, never inside rAF/setTimeout.
+    //
+    // iOS: no vibrate API. We use a near-silent AudioContext buffer to
+    // tickle the Taptic Engine (works when System Haptics is ON).
 
-    function iosHapticTick() {
-      // iOS doesn't support navigator.vibrate, but a near-silent 1-sample
-      // AudioContext click through the speaker triggers the Taptic Engine
-      // on devices where "System Haptics" is enabled.
+    let hapticPending  = false;   // flag: fire vibrate on next onMove call
+    let audioCtx       = null;
+    let audioUnlocked  = false;
+
+    function unlockAudio() {
+      if (audioUnlocked) return;
       try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Play a true-silence buffer to mark the context as user-unlocked
         const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
-        buf.getChannelData(0)[0] = 0.001; // almost silent
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(audioCtx.destination);
+        src.start(0);
+        audioUnlocked = true;
+      } catch (_) {}
+    }
+
+    function iosTick() {
+      if (!audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.01, audioCtx.sampleRate);
+        const data = buf.getChannelData(0);
+        // Very low-amplitude click waveform — inaudible but physically felt
+        for (let i = 0; i < data.length; i++) {
+          data[i] = (Math.random() * 2 - 1) * 0.003;
+        }
         const src = audioCtx.createBufferSource();
         src.buffer = buf;
         src.connect(audioCtx.destination);
@@ -211,27 +233,24 @@
       } catch (_) {}
     }
 
-    function haptic() {
-      // 1. Vibration API (Android / some browsers)
-      if (navigator.vibrate) {
-        navigator.vibrate(8); // 8 ms — short crisp click
+    // Called synchronously inside the touch/mouse event handler
+    function fireHaptic() {
+      // Path 1 — Vibration API (Android Chrome, Firefox Android, Edge Android)
+      if (typeof navigator.vibrate === 'function') {
+        try {
+          navigator.vibrate(10);
+        } catch (_) {}
         return;
       }
-      // 2. iOS AudioContext fallback
-      iosHapticTick();
+      // Path 2 — iOS AudioContext Taptic fallback
+      iosTick();
     }
 
-    // Unlock AudioContext on first touch (required by browsers)
-    function unlockAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      canvas.removeEventListener('touchstart', unlockAudio);
-      canvas.removeEventListener('mousedown',  unlockAudio);
+    // haptic() sets a flag; onMove flushes it synchronously inside the
+    // touch event — the only place vibrate() is guaranteed to work on Android
+    function haptic() {
+      hapticPending = true;
     }
-    canvas.addEventListener('touchstart', unlockAudio, { once: true });
-    canvas.addEventListener('mousedown',  unlockAudio, { once: true });
 
     // ── State ──────────────────────────────────────────
     let value      = INIT;
@@ -455,6 +474,7 @@
       isDragging     = true;
       dragStartAngle = rawAngle(e);
       dragStartRad   = targetRad;
+      unlockAudio();        // must happen inside a gesture for iOS AudioContext
       e.preventDefault();
     }
 
@@ -462,13 +482,17 @@
       if (!isDragging) return;
       e.preventDefault();
 
+      // ▶ Flush haptic HERE — synchronously inside the touch handler.
+      //   navigator.vibrate() is silently ignored if called from rAF or
+      //   setTimeout on Android Chrome (user-gesture restriction).
+      if (hapticPending) {
+        fireHaptic();
+        hapticPending = false;
+      }
+
       const currentAngle = rawAngle(e);
-
-      // Delta from where the drag began — handles 0/2π wrap cleanly
-      const delta = angleDiff(dragStartAngle, currentAngle);
-
-      // New arc angle = start position + how much we've rotated
-      const newRad = dragStartRad + delta;
+      const delta        = angleDiff(dragStartAngle, currentAngle);
+      const newRad       = dragStartRad + delta;
       commitRad(newRad);
     }
 
