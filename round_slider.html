@@ -91,10 +91,19 @@
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════════
+     COMPONENT ROOT  —  drop this anywhere on your page
+     Customise via data attributes:
+       data-min="1"       minimum value  (default 1)
+       data-max="12"      maximum value  (default 12)
+       data-value="1"     initial value  (default min)
+       data-size="320"    diameter in px (default 320)
+═══════════════════════════════════════════════════ -->
 <div class="month-slider-root"
      id="mySlider"
      data-min="1"
-     data-max="1200"
+     data-max="12"
      data-value="1"
      data-size="320">
 </div>
@@ -167,9 +176,10 @@
     const DOT_ORB  = SIZE * 0.308;
     const DOT_SZ   = SIZE * 0.009;
 
-    // Arc geometry: 12 o'clock = -π/2, sweep 330° CW
+    // Arc geometry: 12 o'clock = -π/2, sweep full 360° CW
+    // At MAX the handle returns exactly to 12 o'clock (full circle)
     const START_RAD  = -Math.PI / 2;
-    const SWEEP_RAD  = (330 / 180) * Math.PI;
+    const SWEEP_RAD  = 2 * Math.PI;   // 360° — no gap at the top
 
     function valueToRad(v) {
       return START_RAD + ((v - MIN) / STEPS) * SWEEP_RAD;
@@ -313,7 +323,8 @@
 
         // Light up dots that are "filled" by current value
         const filledCount = currentValue - MIN; // 0-indexed count of filled steps
-        ctx.fillStyle = dotStep < filledCount
+        const allFilled   = currentValue >= MAX;
+        ctx.fillStyle = (allFilled || dotStep < filledCount)
           ? 'rgba(232,23,90,0.35)'
           : 'rgba(165,157,147,0.45)';
         ctx.fill();
@@ -338,43 +349,53 @@
       ctx.stroke();
     }
 
-    function drawArc(rad) {
-      const arcEnd = rad;
-      if (arcEnd <= START_RAD + 0.005) return;
+    function drawArc(rad, val) {
+      if (val <= MIN) return;
 
-      // Glow
-      ctx.save();
-      ctx.lineCap     = 'round';
-      ctx.lineWidth   = TRACK_W * 1.8;
-      ctx.strokeStyle = 'rgba(232,23,90,0.22)';
-      ctx.filter      = `blur(${(SIZE * 0.022).toFixed(1)}px)`;
-      ctx.beginPath();
-      ctx.arc(CX, CY, TRACK_R, START_RAD, arcEnd, false);
-      ctx.stroke();
-      ctx.restore();
+      const isFullCircle = (val >= MAX);
 
-      // Solid arc
+      function strokeArc(lineWidth, style, blur) {
+        ctx.save();
+        ctx.lineCap    = 'round';
+        ctx.lineWidth  = lineWidth;
+        ctx.strokeStyle = style;
+        if (blur) ctx.filter = `blur(${blur}px)`;
+        ctx.beginPath();
+        if (isFullCircle) {
+          // Full circle — arc() with same start/end draws nothing, use 0→2π
+          ctx.arc(CX, CY, TRACK_R, 0, Math.PI * 2, false);
+        } else {
+          ctx.arc(CX, CY, TRACK_R, START_RAD, rad, false);
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Glow pass
+      strokeArc(TRACK_W * 1.8, 'rgba(232,23,90,0.22)', SIZE * 0.022);
+
+      // Gradient for solid arc
       const sx = CX + Math.cos(START_RAD) * TRACK_R;
       const sy = CY + Math.sin(START_RAD) * TRACK_R;
-      const ex = CX + Math.cos(arcEnd)    * TRACK_R;
-      const ey = CY + Math.sin(arcEnd)    * TRACK_R;
+      const ex = isFullCircle
+        ? CX + Math.cos(START_RAD - 0.001) * TRACK_R   // near-full circle endpoint
+        : CX + Math.cos(rad) * TRACK_R;
+      const ey = isFullCircle
+        ? CY + Math.sin(START_RAD - 0.001) * TRACK_R
+        : CY + Math.sin(rad) * TRACK_R;
+
       const ag = ctx.createLinearGradient(sx, sy, ex, ey);
       ag.addColorStop(0, '#FF6090');
       ag.addColorStop(1, '#C8114A');
 
-      ctx.save();
-      ctx.lineCap     = 'round';
-      ctx.lineWidth   = TRACK_W;
-      ctx.strokeStyle = ag;
-      ctx.beginPath();
-      ctx.arc(CX, CY, TRACK_R, START_RAD, arcEnd, false);
-      ctx.stroke();
-      ctx.restore();
+      strokeArc(TRACK_W, ag, null);
     }
 
-    function drawHandle(rad) {
-      const hx = CX + Math.cos(rad) * TRACK_R;
-      const hy = CY + Math.sin(rad) * TRACK_R;
+    function drawHandle(rad, val) {
+      // At MAX (full circle) the handle sits exactly at 12 o'clock
+      const displayRad = (val >= MAX) ? START_RAD : rad;
+      const hx = CX + Math.cos(displayRad) * TRACK_R;
+      const hy = CY + Math.sin(displayRad) * TRACK_R;
 
       ctx.save();
       ctx.shadowColor   = 'rgba(0,0,0,0.22)';
@@ -402,8 +423,8 @@
       drawRing();
       drawTicks(val);
       drawInner();
-      drawArc(rad);
-      drawHandle(rad);
+      drawArc(rad, val);
+      drawHandle(rad, val);
     }
 
     // ── Animation ──────────────────────────────────────
